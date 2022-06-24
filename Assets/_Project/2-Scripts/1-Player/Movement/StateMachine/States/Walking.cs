@@ -6,20 +6,19 @@ using UnityEngine;
 
 namespace Axiom.Player.StateMachine
 {
-    public class Grounded : State
+    public class Walking : State
     {
-        public Grounded(MovementSystem movementSystem) : base(movementSystem)
+        public Walking(MovementSystem movementSystem) : base(movementSystem)
         {
         }
 
-        protected override void LogicUpdate()
+        public override void LogicUpdate()
         {
             base.LogicUpdate();
         }
 
-        protected override void PhysicsUpdate()
+        public override void PhysicsUpdate()
         {
-            base.PhysicsUpdate();
         }
     }
 }

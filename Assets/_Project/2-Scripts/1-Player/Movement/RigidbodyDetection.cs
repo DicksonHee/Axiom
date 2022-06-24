@@ -18,7 +18,7 @@ namespace Axiom.Player.Movement
         private Rigidbody _rb;
         private CapsuleCollider _collider;
 
-        private bool isGrounded;
+        public bool isGrounded { get; private set; }
         
         private void Awake()
         {
@@ -33,12 +33,12 @@ namespace Axiom.Player.Movement
 
         private void GroundDetection()
         {
-            isGrounded = Physics.SphereCast(groundDetector.position, groundDetectorRadius, Vector3.down, out _, groundDetectorRadius, groundLayer);
+            isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, groundDetectorRadius, groundLayer);
         }
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawWireSphere(groundDetector.position, groundDetectorRadius);
+            Gizmos.DrawLine(groundDetector.position, groundDetector.position + new Vector3(0,-groundDetectorRadius,0));
         }
     }
 }

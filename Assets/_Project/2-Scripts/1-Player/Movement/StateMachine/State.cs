@@ -25,11 +25,11 @@ namespace Axiom.Player.StateMachine
         {
         }
 
-        protected virtual void LogicUpdate()
+        public virtual void LogicUpdate()
         {
         }
 
-        protected virtual void PhysicsUpdate()
+        public virtual void PhysicsUpdate()
         {
         }
     }
