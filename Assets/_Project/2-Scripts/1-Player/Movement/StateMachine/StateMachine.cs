@@ -7,18 +7,20 @@ namespace Axiom.Player.StateMachine
     public abstract class StateMachine : MonoBehaviour
     {
         protected State CurrentState;
+        private StateName PreviousState;
 
-        public void InitializeState(State state)
+        protected void InitializeState(State state)
         {
             CurrentState = state;
-            CurrentState.EnterState();
+            CurrentState.EnterState(StateName.None);
         }
         
         public void ChangeState(State state)
         {
+            PreviousState = CurrentState.stateName;
             CurrentState.ExitState();
             CurrentState = state;
-            CurrentState.EnterState();
+            CurrentState.EnterState(PreviousState);
         }
     }
 }

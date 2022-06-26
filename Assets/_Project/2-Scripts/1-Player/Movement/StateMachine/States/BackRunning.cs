@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Axiom.Player.Movement;
@@ -6,36 +7,36 @@ using UnityEngine;
 
 namespace Axiom.Player.StateMachine
 {
-    public class Turning : State
+    public class BackRunning : State
     {
-        public Turning(MovementSystem movementSystem) : base(movementSystem)
+        public BackRunning(MovementSystem movementSystem) : base(movementSystem)
         {
-            stateName = StateName.Turning;
+            stateName = StateName.BackRunning;
         }
 
-        public override void EnterState(StateName prevState)
+        public override void EnterState(StateName state)
         {
-            base.EnterState(prevState);
+            base.EnterState(state);
             
-            MovementSystem.SetTargetSpeed(MovementSystem.turningSpeed);
+            MovementSystem.SetDrag(MovementSystem.groundedDrag);
+            MovementSystem.SetGravity(MovementSystem.groundGravity);
+            MovementSystem.SetTargetSpeed(MovementSystem.backwardSpeed);
         }
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
+            
+            if (MovementSystem.inputDetection.movementInput.magnitude <= 0 || MovementSystem.inputDetection.movementInput.z > 0f) MovementSystem.ChangeState(MovementSystem._idleState);
 
-            // if (MovementSystem.cameraLook.mouseX > 1f) return;
-            //
-            // if (MovementSystem.inputDetection.movementInput.z > 0) MovementSystem.ChangeState(MovementSystem._walkingState);
-            // else if (MovementSystem.inputDetection.movementInput.z < 0) MovementSystem.ChangeState(MovementSystem._backRunningState);
-            // else if (Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f) MovementSystem.ChangeState(MovementSystem._strafingState);
+            CalculateMovementSpeed();
         }
 
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
         }
-        
+
         protected override void SelectMovementCurve()
         {
             base.SelectMovementCurve();
@@ -43,33 +44,32 @@ namespace Axiom.Player.StateMachine
             switch (previousState)
             {
                 case StateName.Idle:
-                    movementCurve = MovementSystem.moveToTurn;
+                    movementCurve = MovementSystem.slowToFast;
                     break;
                 case StateName.Walking:
-                    movementCurve = MovementSystem.fastToSlow;
+                    movementCurve = MovementSystem.slowToFast;
                     break;
                 case StateName.Running:
-                    movementCurve = MovementSystem.moveToTurn;
+                    movementCurve = MovementSystem.fastToSlow;
                     break;
                 case StateName.Strafing:
-                    movementCurve = MovementSystem.moveToTurn;
+                    movementCurve = MovementSystem.slowToFast;
                     break;
                 case StateName.InAir:
-                    movementCurve = MovementSystem.moveToTurn;
+                    movementCurve = MovementSystem.slowToFast;
                     break;
                 case StateName.Climbing:
                     break;
                 case StateName.Sliding:
                     break;
                 case StateName.Turning:
+                    movementCurve = MovementSystem.turnToMove;
                     break;
                 case StateName.WallRunning:
                     break;
                 case StateName.BackRunning:
-                    movementCurve = MovementSystem.moveToTurn;
                     break;
             }
         }
     }
 }
-

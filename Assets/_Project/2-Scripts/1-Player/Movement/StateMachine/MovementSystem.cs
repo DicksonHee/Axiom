@@ -9,13 +9,17 @@ namespace Axiom.Player.StateMachine
     [RequireComponent(typeof(RigidbodyDetection), typeof(InputDetection))]
     public class MovementSystem : StateMachine
     {
+        #region Inspector Variables
         public RigidbodyDetection rbInfo;
         public InputDetection inputDetection;
         public CameraLook cameraLook;
         public Transform orientation;
         
-        [Header("AnimationCurve")]
-        public AnimationCurve idleToRun;
+        [Header("AnimationCurve")] 
+        public AnimationCurve slowToFast;
+        public AnimationCurve fastToSlow;
+        public AnimationCurve turnToMove;
+        public AnimationCurve moveToTurn;
 
         [Header("Drag")]
         public float groundedDrag = 1f;
@@ -27,29 +31,46 @@ namespace Axiom.Player.StateMachine
         public float wallrunGravity = -5f;
         
         [Header("Speed")]
-        public float forwardSpeed = 10f;
-        public float backwardSpeed = 5f;
-        public float turningSpeed = 3f;
-        public float strafeSpeed = 5f;
+        public float forwardSpeed = 20f;
+        public float backwardSpeed = 15f;
+        public float strafeSpeed = 15f;
+        public float walkSpeed = 12f;
         public float inAirSpeed = 8f;
-        
+        public float turningSpeed = 3f;
+
         [Header("Jump")]
         public float jumpForce = 10f;
+        #endregion
         
+        #region Public Variables
         public Rigidbody _rb{ get; private set; }
+        public Vector3 moveDirection { get; private set; }
 
+        [HideInInspector] public float currentSpeed;
         [HideInInspector] public float currentTargetSpeed;
+        [HideInInspector] public float currentTargetGravity;
+        #endregion
         
-        public Vector3 _currentVelocity { get; private set; }
+        #region Turning Variables
+        private Vector3 _currentFacingTransform;
+        private float _turnCheckCounter;
+        private float _turnMultiplier;
+        private float _turnCheckInterval = 0.5f;
+        #endregion
         
+        #region States
         public Idle _idleState { get; private set; }
         public Walking _walkingState { get; private set; }
         public Running _runningState { get; private set; }
+        public BackRunning _backRunningState { get; private set; }
+        public Strafing _strafingState { get; private set; }
+        public Turning _turningState { get; private set; }
         public InAir _inAirState { get; private set; }
         public WallRunning _wallRunningState { get; private set; }
         public Climbing _climbingState { get; private set; }
         public Sliding _slidingState { get; private set; }
-
+        #endregion
+        
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
@@ -57,12 +78,17 @@ namespace Axiom.Player.StateMachine
             _idleState = new Idle(this);
             _walkingState = new Walking(this);
             _runningState = new Running(this);
+            _backRunningState = new BackRunning(this);
+            _strafingState = new Strafing(this);
+            _turningState = new Turning(this);
             _inAirState = new InAir(this);
             _wallRunningState = new WallRunning(this);
             _climbingState = new Climbing(this);
             _slidingState = new Sliding(this);
 
             InitializeState(_idleState);
+            
+            InvokeRepeating(nameof(DrawLine), 0f, 0.01f);
         }
 
         private void Update()
@@ -71,45 +97,63 @@ namespace Axiom.Player.StateMachine
 
             if(!rbInfo.isGrounded) ChangeState(_inAirState);
             
-            UpdateCurrentTargetSpeed();
-
-            Debug.Log(MoveDirection());
+            CheckIsTurning();
+            CalculateMoveDirection();
         }
 
         private void FixedUpdate()
         {
             CurrentState.PhysicsUpdate();
-
-            if(rbInfo.isGrounded) ApplyGravity(groundGravity);
+            
+            ApplyGravity();
+            ApplyMovement();
         }
 
-        private void UpdateCurrentTargetSpeed()
+        // Calculate moveDirection based on the current input
+        private void CalculateMoveDirection()
         {
-            Vector3 currentInput = inputDetection.movementInput;
-            if (currentInput == Vector3.zero) return;
-
-            if (Mathf.Abs(cameraLook.mouseX) > 0.1f) currentTargetSpeed = 3f;
-            else if (!rbInfo.isGrounded) currentTargetSpeed = inAirSpeed;
-            else if (currentInput.x > 0 || currentInput.x < 0) currentTargetSpeed = strafeSpeed;
-            else if (currentInput.z < 0) currentTargetSpeed = backwardSpeed;
-            else if (currentInput.z > 0) currentTargetSpeed = forwardSpeed;
-        }
-
-        public Vector3 MoveDirection()
-        {
-            return orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;
+            moveDirection = orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;
         }
         
-        public void MovePlayer(Vector3 vel)
+        // Calculate the current movement speed by evaluating from the curve
+        public void CalculateMovementSpeed(AnimationCurve curve, float prevSpeed, float time)
         {
-            _rb.AddForce(vel.normalized * currentTargetSpeed);
+            float velDiff = prevSpeed - currentTargetSpeed;
+            currentSpeed = prevSpeed - velDiff * curve.Evaluate(time);
+            
+            //Debug.Log("PrevSpeed: " + prevSpeed + " CurrentSpeed: " + currentSpeed * _turnMultiplier + " VelDiff: " + velDiff);
         }
 
-        public void ApplyGravity(float force)
+        // Checks if the player is turning and sets the turn multiplier
+        // If facing a certain direction for _turnCheckInterval amount of time
+        // Set new _currentFacingTransform to forward vector
+        // Set _turnMultiplier to the Dot product of the _currentVector and _currentFacingTransform, clamped from 0.5f, 1f
+        private void CheckIsTurning()
         {
-            _rb.AddRelativeForce(Vector3.down * force);
+            _turnMultiplier = Mathf.Clamp(Vector3.Dot(_currentFacingTransform, orientation.TransformDirection(Vector3.forward)), 0.5f, 1f);
+            if (Mathf.Abs(cameraLook.mouseX) < 1f) _turnCheckCounter += Time.deltaTime;
+            if (_turnCheckCounter > _turnCheckInterval)
+            {
+                _turnCheckCounter = 0f;
+                _currentFacingTransform = orientation.TransformDirection(Vector3.forward);
+            }
+        }
+        
+        // Apply movement to the character
+        private void ApplyMovement()
+        {
+            Vector3 moveVel = moveDirection.normalized * (currentSpeed * _turnMultiplier);
+            moveVel.y = _rb.velocity.y;
+            _rb.velocity = moveVel;
         }
 
+        // Apply constant downward force on the character
+        private void ApplyGravity()
+        {
+            _rb.AddRelativeForce(Vector3.down * currentTargetGravity);
+        }
+
+        // Applies upwards force to the character
         public void Jump()
         {
             var velocity = _rb.velocity;
@@ -117,10 +161,27 @@ namespace Axiom.Player.StateMachine
             _rb.AddForce(new Vector3(0f, jumpForce, 0f), ForceMode.VelocityChange);
         }
 
+        // Sets Rigidbody drag
         public void SetDrag(float drag)
         {
             _rb.drag = drag;
         }
-        
+
+        // Sets the gravity amount
+        public void SetGravity(float gravityVal)
+        {
+            currentTargetGravity = gravityVal;
+        }
+
+        // Sets the target speed
+        public void SetTargetSpeed(float speedVal)
+        {
+            currentTargetSpeed = speedVal;
+        }
+
+        private void DrawLine()
+        {
+            Debug.DrawLine(rbInfo.groundDetector.position, rbInfo.groundDetector.position + new Vector3(0,5,0), Color.red, 99f);
+        }
     }
 }

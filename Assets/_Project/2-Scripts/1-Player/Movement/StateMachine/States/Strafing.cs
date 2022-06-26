@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Axiom.Player.Movement;
@@ -6,11 +7,11 @@ using UnityEngine;
 
 namespace Axiom.Player.StateMachine
 {
-    public class Running : State
+    public class Strafing : State
     {
-        public Running(MovementSystem movementSystem) : base(movementSystem)
+        public Strafing(MovementSystem movementSystem) : base(movementSystem)
         {
-            stateName = StateName.Running;
+            stateName = StateName.Strafing;
         }
 
         public override void EnterState(StateName state)
@@ -19,13 +20,14 @@ namespace Axiom.Player.StateMachine
             
             MovementSystem.SetDrag(MovementSystem.groundedDrag);
             MovementSystem.SetGravity(MovementSystem.groundGravity);
-            MovementSystem.SetTargetSpeed(MovementSystem.forwardSpeed);
+            MovementSystem.SetTargetSpeed(MovementSystem.strafeSpeed);
         }
 
         public override void LogicUpdate()
         {
-            if(MovementSystem.inputDetection.movementInput.z < 0 || MovementSystem.inputDetection.movementInput.magnitude <= 0) MovementSystem.ChangeState(MovementSystem._idleState);
-            else if(Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f) MovementSystem.ChangeState(MovementSystem._strafingState);
+            if (MovementSystem.inputDetection.movementInput.magnitude <= 0) MovementSystem.ChangeState(MovementSystem._idleState);
+            else if (Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f && MovementSystem.inputDetection.movementInput.z > 0) MovementSystem.ChangeState(MovementSystem._walkingState);
+            else if (Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f && MovementSystem.inputDetection.movementInput.z < 0) MovementSystem.ChangeState(MovementSystem._idleState);
             
             CalculateMovementSpeed();
         }
@@ -47,9 +49,9 @@ namespace Axiom.Player.StateMachine
                     movementCurve = MovementSystem.slowToFast;
                     break;
                 case StateName.Running:
+                    movementCurve = MovementSystem.fastToSlow;
                     break;
                 case StateName.Strafing:
-                    movementCurve = MovementSystem.slowToFast;
                     break;
                 case StateName.InAir:
                     movementCurve = MovementSystem.slowToFast;
@@ -64,7 +66,7 @@ namespace Axiom.Player.StateMachine
                 case StateName.WallRunning:
                     break;
                 case StateName.BackRunning:
-                    movementCurve = MovementSystem.fastToSlow;
+                    movementCurve = MovementSystem.slowToFast;
                     break;
             }
         }
