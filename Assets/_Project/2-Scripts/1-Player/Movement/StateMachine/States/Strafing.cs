@@ -25,6 +25,8 @@ namespace Axiom.Player.StateMachine
 
         public override void LogicUpdate()
         {
+            base.LogicUpdate();
+            
             if (MovementSystem.inputDetection.movementInput.magnitude <= 0) MovementSystem.ChangeState(MovementSystem._idleState);
             else if (Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f && MovementSystem.inputDetection.movementInput.z > 0) MovementSystem.ChangeState(MovementSystem._walkingState);
             else if (Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f && MovementSystem.inputDetection.movementInput.z < 0) MovementSystem.ChangeState(MovementSystem._idleState);

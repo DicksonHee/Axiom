@@ -24,7 +24,13 @@ namespace Axiom.Player.StateMachine
 
         public override void LogicUpdate()
         {
-            if (MovementSystem.rbInfo.isGrounded) MovementSystem.ChangeState(MovementSystem._idleState);
+            base.LogicUpdate();
+
+            if (MovementSystem.rbInfo.isGrounded)
+            {
+                if (MovementSystem.inputDetection.movementInput.z > 0) MovementSystem.ChangeState(MovementSystem._walkingState);
+                else if (MovementSystem.inputDetection.movementInput.z < 0 || MovementSystem.inputDetection.movementInput.magnitude <= 0) MovementSystem.ChangeState(MovementSystem._idleState);
+            }
 
             CalculateMovementSpeed();
         }

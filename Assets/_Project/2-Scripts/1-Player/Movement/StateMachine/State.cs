@@ -37,11 +37,12 @@ namespace Axiom.Player.StateMachine
 
         public virtual void LogicUpdate()
         {
+            if (MovementSystem.inputDetection.jumpInput && MovementSystem.rbInfo.isGrounded) MovementSystem.Jump();
         }
 
         public virtual void PhysicsUpdate()
         {
-            if (MovementSystem.inputDetection.jumpInput && MovementSystem.rbInfo.isGrounded) MovementSystem.Jump();
+            
         }
 
         protected virtual void SelectMovementCurve()

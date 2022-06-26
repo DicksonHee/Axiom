@@ -28,7 +28,7 @@ namespace Axiom.Player.Movement
 
         private void Update()
         {
-            GroundDetection();   
+            GroundDetection();
         }
 
         private void GroundDetection()

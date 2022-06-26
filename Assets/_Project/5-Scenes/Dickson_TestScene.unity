@@ -1594,7 +1594,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh27406
+  m_Name: pb_Mesh27804
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -13869,10 +13869,34 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  gravityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.5
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   groundedDrag: 1
-  stoppingDrag: 5
+  stoppingDrag: 0
   groundGravity: 10
-  inAirGravity: 20
+  inAirGravity: 35
   wallrunGravity: 5
   forwardSpeed: 22
   backwardSpeed: 15
@@ -13880,7 +13904,7 @@ MonoBehaviour:
   walkSpeed: 15
   inAirSpeed: 7.5
   turningSpeed: 5
-  jumpForce: 30
+  jumpForce: 20
   currentSpeed: 0
   currentTargetSpeed: 0
   currentTargetGravity: 0

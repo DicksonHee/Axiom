@@ -20,7 +20,8 @@ namespace Axiom.Player.StateMachine
         public AnimationCurve fastToSlow;
         public AnimationCurve turnToMove;
         public AnimationCurve moveToTurn;
-
+        public AnimationCurve gravityCurve;
+        
         [Header("Drag")]
         public float groundedDrag = 1f;
         public float stoppingDrag = 5f;
@@ -57,6 +58,8 @@ namespace Axiom.Player.StateMachine
         private float _turnMultiplier;
         private float _turnCheckInterval = 0.5f;
         #endregion
+
+        private float _gravityCounter;
         
         #region States
         public Idle _idleState { get; private set; }
@@ -95,7 +98,7 @@ namespace Axiom.Player.StateMachine
         {
             CurrentState.LogicUpdate();
 
-            if(!rbInfo.isGrounded) ChangeState(_inAirState);
+            if(!rbInfo.isGrounded && CurrentState.stateName != StateName.InAir) ChangeState(_inAirState);
             
             CheckIsTurning();
             CalculateMoveDirection();
@@ -150,7 +153,8 @@ namespace Axiom.Player.StateMachine
         // Apply constant downward force on the character
         private void ApplyGravity()
         {
-            _rb.AddRelativeForce(Vector3.down * currentTargetGravity);
+            _gravityCounter += Time.fixedDeltaTime;
+            _rb.AddRelativeForce(Vector3.down * (currentTargetGravity * gravityCurve.Evaluate(_gravityCounter)));
         }
 
         // Applies upwards force to the character
@@ -170,6 +174,7 @@ namespace Axiom.Player.StateMachine
         // Sets the gravity amount
         public void SetGravity(float gravityVal)
         {
+            _gravityCounter = 0f;
             currentTargetGravity = gravityVal;
         }
 
