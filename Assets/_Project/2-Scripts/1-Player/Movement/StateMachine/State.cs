@@ -68,9 +68,6 @@ namespace Axiom.Player.StateMachine
                     break;
                 case StateName.Sliding:
                     break;
-                case StateName.Turning:
-                    previousSpeed = MovementSystem.turningSpeed;
-                    break;
                 case StateName.WallRunning:
                     break;
                 case StateName.BackRunning:
@@ -101,7 +98,6 @@ namespace Axiom.Player.StateMachine
         InAir,
         Climbing,
         Sliding,
-        Turning,
         WallRunning,
         None
     }

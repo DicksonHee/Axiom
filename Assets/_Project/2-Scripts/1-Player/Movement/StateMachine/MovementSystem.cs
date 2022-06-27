@@ -16,10 +16,8 @@ namespace Axiom.Player.StateMachine
         public Transform orientation;
         
         [Header("AnimationCurve")] 
-        public AnimationCurve slowToFast;
-        public AnimationCurve fastToSlow;
-        public AnimationCurve turnToMove;
-        public AnimationCurve moveToTurn;
+        public AnimationCurve accelerationCurve;
+        public AnimationCurve decelerationCurve;
         public AnimationCurve gravityCurve;
         
         [Header("Drag")]
@@ -37,10 +35,9 @@ namespace Axiom.Player.StateMachine
         public float strafeSpeed = 15f;
         public float walkSpeed = 12f;
         public float inAirSpeed = 8f;
-        public float turningSpeed = 3f;
-
+        
         [Header("Jump")]
-        public float jumpForce = 10f;
+        public float upJumpForce = 10f;
         #endregion
         
         #region Public Variables
@@ -60,14 +57,13 @@ namespace Axiom.Player.StateMachine
         #endregion
 
         private float _gravityCounter;
-        
+
         #region States
         public Idle _idleState { get; private set; }
         public Walking _walkingState { get; private set; }
         public Running _runningState { get; private set; }
         public BackRunning _backRunningState { get; private set; }
         public Strafing _strafingState { get; private set; }
-        public Turning _turningState { get; private set; }
         public InAir _inAirState { get; private set; }
         public WallRunning _wallRunningState { get; private set; }
         public Climbing _climbingState { get; private set; }
@@ -83,7 +79,6 @@ namespace Axiom.Player.StateMachine
             _runningState = new Running(this);
             _backRunningState = new BackRunning(this);
             _strafingState = new Strafing(this);
-            _turningState = new Turning(this);
             _inAirState = new InAir(this);
             _wallRunningState = new WallRunning(this);
             _climbingState = new Climbing(this);
@@ -96,20 +91,19 @@ namespace Axiom.Player.StateMachine
 
         private void Update()
         {
-            CurrentState.LogicUpdate();
-
-            if(!rbInfo.isGrounded && CurrentState.stateName != StateName.InAir) ChangeState(_inAirState);
-            
             CheckIsTurning();
             CalculateMoveDirection();
+
+            if(!rbInfo.isGrounded && CurrentState.stateName != StateName.InAir) ChangeState(_inAirState);
+            CurrentState.LogicUpdate();
         }
 
         private void FixedUpdate()
         {
-            CurrentState.PhysicsUpdate();
-            
-            ApplyGravity();
             ApplyMovement();
+            ApplyGravity();
+            
+            CurrentState.PhysicsUpdate();
         }
 
         // Calculate moveDirection based on the current input
@@ -160,9 +154,11 @@ namespace Axiom.Player.StateMachine
         // Applies upwards force to the character
         public void Jump()
         {
-            var velocity = _rb.velocity;
+            Vector3 velocity = _rb.velocity;
+            float jumpMultiplier = Mathf.Clamp(currentSpeed / forwardSpeed, 0.75f, 1f);
+
             _rb.velocity = new Vector3(velocity.x, 0f, velocity.z);
-            _rb.AddForce(new Vector3(0f, jumpForce, 0f), ForceMode.VelocityChange);
+            _rb.AddForce(new Vector3(0f, upJumpForce * jumpMultiplier, 0f), ForceMode.VelocityChange);
         }
 
         // Sets Rigidbody drag

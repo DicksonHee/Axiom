@@ -11,7 +11,7 @@ namespace Axiom.Player.Movement
     {
         public bool canRotate;
 
-        [Range(0.1f, 2f)]public float groundDetectorRadius = 0.5f;
+        [Range(0.1f, 5f)]public float groundDetectorRadius = 0.5f;
         public Transform groundDetector;
         public LayerMask groundLayer;
         
@@ -19,6 +19,8 @@ namespace Axiom.Player.Movement
         private CapsuleCollider _collider;
 
         public bool isGrounded { get; private set; }
+        public bool isOnSlope { get; private set; }
+        public RaycastHit slopeHit;
         
         private void Awake()
         {
@@ -29,16 +31,28 @@ namespace Axiom.Player.Movement
         private void Update()
         {
             GroundDetection();
+            SlopeDetection();
+            
+            Debug.Log(isOnSlope);
         }
 
         private void GroundDetection()
         {
-            isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, groundDetectorRadius, groundLayer);
+            isGrounded = Physics.CheckSphere(groundDetector.position, groundDetectorRadius, groundLayer);
+        }
+        
+        private void SlopeDetection()
+        {
+            if (Physics.Raycast(groundDetector.position, groundDetector.TransformDirection(Vector3.down), out slopeHit,  groundDetectorRadius));
+            {
+                isOnSlope = slopeHit.normal != Vector3.up;
+            }
         }
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawLine(groundDetector.position, groundDetector.position + new Vector3(0,-groundDetectorRadius,0));
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(groundDetector.position, groundDetectorRadius);
         }
     }
 }

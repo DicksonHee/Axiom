@@ -48,28 +48,25 @@ namespace Axiom.Player.StateMachine
                 case StateName.Idle:
                     break;
                 case StateName.Walking:
-                    movementCurve = MovementSystem.fastToSlow;
+                    movementCurve = MovementSystem.decelerationCurve;
                     break;
                 case StateName.Running:
-                    movementCurve = MovementSystem.fastToSlow;
+                    movementCurve = MovementSystem.decelerationCurve;
                     break;
                 case StateName.Strafing:
-                    movementCurve = MovementSystem.fastToSlow;
+                    movementCurve = MovementSystem.decelerationCurve;
                     break;
                 case StateName.InAir:
-                    movementCurve = MovementSystem.fastToSlow;
+                    movementCurve = MovementSystem.decelerationCurve;
                     break;
                 case StateName.Climbing:
                     break;
                 case StateName.Sliding:
                     break;
-                case StateName.Turning:
-                    movementCurve = MovementSystem.moveToTurn;
-                    break;
                 case StateName.WallRunning:
                     break;
                 case StateName.BackRunning:
-                    movementCurve = MovementSystem.fastToSlow;
+                    movementCurve = MovementSystem.decelerationCurve;
                     break;
             }
         }

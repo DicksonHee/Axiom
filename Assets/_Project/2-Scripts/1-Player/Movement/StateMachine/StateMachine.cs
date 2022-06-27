@@ -17,10 +17,12 @@ namespace Axiom.Player.StateMachine
         
         public void ChangeState(State state)
         {
+            Debug.Log(CurrentState.stateName);
             PreviousState = CurrentState.stateName;
             CurrentState.ExitState();
             CurrentState = state;
             CurrentState.EnterState(PreviousState);
+            Debug.Log(CurrentState.stateName);
         }
     }
 }
