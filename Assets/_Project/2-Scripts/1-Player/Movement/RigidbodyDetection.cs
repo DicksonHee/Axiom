@@ -32,8 +32,6 @@ namespace Axiom.Player.Movement
         {
             GroundDetection();
             SlopeDetection();
-            
-            Debug.Log(isOnSlope);
         }
 
         private void GroundDetection()

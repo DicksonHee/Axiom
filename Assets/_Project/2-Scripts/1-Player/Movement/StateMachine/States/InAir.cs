@@ -31,7 +31,7 @@ namespace Axiom.Player.StateMachine
 
             if (MovementSystem.rbInfo.isGrounded) MovementSystem.ChangeState(MovementSystem._idleState);
 
-                CalculateMovementSpeed();
+            CalculateMovementSpeed();
         }
 
         public override void PhysicsUpdate()

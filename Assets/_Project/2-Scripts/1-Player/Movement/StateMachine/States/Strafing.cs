@@ -27,9 +27,8 @@ namespace Axiom.Player.StateMachine
         {
             base.LogicUpdate();
             
-            if (MovementSystem.inputDetection.movementInput.magnitude <= 0) MovementSystem.ChangeState(MovementSystem._idleState);
-            else if (Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f && MovementSystem.inputDetection.movementInput.z > 0) MovementSystem.ChangeState(MovementSystem._walkingState);
-            else if (Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f && MovementSystem.inputDetection.movementInput.z < 0) MovementSystem.ChangeState(MovementSystem._idleState);
+            if (MovementSystem.inputDetection.movementInput.x == 0f && MovementSystem.inputDetection.movementInput.z > 0) MovementSystem.ChangeState(MovementSystem._walkingState);
+            else if (MovementSystem.inputDetection.movementInput.x == 0f && MovementSystem.inputDetection.movementInput.z <= 0) MovementSystem.ChangeState(MovementSystem._idleState);
             
             CalculateMovementSpeed();
         }

@@ -69,6 +69,9 @@ namespace Axiom.Player.StateMachine
         public Climbing _climbingState { get; private set; }
         public Sliding _slidingState { get; private set; }
         #endregion
+
+        private float threshold = 0.01f;
+        private float counterMovement = 0.175f;
         
         private void Awake()
         {
@@ -91,19 +94,20 @@ namespace Axiom.Player.StateMachine
 
         private void Update()
         {
+            CurrentState.LogicUpdate();
+
             CheckIsTurning();
             CalculateMoveDirection();
 
             if(!rbInfo.isGrounded && CurrentState.stateName != StateName.InAir) ChangeState(_inAirState);
-            CurrentState.LogicUpdate();
         }
 
         private void FixedUpdate()
         {
+            CurrentState.PhysicsUpdate();
+
             ApplyMovement();
             ApplyGravity();
-            
-            CurrentState.PhysicsUpdate();
         }
 
         // Calculate moveDirection based on the current input
@@ -148,7 +152,7 @@ namespace Axiom.Player.StateMachine
         private void ApplyGravity()
         {
             _gravityCounter += Time.fixedDeltaTime;
-            _rb.AddRelativeForce(Vector3.down * (currentTargetGravity * gravityCurve.Evaluate(_gravityCounter)));
+            _rb.AddForce(Vector3.down * (currentTargetGravity * gravityCurve.Evaluate(_gravityCounter)));
         }
 
         // Applies upwards force to the character
@@ -184,5 +188,8 @@ namespace Axiom.Player.StateMachine
         {
             Debug.DrawLine(rbInfo.groundDetector.position, rbInfo.groundDetector.position + new Vector3(0,5,0), Color.red, 99f);
         }
+
+        public string GetCurrentStateName() => CurrentState.stateName.ToString();
+        public string GetPreviousStatename() => PreviousState.ToString();
     }
 }

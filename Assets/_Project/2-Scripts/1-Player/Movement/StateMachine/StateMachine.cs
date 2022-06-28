@@ -7,7 +7,7 @@ namespace Axiom.Player.StateMachine
     public abstract class StateMachine : MonoBehaviour
     {
         protected State CurrentState;
-        private StateName PreviousState;
+        protected StateName PreviousState;
 
         protected void InitializeState(State state)
         {

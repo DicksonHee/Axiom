@@ -8,6 +8,8 @@ namespace Axiom.Player.StateMachine
 {
     public class Walking : State
     {
+        private float _toRunCounter;
+        
         public Walking(MovementSystem movementSystem) : base(movementSystem)
         {
             stateName = StateName.Walking;
@@ -26,10 +28,13 @@ namespace Axiom.Player.StateMachine
         {
             base.LogicUpdate();
             
+            if(Mathf.Abs(MovementSystem._rb.velocity.magnitude - MovementSystem.currentTargetSpeed) < 1f) _toRunCounter += Time.deltaTime;
+            else _toRunCounter = 0f;
+            
             if (MovementSystem.inputDetection.movementInput.magnitude <= 0 || MovementSystem.inputDetection.movementInput.z < 0) MovementSystem.ChangeState(MovementSystem._idleState);
             else if (MovementSystem.inputDetection.movementInput.z > 0)
             {
-                if(Time.time - stateStartTime > 1f) MovementSystem.ChangeState(MovementSystem._runningState);
+                if(_toRunCounter > 1f) MovementSystem.ChangeState(MovementSystem._runningState);
                 else if (Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f) MovementSystem.ChangeState(MovementSystem._strafingState);
             }
             
