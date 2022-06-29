@@ -3,6 +3,7 @@ using Axiom.Player.StateMachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using Axiom.Player.Movement;
+using DG.Tweening;
 
 namespace Axiom.Player.StateMachine
 {
@@ -14,6 +15,7 @@ namespace Axiom.Player.StateMachine
         public InputDetection inputDetection;
         public CameraLook cameraLook;
         public Transform orientation;
+        public Transform cameraPosition;
         
         [Header("AnimationCurve")] 
         public AnimationCurve accelerationCurve;
@@ -42,6 +44,7 @@ namespace Axiom.Player.StateMachine
         
         #region Public Variables
         public Rigidbody _rb{ get; private set; }
+        public CapsuleCollider _capsuleCollider { get; private set; }
         public Vector3 moveDirection { get; private set; }
 
         [HideInInspector] public float currentSpeed;
@@ -56,8 +59,15 @@ namespace Axiom.Player.StateMachine
         private float _turnCheckInterval = 0.5f;
         #endregion
 
+        #region Gravity Variables
         private float _gravityCounter;
+        #endregion
 
+        private float _initialHeight;
+        private float _crouchHeight;
+        private float _initialCameraHeight = 4f;
+        private float _crouchCameraHeight = 2f;
+        
         #region States
         public Idle _idleState { get; private set; }
         public Walking _walkingState { get; private set; }
@@ -68,14 +78,18 @@ namespace Axiom.Player.StateMachine
         public WallRunning _wallRunningState { get; private set; }
         public Climbing _climbingState { get; private set; }
         public Sliding _slidingState { get; private set; }
+        public Crouching _crouchingState { get; private set; }
+        public LedgeClimbing _ledgeClimbingState { get; private set; }
+        public LedgeGrabbing _ledgeGrabbingState { get; private set; }
+        public Vaulting _vaultingState { get; private set; }
         #endregion
 
-        private float threshold = 0.01f;
-        private float counterMovement = 0.175f;
-        
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
+            _capsuleCollider = GetComponent<CapsuleCollider>();
+            _initialHeight = _capsuleCollider.height;
+            _crouchHeight = _initialHeight * 0.5f;
 
             _idleState = new Idle(this);
             _walkingState = new Walking(this);
@@ -86,9 +100,14 @@ namespace Axiom.Player.StateMachine
             _wallRunningState = new WallRunning(this);
             _climbingState = new Climbing(this);
             _slidingState = new Sliding(this);
+            _crouchingState = new Crouching(this);
+            _ledgeClimbingState = new LedgeClimbing(this);
+            _ledgeGrabbingState = new LedgeGrabbing(this);
+            _vaultingState = new Vaulting(this);
 
             InitializeState(_idleState);
-            
+
+            inputDetection.OnJumpPressed += Jump;
             InvokeRepeating(nameof(DrawLine), 0f, 0.01f);
         }
 
@@ -110,6 +129,7 @@ namespace Axiom.Player.StateMachine
             ApplyGravity();
         }
 
+        #region Update Functions
         // Calculate moveDirection based on the current input
         private void CalculateMoveDirection()
         {
@@ -121,8 +141,6 @@ namespace Axiom.Player.StateMachine
         {
             float velDiff = prevSpeed - currentTargetSpeed;
             currentSpeed = prevSpeed - velDiff * curve.Evaluate(time);
-            
-            //Debug.Log("PrevSpeed: " + prevSpeed + " CurrentSpeed: " + currentSpeed * _turnMultiplier + " VelDiff: " + velDiff);
         }
 
         // Checks if the player is turning and sets the turn multiplier
@@ -139,7 +157,9 @@ namespace Axiom.Player.StateMachine
                 _currentFacingTransform = orientation.TransformDirection(Vector3.forward);
             }
         }
+        #endregion
         
+        #region FixedUpdate Functions
         // Apply movement to the character
         private void ApplyMovement()
         {
@@ -156,8 +176,9 @@ namespace Axiom.Player.StateMachine
         }
 
         // Applies upwards force to the character
-        public void Jump()
+        private void Jump()
         {
+            if (!rbInfo.isGrounded) return;
             Vector3 velocity = _rb.velocity;
             float jumpMultiplier = Mathf.Clamp(currentSpeed / forwardSpeed, 0.75f, 1f);
 
@@ -165,6 +186,20 @@ namespace Axiom.Player.StateMachine
             _rb.AddForce(new Vector3(0f, upJumpForce * jumpMultiplier, 0f), ForceMode.VelocityChange);
         }
 
+        public void StartCrouch()
+        {
+            _capsuleCollider.height = _crouchHeight;
+            cameraPosition.DOLocalMoveY(_crouchCameraHeight, 0.5f);
+        }
+
+        public void EndCrouch()
+        {
+            _capsuleCollider.height = _initialHeight;
+            cameraPosition.DOLocalMoveY(_initialCameraHeight, 0.5f);
+        }
+        #endregion
+        
+        #region Set Functions
         // Sets Rigidbody drag
         public void SetDrag(float drag)
         {
@@ -183,13 +218,16 @@ namespace Axiom.Player.StateMachine
         {
             currentTargetSpeed = speedVal;
         }
-
+        #endregion
+        
+        #region Debug Functions
         private void DrawLine()
         {
             Debug.DrawLine(rbInfo.groundDetector.position, rbInfo.groundDetector.position + new Vector3(0,5,0), Color.red, 99f);
         }
-
         public string GetCurrentStateName() => CurrentState.stateName.ToString();
         public string GetPreviousStatename() => PreviousState.ToString();
+        public float GetCurrentSpeed() => _rb.velocity.magnitude * _turnMultiplier;
+        #endregion
     }
 }

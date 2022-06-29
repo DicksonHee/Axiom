@@ -28,7 +28,8 @@ namespace Axiom.Player.StateMachine
             base.LogicUpdate();
             
             if (MovementSystem.inputDetection.movementInput.magnitude <= 0 || MovementSystem.inputDetection.movementInput.z > 0f) MovementSystem.ChangeState(MovementSystem._idleState);
-
+            else if(MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._crouchingState);
+            
             CalculateMovementSpeed();
         }
 

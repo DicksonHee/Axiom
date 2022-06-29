@@ -37,12 +37,10 @@ namespace Axiom.Player.StateMachine
 
         public virtual void LogicUpdate()
         {
-            if (MovementSystem.inputDetection.jumpInput && MovementSystem.rbInfo.isGrounded) MovementSystem.Jump();
         }
 
         public virtual void PhysicsUpdate()
         {
-            
         }
 
         protected virtual void SelectMovementCurve()
@@ -81,11 +79,6 @@ namespace Axiom.Player.StateMachine
             if (movementCurve == null) return;
             MovementSystem.CalculateMovementSpeed(movementCurve, previousSpeed, Time.time - stateStartTime);
         }
-
-        protected void CheckSideDash()
-        {
-            
-        }
     }
 
     public enum StateName
@@ -99,6 +92,10 @@ namespace Axiom.Player.StateMachine
         Climbing,
         Sliding,
         WallRunning,
+        Crouching,
+        LedgeGrabbing,
+        LedgeClimbing,
+        Vaulting,
         None
     }
 }
