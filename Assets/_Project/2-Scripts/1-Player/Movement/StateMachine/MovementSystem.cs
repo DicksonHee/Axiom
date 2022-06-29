@@ -188,13 +188,13 @@ namespace Axiom.Player.StateMachine
 
         public void StartCrouch()
         {
-            _capsuleCollider.height = _crouchHeight;
+            //_capsuleCollider.height = _crouchHeight;
             cameraPosition.DOLocalMoveY(_crouchCameraHeight, 0.5f);
         }
 
         public void EndCrouch()
         {
-            _capsuleCollider.height = _initialHeight;
+            //_capsuleCollider.height = _initialHeight;
             cameraPosition.DOLocalMoveY(_initialCameraHeight, 0.5f);
         }
         #endregion

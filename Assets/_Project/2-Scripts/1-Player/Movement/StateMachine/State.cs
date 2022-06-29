@@ -45,43 +45,51 @@ namespace Axiom.Player.StateMachine
 
         protected virtual void SelectMovementCurve()
         {
-            switch (previousState)
-            {
-                case StateName.Idle:
-                    previousSpeed = 0f;
-                    break;
-                case StateName.Walking:
-                    previousSpeed = MovementSystem.walkSpeed;
-                    break;
-                case StateName.Running:
-                    previousSpeed = MovementSystem.forwardSpeed;
-                    break;
-                case StateName.Strafing:
-                    previousSpeed = MovementSystem.strafeSpeed;
-                    break;
-                case StateName.InAir:
-                    previousSpeed = MovementSystem.inAirSpeed;
-                    break;
-                case StateName.Climbing:
-                    break;
-                case StateName.Sliding:
-                    break;
-                case StateName.WallRunning:
-                    break;
-                case StateName.BackRunning:
-                    previousSpeed = MovementSystem.backwardSpeed;
-                    break;
-            }
-        }
+			switch (previousState)
+			{
+				case StateName.Idle:
+					previousSpeed = 0f;
+					break;
+				case StateName.Walking:
+					previousSpeed = MovementSystem.walkSpeed;
+					break;
+				case StateName.Running:
+					previousSpeed = MovementSystem.forwardSpeed;
+					break;
+				case StateName.Strafing:
+					previousSpeed = MovementSystem.strafeSpeed;
+					break;
+				case StateName.InAir:
+					previousSpeed = MovementSystem.inAirSpeed;
+					break;
+				case StateName.Climbing:
+					break;
+				case StateName.Sliding:
+					break;
+				case StateName.WallRunning:
+					break;
+				case StateName.BackRunning:
+					previousSpeed = MovementSystem.backwardSpeed;
+					break;
+				case StateName.Crouching:
+					break;
+				case StateName.LedgeGrabbing:
+					break;
+				case StateName.LedgeClimbing:
+					break;
+				case StateName.Vaulting:
+					break;
+			}
+		}
 
-        protected void CalculateMovementSpeed()
+		protected void CalculateMovementSpeed()
         {
             if (movementCurve == null) return;
             MovementSystem.CalculateMovementSpeed(movementCurve, previousSpeed, Time.time - stateStartTime);
         }
-    }
+	}
 
-    public enum StateName
+	public enum StateName
     {
         Idle,
         Walking,
