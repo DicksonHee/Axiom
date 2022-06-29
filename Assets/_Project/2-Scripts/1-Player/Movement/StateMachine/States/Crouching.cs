@@ -18,6 +18,7 @@ namespace Axiom.Player.StateMachine
             base.EnterState(prevState);
             
             MovementSystem.StartCrouch();
+            MovementSystem.SetTargetSpeed(MovementSystem.crouchSpeed);
         }
 
         public override void LogicUpdate()

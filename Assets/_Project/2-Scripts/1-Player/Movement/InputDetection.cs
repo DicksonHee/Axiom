@@ -35,8 +35,6 @@ public class InputDetection : MonoBehaviour
         DetectCrouchInput();
         DetectLeftHoldInput();
         DetectRightHoldInput();
-
-        Debug.Log(crouchInput);
     }
 
     private void DetectMovementInput()

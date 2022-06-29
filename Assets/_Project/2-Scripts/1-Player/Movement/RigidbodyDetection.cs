@@ -9,19 +9,31 @@ namespace Axiom.Player.Movement
     [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider))]
     public class RigidbodyDetection : MonoBehaviour
     {
-        public bool canRotate;
+        public Transform orientation;
 
-        [Range(0.1f, 5f)]public float groundDetectorRadius = 0.5f;
+        [Header("Ground Detection")]
+        public float groundDetectorRadius = 0.5f;
         public Transform groundDetector;
         public LayerMask groundLayer;
-        
+
+        [Header("WallRun Detection")]
+        public float wallCheckDistance = 0.5f;
+        public LayerMask wallLayer;
+
         private Rigidbody _rb;
         private CapsuleCollider _collider;
 
+        public RaycastHit slopeHit;
+        public RaycastHit rightWallHit;
+        public RaycastHit leftWallHit;
+
         public bool isGrounded { get; private set; }
         public bool isOnSlope { get; private set; }
-        public RaycastHit slopeHit;
-        
+        public bool leftWallDetected {get; private set; }
+        public bool rightWallDetected { get; private set; }
+
+        public event Action OnPlayerLanded;
+
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
@@ -32,11 +44,14 @@ namespace Axiom.Player.Movement
         {
             GroundDetection();
             SlopeDetection();
+            WallRunDetection();
         }
 
         private void GroundDetection()
         {
+            bool previouslyGrounded = isGrounded;
             isGrounded = Physics.CheckSphere(groundDetector.position, groundDetectorRadius, groundLayer);
+            if (!previouslyGrounded && isGrounded) OnPlayerLanded?.Invoke();
         }
         
         private void SlopeDetection()
@@ -47,9 +62,18 @@ namespace Axiom.Player.Movement
             }
         }
 
+        private void WallRunDetection()
+        {
+            rightWallDetected = Physics.Raycast(orientation.position, orientation.right, out rightWallHit, wallCheckDistance, wallLayer);
+            leftWallDetected = Physics.Raycast(orientation.position, -orientation.right, out leftWallHit, wallCheckDistance, wallLayer);
+            //Debug.Log(leftWallDetected);
+        }
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
+            Gizmos.DrawLine(orientation.position, orientation.position + orientation.right * wallCheckDistance);
+            Gizmos.DrawLine(orientation.position, orientation.position + -orientation.right * wallCheckDistance);
             Gizmos.DrawWireSphere(groundDetector.position, groundDetectorRadius);
         }
     }

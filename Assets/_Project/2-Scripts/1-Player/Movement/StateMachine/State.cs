@@ -43,12 +43,12 @@ namespace Axiom.Player.StateMachine
         {
         }
 
-        protected virtual void SelectMovementCurve()
+        protected void SelectMovementCurve()
         {
 			switch (previousState)
 			{
 				case StateName.Idle:
-					previousSpeed = 0f;
+					previousSpeed = MovementSystem.idleSpeed;
 					break;
 				case StateName.Walking:
 					previousSpeed = MovementSystem.walkSpeed;
@@ -80,6 +80,8 @@ namespace Axiom.Player.StateMachine
 				case StateName.Vaulting:
 					break;
 			}
+
+            movementCurve = MovementSystem.currentTargetSpeed > previousSpeed ? MovementSystem.accelerationCurve : MovementSystem.decelerationCurve;
 		}
 
 		protected void CalculateMovementSpeed()

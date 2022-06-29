@@ -21,25 +21,24 @@ namespace Axiom.Player.StateMachine
         public AnimationCurve accelerationCurve;
         public AnimationCurve decelerationCurve;
         public AnimationCurve gravityCurve;
-        
-        [Header("Drag")]
-        public float groundedDrag = 1f;
-        public float stoppingDrag = 5f;
 
         [Header("Gravity")]
         public float groundGravity = -10f;
         public float inAirGravity = -20f;
         public float wallrunGravity = -5f;
-        
+
         [Header("Speed")]
+        public float idleSpeed = 3f;
         public float forwardSpeed = 20f;
         public float backwardSpeed = 15f;
         public float strafeSpeed = 15f;
         public float walkSpeed = 12f;
         public float inAirSpeed = 8f;
+        public float crouchSpeed = 8f;
         
         [Header("Jump")]
         public float upJumpForce = 10f;
+        public float forwardJumpForce = 5f;
         #endregion
         
         #region Public Variables
@@ -67,7 +66,9 @@ namespace Axiom.Player.StateMachine
         private float _crouchHeight;
         private float _initialCameraHeight = 4f;
         private float _crouchCameraHeight = 2f;
-        
+
+        private bool _movementEnabled = true;
+
         #region States
         public Idle _idleState { get; private set; }
         public Walking _walkingState { get; private set; }
@@ -108,25 +109,26 @@ namespace Axiom.Player.StateMachine
             InitializeState(_idleState);
 
             inputDetection.OnJumpPressed += Jump;
+            rbInfo.OnPlayerLanded += Landed;
             InvokeRepeating(nameof(DrawLine), 0f, 0.01f);
         }
 
         private void Update()
         {
-            CurrentState.LogicUpdate();
-
             CheckIsTurning();
             CalculateMoveDirection();
 
-            if(!rbInfo.isGrounded && CurrentState.stateName != StateName.InAir) ChangeState(_inAirState);
+            if(!rbInfo.isGrounded && CurrentState.stateName != StateName.InAir && CurrentState.stateName != StateName.WallRunning) ChangeState(_inAirState);
+
+            CurrentState.LogicUpdate();
         }
 
         private void FixedUpdate()
         {
-            CurrentState.PhysicsUpdate();
-
             ApplyMovement();
             ApplyGravity();
+
+            CurrentState.PhysicsUpdate();
         }
 
         #region Update Functions
@@ -163,6 +165,8 @@ namespace Axiom.Player.StateMachine
         // Apply movement to the character
         private void ApplyMovement()
         {
+            if (!_movementEnabled) return;
+
             Vector3 moveVel = moveDirection.normalized * (currentSpeed * _turnMultiplier);
             moveVel.y = _rb.velocity.y;
             _rb.velocity = moveVel;
@@ -177,16 +181,16 @@ namespace Axiom.Player.StateMachine
 
         // Applies upwards force to the character
         private void Jump()
-        {
-            if (!rbInfo.isGrounded) return;
-            Vector3 velocity = _rb.velocity;
-            float jumpMultiplier = Mathf.Clamp(currentSpeed / forwardSpeed, 0.75f, 1f);
+		{
+            if (!rbInfo.isGrounded && CurrentState.stateName != StateName.WallRunning) return;
+			
+			Vector3 velocity = _rb.velocity;
+			float jumpMultiplier = Mathf.Clamp(velocity.magnitude / forwardSpeed, 0.75f, 1f);
+			_rb.AddForce(new Vector3(0f, upJumpForce * jumpMultiplier, 0f), ForceMode.VelocityChange);
+			if (!rbInfo.isGrounded && CurrentState.stateName != StateName.InAir) ChangeState(_inAirState);
+		}
 
-            _rb.velocity = new Vector3(velocity.x, 0f, velocity.z);
-            _rb.AddForce(new Vector3(0f, upJumpForce * jumpMultiplier, 0f), ForceMode.VelocityChange);
-        }
-
-        public void StartCrouch()
+		public void StartCrouch()
         {
             //_capsuleCollider.height = _crouchHeight;
             cameraPosition.DOLocalMoveY(_crouchCameraHeight, 0.5f);
@@ -197,15 +201,14 @@ namespace Axiom.Player.StateMachine
             //_capsuleCollider.height = _initialHeight;
             cameraPosition.DOLocalMoveY(_initialCameraHeight, 0.5f);
         }
+
+        private void Landed()
+        {
+            SetGravity(groundGravity);
+        }
         #endregion
         
         #region Set Functions
-        // Sets Rigidbody drag
-        public void SetDrag(float drag)
-        {
-            _rb.drag = drag;
-        }
-
         // Sets the gravity amount
         public void SetGravity(float gravityVal)
         {
@@ -218,6 +221,9 @@ namespace Axiom.Player.StateMachine
         {
             currentTargetSpeed = speedVal;
         }
+
+        public void EnableMovement() => _movementEnabled = true;
+        public void DisableMovement() => _movementEnabled = false;
         #endregion
         
         #region Debug Functions
