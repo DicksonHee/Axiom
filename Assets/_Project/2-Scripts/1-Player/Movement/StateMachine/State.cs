@@ -67,6 +67,7 @@ namespace Axiom.Player.StateMachine
 				case StateName.Sliding:
 					break;
 				case StateName.WallRunning:
+					previousSpeed = MovementSystem.walkSpeed;
 					break;
 				case StateName.BackRunning:
 					previousSpeed = MovementSystem.backwardSpeed;
