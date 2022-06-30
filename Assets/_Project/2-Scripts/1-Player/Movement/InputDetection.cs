@@ -2,15 +2,32 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputDetection : MonoBehaviour
 {
     public Vector3 movementInput { get; private set; }
-    public bool jumpInput { get; private set; }
     public bool crouchInput { get; private set; }
     public bool leftHoldInput { get; private set; }
     public bool rightHoldInput { get; private set; }
 
+    private PlayerInputActions playerInputActions;
+    
+    public event Action OnJumpPressed;
+
+    private void Awake()
+    {
+        playerInputActions = new PlayerInputActions();
+
+        playerInputActions.Enable();
+        playerInputActions.Player.Crouch.performed += DetectCrouchInput;
+    }
+
+    private void DetectCrouchInput(InputAction.CallbackContext context)
+    {
+        crouchInput = !crouchInput;
+    }
+    
     private void Update()
     {
         DetectMovementInput();
@@ -27,14 +44,12 @@ public class InputDetection : MonoBehaviour
 
     private void DetectJumpInput()
     {
-        if (Input.GetButtonDown("Jump")) jumpInput = true;
-        else if (Input.GetButtonUp("Jump")) jumpInput = false;
+        if (Input.GetButtonDown("Jump")) OnJumpPressed?.Invoke();
     }
 
     private void DetectCrouchInput()
     {
-        if (Input.GetButtonDown("Crouch")) crouchInput = true;
-        else if (Input.GetButtonUp("Crouch")) crouchInput = false;
+        //crouchInput = playerInputActions.Player.Crouch.ReadValue<bool>();
     }
 
     private void DetectLeftHoldInput()

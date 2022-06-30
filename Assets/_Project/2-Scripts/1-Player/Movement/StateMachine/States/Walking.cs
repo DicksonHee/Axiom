@@ -19,8 +19,6 @@ namespace Axiom.Player.StateMachine
         {
             base.EnterState(prevState);
             
-            MovementSystem.SetDrag(MovementSystem.groundedDrag);
-            MovementSystem.SetGravity(MovementSystem.groundGravity);
             MovementSystem.SetTargetSpeed(MovementSystem.walkSpeed);
         }
 
@@ -44,38 +42,6 @@ namespace Axiom.Player.StateMachine
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
-        }
-
-        protected override void SelectMovementCurve()
-        {
-            base.SelectMovementCurve();
-            
-            switch (previousState)
-            {
-                case StateName.Idle:
-                    movementCurve = MovementSystem.accelerationCurve;
-                    break;
-                case StateName.Walking:
-                    break;
-                case StateName.Running:
-                    movementCurve = MovementSystem.decelerationCurve;
-                    break;
-                case StateName.Strafing:
-                    movementCurve = MovementSystem.decelerationCurve;
-                    break;
-                case StateName.InAir:
-                    movementCurve = MovementSystem.accelerationCurve;
-                    break;
-                case StateName.Climbing:
-                    break;
-                case StateName.Sliding:
-                    break;
-                case StateName.WallRunning:
-                    break;
-                case StateName.BackRunning:
-                    movementCurve = MovementSystem.decelerationCurve;
-                    break;
-            }
         }
     }
 }
