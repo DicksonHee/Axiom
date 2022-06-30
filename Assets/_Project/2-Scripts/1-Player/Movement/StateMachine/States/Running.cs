@@ -10,29 +10,62 @@ namespace Axiom.Player.StateMachine
     {
         public Running(MovementSystem movementSystem) : base(movementSystem)
         {
+            stateName = StateName.Running;
         }
 
-        public override void EnterState()
+        public override void EnterState(StateName state)
         {
-            base.EnterState();
+            base.EnterState(state);
             
             MovementSystem.SetDrag(MovementSystem.groundedDrag);
+            MovementSystem.SetGravity(MovementSystem.groundGravity);
+            MovementSystem.SetTargetSpeed(MovementSystem.forwardSpeed);
         }
 
         public override void LogicUpdate()
         {
-            if (MovementSystem.inputDetection.movementInput.magnitude <= 0)
-            {
-                MovementSystem.ChangeState(MovementSystem._idleState);
-            }
+            base.LogicUpdate();
+            
+            if(MovementSystem.inputDetection.movementInput.z < 0 || MovementSystem.inputDetection.movementInput.magnitude <= 0) MovementSystem.ChangeState(MovementSystem._idleState);
+            else if(Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f) MovementSystem.ChangeState(MovementSystem._strafingState);
+            
+            CalculateMovementSpeed();
         }
 
         public override void PhysicsUpdate()
         {
-            float velocityMultiplier = MovementSystem.idleToRun.Evaluate(Time.time - stateStartTime);
-            MovementSystem.MovePlayer(MovementSystem.MoveDirection() * velocityMultiplier);
+        }
+
+        protected override void SelectMovementCurve()
+        {
+            base.SelectMovementCurve();
             
-            if (MovementSystem.inputDetection.jumpInput && MovementSystem.rbInfo.isGrounded) MovementSystem.Jump();
+            switch (previousState)
+            {
+                case StateName.Idle:
+                    movementCurve = MovementSystem.accelerationCurve;
+                    break;
+                case StateName.Walking:
+                    movementCurve = MovementSystem.accelerationCurve;
+                    break;
+                case StateName.Running:
+                    break;
+                case StateName.Strafing:
+                    movementCurve = MovementSystem.accelerationCurve;
+                    break;
+                case StateName.InAir:
+                    movementCurve = MovementSystem.accelerationCurve;
+                    break;
+                case StateName.Climbing:
+                    break;
+                case StateName.Sliding:
+                    break;
+                case StateName.WallRunning:
+                    break;
+                case StateName.BackRunning:
+                    movementCurve = MovementSystem.decelerationCurve;
+                    break;
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ namespace Axiom.Player.StateMachine
     {
         public WallRunning(MovementSystem movementSystem) : base(movementSystem)
         {
+            stateName = StateName.WallRunning;
         }
     }
 }

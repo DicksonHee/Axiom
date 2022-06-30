@@ -10,6 +10,7 @@ namespace Axiom.Player.StateMachine
     {
         public Climbing(MovementSystem movementSystem) : base(movementSystem)
         {
+            stateName = StateName.Climbing;
         }
     }
 }
