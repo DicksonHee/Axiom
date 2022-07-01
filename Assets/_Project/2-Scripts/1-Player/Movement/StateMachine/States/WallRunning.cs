@@ -28,26 +28,20 @@ namespace Axiom.Player.StateMachine
 			wallNormal = MovementSystem.rbInfo.rightWallDetected ? MovementSystem.rbInfo.rightWallHit.normal : MovementSystem.rbInfo.leftWallHit.normal;
 			wallForward = Vector3.Cross(wallNormal, MovementSystem.transform.up);
 			if ((MovementSystem.orientation.forward - wallForward).magnitude > (MovementSystem.orientation.forward - -wallForward).magnitude) wallForward = -wallForward;
-
-			MovementSystem.inputDetection.OnJumpPressed += WallRunJump;
-		}
-
-		public override void ExitState()
-		{
-			MovementSystem.EnableMovement();
-			MovementSystem.ExitWallRunState(wallNormal);
-
-			MovementSystem.inputDetection.OnJumpPressed -= WallRunJump;
-			base.ExitState();
 		}
 
 		public override void LogicUpdate()
 		{
 			base.LogicUpdate();
 
-			if (MovementSystem.inputDetection.movementInput.z == 0 || MovementSystem.inputDetection.movementInput.x == 0) MovementSystem.ChangeState(MovementSystem._inAirState);
-			else if(MovementSystem.inputDetection.movementInput.x < 0 && MovementSystem.rbInfo.rightWallDetected) MovementSystem.ChangeState(MovementSystem._inAirState);
-			else if(MovementSystem.inputDetection.movementInput.x > 0 && MovementSystem.rbInfo.leftWallDetected)MovementSystem.ChangeState(MovementSystem._inAirState);
+			if (MovementSystem.inputDetection.movementInput.z == 0 || 
+			    MovementSystem.inputDetection.movementInput.x == 0 ||
+			    MovementSystem.inputDetection.movementInput.x < 0 && MovementSystem.rbInfo.rightWallDetected ||
+			    MovementSystem.inputDetection.movementInput.x > 0 && MovementSystem.rbInfo.leftWallDetected ||
+			    !MovementSystem.rbInfo.rightWallDetected && !MovementSystem.rbInfo.leftWallDetected)
+			{
+				MovementSystem.ChangeState(MovementSystem._inAirState);
+			}
 			else if(MovementSystem.rbInfo.isGrounded) MovementSystem.ChangeState(MovementSystem._idleState);
 		}
 
@@ -57,13 +51,15 @@ namespace Axiom.Player.StateMachine
 
 			WallRunningMovement();
 		}
-
-		private void WallRunJump()
-		{
-			MovementSystem.ChangeState(MovementSystem._inAirState);
-			MovementSystem.Jump();
-		}
 		
+		public override void ExitState()
+		{
+			MovementSystem.EnableMovement();
+			MovementSystem.ExitWallRunState(wallNormal);
+
+			base.ExitState();
+		}
+
 		private void WallRunningMovement()
 		{
 			float climbVel = Mathf.Lerp(initialYVel, -5f,MovementSystem.wallRunCurve.Evaluate(Time.time - stateStartTime));

@@ -16,7 +16,7 @@ namespace Axiom.Player.StateMachine
 
         private void Update()
         {
-            _currentSpeed.text = "Current Speed: " + _movementSystem._rb.velocity.magnitude;
+            _currentSpeed.text = "Current Speed: " + _movementSystem.GetCurrentSpeed();
             _currentState.text = "Current State: " + _movementSystem.GetCurrentStateName();
             _previousState.text = "Previous State: " + _movementSystem.GetPreviousStatename();
         }

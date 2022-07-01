@@ -8,7 +8,7 @@ namespace Axiom.Player.StateMachine
 {
     public class Walking : State
     {
-        private float _toRunCounter;
+        private float toRunCounter;
         
         public Walking(MovementSystem movementSystem) : base(movementSystem)
         {
@@ -25,23 +25,26 @@ namespace Axiom.Player.StateMachine
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            
-            if(Mathf.Abs(MovementSystem._rb.velocity.magnitude - MovementSystem.currentTargetSpeed) < 1f) _toRunCounter += Time.deltaTime;
-            else _toRunCounter = 0f;
+
+            CheckShouldRunTimer();
             
             if (MovementSystem.inputDetection.movementInput.magnitude <= 0 || MovementSystem.inputDetection.movementInput.z < 0) MovementSystem.ChangeState(MovementSystem._idleState);
-            else if (MovementSystem.inputDetection.movementInput.z > 0)
-            {
-                if(_toRunCounter > 1f) MovementSystem.ChangeState(MovementSystem._runningState);
-                else if (Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f) MovementSystem.ChangeState(MovementSystem._strafingState);
-            }
-            
+            else if (Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f) MovementSystem.ChangeState(MovementSystem._strafingState);
+            else if (MovementSystem.inputDetection.movementInput.z > 0 && toRunCounter > 1f)MovementSystem.ChangeState(MovementSystem._runningState);
+            else if (MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._slidingState);
+
             CalculateMovementSpeed();
         }
 
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
+        }
+
+        private void CheckShouldRunTimer()
+        {
+            if(Mathf.Abs(MovementSystem._rb.velocity.magnitude - MovementSystem.currentTargetSpeed) < 1f) toRunCounter += Time.deltaTime;
+            else toRunCounter = 0f;
         }
     }
 }

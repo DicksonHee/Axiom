@@ -65,6 +65,7 @@ namespace Axiom.Player.StateMachine
 				case StateName.Climbing:
 					break;
 				case StateName.Sliding:
+					previousSpeed = 0f;
 					break;
 				case StateName.WallRunning:
 					previousSpeed = MovementSystem.walkSpeed;
@@ -73,6 +74,7 @@ namespace Axiom.Player.StateMachine
 					previousSpeed = MovementSystem.backwardSpeed;
 					break;
 				case StateName.Crouching:
+					previousSpeed = MovementSystem.crouchSpeed;
 					break;
 				case StateName.LedgeGrabbing:
 					break;
@@ -85,10 +87,12 @@ namespace Axiom.Player.StateMachine
             movementCurve = MovementSystem.currentTargetSpeed > previousSpeed ? MovementSystem.accelerationCurve : MovementSystem.decelerationCurve;
 		}
 
-		protected void CalculateMovementSpeed()
+		protected void CalculateMovementSpeed(AnimationCurve curve = null, float startSpeed = 0f, bool resetTime = false)
         {
             if (movementCurve == null) return;
-            MovementSystem.CalculateMovementSpeed(movementCurve, previousSpeed, Time.time - stateStartTime);
+            if (startSpeed > 0f) previousSpeed = startSpeed;
+            if (resetTime) stateStartTime = Time.time;
+            MovementSystem.CalculateMovementSpeed(curve ?? movementCurve, previousSpeed, Time.time - stateStartTime);
         }
 	}
 

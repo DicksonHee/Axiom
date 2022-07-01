@@ -33,6 +33,7 @@ namespace Axiom.Player.Movement
         public bool rightWallDetected { get; private set; }
 
         public event Action OnPlayerLanded;
+        public event Action OnSlopeEnded;
 
         private void Awake()
         {
@@ -56,10 +57,13 @@ namespace Axiom.Player.Movement
         
         private void SlopeDetection()
         {
+            bool wasOnSlope = isOnSlope;
             if (Physics.Raycast(groundDetector.position, groundDetector.TransformDirection(Vector3.down), out slopeHit,  groundDetectorRadius));
             {
                 isOnSlope = slopeHit.normal != Vector3.up;
             }
+
+            if (wasOnSlope && !isOnSlope) OnSlopeEnded?.Invoke();
         }
 
         private void WallRunDetection()
