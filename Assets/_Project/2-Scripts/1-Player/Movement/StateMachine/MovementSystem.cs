@@ -56,16 +56,16 @@ namespace Axiom.Player.StateMachine
         #region Public Variables
         public Rigidbody _rb{ get; private set; }
         public Vector3 moveDirection { get; private set; }
-
-        [HideInInspector] public float currentSpeed;
-        [HideInInspector] public float currentTargetSpeed;
-        [HideInInspector] public float currentTargetGravity;
-        [HideInInspector] public float lrMultiplier;
-        [HideInInspector] public float fbMultiplier;
-        [HideInInspector] public bool isExitingWallRun;
-
+        public float currentSpeed{ get; private set; }
+        public float currentTargetSpeed{ get; private set; }
+        public float currentTargetGravity{ get; private set; }
+        public float lrMultiplier{ get; private set; }
+        public bool isExitingWallRun{ get; private set; }
+        public bool isExitingSlide{ get; private set; }
         #endregion
-        
+
+        private bool _movementEnabled = true;
+
         #region Turning Variables
         private Vector3 _currentFacingTransform;
         private float _turnCheckCounter;
@@ -76,16 +76,19 @@ namespace Axiom.Player.StateMachine
         #region Gravity Variables
         private float _gravityCounter;
         #endregion
-        
-        private float _initialCameraHeight = 4f;
-        private float _crouchCameraHeight = 2f;
 
-        private bool _movementEnabled = true;
+        #region Wall Run Variables
+        private float _wallRunExitCounter;
+        private float _wallRunJumpBufferCounter;
+        private Vector3 _wallRunNormal;
+        private Vector3 _wallRunExitPosition;
+        #endregion
         
-        private float wallRunExitCounter;
-        private float wallRunJumpBufferCounter;
-        private Vector3 wallRunNormal;
-        private Vector3 wallRunExitPosition;
+        #region Crouch/Slide Variables
+        private float _initialCameraHeight = 2.2f;
+        private float _crouchCameraHeight = 1f;
+        private float _slideExitCounter;
+        #endregion
         
         #region States
         public Idle _idleState { get; private set; }
@@ -133,6 +136,8 @@ namespace Axiom.Player.StateMachine
             CheckChangeToAirState();
             CheckIsTurning();
             CheckWallRunTimers();
+            CheckSlideTimers();
+            
             CalculateMoveDirection();
 
             CurrentState.LogicUpdate();
@@ -150,7 +155,7 @@ namespace Axiom.Player.StateMachine
         // Calculate moveDirection based on the current input
         private void CalculateMoveDirection()
         {
-            float wallJumpMultiplier = wallRunExitCounter > 0f ? 0f : 1f;
+            float wallJumpMultiplier = _wallRunExitCounter > 0f ? 0f : 1f;
             moveDirection = orientation.forward * inputDetection.movementInput.z + orientation.right * (inputDetection.movementInput.x * wallJumpMultiplier * lrMultiplier);
         }
         
@@ -180,9 +185,15 @@ namespace Axiom.Player.StateMachine
         // Decrements wall run timers
         private void CheckWallRunTimers()
         {
-            wallRunExitCounter -= Time.deltaTime;
-            wallRunJumpBufferCounter -= Time.deltaTime;
-            if (wallRunExitCounter <= 0) isExitingWallRun = false;
+            _wallRunExitCounter -= Time.deltaTime;
+            _wallRunJumpBufferCounter -= Time.deltaTime;
+            if (_wallRunExitCounter <= 0) isExitingWallRun = false;
+        }
+
+        private void CheckSlideTimers()
+        {
+            _slideExitCounter -= Time.deltaTime;
+            if (_slideExitCounter <= 0) isExitingSlide = false;
         }
 
         private void CheckChangeToAirState()
@@ -199,7 +210,7 @@ namespace Axiom.Player.StateMachine
         // Apply movement to the character
         private void ApplyMovement()
         {
-            if (!_movementEnabled || wallRunExitCounter > 0f) return;
+            if (!_movementEnabled || _wallRunExitCounter > 0f) return;
 
             Vector3 moveVel = moveDirection.normalized * (currentSpeed * _turnMultiplier);
             moveVel.y = _rb.velocity.y;
@@ -219,7 +230,7 @@ namespace Axiom.Player.StateMachine
         // Determines which jump to use
         private void DelegateJump()
         {
-            if(CurrentState == _wallRunningState || wallRunJumpBufferCounter > 0f) WallRunJump();
+            if(CurrentState == _wallRunningState || _wallRunJumpBufferCounter > 0f) WallRunJump();
             else if (rbInfo.isGrounded) Jump();
         }
         
@@ -236,12 +247,12 @@ namespace Axiom.Player.StateMachine
         private void WallRunJump()
         {
             ChangeState(_inAirState);
-            if (wallRunJumpBufferCounter < 0f) return;
+            if (_wallRunJumpBufferCounter < 0f) return;
             
-            Vector3 jumpVector = transform.up * wallRunJumpUpForce + wallRunNormal * wallRunJumpSideForce;
+            Vector3 jumpVector = transform.up * wallRunJumpUpForce + _wallRunNormal * wallRunJumpSideForce;
             _rb.AddForce(jumpVector, ForceMode.Impulse);
             
-            wallRunJumpBufferCounter = 0f;
+            _wallRunJumpBufferCounter = 0f;
         }
         
         private void Landed()
@@ -277,14 +288,22 @@ namespace Axiom.Player.StateMachine
         // Called when exiting the wall run state
         public void ExitWallRunState(Vector3 normal)
         {
-            wallRunExitCounter = wallRunExitTime;
-            wallRunJumpBufferCounter = wallRunJumpBufferTime;
+            _wallRunExitCounter = wallRunExitTime;
+            _wallRunJumpBufferCounter = wallRunJumpBufferTime;
             isExitingWallRun = true;
-            wallRunNormal = normal;
+            _wallRunNormal = normal;
+        }
+
+        public void ExitSlideState()
+        {
+            _slideExitCounter = 0.5f;
+            isExitingSlide = true;
         }
         
         // Sets the target speed
         public void SetTargetSpeed(float speedVal) => currentTargetSpeed = speedVal;
+        // Set left and right movement multiplier
+        public void SetLRMultiplier(float multiplier) => lrMultiplier = multiplier;
         // Enables movement
         public void EnableMovement() => _movementEnabled = true;
         // Disables movement

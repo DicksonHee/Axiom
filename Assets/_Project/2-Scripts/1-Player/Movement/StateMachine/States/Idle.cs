@@ -25,7 +25,7 @@ namespace Axiom.Player.StateMachine
         {
             base.LogicUpdate();
             
-            if(MovementSystem.inputDetection.movementInput.z > 0f) MovementSystem.ChangeState(MovementSystem._walkingState);
+            if(MovementSystem.inputDetection.movementInput.z > 0f && !MovementSystem.isExitingSlide) MovementSystem.ChangeState(MovementSystem._walkingState);
             else if(MovementSystem.inputDetection.movementInput.z < 0f) MovementSystem.ChangeState(MovementSystem._backRunningState);
             else if(Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f) MovementSystem.ChangeState(MovementSystem._strafingState);
             else if(MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._crouchingState);

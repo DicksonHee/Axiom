@@ -45,45 +45,7 @@ namespace Axiom.Player.StateMachine
 
         protected void SelectMovementCurve()
         {
-			switch (previousState)
-			{
-				case StateName.Idle:
-					previousSpeed = MovementSystem.idleSpeed;
-					break;
-				case StateName.Walking:
-					previousSpeed = MovementSystem.walkSpeed;
-					break;
-				case StateName.Running:
-					previousSpeed = MovementSystem.forwardSpeed;
-					break;
-				case StateName.Strafing:
-					previousSpeed = MovementSystem.strafeSpeed;
-					break;
-				case StateName.InAir:
-					previousSpeed = MovementSystem.inAirSpeed;
-					break;
-				case StateName.Climbing:
-					break;
-				case StateName.Sliding:
-					previousSpeed = 0f;
-					break;
-				case StateName.WallRunning:
-					previousSpeed = MovementSystem.walkSpeed;
-					break;
-				case StateName.BackRunning:
-					previousSpeed = MovementSystem.backwardSpeed;
-					break;
-				case StateName.Crouching:
-					previousSpeed = MovementSystem.crouchSpeed;
-					break;
-				case StateName.LedgeGrabbing:
-					break;
-				case StateName.LedgeClimbing:
-					break;
-				case StateName.Vaulting:
-					break;
-			}
-
+	        previousSpeed = MovementSystem.GetCurrentSpeed();
             movementCurve = MovementSystem.currentTargetSpeed > previousSpeed ? MovementSystem.accelerationCurve : MovementSystem.decelerationCurve;
 		}
 

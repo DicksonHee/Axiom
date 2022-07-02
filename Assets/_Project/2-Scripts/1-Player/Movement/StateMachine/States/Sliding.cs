@@ -24,7 +24,7 @@ namespace Axiom.Player.StateMachine
             initialSpeed = MovementSystem._rb.velocity.magnitude;
             MovementSystem.StartCrouch();
             MovementSystem.SetTargetSpeed(0f);
-            MovementSystem.lrMultiplier = 0.1f;
+            MovementSystem.SetLRMultiplier(0.1f);
             
             MovementSystem.rbInfo.OnSlopeEnded += ResetStateTimer;
         }
@@ -53,8 +53,9 @@ namespace Axiom.Player.StateMachine
         public override void ExitState()
         {
             MovementSystem.EndCrouch();
-            MovementSystem.lrMultiplier = 1f;
+            MovementSystem.SetLRMultiplier(1f);
             MovementSystem.rbInfo.OnSlopeEnded -= ResetStateTimer;
+            MovementSystem.ExitSlideState();
             
             base.ExitState();
         }
