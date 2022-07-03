@@ -17,6 +17,7 @@ namespace Axiom.Player.StateMachine
         {
             base.EnterState(state);
 
+            MovementSystem.SetAnimatorBool("Running", true);
             MovementSystem.SetTargetSpeed(MovementSystem.forwardSpeed);
         }
 
@@ -33,6 +34,13 @@ namespace Axiom.Player.StateMachine
 
         public override void PhysicsUpdate()
         {
+        }
+
+        public override void ExitState()
+        {
+            base.ExitState();
+            
+            MovementSystem.SetAnimatorBool("Running", false);
         }
     }
 }

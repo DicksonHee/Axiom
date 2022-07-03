@@ -18,7 +18,8 @@ namespace Axiom.Player.StateMachine
         public override void EnterState(StateName prevState)
         {
             base.EnterState(prevState);
-            
+
+            MovementSystem.SetAnimatorBool("Walking", true);
             MovementSystem.SetTargetSpeed(MovementSystem.walkSpeed);
         }
 
@@ -39,6 +40,13 @@ namespace Axiom.Player.StateMachine
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
+        }
+
+        public override void ExitState()
+        {
+            base.ExitState();
+            
+            MovementSystem.SetAnimatorBool("Walking", false);
         }
 
         private void CheckShouldRunTimer()

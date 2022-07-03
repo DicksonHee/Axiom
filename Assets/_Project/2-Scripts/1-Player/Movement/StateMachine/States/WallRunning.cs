@@ -21,6 +21,7 @@ namespace Axiom.Player.StateMachine
 		{
 			base.EnterState(prevState);
 
+			MovementSystem.SetAnimatorBool("WallRunning", true);
 			MovementSystem.DisableMovement();
 			MovementSystem.SetGravity(MovementSystem.inAirGravity);
 
@@ -56,7 +57,8 @@ namespace Axiom.Player.StateMachine
 		{
 			MovementSystem.EnableMovement();
 			MovementSystem.ExitWallRunState(wallNormal);
-
+			MovementSystem.SetAnimatorBool("WallRunning", false);
+			
 			base.ExitState();
 		}
 

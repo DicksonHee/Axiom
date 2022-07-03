@@ -18,6 +18,7 @@ namespace Axiom.Player.StateMachine
         {
             base.EnterState(state);
             
+            MovementSystem.SetAnimatorBool("Strafing", true);
             MovementSystem.SetTargetSpeed(MovementSystem.strafeSpeed);
         }
 
@@ -34,6 +35,13 @@ namespace Axiom.Player.StateMachine
 
         public override void PhysicsUpdate()
         {
+        }
+
+        public override void ExitState()
+        {
+            base.ExitState();
+            
+            MovementSystem.SetAnimatorBool("Strafing", false);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Axiom.Player.StateMachine
         public RigidbodyDetection rbInfo;
         public InputDetection inputDetection;
         public CameraLook cameraLook;
+        public PlayerAnimation playerAnimation;
         public Transform orientation;
         public Transform cameraPosition;
         
@@ -139,6 +140,7 @@ namespace Axiom.Player.StateMachine
             CheckSlideTimers();
             
             CalculateMoveDirection();
+            HandleAnimations();
 
             CurrentState.LogicUpdate();
         }
@@ -211,7 +213,8 @@ namespace Axiom.Player.StateMachine
         private void ApplyMovement()
         {
             if (!_movementEnabled || _wallRunExitCounter > 0f) return;
-
+            if (CurrentState == _slidingState) moveDirection = new Vector3(1, 0, 0);
+            
             Vector3 moveVel = moveDirection.normalized * (currentSpeed * _turnMultiplier);
             moveVel.y = _rb.velocity.y;
             _rb.velocity = moveVel;
@@ -239,7 +242,7 @@ namespace Axiom.Player.StateMachine
         {
             Vector3 velocity = _rb.velocity;
             float jumpMultiplier = Mathf.Clamp(velocity.magnitude / forwardSpeed, 0.75f, 1f);
-            _rb.AddForce(new Vector3(0f, upJumpForce * jumpMultiplier, 0f), ForceMode.VelocityChange);
+            _rb.AddForce(new Vector3(0f, upJumpForce * jumpMultiplier, 0f), ForceMode.Impulse);
             if (!rbInfo.isGrounded && CurrentState.stateName != StateName.InAir) ChangeState(_inAirState);
         }
         
@@ -308,6 +311,17 @@ namespace Axiom.Player.StateMachine
         public void EnableMovement() => _movementEnabled = true;
         // Disables movement
         public void DisableMovement() => _movementEnabled = false;
+        #endregion
+        
+        #region Animation Functions
+
+        private void HandleAnimations()
+        {
+            playerAnimation.SetRotationDir(cameraLook.mouseX);
+            playerAnimation.SetMovementDir(moveDirection.normalized);
+        }
+
+        public void SetAnimatorBool(string param, bool val) => playerAnimation.SetBool(param, val);
         #endregion
         
         #region Debug Functions

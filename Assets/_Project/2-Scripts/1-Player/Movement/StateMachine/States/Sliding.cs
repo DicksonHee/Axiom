@@ -21,6 +21,7 @@ namespace Axiom.Player.StateMachine
         {
             base.EnterState(prevState);
 
+            MovementSystem.SetAnimatorBool("Sliding", true);
             initialSpeed = MovementSystem._rb.velocity.magnitude;
             MovementSystem.StartCrouch();
             MovementSystem.SetTargetSpeed(0f);
@@ -52,12 +53,13 @@ namespace Axiom.Player.StateMachine
 
         public override void ExitState()
         {
+            base.ExitState();
+            
             MovementSystem.EndCrouch();
             MovementSystem.SetLRMultiplier(1f);
             MovementSystem.rbInfo.OnSlopeEnded -= ResetStateTimer;
             MovementSystem.ExitSlideState();
-            
-            base.ExitState();
+            MovementSystem.SetAnimatorBool("Sliding", false);
         }
 
         private void CalculateSlideSpeed()
