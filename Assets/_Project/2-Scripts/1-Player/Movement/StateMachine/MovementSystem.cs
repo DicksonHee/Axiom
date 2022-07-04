@@ -234,7 +234,11 @@ namespace Axiom.Player.StateMachine
         private void DelegateJump()
         {
             if(CurrentState == _wallRunningState || _wallRunJumpBufferCounter > 0f) WallRunJump();
-            else if (rbInfo.isGrounded) Jump();
+            else if (rbInfo.isGrounded)
+            {
+                playerAnimation.SetTrigger("Jump");
+                Jump();
+            }
         }
         
         // Applies upwards force to the character
@@ -256,6 +260,7 @@ namespace Axiom.Player.StateMachine
             _rb.AddForce(jumpVector, ForceMode.Impulse);
             
             _wallRunJumpBufferCounter = 0f;
+            if (!rbInfo.isGrounded && CurrentState.stateName != StateName.InAir) ChangeState(_inAirState);
         }
         
         private void Landed()
@@ -269,14 +274,14 @@ namespace Axiom.Player.StateMachine
         {
             _crouchCC.enabled = true;
             _standCC.enabled = false;
-            cameraPosition.DOLocalMoveY(_crouchCameraHeight, 0.5f);
+            //cameraPosition.DOLocalMoveY(_crouchCameraHeight, 0.5f);
         }
 
         public void EndCrouch()
         {
             _standCC.enabled = true;
             _crouchCC.enabled = false;
-            cameraPosition.DOLocalMoveY(_initialCameraHeight, 0.5f);
+            //cameraPosition.DOLocalMoveY(_initialCameraHeight, 0.5f);
         }
         #endregion
         
@@ -318,7 +323,7 @@ namespace Axiom.Player.StateMachine
         private void HandleAnimations()
         {
             playerAnimation.SetRotationDir(cameraLook.mouseX);
-            playerAnimation.SetMovementDir(moveDirection.normalized);
+            playerAnimation.SetMovementDir(inputDetection.movementInput.normalized);
         }
 
         public void SetAnimatorBool(string param, bool val) => playerAnimation.SetBool(param, val);

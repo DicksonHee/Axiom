@@ -19,6 +19,7 @@ namespace Axiom.Player.StateMachine
             base.EnterState(state);
             
             MovementSystem.SetTargetSpeed(MovementSystem.idleSpeed);
+            MovementSystem.SetAnimatorBool("Idle", true);
         }
 
         public override void LogicUpdate()
@@ -36,6 +37,13 @@ namespace Axiom.Player.StateMachine
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
+        }
+
+        public override void ExitState()
+        {
+            base.ExitState();
+            
+            MovementSystem.SetAnimatorBool("Idle", false);
         }
     }
 }

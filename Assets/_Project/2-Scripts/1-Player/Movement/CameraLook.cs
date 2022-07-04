@@ -44,7 +44,7 @@ namespace Axiom.Player.Movement
             
             //Rotate, and also make sure we dont over- or under-rotate.
             xRotation -= mouseY * sensY * Time.fixedDeltaTime * multiplier;
-            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+            xRotation = Mathf.Clamp(xRotation, -90f, 60f);
             
             //Perform the rotations
             cam.transform.localRotation = Quaternion.Euler(xRotation, desiredX, 0);

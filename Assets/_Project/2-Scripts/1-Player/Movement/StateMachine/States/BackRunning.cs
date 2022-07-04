@@ -19,6 +19,7 @@ namespace Axiom.Player.StateMachine
             base.EnterState(state);
             
             MovementSystem.SetTargetSpeed(MovementSystem.backwardSpeed);
+            MovementSystem.SetAnimatorBool("Backwards", true);
         }
 
         public override void LogicUpdate()
@@ -27,6 +28,7 @@ namespace Axiom.Player.StateMachine
             
             if (MovementSystem.inputDetection.movementInput.magnitude <= 0 || MovementSystem.inputDetection.movementInput.z > 0f) MovementSystem.ChangeState(MovementSystem._idleState);
             else if(MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._crouchingState);
+            else if(Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0) MovementSystem.ChangeState(MovementSystem._strafingState);
             
             CalculateMovementSpeed();
         }
@@ -34,6 +36,13 @@ namespace Axiom.Player.StateMachine
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
+        }
+
+        public override void ExitState()
+        {
+            base.ExitState();
+            
+            MovementSystem.SetAnimatorBool("Backwards", false);
         }
     }
 }

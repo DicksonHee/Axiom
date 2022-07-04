@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Axiom.Player.Movement
@@ -18,7 +19,7 @@ namespace Axiom.Player.Movement
 
         private void Update()
         {
-            transform.rotation = orientation.rotation;
+            transform.DOLocalRotateQuaternion(orientation.rotation, 0.1f);
         }
 
         public void SetMovementDir(Vector3 movementDir)
@@ -35,6 +36,11 @@ namespace Axiom.Player.Movement
         public void SetBool(string param, bool val)
         {
             _playerAnimator.SetBool(param, val);
+        }
+
+        public void SetTrigger(string param)
+        {
+            _playerAnimator.SetTrigger(param);
         }
     }
 }

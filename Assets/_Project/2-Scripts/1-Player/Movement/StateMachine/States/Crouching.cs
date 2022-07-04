@@ -22,6 +22,7 @@ namespace Axiom.Player.StateMachine
             Debug.Log(previousSpeed);
             MovementSystem.StartCrouch();
             MovementSystem.SetTargetSpeed(MovementSystem.crouchSpeed);
+            MovementSystem.SetAnimatorBool("Crouching", true);
         }
 
         public override void LogicUpdate()
@@ -45,6 +46,7 @@ namespace Axiom.Player.StateMachine
             base.ExitState();
 
             MovementSystem.EndCrouch();
+            MovementSystem.SetAnimatorBool("Crouching", false);
         }
 
         private void CalculateInAirTime()

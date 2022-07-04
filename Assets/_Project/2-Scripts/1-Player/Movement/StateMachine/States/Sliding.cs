@@ -22,7 +22,9 @@ namespace Axiom.Player.StateMachine
             base.EnterState(prevState);
 
             MovementSystem.SetAnimatorBool("Sliding", true);
+            
             initialSpeed = MovementSystem._rb.velocity.magnitude;
+            slopeSpeed = 0f;
             MovementSystem.StartCrouch();
             MovementSystem.SetTargetSpeed(0f);
             MovementSystem.SetLRMultiplier(0.1f);

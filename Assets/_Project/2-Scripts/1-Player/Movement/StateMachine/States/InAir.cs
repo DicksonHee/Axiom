@@ -20,6 +20,7 @@ namespace Axiom.Player.StateMachine
             MovementSystem.SetGravity(MovementSystem.inAirGravity);
             MovementSystem.SetTargetSpeed(MovementSystem.inAirSpeed);
             MovementSystem.SetLRMultiplier(0.3f);
+            MovementSystem.SetAnimatorBool("InAir", true);
         }
 
         public override void LogicUpdate()
@@ -45,6 +46,7 @@ namespace Axiom.Player.StateMachine
         {
             base.ExitState();
             MovementSystem.SetLRMultiplier(1f);
+            MovementSystem.SetAnimatorBool("InAir", false);
         }
     }
 }
