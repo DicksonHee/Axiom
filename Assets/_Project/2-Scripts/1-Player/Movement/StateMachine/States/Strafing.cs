@@ -14,9 +14,9 @@ namespace Axiom.Player.StateMachine
             stateName = StateName.Strafing;
         }
 
-        public override void EnterState(StateName state)
+        public override void EnterState()
         {
-            base.EnterState(state);
+            base.EnterState();
             
             MovementSystem.SetAnimatorBool("Strafing", true);
             MovementSystem.SetTargetSpeed(MovementSystem.strafeSpeed);

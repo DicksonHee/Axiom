@@ -15,9 +15,9 @@ namespace Axiom.Player.StateMachine
             stateName = StateName.Crouching;
         }
 
-        public override void EnterState(StateName prevState)
+        public override void EnterState()
         {
-            base.EnterState(prevState);
+            base.EnterState();
             
             Debug.Log(previousSpeed);
             MovementSystem.StartCrouch();

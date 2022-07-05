@@ -15,9 +15,9 @@ namespace Axiom.Player.StateMachine
             stateName = StateName.Walking;
         }
 
-        public override void EnterState(StateName prevState)
+        public override void EnterState()
         {
-            base.EnterState(prevState);
+            base.EnterState();
 
             MovementSystem.SetAnimatorBool("Walking", true);
             MovementSystem.SetTargetSpeed(MovementSystem.walkSpeed);
@@ -32,7 +32,7 @@ namespace Axiom.Player.StateMachine
             if (MovementSystem.inputDetection.movementInput.magnitude <= 0 || MovementSystem.inputDetection.movementInput.z < 0) MovementSystem.ChangeState(MovementSystem._idleState);
             else if (Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f) MovementSystem.ChangeState(MovementSystem._strafingState);
             else if (MovementSystem.inputDetection.movementInput.z > 0 && toRunCounter > 1f)MovementSystem.ChangeState(MovementSystem._runningState);
-            else if (MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._slidingState);
+            else if (MovementSystem.inputDetection.crouchInput && MovementSystem._rb.velocity.y <= 0.1f) MovementSystem.ChangeState(MovementSystem._slidingState);
 
             CalculateMovementSpeed();
         }

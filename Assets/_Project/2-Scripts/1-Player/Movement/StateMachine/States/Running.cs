@@ -13,9 +13,9 @@ namespace Axiom.Player.StateMachine
             stateName = StateName.Running;
         }
 
-        public override void EnterState(StateName state)
+        public override void EnterState()
         {
-            base.EnterState(state);
+            base.EnterState();
 
             MovementSystem.SetAnimatorBool("Running", true);
             MovementSystem.SetTargetSpeed(MovementSystem.forwardSpeed);
@@ -27,7 +27,7 @@ namespace Axiom.Player.StateMachine
             
             if(MovementSystem.inputDetection.movementInput.z < 0 || MovementSystem.inputDetection.movementInput.magnitude <= 0) MovementSystem.ChangeState(MovementSystem._idleState);
             else if(Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f) MovementSystem.ChangeState(MovementSystem._strafingState);
-            else if (MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._slidingState);
+            else if (MovementSystem.inputDetection.crouchInput && MovementSystem._rb.velocity.y <= 0.1f) MovementSystem.ChangeState(MovementSystem._slidingState);
             
             CalculateMovementSpeed();
         }

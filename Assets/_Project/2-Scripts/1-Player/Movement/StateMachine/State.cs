@@ -11,7 +11,6 @@ namespace Axiom.Player.StateMachine
         protected MovementSystem MovementSystem;
 
         protected float stateStartTime;
-        protected StateName previousState;
         
         protected AnimationCurve movementCurve;
         protected float previousSpeed;
@@ -23,11 +22,9 @@ namespace Axiom.Player.StateMachine
             MovementSystem = movementSystem;
         }
 
-        public virtual void EnterState(StateName prevState)
+        public virtual void EnterState()
         {
             stateStartTime = Time.time;
-            previousState = prevState;
-            
             SelectMovementCurve();
         }
 

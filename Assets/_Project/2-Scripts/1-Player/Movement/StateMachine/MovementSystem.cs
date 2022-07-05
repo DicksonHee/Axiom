@@ -1,9 +1,12 @@
 using System;
+using System.Numerics;
 using Axiom.Player.StateMachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using Axiom.Player.Movement;
 using DG.Tweening;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Axiom.Player.StateMachine
 {
@@ -66,7 +69,7 @@ namespace Axiom.Player.StateMachine
         #endregion
 
         private bool _movementEnabled = true;
-
+        
         #region Turning Variables
         private Vector3 _currentFacingTransform;
         private float _turnCheckCounter;
@@ -161,6 +164,36 @@ namespace Axiom.Player.StateMachine
             moveDirection = orientation.forward * inputDetection.movementInput.z + orientation.right * (inputDetection.movementInput.x * wallJumpMultiplier * lrMultiplier);
         }
         
+        private void CheckSlopeMovementDirection()
+        {
+            if (rbInfo.isOnSlope)
+            {
+                var slopeRotation = Quaternion.FromToRotation(orientation.up, rbInfo.slopeHit.normal);
+                var adjustedVel = slopeRotation * moveDirection;
+
+                if (adjustedVel.y <= -0.1f || adjustedVel.y >= 0.1f)
+                {
+                    moveDirection =  adjustedVel;
+                }
+            }
+        }
+        
+        public Vector3 CheckSlopeMovementDirection(Vector3 direction)
+        {
+            if (rbInfo.isOnSlope)
+            {
+                var slopeRotation = Quaternion.FromToRotation(orientation.up, rbInfo.slopeHit.normal);
+                var adjustedVel = slopeRotation * direction;
+    
+                if (adjustedVel.y <= -0.1f || adjustedVel.y >= 0.1f)
+                {
+                    return adjustedVel;
+                }
+            }
+
+            return direction;
+        }
+        
         // Calculate the current movement speed by evaluating from the curve
         public void CalculateMovementSpeed(AnimationCurve curve, float prevSpeed, float time)
         {
@@ -214,9 +247,10 @@ namespace Axiom.Player.StateMachine
         {
             if (!_movementEnabled || _wallRunExitCounter > 0f) return;
             if (CurrentState == _slidingState) moveDirection = new Vector3(1, 0, 0);
-            
+
             Vector3 moveVel = moveDirection.normalized * (currentSpeed * _turnMultiplier);
-            moveVel.y = _rb.velocity.y;
+            CheckSlopeMovementDirection();
+            moveVel.y += _rb.velocity.y;
             _rb.velocity = moveVel;
         }
 

@@ -8,19 +8,26 @@ namespace Axiom.Player.StateMachine
 {
     public class InAir : State
     {
+        private Vector3 initialDir;
+        private float initialSpeed;
+        
         public InAir(MovementSystem movementSystem) : base(movementSystem)
         {
             stateName = StateName.InAir;
         }
 
-        public override void EnterState(StateName prevState)
+        public override void EnterState()
         {
-            base.EnterState(prevState);
+            base.EnterState();
 
+            initialDir = MovementSystem.moveDirection;
+            initialSpeed = MovementSystem._rb.velocity.magnitude;
+            
             MovementSystem.SetGravity(MovementSystem.inAirGravity);
             MovementSystem.SetTargetSpeed(MovementSystem.inAirSpeed);
             MovementSystem.SetLRMultiplier(0.3f);
             MovementSystem.SetAnimatorBool("InAir", true);
+            MovementSystem.DisableMovement();
         }
 
         public override void LogicUpdate()
@@ -34,7 +41,7 @@ namespace Axiom.Player.StateMachine
                 else if(MovementSystem.inputDetection.movementInput.x > 0 && MovementSystem.rbInfo.rightWallDetected) MovementSystem.ChangeState(MovementSystem._wallRunningState);
             }
 
-            CalculateMovementSpeed();
+            CalculateInAirSpeed();
         }
 
         public override void PhysicsUpdate()
@@ -47,6 +54,17 @@ namespace Axiom.Player.StateMachine
             base.ExitState();
             MovementSystem.SetLRMultiplier(1f);
             MovementSystem.SetAnimatorBool("InAir", false);
+            MovementSystem.EnableMovement();
+        }
+
+        private void CalculateInAirSpeed()
+        {
+            float velDiff = initialSpeed - MovementSystem.idleSpeed;
+            float currentSpeed = Mathf.Clamp(initialSpeed - velDiff * MovementSystem.decelerationCurve.Evaluate(Time.time - stateStartTime), 0, float.MaxValue);
+
+            Vector3 moveVel = initialDir.normalized * currentSpeed;
+            moveVel.y = MovementSystem._rb.velocity.y;
+            MovementSystem._rb.velocity = moveVel;
         }
     }
 }

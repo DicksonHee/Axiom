@@ -12,7 +12,7 @@ namespace Axiom.Player.StateMachine
         protected void InitializeState(State state)
         {
             CurrentState = state;
-            CurrentState.EnterState(StateName.None);
+            CurrentState.EnterState();
         }
         
         public void ChangeState(State state)
@@ -20,7 +20,7 @@ namespace Axiom.Player.StateMachine
             PreviousState = CurrentState.stateName;
             CurrentState.ExitState();
             CurrentState = state;
-            CurrentState.EnterState(PreviousState);
+            CurrentState.EnterState();
         }
     }
 }

@@ -17,9 +17,9 @@ namespace Axiom.Player.StateMachine
 			stateName = StateName.WallRunning;
 		}
 
-		public override void EnterState(StateName prevState)
+		public override void EnterState()
 		{
-			base.EnterState(prevState);
+			base.EnterState();
 
 			MovementSystem.SetAnimatorBool("WallRunning", true);
 			MovementSystem.DisableMovement();

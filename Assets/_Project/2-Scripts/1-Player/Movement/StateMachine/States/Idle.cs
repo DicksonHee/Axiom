@@ -14,9 +14,9 @@ namespace Axiom.Player.StateMachine
             stateName = StateName.Idle;
         }
 
-        public override void EnterState(StateName state)
+        public override void EnterState()
         {
-            base.EnterState(state);
+            base.EnterState();
             
             MovementSystem.SetTargetSpeed(MovementSystem.idleSpeed);
             MovementSystem.SetAnimatorBool("Idle", true);
