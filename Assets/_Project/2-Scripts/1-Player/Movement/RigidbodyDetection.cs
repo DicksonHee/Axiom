@@ -57,6 +57,8 @@ namespace Axiom.Player.Movement
         
         private void SlopeDetection()
         {
+            if (!isGrounded) return;
+
             bool wasOnSlope = isOnSlope;
             if (Physics.Raycast(groundDetector.position, groundDetector.TransformDirection(Vector3.down), out slopeHit,  groundDetectorRadius))
             {

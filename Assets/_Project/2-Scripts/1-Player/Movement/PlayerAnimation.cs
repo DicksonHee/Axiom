@@ -42,5 +42,15 @@ namespace Axiom.Player.Movement
         {
             _playerAnimator.SetTrigger(param);
         }
+
+        public void ResetTrigger(string param)
+        {
+            _playerAnimator.ResetTrigger(param);
+        }
+
+        public void SetJumpParam(float val)
+        {
+            _playerAnimator.SetFloat("JumpType", val);
+        }
     }
 }

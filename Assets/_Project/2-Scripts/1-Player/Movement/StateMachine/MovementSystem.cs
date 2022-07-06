@@ -30,6 +30,7 @@ namespace Axiom.Player.StateMachine
         public AnimationCurve accelerationCurve;
         public AnimationCurve decelerationCurve;
         public AnimationCurve gravityCurve;
+        public AnimationCurve inAirCurve;
         public AnimationCurve wallRunCurve;
         public AnimationCurve slideCurve;
         public AnimationCurve reverseSlideCurve;
@@ -173,7 +174,7 @@ namespace Axiom.Player.StateMachine
 
                 if (adjustedVel.y <= -0.1f || adjustedVel.y >= 0.1f)
                 {
-                    moveDirection =  adjustedVel;
+                    moveDirection = adjustedVel;
                 }
             }
         }
@@ -198,7 +199,6 @@ namespace Axiom.Player.StateMachine
         public void CalculateMovementSpeed(AnimationCurve curve, float prevSpeed, float time)
         {
             float velDiff = prevSpeed - currentTargetSpeed;
-            //Debug.Log(curve.Evaluate(time));
             currentSpeed = prevSpeed - velDiff * curve.Evaluate(time);
         }
 
@@ -246,9 +246,8 @@ namespace Axiom.Player.StateMachine
         private void ApplyMovement()
         {
             if (!_movementEnabled || _wallRunExitCounter > 0f) return;
-            if (CurrentState == _slidingState) moveDirection = new Vector3(1, 0, 0);
 
-            Vector3 moveVel = moveDirection.normalized * (currentSpeed * _turnMultiplier);
+            Vector3 moveVel = moveDirection.normalized * (currentSpeed * _turnMultiplier * Time.deltaTime * 50f);
             CheckSlopeMovementDirection();
             moveVel.y += _rb.velocity.y;
             _rb.velocity = moveVel;
@@ -258,6 +257,7 @@ namespace Axiom.Player.StateMachine
         private void ApplyGravity()
         {
             _gravityCounter += Time.fixedDeltaTime;
+            if (rbInfo.isOnSlope) currentTargetGravity = 100f;
             _rb.AddForce(-transform.up * (currentTargetGravity * gravityCurve.Evaluate(_gravityCounter)));
         }
         #endregion
@@ -267,21 +267,35 @@ namespace Axiom.Player.StateMachine
         // Determines which jump to use
         private void DelegateJump()
         {
-            if(CurrentState == _wallRunningState || _wallRunJumpBufferCounter > 0f) WallRunJump();
-            else if (rbInfo.isGrounded)
-            {
-                playerAnimation.SetTrigger("Jump");
-                Jump();
-            }
+            if (CurrentState == _wallRunningState || _wallRunJumpBufferCounter > 0f) WallRunJump();
+            else if (rbInfo.isGrounded) Jump();
         }
         
         // Applies upwards force to the character
         private void Jump()
         {
+            if (rbInfo.leftWallDetected && inputDetection.movementInput.x < 0)
+            {
+                playerAnimation.SetJumpParam(-1f);
+                ChangeState(_wallRunningState);
+            }
+            else if (rbInfo.rightWallDetected && inputDetection.movementInput.x > 0)
+            {
+                playerAnimation.SetJumpParam(1f);
+                ChangeState(_wallRunningState);
+            }
+            else if (!rbInfo.isGrounded && CurrentState.stateName != StateName.InAir)
+            {
+                playerAnimation.SetJumpParam(0);
+                ChangeState(_inAirState);
+            }
+
             Vector3 velocity = _rb.velocity;
             float jumpMultiplier = Mathf.Clamp(velocity.magnitude / forwardSpeed, 0.75f, 1f);
             _rb.AddForce(new Vector3(0f, upJumpForce * jumpMultiplier, 0f), ForceMode.Impulse);
-            if (!rbInfo.isGrounded && CurrentState.stateName != StateName.InAir) ChangeState(_inAirState);
+
+            playerAnimation.ResetTrigger("Landed");
+            playerAnimation.SetTrigger("Jump");
         }
         
         // Applies upwards and sideways force to the character
@@ -300,6 +314,7 @@ namespace Axiom.Player.StateMachine
         private void Landed()
         {
             SetGravity(groundGravity);
+            playerAnimation.SetTrigger("Landed");
         }
         #endregion
         
