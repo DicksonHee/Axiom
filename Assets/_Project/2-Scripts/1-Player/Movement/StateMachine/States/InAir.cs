@@ -25,7 +25,7 @@ namespace Axiom.Player.StateMachine
             
             MovementSystem.SetGravity(MovementSystem.inAirGravity);
             MovementSystem.SetTargetSpeed(MovementSystem.inAirSpeed);
-            MovementSystem.SetLRMultiplier(0.3f);
+            MovementSystem.SetLRMultiplier(0.1f);
             MovementSystem.SetAnimatorBool("InAir", true);
             MovementSystem.DisableMovement();
         }
@@ -33,9 +33,7 @@ namespace Axiom.Player.StateMachine
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-
-            Debug.Log(MovementSystem.isExitingWallRun);
-
+            
             if (MovementSystem.rbInfo.isGrounded) MovementSystem.ChangeState(MovementSystem._idleState);
             else if (MovementSystem._rb.velocity.y > 0 && !MovementSystem.isExitingWallRun)
             {
@@ -66,7 +64,7 @@ namespace Axiom.Player.StateMachine
             Vector3 movementInput = MovementSystem.moveDirection.normalized;
             movementInput.z = 0;
 
-            Vector3 moveVel = (initialDir.normalized + movementInput * 0.3f) * currentSpeed;
+            Vector3 moveVel = (initialDir.normalized + movementInput * 0.1f) * currentSpeed;
             moveVel.y = MovementSystem._rb.velocity.y;
             MovementSystem._rb.velocity = moveVel;
         }

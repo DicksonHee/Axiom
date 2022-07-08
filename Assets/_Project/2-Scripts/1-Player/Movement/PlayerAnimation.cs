@@ -24,13 +24,13 @@ namespace Axiom.Player.Movement
 
         public void SetMovementDir(Vector3 movementDir)
         {
-            _playerAnimator.SetFloat("XVel", movementDir.x);
-            _playerAnimator.SetFloat("ZVel", movementDir.z);
+            _playerAnimator.SetFloat("XVel", movementDir.x, 0.1f, Time.deltaTime);
+            _playerAnimator.SetFloat("ZVel", movementDir.z, 0.1f, Time.deltaTime);
         }
 
         public void SetRotationDir(float movementDelta)
         {
-            _playerAnimator.SetFloat("YDelta", movementDelta);
+            _playerAnimator.SetFloat("YDelta", movementDelta, 0.1f, Time.deltaTime);
         }
 
         public void SetBool(string param, bool val)

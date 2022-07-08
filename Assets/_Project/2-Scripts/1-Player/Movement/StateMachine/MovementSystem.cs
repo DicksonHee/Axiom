@@ -80,6 +80,7 @@ namespace Axiom.Player.StateMachine
 
         #region Gravity Variables
         private float _gravityCounter;
+        private bool _isJumping;
         #endregion
 
         #region Wall Run Variables
@@ -142,10 +143,10 @@ namespace Axiom.Player.StateMachine
             CheckIsTurning();
             CheckWallRunTimers();
             CheckSlideTimers();
-            
+
             CalculateMoveDirection();
             HandleAnimations();
-
+            
             CurrentState.LogicUpdate();
         }
 
@@ -163,19 +164,14 @@ namespace Axiom.Player.StateMachine
         {
             float wallJumpMultiplier = _wallRunExitCounter > 0f ? 0f : 1f;
             moveDirection = orientation.forward * inputDetection.movementInput.z + orientation.right * (inputDetection.movementInput.x * wallJumpMultiplier * lrMultiplier);
+            CheckSlopeMovementDirection();
         }
         
         private void CheckSlopeMovementDirection()
         {
             if (rbInfo.isOnSlope)
             {
-                var slopeRotation = Quaternion.FromToRotation(orientation.up, rbInfo.slopeHit.normal);
-                var adjustedVel = slopeRotation * moveDirection;
-
-                if (adjustedVel.y <= -0.1f || adjustedVel.y >= 0.1f)
-                {
-                    moveDirection = adjustedVel;
-                }
+                moveDirection = Vector3.ProjectOnPlane(moveDirection, rbInfo.slopeHit.normal);
             }
         }
         
@@ -248,8 +244,7 @@ namespace Axiom.Player.StateMachine
             if (!_movementEnabled || _wallRunExitCounter > 0f) return;
 
             Vector3 moveVel = moveDirection.normalized * (currentSpeed * _turnMultiplier * Time.deltaTime * 50f);
-            CheckSlopeMovementDirection();
-            moveVel.y += _rb.velocity.y;
+            moveVel.y = _rb.velocity.y;
             _rb.velocity = moveVel;
         }
 
@@ -257,7 +252,8 @@ namespace Axiom.Player.StateMachine
         private void ApplyGravity()
         {
             _gravityCounter += Time.fixedDeltaTime;
-            if (rbInfo.isOnSlope) currentTargetGravity = 100f;
+            if (rbInfo.isOnSlope && !_isJumping) currentTargetGravity = 100f;
+            else currentTargetGravity = rbInfo.isGrounded ? groundGravity : inAirGravity;
             _rb.AddForce(-transform.up * (currentTargetGravity * gravityCurve.Evaluate(_gravityCounter)));
         }
         #endregion
@@ -274,6 +270,7 @@ namespace Axiom.Player.StateMachine
         // Applies upwards force to the character
         private void Jump()
         {
+            _isJumping = true;
             if (rbInfo.leftWallDetected && inputDetection.movementInput.x < 0)
             {
                 playerAnimation.SetJumpParam(-1f);
@@ -301,19 +298,23 @@ namespace Axiom.Player.StateMachine
         // Applies upwards and sideways force to the character
         private void WallRunJump()
         {
-            ChangeState(_inAirState);
-            if (_wallRunJumpBufferCounter < 0f) return;
+            CurrentState.ExitState();
+            playerAnimation.SetJumpParam(rbInfo.leftWallDetected ? -1 : 1);
+            playerAnimation.ResetTrigger("Landed");
+            playerAnimation.SetTrigger("WallJump");
             
-            Vector3 jumpVector = transform.up * wallRunJumpUpForce + _wallRunNormal * wallRunJumpSideForce;
+            Vector3 jumpVector = transform.up * wallRunJumpUpForce + orientation.forward * wallRunJumpSideForce;
             _rb.AddForce(jumpVector, ForceMode.Impulse);
             
             _wallRunJumpBufferCounter = 0f;
-            if (!rbInfo.isGrounded && CurrentState.stateName != StateName.InAir) ChangeState(_inAirState);
         }
         
         private void Landed()
         {
             SetGravity(groundGravity);
+            _isJumping = false;
+            playerAnimation.ResetTrigger("WallJump");
+            playerAnimation.ResetTrigger("Jump");
             playerAnimation.SetTrigger("Landed");
         }
         #endregion

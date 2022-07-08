@@ -35,8 +35,7 @@ namespace Axiom.Player.StateMachine
 		{
 			base.LogicUpdate();
 
-			if (MovementSystem.inputDetection.movementInput.z == 0 || 
-			    MovementSystem.inputDetection.movementInput.x == 0 ||
+			if (MovementSystem.inputDetection.movementInput.z == 0 ||
 			    MovementSystem.inputDetection.movementInput.x < 0 && MovementSystem.rbInfo.rightWallDetected ||
 			    MovementSystem.inputDetection.movementInput.x > 0 && MovementSystem.rbInfo.leftWallDetected ||
 			    !MovementSystem.rbInfo.rightWallDetected && !MovementSystem.rbInfo.leftWallDetected)
