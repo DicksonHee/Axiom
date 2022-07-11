@@ -377,6 +377,7 @@ namespace Axiom.Player.StateMachine
         }
 
         public void SetAnimatorBool(string param, bool val) => playerAnimation.SetBool(param, val);
+        public void SetAnimatorFloat(string param, float val) => playerAnimation.SetFloatParam(param, val);
         #endregion
         
         #region Debug Functions
