@@ -261,13 +261,11 @@ namespace Axiom.Player.StateMachine
             {
                 WallRunJump();
                 StartJump();
-                playerAnimation.SetFloatParam("WallRunType", 0);
             }
             else if (rbInfo.isGrounded)
             {
                 Jump();
                 StartJump();
-                playerAnimation.SetFloatParam("WallRunType", 0);
             }
         }
         
@@ -296,6 +294,7 @@ namespace Axiom.Player.StateMachine
 
             playerAnimation.ResetTrigger("Landed");
             playerAnimation.SetTrigger("Jump");
+            playerAnimation.SetLandParam(0f);
         }
         
         // Applies upwards and sideways force to the character
@@ -303,10 +302,13 @@ namespace Axiom.Player.StateMachine
         {
             float forwardForceMultiplier = Vector3.Dot(orientation.forward, _wallRunNormal) > 0 ? 1 : 0;
             _rb.velocity = transform.up * wallRunJumpUpForce + orientation.forward * (forwardForceMultiplier * wallRunJumpSideForce);
+            _wallRunningState.SetIsJumpingOnExit(true);
 
             ChangeState(_inAirState);
+            
             playerAnimation.ResetTrigger("Landed");
-            playerAnimation.SetFloatParam("InAirType", _isExitingRightWall ? 1 : -1);
+            playerAnimation.SetInAirParam(_isExitingRightWall ? 1 : -1);
+            playerAnimation.SetLandParam(_isExitingRightWall ? 1 : -1);
             _wallRunJumpBufferCounter = 0f;
         }
         
@@ -320,8 +322,9 @@ namespace Axiom.Player.StateMachine
             
             playerAnimation.ResetTrigger("WallJump");
             playerAnimation.ResetTrigger("Jump");
+            
             playerAnimation.SetTrigger("Landed");
-            playerAnimation.SetFloatParam("InAirType",0);
+            playerAnimation.SetInAirParam(0);
         }
 
         public void StartJump()
@@ -404,7 +407,6 @@ namespace Axiom.Player.StateMachine
         }
 
         public void SetAnimatorBool(string param, bool val) => playerAnimation.SetBool(param, val);
-        public void SetAnimatorFloat(string param, float val) => playerAnimation.SetFloatParam(param, val);
         #endregion
         
         #region Debug Functions

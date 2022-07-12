@@ -17152,22 +17152,31 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: -0.0017776489
       value: 0
-      inSlope: 0.13993238
-      outSlope: 0.13993238
+      inSlope: Infinity
+      outSlope: Infinity
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.41293532
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.20099118
+      value: 0.089081004
+      inSlope: 2.2492328
+      outSlope: 2.2492328
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.04962923
     - serializedVersion: 3
       time: 1
       value: 0.70165175
-      inSlope: 1.9080974
-      outSlope: 1.9080974
+      inSlope: 0.020010611
+      outSlope: 0.020010611
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.039801
+      inWeight: 0.11823887
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -17184,6 +17193,15 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
+    - serializedVersion: 3
+      time: 0.5300638
+      value: 0.28096765
+      inSlope: 1.0601275
+      outSlope: 1.0601275
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1
@@ -17245,7 +17263,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   groundGravity: 10
-  inAirGravity: 25
+  inAirGravity: 35
   idleSpeed: 8
   forwardSpeed: 30
   backwardSpeed: 20
@@ -17354,11 +17372,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79c6c069713076d4aac77ca55f31936c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensX: 200
-  sensY: 200
   camHolder: {fileID: 1207445358}
   orientation: {fileID: 222760723}
   cam: {fileID: 974631309}
+  sensX: 200
+  sensY: 200
+  lTiltAmount: -10
+  rTiltAmount: 10
+  wallRunFov: 100
   multiplier: 1
 --- !u!136 &1956214841
 CapsuleCollider:
