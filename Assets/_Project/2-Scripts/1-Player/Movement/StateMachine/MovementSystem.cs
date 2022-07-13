@@ -301,10 +301,8 @@ namespace Axiom.Player.StateMachine
         private void WallRunJump()
         {
             float forwardForceMultiplier = Vector3.Dot(orientation.forward, _wallRunNormal) > 0 ? 1 : 0;
-            _rb.velocity = transform.up * wallRunJumpUpForce + orientation.forward * (forwardForceMultiplier * wallRunJumpSideForce);
-            _wallRunningState.SetIsJumpingOnExit(true);
-
-            ChangeState(_inAirState);
+            Vector3 jumpVel = transform.up * wallRunJumpUpForce + orientation.forward * (forwardForceMultiplier * wallRunJumpSideForce);
+            _wallRunningState.SetIsJumpingOnExit(true, jumpVel);
             
             playerAnimation.ResetTrigger("Landed");
             playerAnimation.SetInAirParam(_isExitingRightWall ? 1 : -1);

@@ -10,6 +10,7 @@ namespace Axiom.Player.StateMachine
 	{
 		private Vector3 wallNormal;
 		private Vector3 wallForward;
+		private Vector3 exitVelocity;
 		private float initialYVel;
 		private bool isRightWallEnter;
 		private bool isJumpingOnExit;
@@ -73,6 +74,10 @@ namespace Axiom.Player.StateMachine
 				moveVel.y = 0f;
 				MovementSystem._rb.velocity = moveVel;
 			}
+			else
+            {
+				MovementSystem._rb.velocity = exitVelocity;
+            }
 			
 			MovementSystem.cameraLook.ResetCamera();
 			MovementSystem.EnableMovement();
@@ -90,7 +95,12 @@ namespace Axiom.Player.StateMachine
 			MovementSystem._rb.velocity = velocity;
 		}
 
-		public void SetIsJumpingOnExit(bool val) => isJumpingOnExit = val;
+		public void SetIsJumpingOnExit(bool val, Vector3 exitVel)
+		{
+			isJumpingOnExit = val;
+			exitVelocity = exitVel;
+			MovementSystem.ChangeState(MovementSystem._inAirState);
+		}
 	}
 }
 
