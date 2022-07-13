@@ -17,6 +17,7 @@ namespace Axiom.Player.Movement
         public LayerMask groundLayer;
 
         [Header("WallRun Detection")]
+        public Transform wallDetector;
         public float wallCheckDistance = 0.5f;
         public LayerMask wallLayer;
 
@@ -58,18 +59,23 @@ namespace Axiom.Player.Movement
         private void SlopeDetection()
         {
             bool wasOnSlope = isOnSlope;
-            if (Physics.Raycast(groundDetector.position, groundDetector.TransformDirection(Vector3.down), out slopeHit,  groundDetectorRadius))
+
+            if (Physics.Raycast(groundDetector.position, groundDetector.TransformDirection(Vector3.down), out slopeHit,
+                    groundDetectorRadius, groundLayer))
             {
                 isOnSlope = slopeHit.normal != Vector3.up;
             }
+            else isOnSlope = false;
 
             if (wasOnSlope && !isOnSlope) OnSlopeEnded?.Invoke();
         }
 
         private void WallRunDetection()
         {
-            rightWallDetected = Physics.Raycast(orientation.position, orientation.right, out rightWallHit, wallCheckDistance, wallLayer);
-            leftWallDetected = Physics.Raycast(orientation.position, -orientation.right, out leftWallHit, wallCheckDistance, wallLayer);
+            var position = orientation.position;
+            var right = orientation.right;
+            rightWallDetected = Physics.Raycast(position, right, out rightWallHit, wallCheckDistance, wallLayer);
+            leftWallDetected = Physics.Raycast(position, -right, out leftWallHit, wallCheckDistance, wallLayer);
             //Debug.Log(leftWallDetected);
         }
 

@@ -10,8 +10,11 @@ namespace Axiom.Player.StateMachine
 	{
 		private Vector3 wallNormal;
 		private Vector3 wallForward;
+		private Vector3 exitVelocity;
 		private float initialYVel;
-
+		private bool isRightWallEnter;
+		private bool isJumpingOnExit;
+		
 		public WallRunning(MovementSystem movementSystem) : base(movementSystem)
 		{
 			stateName = StateName.WallRunning;
@@ -21,25 +24,35 @@ namespace Axiom.Player.StateMachine
 		{
 			base.EnterState();
 
-			MovementSystem.SetAnimatorBool("WallRunning", true);
-			MovementSystem.DisableMovement();
-			MovementSystem.SetGravity(MovementSystem.inAirGravity);
-
 			initialYVel = MovementSystem._rb.velocity.y;
+			isRightWallEnter = MovementSystem.rbInfo.rightWallDetected;
+			isJumpingOnExit = false;
 			wallNormal = MovementSystem.rbInfo.rightWallDetected ? MovementSystem.rbInfo.rightWallHit.normal : MovementSystem.rbInfo.leftWallHit.normal;
 			wallForward = Vector3.Cross(wallNormal, MovementSystem.transform.up);
 			if ((MovementSystem.orientation.forward - wallForward).magnitude > (MovementSystem.orientation.forward - -wallForward).magnitude) wallForward = -wallForward;
+
+			if (isRightWallEnter) MovementSystem.cameraLook.StartRightWallRunCamera();
+			else MovementSystem.cameraLook.StartLeftWallRunCamera();
+
+			MovementSystem.DisableMovement();
+			MovementSystem.EnterWallRunState(wallNormal, isRightWallEnter);
+			MovementSystem.SetGravity(MovementSystem.inAirGravity);
+			
+			MovementSystem.SetAnimatorBool("WallRunning", true);
+			MovementSystem.playerAnimation.SetWallRunParam(isRightWallEnter ? 1 : -1);
+			MovementSystem.playerAnimation.SetLandParam(isRightWallEnter ? 1 : -1);
 		}
 
 		public override void LogicUpdate()
 		{
 			base.LogicUpdate();
 
-			if (MovementSystem.inputDetection.movementInput.z == 0 || 
-			    MovementSystem.inputDetection.movementInput.x == 0 ||
-			    MovementSystem.inputDetection.movementInput.x < 0 && MovementSystem.rbInfo.rightWallDetected ||
-			    MovementSystem.inputDetection.movementInput.x > 0 && MovementSystem.rbInfo.leftWallDetected ||
-			    !MovementSystem.rbInfo.rightWallDetected && !MovementSystem.rbInfo.leftWallDetected)
+			if (MovementSystem.inputDetection.movementInput.z == 0 ||
+			    !isRightWallEnter && MovementSystem.rbInfo.rightWallDetected ||
+			    isRightWallEnter && MovementSystem.rbInfo.leftWallDetected ||
+			    !MovementSystem.rbInfo.rightWallDetected && !MovementSystem.rbInfo.leftWallDetected ||
+			    Vector3.Dot(MovementSystem.orientation.forward, wallNormal) > 0.75f ||
+			    Time.time - stateStartTime > 0.75f)
 			{
 				MovementSystem.ChangeState(MovementSystem._inAirState);
 			}
@@ -55,8 +68,20 @@ namespace Axiom.Player.StateMachine
 		
 		public override void ExitState()
 		{
+			if (!isJumpingOnExit)
+			{
+				Vector3 moveVel = MovementSystem.moveDirection.normalized * MovementSystem.wallRunSpeed;
+				moveVel.y = 0f;
+				MovementSystem._rb.velocity = moveVel;
+			}
+			else
+            {
+				MovementSystem._rb.velocity = exitVelocity;
+            }
+			
+			MovementSystem.cameraLook.ResetCamera();
 			MovementSystem.EnableMovement();
-			MovementSystem.ExitWallRunState(wallNormal);
+			MovementSystem.ExitWallRunState();
 			MovementSystem.SetAnimatorBool("WallRunning", false);
 			
 			base.ExitState();
@@ -64,10 +89,17 @@ namespace Axiom.Player.StateMachine
 
 		private void WallRunningMovement()
 		{
-			float climbVel = Mathf.Lerp(initialYVel, -5f,MovementSystem.wallRunCurve.Evaluate(Time.time - stateStartTime));
-			Vector3 velocity = wallForward * MovementSystem.walkSpeed;
-			velocity = new Vector3(velocity.x, climbVel, velocity.z);
+			float yVel = Mathf.Lerp(initialYVel, 0f, (Time.time - stateStartTime) * 2);
+			Vector3 velocity = wallForward * MovementSystem.wallRunSpeed;
+			velocity = new Vector3(velocity.x, yVel, velocity.z);
 			MovementSystem._rb.velocity = velocity;
+		}
+
+		public void SetIsJumpingOnExit(bool val, Vector3 exitVel)
+		{
+			isJumpingOnExit = val;
+			exitVelocity = exitVel;
+			MovementSystem.ChangeState(MovementSystem._inAirState);
 		}
 	}
 }
