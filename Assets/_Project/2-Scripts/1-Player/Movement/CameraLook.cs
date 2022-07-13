@@ -14,15 +14,18 @@ namespace Axiom.Player.Movement
         [SerializeField] private Camera cam;
         [SerializeField] private Camera groundCamera;
 
+        [Header("Mouse Variables")]
         [SerializeField] private float sensX;
         [SerializeField] private float sensY;
+        [SerializeField] private Vector2 xRotLimits;
+        [SerializeField] private float multiplier = 2f;
+        
 
         [Header("WallRun")] 
         [SerializeField] private float lTiltAmount;
         [SerializeField] private float rTiltAmount;
         [SerializeField] private float wallRunFov;
 
-        [SerializeField] private float multiplier = 2f;
 
         private float initialFov;
         private float initialMultiplier;
@@ -63,7 +66,7 @@ namespace Axiom.Player.Movement
             
             //Rotate, and also make sure we dont over- or under-rotate.
             xRotation -= mouseY * sensY * Time.fixedDeltaTime * multiplier;
-            xRotation = Mathf.Clamp(xRotation, -90f, 60f);
+            xRotation = Mathf.Clamp(xRotation, xRotLimits.x, xRotLimits.y);
             
             //Perform the rotations
             camHolder.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);

@@ -10,6 +10,7 @@ namespace Axiom.Player.StateMachine
     {
         private Vector3 initialDir;
         private float initialSpeed;
+        private float initialHeight;
         
         public InAir(MovementSystem movementSystem) : base(movementSystem)
         {
@@ -22,13 +23,13 @@ namespace Axiom.Player.StateMachine
 
             initialDir = MovementSystem._rb.velocity;
             initialSpeed = MovementSystem._rb.velocity.magnitude;
-
+            initialHeight = MovementSystem.transform.position.y;
+            
             MovementSystem.cameraLook.ApplyCameraXAxisMultiplier(0.5f);
             MovementSystem.SetGravity(MovementSystem.inAirGravity);
             MovementSystem.SetTargetSpeed(MovementSystem.inAirSpeed);
-            MovementSystem.SetLRMultiplier(0.1f);
+            MovementSystem.SetLRMultiplier(0.25f);
             MovementSystem.SetAnimatorBool("InAir", true);
-            MovementSystem.DisableMovement();
         }
 
         public override void LogicUpdate()
@@ -36,13 +37,23 @@ namespace Axiom.Player.StateMachine
             base.LogicUpdate();
             
             if (MovementSystem.rbInfo.isGrounded) MovementSystem.ChangeState(MovementSystem._idleState);
-            else if (!MovementSystem.isExitingWallRun)
+            else if (MovementSystem.inputDetection.movementInput.z > 0f && !MovementSystem.isExitingClimb)
             {
-                if(MovementSystem.rbInfo.IsLeftWallDetected()) MovementSystem.ChangeState(MovementSystem._wallRunningState);
-                else if(MovementSystem.rbInfo.IsRightWallDetected()) MovementSystem.ChangeState(MovementSystem._wallRunningState);
+                if (MovementSystem._rb.velocity.y >= 0f && MovementSystem.rbInfo.canWallClimb) // Check for wall climb
+                {
+                    MovementSystem.ChangeState(MovementSystem._climbingState);
+                }
+                else if (((MovementSystem.rbInfo.IsLeftWallDetected() && MovementSystem.previousWall != MovementSystem.rbInfo.GetLeftWall()) ||
+                          (MovementSystem.rbInfo.IsRightWallDetected() && MovementSystem.previousWall != MovementSystem.rbInfo.GetRightWall())) && 
+                         !MovementSystem.rbInfo.canWallClimb)
+                {
+                    MovementSystem.ChangeState(MovementSystem._wallRunningState);
+                }
             }
-
-            CalculateInAirSpeed();
+            
+            MovementSystem.SetMaxHeight(initialHeight - MovementSystem.transform.position.y);
+            MovementSystem.playerAnimation.SetFloatParam("LandHeight", MovementSystem._maxHeight);
+            CalculateMovementSpeed();
         }
 
         public override void PhysicsUpdate()
@@ -56,17 +67,15 @@ namespace Axiom.Player.StateMachine
             MovementSystem.cameraLook.ResetCameraXSens();
             MovementSystem.SetLRMultiplier(1f);
             MovementSystem.SetAnimatorBool("InAir", false);
-            MovementSystem.EnableMovement();
         }
 
         private void CalculateInAirSpeed()
         {
             float velDiff = initialSpeed - MovementSystem.idleSpeed;
             float currentSpeed = Mathf.Clamp(initialSpeed - velDiff * MovementSystem.inAirCurve.Evaluate(Time.time - stateStartTime), 0, float.MaxValue);
-            Vector3 movementInput = MovementSystem.moveDirection.normalized;
-            movementInput.z = 0;
+            Vector3 movementInput = MovementSystem.moveDirection;
 
-            Vector3 moveVel = (initialDir.normalized + movementInput * 0.1f) * currentSpeed;
+            Vector3 moveVel = (initialDir + movementInput).normalized * currentSpeed;
             moveVel.y = MovementSystem._rb.velocity.y;
             MovementSystem._rb.velocity = moveVel;
         }
