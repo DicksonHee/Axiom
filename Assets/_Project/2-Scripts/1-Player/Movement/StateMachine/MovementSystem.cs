@@ -24,7 +24,6 @@ namespace Axiom.Player.StateMachine
         
         [Header("Capsule Colliders")]
         public CapsuleCollider _standCC;
-        public CapsuleCollider _jumpCC;
         public CapsuleCollider _crouchCC;
         
         [Header("AnimationCurve")] 
@@ -72,6 +71,7 @@ namespace Axiom.Player.StateMachine
         #endregion
 
         private bool _movementEnabled = true;
+        private float _stateExitTime;
         
         #region Turning Variables
         private Vector3 _currentFacingTransform;
@@ -257,15 +257,17 @@ namespace Axiom.Player.StateMachine
         // Determines which jump to use
         private void DelegateJump()
         {
-            if (CurrentState == _wallRunningState || _wallRunJumpBufferCounter > 0f)
+            if (CurrentState == _wallRunningState)
             {
                 WallRunJump();
-                StartJump();
+            }
+            else if (CurrentState == _inAirState && _wallRunJumpBufferCounter > 0f)
+            {
+                InAirJump();
             }
             else if (rbInfo.isGrounded)
             {
                 Jump();
-                StartJump();
             }
         }
         
@@ -276,12 +278,12 @@ namespace Axiom.Player.StateMachine
             _rb.velocity = Vector3.zero;
             _rb.velocity = new Vector3(moveDirection.normalized.x, upJumpForce, moveDirection.normalized.z);
             
-            if (rbInfo.leftWallDetected && inputDetection.movementInput.x < 0)
+            if (rbInfo.IsLeftWallDetected() && inputDetection.movementInput.x < 0)
             {
                 playerAnimation.SetJumpParam(-1f);
                 ChangeState(_wallRunningState);
             }
-            else if (rbInfo.rightWallDetected && inputDetection.movementInput.x > 0)
+            else if (rbInfo.IsRightWallDetected() && inputDetection.movementInput.x > 0)
             {
                 playerAnimation.SetJumpParam(1f);
                 ChangeState(_wallRunningState);
@@ -292,16 +294,17 @@ namespace Axiom.Player.StateMachine
                 ChangeState(_inAirState);
             }
 
+            playerAnimation.SetLandParam(0f);
+            playerAnimation.SetInAirParam(0f);
             playerAnimation.ResetTrigger("Landed");
             playerAnimation.SetTrigger("Jump");
-            playerAnimation.SetLandParam(0f);
         }
         
         // Applies upwards and sideways force to the character
         private void WallRunJump()
         {
             float forwardForceMultiplier = Vector3.Dot(orientation.forward, _wallRunNormal) > 0 ? 1 : 0;
-            Vector3 jumpVel = transform.up * wallRunJumpUpForce + orientation.forward * (forwardForceMultiplier * wallRunJumpSideForce);
+            Vector3 jumpVel = transform.up.normalized * wallRunJumpUpForce + orientation.forward.normalized * (forwardForceMultiplier * wallRunJumpSideForce);
             _wallRunningState.SetIsJumpingOnExit(true, jumpVel);
             
             playerAnimation.ResetTrigger("Landed");
@@ -309,11 +312,22 @@ namespace Axiom.Player.StateMachine
             playerAnimation.SetLandParam(_isExitingRightWall ? 1 : -1);
             _wallRunJumpBufferCounter = 0f;
         }
-        
+
+        private void InAirJump()
+        {
+            float forwardForceMultiplier = Vector3.Dot(orientation.forward, _wallRunNormal) > 0 ? 1 : 0;
+            Vector3 jumpVel = transform.up * wallRunJumpUpForce + (_wallRunNormal + orientation.forward).normalized * (forwardForceMultiplier * wallRunJumpSideForce);
+            _inAirState.InAirJump(jumpVel);
+
+            playerAnimation.ResetTrigger("Landed");
+            playerAnimation.SetInAirParam(_isExitingRightWall ? 1 : -1);
+            playerAnimation.SetLandParam(_isExitingRightWall ? 1 : -1);
+            _wallRunJumpBufferCounter = 0f;
+        }
+
         private void Landed()
         {
             SetGravity(groundGravity);
-            EndJump();
             
             _isJumping = false;
             _wallRunExitCounter = 0;
@@ -323,16 +337,6 @@ namespace Axiom.Player.StateMachine
             
             playerAnimation.SetTrigger("Landed");
             playerAnimation.SetInAirParam(0);
-        }
-
-        public void StartJump()
-        {
-            EnableCollider(_jumpCC);
-        }
-
-        public void EndJump()
-        {
-            EnableCollider(_standCC);
         }
         #endregion
         
@@ -354,7 +358,6 @@ namespace Axiom.Player.StateMachine
         {
             _standCC.enabled = _standCC == col;
             _crouchCC.enabled = _crouchCC == col;
-            _jumpCC.enabled = _jumpCC == col;
         }
         #endregion
         
@@ -394,6 +397,8 @@ namespace Axiom.Player.StateMachine
         public void EnableMovement() => _movementEnabled = true;
         // Disables movement
         public void DisableMovement() => _movementEnabled = false;
+
+        public void SetStateExitTime(float val) => _stateExitTime = val;
         #endregion
         
         #region Animation Functions

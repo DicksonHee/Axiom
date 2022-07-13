@@ -12,7 +12,8 @@ namespace Axiom.Player.Movement
         [SerializeField] private Transform camHolder;
         [SerializeField] private Transform orientation;
         [SerializeField] private Camera cam;
-        
+        [SerializeField] private Camera groundCamera;
+
         [SerializeField] private float sensX;
         [SerializeField] private float sensY;
 
@@ -66,6 +67,7 @@ namespace Axiom.Player.Movement
             
             //Perform the rotations
             camHolder.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
+            groundCamera.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
             orientation.transform.localRotation = Quaternion.Euler(0, yRotation, 0);
         }
 
@@ -76,10 +78,10 @@ namespace Axiom.Player.Movement
         public void LockCamera() => multiplier = 0;
         public void LockCameraXAxis() => sensX = 0;
         public void ApplyCameraXAxisMultiplier(float val) => sensX *= val;
-        public void UnlockCameraXAxis() => sensX = initialSensX;
+        public void ResetCameraXSens() => sensX = initialSensX;
         public void LockCameraYAxis() => sensY = 0;
         public void ApplyCameraYAxisMultiplier(float val) => sensY *= val;
-        public void UnlockCameraYAxis() => sensY = initialSensY;
+        public void ResetCameraYSens() => sensY = initialSensY;
         public void UnlockCamera() => multiplier = initialMultiplier;
 
         public void StartLeftWallRunCamera()
@@ -102,8 +104,8 @@ namespace Axiom.Player.Movement
 
         public void EndSlideCamera()
         {
-            UnlockCameraXAxis();
-            UnlockCameraYAxis();
+            ResetCameraXSens();
+            ResetCameraYSens();
         }
         
         public void ResetCamera()

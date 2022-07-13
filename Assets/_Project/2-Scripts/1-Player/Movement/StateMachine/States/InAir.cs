@@ -22,7 +22,8 @@ namespace Axiom.Player.StateMachine
 
             initialDir = MovementSystem._rb.velocity;
             initialSpeed = MovementSystem._rb.velocity.magnitude;
-            
+
+            MovementSystem.cameraLook.ApplyCameraXAxisMultiplier(0.5f);
             MovementSystem.SetGravity(MovementSystem.inAirGravity);
             MovementSystem.SetTargetSpeed(MovementSystem.inAirSpeed);
             MovementSystem.SetLRMultiplier(0.1f);
@@ -35,10 +36,10 @@ namespace Axiom.Player.StateMachine
             base.LogicUpdate();
             
             if (MovementSystem.rbInfo.isGrounded) MovementSystem.ChangeState(MovementSystem._idleState);
-            else if (MovementSystem._rb.velocity.y > 0 && !MovementSystem.isExitingWallRun)
+            else if (!MovementSystem.isExitingWallRun)
             {
-                if(MovementSystem.rbInfo.leftWallDetected) MovementSystem.ChangeState(MovementSystem._wallRunningState);
-                else if(MovementSystem.rbInfo.rightWallDetected) MovementSystem.ChangeState(MovementSystem._wallRunningState);
+                if(MovementSystem.rbInfo.IsLeftWallDetected()) MovementSystem.ChangeState(MovementSystem._wallRunningState);
+                else if(MovementSystem.rbInfo.IsRightWallDetected()) MovementSystem.ChangeState(MovementSystem._wallRunningState);
             }
 
             CalculateInAirSpeed();
@@ -52,6 +53,7 @@ namespace Axiom.Player.StateMachine
         public override void ExitState()
         {
             base.ExitState();
+            MovementSystem.cameraLook.ResetCameraXSens();
             MovementSystem.SetLRMultiplier(1f);
             MovementSystem.SetAnimatorBool("InAir", false);
             MovementSystem.EnableMovement();
@@ -67,6 +69,12 @@ namespace Axiom.Player.StateMachine
             Vector3 moveVel = (initialDir.normalized + movementInput * 0.1f) * currentSpeed;
             moveVel.y = MovementSystem._rb.velocity.y;
             MovementSystem._rb.velocity = moveVel;
+        }
+
+        public void InAirJump(Vector3 jumpVel)
+        {
+            initialDir = jumpVel;
+            initialSpeed = jumpVel.magnitude;
         }
     }
 }

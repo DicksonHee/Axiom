@@ -21,6 +21,8 @@ namespace Axiom.Player.StateMachine
 
             MovementSystem.SetAnimatorBool("Walking", true);
             MovementSystem.SetTargetSpeed(MovementSystem.walkSpeed);
+
+            if (MovementSystem._rb.velocity.magnitude > MovementSystem.currentTargetSpeed) MovementSystem.ChangeState(MovementSystem._runningState);
         }
 
         public override void LogicUpdate()
@@ -51,7 +53,7 @@ namespace Axiom.Player.StateMachine
 
         private void CheckShouldRunTimer()
         {
-            if(Mathf.Abs(MovementSystem._rb.velocity.magnitude - MovementSystem.currentTargetSpeed) < 1f) toRunCounter += Time.deltaTime;
+            if (Mathf.Abs(MovementSystem._rb.velocity.magnitude - MovementSystem.currentTargetSpeed) < 1f) toRunCounter += Time.deltaTime;           
             else toRunCounter = 0f;
         }
     }

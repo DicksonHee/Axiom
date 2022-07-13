@@ -30,6 +30,7 @@ namespace Axiom.Player.StateMachine
 
         public virtual void ExitState()
         {
+            MovementSystem.SetStateExitTime(Time.time);
         }
 
         public virtual void LogicUpdate()
