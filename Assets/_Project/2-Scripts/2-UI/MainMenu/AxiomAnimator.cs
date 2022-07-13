@@ -52,14 +52,14 @@ public class AxiomAnimator : MonoBehaviour
         mLetter.transform.DOKill();
 
         TweenParams tParms = new TweenParams().SetEase(Ease.InExpo);
-        aLetter.transform.DOMoveZ(-50f, 1f).SetAs(tParms);
+        aLetter.transform.DOMoveZ(-20f, 1f).SetAs(tParms);
         yield return new WaitForSeconds(0.1f);
-        xLetter.transform.DOMoveZ(-50f, 1f).SetAs(tParms);
+        xLetter.transform.DOMoveZ(-20f, 1f).SetAs(tParms);
         yield return new WaitForSeconds(0.1f);
-        iLetter.transform.DOMoveZ(-50f, 1f).SetAs(tParms);
+        iLetter.transform.DOMoveZ(-20f, 1f).SetAs(tParms);
         yield return new WaitForSeconds(0.1f);
-        oLetter.transform.DOMoveZ(-50f, 1f).SetAs(tParms);
+        oLetter.transform.DOMoveZ(-20f, 1f).SetAs(tParms);
         yield return new WaitForSeconds(0.1f);
-        mLetter.transform.DOMoveZ(-50f, 1f).SetAs(tParms);
+        mLetter.transform.DOMoveZ(-20f, 1f).SetAs(tParms);
     }
 }

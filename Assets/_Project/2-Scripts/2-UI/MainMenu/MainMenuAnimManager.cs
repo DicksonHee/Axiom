@@ -35,7 +35,7 @@ public class MainMenuAnimManager : MonoBehaviour
         perspectiveSwitcher.StartPerspectiveSwitch();
         yield return new WaitForSeconds(2f);
         axiomAnimator.ZoomLogo();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.4f);
 
         foreach(MainMenuAnim obj in animObjects) obj.ChangeColor();
         transform.DOMove(new Vector3(0f, 0f, -5.5f), 2f).SetEase(Ease.InBounce).SetEase(Ease.OutCubic);

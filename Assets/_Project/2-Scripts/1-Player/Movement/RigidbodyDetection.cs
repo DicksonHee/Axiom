@@ -17,6 +17,7 @@ namespace Axiom.Player.Movement
         public LayerMask groundLayer;
 
         [Header("WallRun Detection")]
+        public Transform wallDetector;
         public float wallCheckDistance = 0.5f;
         public LayerMask wallLayer;
 

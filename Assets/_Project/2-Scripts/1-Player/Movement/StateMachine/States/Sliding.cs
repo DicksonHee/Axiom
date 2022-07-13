@@ -29,13 +29,13 @@ namespace Axiom.Player.StateMachine
             initialDir = MovementSystem.moveDirection;
             initialSpeed = MovementSystem._rb.velocity.magnitude;
             distanceMultiplier = Mathf.Clamp(1 - initialSpeed / MovementSystem.forwardSpeed, 0.5f, 1f);
+            
+            MovementSystem.cameraLook.StartSlideCamera();
             MovementSystem.StartCrouch();
             MovementSystem.SetTargetSpeed(0f);
             MovementSystem.SetLRMultiplier(0.1f);
             MovementSystem.DisableMovement();
-            
-            Debug.Log(distanceMultiplier);
-            
+
             MovementSystem.rbInfo.OnSlopeEnded += ResetStateTimer;
         }
 
@@ -65,6 +65,7 @@ namespace Axiom.Player.StateMachine
         {
             base.ExitState();
             
+            MovementSystem.cameraLook.EndSlideCamera();
             MovementSystem.EnableMovement();
             MovementSystem.EndCrouch();
             MovementSystem.SetLRMultiplier(1f);
