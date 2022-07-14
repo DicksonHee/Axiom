@@ -11,7 +11,8 @@ namespace Axiom.Player.StateMachine
         private Vector3 initialDir;
         private float initialSpeed;
         private float initialHeight;
-        
+        private float wallClimbTimer;
+
         public InAir(MovementSystem movementSystem) : base(movementSystem)
         {
             stateName = StateName.InAir;
@@ -24,7 +25,8 @@ namespace Axiom.Player.StateMachine
             initialDir = MovementSystem._rb.velocity;
             initialSpeed = MovementSystem._rb.velocity.magnitude;
             initialHeight = MovementSystem.transform.position.y;
-            
+            wallClimbTimer = 0f;
+
             MovementSystem.cameraLook.ApplyCameraXAxisMultiplier(0.5f);
             MovementSystem.SetGravity(MovementSystem.inAirGravity);
             MovementSystem.SetTargetSpeed(MovementSystem.inAirSpeed);
@@ -41,10 +43,11 @@ namespace Axiom.Player.StateMachine
             {
                 if (MovementSystem._rb.velocity.y >= 0f && MovementSystem.rbInfo.canWallClimb && !MovementSystem.isExitingClimb) // Check for wall climb
                 {
-                    MovementSystem.ChangeState(MovementSystem._climbingState);
+                    wallClimbTimer += Time.deltaTime;
+                    if (ShouldWallClimb()) MovementSystem.ChangeState(MovementSystem._climbingState);
                 }
                 else if (((MovementSystem.rbInfo.IsLeftWallDetected() && MovementSystem.previousWall != MovementSystem.rbInfo.GetLeftWall()) ||
-                          (MovementSystem.rbInfo.IsRightWallDetected() && MovementSystem.previousWall != MovementSystem.rbInfo.GetRightWall())))
+                          (MovementSystem.rbInfo.IsRightWallDetected() && MovementSystem.previousWall != MovementSystem.rbInfo.GetRightWall()))) // Check for wall run
                 {
                     MovementSystem.ChangeState(MovementSystem._wallRunningState);
                 }
@@ -66,6 +69,11 @@ namespace Axiom.Player.StateMachine
             MovementSystem.cameraLook.ResetCameraXSens();
             MovementSystem.SetLRMultiplier(1f);
             MovementSystem.SetAnimatorBool("InAir", false);
+        }
+
+        private bool ShouldWallClimb()
+        {
+            return wallClimbTimer > 0.25f;
         }
 
         private void CalculateInAirSpeed()
