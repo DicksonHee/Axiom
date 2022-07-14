@@ -315,8 +315,7 @@ namespace Axiom.Player.StateMachine
         // Applies upwards and sideways force to the character
         private void WallRunJump()
         {
-            float forwardForceMultiplier = Vector3.Dot(orientation.forward, _wallRunNormal) > 0 ? 1 : 0;
-            Vector3 jumpVel = transform.up.normalized * wallRunJumpUpForce + (_wallRunNormal + orientation.forward).normalized * (forwardForceMultiplier * wallRunJumpSideForce);
+            Vector3 jumpVel = transform.up.normalized * wallRunJumpUpForce + (_wallRunNormal + orientation.forward).normalized * wallRunJumpSideForce;
             _wallRunningState.SetIsJumpingOnExit(true, jumpVel);
             
             playerAnimation.ResetTrigger("Landed");
