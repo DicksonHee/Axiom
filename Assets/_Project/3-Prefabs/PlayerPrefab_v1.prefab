@@ -712,17 +712,23 @@ MonoBehaviour:
   inAirGravity: 20
   idleSpeed: 4
   forwardSpeed: 15
-  backwardSpeed: 8
-  strafeSpeed: 8
-  walkSpeed: 8
-  inAirSpeed: 7.5
+  backwardSpeed: 10
+  strafeSpeed: 10
+  walkSpeed: 10
+  inAirSpeed: 10
   crouchSpeed: 5
   wallRunSpeed: 12
+  wallClimbSpeed: 12
   upJumpForce: 12
   wallRunJumpUpForce: 12
   wallRunJumpSideForce: 17
   wallRunExitTime: 0.5
   wallRunJumpBufferTime: 0.5
+  wallRunMaxDuration: 1
+  wallClimbMaxDuration: 1
+  _maxHeight: 0
+  previousWall: {fileID: 0}
+  isExitingClimb: 0
 --- !u!114 &7229325921360870032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -742,10 +748,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   wallDetector: {fileID: 7229325920531900281}
-  wallCheckDistance: 1.5
+  wallCheckDistance: 0.9
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
+  sphereCastRadius: 0
+  wallClimbDetectionLength: 1.1
 --- !u!114 &7229325921360870035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -776,10 +784,11 @@ MonoBehaviour:
   groundCamera: {fileID: 1213705131}
   sensX: 200
   sensY: 200
+  xRotLimits: {x: -90, y: 60}
+  multiplier: 1
   lTiltAmount: -10
   rTiltAmount: 10
   wallRunFov: 95
-  multiplier: 1
 --- !u!1 &7229325921366433916
 GameObject:
   m_ObjectHideFlags: 0
