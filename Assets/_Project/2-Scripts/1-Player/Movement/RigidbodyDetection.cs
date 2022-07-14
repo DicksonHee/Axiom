@@ -22,7 +22,6 @@ namespace Axiom.Player.Movement
         public LayerMask wallLayer;
 
         [Header("WallClimb Detection")] 
-        public float sphereCastRadius;
         public float wallClimbDetectionLength;
 
         public RaycastHit slopeHit;
