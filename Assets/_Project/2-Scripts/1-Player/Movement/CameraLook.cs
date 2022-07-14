@@ -12,16 +12,20 @@ namespace Axiom.Player.Movement
         [SerializeField] private Transform camHolder;
         [SerializeField] private Transform orientation;
         [SerializeField] private Camera cam;
-        
+        [SerializeField] private Camera groundCamera;
+
+        [Header("Mouse Variables")]
         [SerializeField] private float sensX;
         [SerializeField] private float sensY;
+        [SerializeField] private Vector2 xRotLimits;
+        [SerializeField] private float multiplier = 2f;
+        
 
         [Header("WallRun")] 
         [SerializeField] private float lTiltAmount;
         [SerializeField] private float rTiltAmount;
         [SerializeField] private float wallRunFov;
 
-        [SerializeField] private float multiplier = 2f;
 
         private float initialFov;
         private float initialMultiplier;
@@ -62,10 +66,11 @@ namespace Axiom.Player.Movement
             
             //Rotate, and also make sure we dont over- or under-rotate.
             xRotation -= mouseY * sensY * Time.fixedDeltaTime * multiplier;
-            xRotation = Mathf.Clamp(xRotation, -90f, 60f);
+            xRotation = Mathf.Clamp(xRotation, xRotLimits.x, xRotLimits.y);
             
             //Perform the rotations
             camHolder.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
+            groundCamera.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
             orientation.transform.localRotation = Quaternion.Euler(0, yRotation, 0);
         }
 
@@ -76,10 +81,10 @@ namespace Axiom.Player.Movement
         public void LockCamera() => multiplier = 0;
         public void LockCameraXAxis() => sensX = 0;
         public void ApplyCameraXAxisMultiplier(float val) => sensX *= val;
-        public void UnlockCameraXAxis() => sensX = initialSensX;
+        public void ResetCameraXSens() => sensX = initialSensX;
         public void LockCameraYAxis() => sensY = 0;
         public void ApplyCameraYAxisMultiplier(float val) => sensY *= val;
-        public void UnlockCameraYAxis() => sensY = initialSensY;
+        public void ResetCameraYSens() => sensY = initialSensY;
         public void UnlockCamera() => multiplier = initialMultiplier;
 
         public void StartLeftWallRunCamera()
@@ -102,8 +107,8 @@ namespace Axiom.Player.Movement
 
         public void EndSlideCamera()
         {
-            UnlockCameraXAxis();
-            UnlockCameraYAxis();
+            ResetCameraXSens();
+            ResetCameraYSens();
         }
         
         public void ResetCamera()
