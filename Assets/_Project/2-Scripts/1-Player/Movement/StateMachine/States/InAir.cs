@@ -37,15 +37,14 @@ namespace Axiom.Player.StateMachine
             base.LogicUpdate();
             
             if (MovementSystem.rbInfo.isGrounded) MovementSystem.ChangeState(MovementSystem._idleState);
-            else if (MovementSystem.inputDetection.movementInput.z > 0f && !MovementSystem.isExitingClimb)
+            else if (MovementSystem.inputDetection.movementInput.z > 0f)
             {
-                if (MovementSystem._rb.velocity.y >= 0f && MovementSystem.rbInfo.canWallClimb) // Check for wall climb
+                if (MovementSystem._rb.velocity.y >= 0f && MovementSystem.rbInfo.canWallClimb && !MovementSystem.isExitingClimb) // Check for wall climb
                 {
                     MovementSystem.ChangeState(MovementSystem._climbingState);
                 }
                 else if (((MovementSystem.rbInfo.IsLeftWallDetected() && MovementSystem.previousWall != MovementSystem.rbInfo.GetLeftWall()) ||
-                          (MovementSystem.rbInfo.IsRightWallDetected() && MovementSystem.previousWall != MovementSystem.rbInfo.GetRightWall())) && 
-                         !MovementSystem.rbInfo.canWallClimb)
+                          (MovementSystem.rbInfo.IsRightWallDetected() && MovementSystem.previousWall != MovementSystem.rbInfo.GetRightWall())))
                 {
                     MovementSystem.ChangeState(MovementSystem._wallRunningState);
                 }
