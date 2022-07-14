@@ -1,5 +1,123 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1213705130
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1213705134}
+  - component: {fileID: 1213705131}
+  - component: {fileID: 1213705133}
+  - component: {fileID: 1213705132}
+  m_Layer: 0
+  m_Name: Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1213705134
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213705130}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.603, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7229325921360870037}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &1213705131
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213705130}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_FocalLength: 50
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.01
+  far clip plane: 1000
+  field of view: 90
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 128
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!81 &1213705133
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213705130}
+  m_Enabled: 1
+--- !u!114 &1213705132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213705130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 1
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &7229325920075936204
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,8 +128,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7229325920075936205}
   - component: {fileID: 7229325920075936203}
-  - component: {fileID: 7229325920075936202}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: CameraHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,19 +164,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraPosition: {fileID: 7229325920787705055}
---- !u!65 &7229325920075936202
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7229325920075936204}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.5, y: 1.5, z: 1.5}
-  m_Center: {x: 0, y: 0, z: 0.2945206}
+  cam: {fileID: 7229325920276238270}
+  raycastLength: 0.5
 --- !u!1 &7229325920194672879
 GameObject:
   m_ObjectHideFlags: 0
@@ -105,7 +211,7 @@ GameObject:
   - component: {fileID: 7229325920276238269}
   - component: {fileID: 7229325920276238268}
   - component: {fileID: 7229325920276238271}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -155,10 +261,10 @@ Camera:
   field of view: 90
   orthographic: 0
   orthographic size: 5
-  m_Depth: 0
+  m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2147483647
+    m_Bits: 631
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -321,7 +427,6 @@ GameObject:
   - component: {fileID: 7229325921360870037}
   - component: {fileID: 7229325921360870045}
   - component: {fileID: 7229325921360870044}
-  - component: {fileID: 7229325921360870047}
   - component: {fileID: 7229325921360870046}
   - component: {fileID: 7229325921360870033}
   - component: {fileID: 7229325921360870032}
@@ -349,6 +454,7 @@ Transform:
   - {fileID: 7194782850870069279}
   - {fileID: 7229325921154920146}
   - {fileID: 7229325920531900281}
+  - {fileID: 1213705134}
   m_Father: {fileID: 7229325920194672876}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -378,24 +484,10 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 44d9bb0601a0962469614121ea797f6b, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.25
+  m_Radius: 0.6
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!136 &7229325921360870047
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7229325921360870036}
-  m_Material: {fileID: 13400000, guid: 44d9bb0601a0962469614121ea797f6b, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.25
-  m_Height: 0.799767
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.4301164, z: 0}
 --- !u!136 &7229325921360870046
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -406,7 +498,7 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 44d9bb0601a0962469614121ea797f6b, type: 2}
   m_IsTrigger: 0
   m_Enabled: 0
-  m_Radius: 0.25
+  m_Radius: 0.35
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0.47, z: 0}
@@ -429,7 +521,6 @@ MonoBehaviour:
   orientation: {fileID: 7229325920531900281}
   cameraPosition: {fileID: 7229325920787705055}
   _standCC: {fileID: 7229325921360870044}
-  _jumpCC: {fileID: 7229325921360870047}
   _crouchCC: {fileID: 7229325921360870046}
   accelerationCurve:
     serializedVersion: 2
@@ -617,20 +708,20 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  groundGravity: 10
-  inAirGravity: 35
-  idleSpeed: 8
-  forwardSpeed: 30
-  backwardSpeed: 20
-  strafeSpeed: 20
-  walkSpeed: 20
-  inAirSpeed: 15
-  crouchSpeed: 10
-  wallRunSpeed: 20
-  upJumpForce: 20
-  wallRunJumpUpForce: 10
-  wallRunJumpSideForce: 15
-  wallRunExitTime: 1
+  groundGravity: 5
+  inAirGravity: 20
+  idleSpeed: 4
+  forwardSpeed: 15
+  backwardSpeed: 8
+  strafeSpeed: 8
+  walkSpeed: 8
+  inAirSpeed: 7.5
+  crouchSpeed: 5
+  wallRunSpeed: 12
+  upJumpForce: 12
+  wallRunJumpUpForce: 12
+  wallRunJumpSideForce: 17
+  wallRunExitTime: 0.5
   wallRunJumpBufferTime: 0.5
 --- !u!114 &7229325921360870032
 MonoBehaviour:
@@ -651,7 +742,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   wallDetector: {fileID: 7229325920531900281}
-  wallCheckDistance: 1.25
+  wallCheckDistance: 1.5
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -682,11 +773,12 @@ MonoBehaviour:
   camHolder: {fileID: 7229325920075936205}
   orientation: {fileID: 7229325920531900281}
   cam: {fileID: 7229325920276238269}
+  groundCamera: {fileID: 1213705131}
   sensX: 200
   sensY: 200
   lTiltAmount: -10
   rTiltAmount: 10
-  wallRunFov: 100
+  wallRunFov: 95
   multiplier: 1
 --- !u!1 &7229325921366433916
 GameObject:

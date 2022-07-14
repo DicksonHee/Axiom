@@ -8,8 +8,10 @@ namespace Axiom.Player.StateMachine
 {
 	public class WallRunning : State
 	{
+		private Transform wallTransform;
 		private Vector3 wallNormal;
 		private Vector3 wallForward;
+		private Vector3 exitVelocity;
 		private float initialYVel;
 		private bool isRightWallEnter;
 		private bool isJumpingOnExit;
@@ -24,9 +26,11 @@ namespace Axiom.Player.StateMachine
 			base.EnterState();
 
 			initialYVel = MovementSystem._rb.velocity.y;
-			isRightWallEnter = MovementSystem.rbInfo.rightWallDetected;
+			isRightWallEnter = MovementSystem.rbInfo.IsRightWallDetected();
 			isJumpingOnExit = false;
-			wallNormal = MovementSystem.rbInfo.rightWallDetected ? MovementSystem.rbInfo.rightWallHit.normal : MovementSystem.rbInfo.leftWallHit.normal;
+			
+			wallTransform = isRightWallEnter ? MovementSystem.rbInfo.GetRightWall() : MovementSystem.rbInfo.GetLeftWall();
+			wallNormal = MovementSystem.rbInfo.IsRightWallDetected() ? MovementSystem.rbInfo.GetRightWallNormal() : MovementSystem.rbInfo.GetLeftWallNormal();
 			wallForward = Vector3.Cross(wallNormal, MovementSystem.transform.up);
 			if ((MovementSystem.orientation.forward - wallForward).magnitude > (MovementSystem.orientation.forward - -wallForward).magnitude) wallForward = -wallForward;
 
@@ -34,7 +38,7 @@ namespace Axiom.Player.StateMachine
 			else MovementSystem.cameraLook.StartLeftWallRunCamera();
 
 			MovementSystem.DisableMovement();
-			MovementSystem.EnterWallRunState(wallNormal, isRightWallEnter);
+			MovementSystem.EnterWallRunState(wallTransform, wallNormal, isRightWallEnter);
 			MovementSystem.SetGravity(MovementSystem.inAirGravity);
 			
 			MovementSystem.SetAnimatorBool("WallRunning", true);
@@ -46,12 +50,9 @@ namespace Axiom.Player.StateMachine
 		{
 			base.LogicUpdate();
 
-			if (MovementSystem.inputDetection.movementInput.z == 0 ||
-			    !isRightWallEnter && MovementSystem.rbInfo.rightWallDetected ||
-			    isRightWallEnter && MovementSystem.rbInfo.leftWallDetected ||
-			    !MovementSystem.rbInfo.rightWallDetected && !MovementSystem.rbInfo.leftWallDetected ||
-			    Vector3.Dot(MovementSystem.orientation.forward, wallNormal) > 0.75f ||
-			    Time.time - stateStartTime > 0.75f)
+			if(isRightWallEnter && !MovementSystem.rbInfo.IsRightWallDetected() ||
+			   !isRightWallEnter && !MovementSystem.rbInfo.IsLeftWallDetected() ||
+			   Time.time - stateStartTime > MovementSystem.wallRunMaxDuration)
 			{
 				MovementSystem.ChangeState(MovementSystem._inAirState);
 			}
@@ -73,6 +74,10 @@ namespace Axiom.Player.StateMachine
 				moveVel.y = 0f;
 				MovementSystem._rb.velocity = moveVel;
 			}
+			else
+            {
+				MovementSystem._rb.velocity = exitVelocity;
+            }
 			
 			MovementSystem.cameraLook.ResetCamera();
 			MovementSystem.EnableMovement();
@@ -85,12 +90,17 @@ namespace Axiom.Player.StateMachine
 		private void WallRunningMovement()
 		{
 			float yVel = Mathf.Lerp(initialYVel, 0f, (Time.time - stateStartTime) * 2);
-			Vector3 velocity = wallForward * MovementSystem.wallRunSpeed;
+			Vector3 velocity = (wallForward + -wallNormal) * MovementSystem.wallRunSpeed;
 			velocity = new Vector3(velocity.x, yVel, velocity.z);
 			MovementSystem._rb.velocity = velocity;
 		}
 
-		public void SetIsJumpingOnExit(bool val) => isJumpingOnExit = val;
+		public void SetIsJumpingOnExit(bool val, Vector3 exitVel)
+		{
+			isJumpingOnExit = val;
+			exitVelocity = exitVel;
+			MovementSystem.ChangeState(MovementSystem._inAirState);
+		}
 	}
 }
 

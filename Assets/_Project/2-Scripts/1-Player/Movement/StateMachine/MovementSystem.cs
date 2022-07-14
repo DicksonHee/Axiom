@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Numerics;
 using Axiom.Player.StateMachine;
 using Unity.VisualScripting;
@@ -24,7 +25,6 @@ namespace Axiom.Player.StateMachine
         
         [Header("Capsule Colliders")]
         public CapsuleCollider _standCC;
-        public CapsuleCollider _jumpCC;
         public CapsuleCollider _crouchCC;
         
         [Header("AnimationCurve")] 
@@ -49,6 +49,7 @@ namespace Axiom.Player.StateMachine
         public float inAirSpeed = 8f;
         public float crouchSpeed = 8f;
         public float wallRunSpeed = 25f;
+        public float wallClimbSpeed = 12f;
         
         [Header("Jump")]
         public float upJumpForce = 10f;
@@ -58,6 +59,10 @@ namespace Axiom.Player.StateMachine
         public float wallRunJumpSideForce = 10f;
         public float wallRunExitTime = 0.5f;
         public float wallRunJumpBufferTime = 0.5f;
+        public float wallRunMaxDuration = 1f;
+
+        [Header("WallClimb")] 
+        public float wallClimbMaxDuration = 1f;
         #endregion
         
         #region Public Variables
@@ -72,7 +77,9 @@ namespace Axiom.Player.StateMachine
         #endregion
 
         private bool _movementEnabled = true;
-        
+        public float _maxHeight;
+        private bool earlyStopSlowSpeedCO;
+
         #region Turning Variables
         private Vector3 _currentFacingTransform;
         private float _turnCheckCounter;
@@ -91,11 +98,14 @@ namespace Axiom.Player.StateMachine
         private Vector3 _wallRunNormal;
         private Vector3 _wallRunExitPosition;
         private bool _isExitingRightWall;
+        public Transform previousWall;
         #endregion
         
         #region Crouch/Slide Variables
         private float _slideExitCounter;
         #endregion
+
+        public bool isExitingClimb;
         
         #region States
         public Idle _idleState { get; private set; }
@@ -147,7 +157,7 @@ namespace Axiom.Player.StateMachine
 
             CalculateMoveDirection();
             HandleAnimations();
-            
+
             CurrentState.LogicUpdate();
         }
 
@@ -163,8 +173,8 @@ namespace Axiom.Player.StateMachine
         // Calculate moveDirection based on the current input
         private void CalculateMoveDirection()
         {
-            float wallJumpMultiplier = _wallRunExitCounter > 0f ? 0f : 1f;
-            moveDirection = orientation.forward * inputDetection.movementInput.z + orientation.right * (inputDetection.movementInput.x * wallJumpMultiplier * lrMultiplier);
+            //float wallJumpMultiplier = _wallRunExitCounter > 0f ? 0f : 1f;
+            moveDirection = orientation.forward * inputDetection.movementInput.z + orientation.right * (inputDetection.movementInput.x * lrMultiplier);
             CheckSlopeMovementDirection();
         }
         
@@ -226,6 +236,7 @@ namespace Axiom.Player.StateMachine
             if(!rbInfo.isGrounded && 
                CurrentState.stateName != StateName.InAir && 
                CurrentState.stateName != StateName.WallRunning &&
+               CurrentState.stateName != StateName.Climbing &&
                CurrentState.stateName != StateName.Crouching &&
                CurrentState.stateName != StateName.Sliding) ChangeState(_inAirState);
         }
@@ -257,15 +268,18 @@ namespace Axiom.Player.StateMachine
         // Determines which jump to use
         private void DelegateJump()
         {
-            if (CurrentState == _wallRunningState || _wallRunJumpBufferCounter > 0f)
+            if (CurrentState == _wallRunningState)
             {
                 WallRunJump();
-                StartJump();
+            }
+            else if (CurrentState == _inAirState && _wallRunJumpBufferCounter > 0f)
+            {
+                InAirJump();
             }
             else if (rbInfo.isGrounded)
             {
                 Jump();
-                StartJump();
+                isExitingClimb = false;
             }
         }
         
@@ -276,12 +290,12 @@ namespace Axiom.Player.StateMachine
             _rb.velocity = Vector3.zero;
             _rb.velocity = new Vector3(moveDirection.normalized.x, upJumpForce, moveDirection.normalized.z);
             
-            if (rbInfo.leftWallDetected && inputDetection.movementInput.x < 0)
+            if (rbInfo.IsLeftWallDetected() && inputDetection.movementInput.x < 0)
             {
                 playerAnimation.SetJumpParam(-1f);
                 ChangeState(_wallRunningState);
             }
-            else if (rbInfo.rightWallDetected && inputDetection.movementInput.x > 0)
+            else if (rbInfo.IsRightWallDetected() && inputDetection.movementInput.x > 0)
             {
                 playerAnimation.SetJumpParam(1f);
                 ChangeState(_wallRunningState);
@@ -292,49 +306,52 @@ namespace Axiom.Player.StateMachine
                 ChangeState(_inAirState);
             }
 
+            playerAnimation.SetLandParam(0f);
+            playerAnimation.SetInAirParam(0f);
             playerAnimation.ResetTrigger("Landed");
             playerAnimation.SetTrigger("Jump");
-            playerAnimation.SetLandParam(0f);
         }
         
         // Applies upwards and sideways force to the character
         private void WallRunJump()
         {
-            float forwardForceMultiplier = Vector3.Dot(orientation.forward, _wallRunNormal) > 0 ? 1 : 0;
-            _rb.velocity = transform.up * wallRunJumpUpForce + orientation.forward * (forwardForceMultiplier * wallRunJumpSideForce);
-            _wallRunningState.SetIsJumpingOnExit(true);
-
-            ChangeState(_inAirState);
+            Vector3 jumpVel = transform.up.normalized * wallRunJumpUpForce + (_wallRunNormal + orientation.forward).normalized * wallRunJumpSideForce;
+            _wallRunningState.SetIsJumpingOnExit(true, jumpVel);
             
             playerAnimation.ResetTrigger("Landed");
             playerAnimation.SetInAirParam(_isExitingRightWall ? 1 : -1);
             playerAnimation.SetLandParam(_isExitingRightWall ? 1 : -1);
             _wallRunJumpBufferCounter = 0f;
         }
-        
+
+        private void InAirJump()
+        {
+            float forwardForceMultiplier = Vector3.Dot(orientation.forward, _wallRunNormal) > 0 ? 1 : 0;
+            Vector3 jumpVel = transform.up * wallRunJumpUpForce + (_wallRunNormal + orientation.forward).normalized * (forwardForceMultiplier * wallRunJumpSideForce);
+            _inAirState.InAirJump(jumpVel);
+
+            playerAnimation.ResetTrigger("Landed");
+            playerAnimation.SetInAirParam(_isExitingRightWall ? 1 : -1);
+            playerAnimation.SetLandParam(_isExitingRightWall ? 1 : -1);
+            _wallRunJumpBufferCounter = 0f;
+        }
+
         private void Landed()
         {
             SetGravity(groundGravity);
-            EndJump();
             
             _isJumping = false;
+            previousWall = null;
             _wallRunExitCounter = 0;
-            
+
+
             playerAnimation.ResetTrigger("WallJump");
             playerAnimation.ResetTrigger("Jump");
-            
-            playerAnimation.SetTrigger("Landed");
+
             playerAnimation.SetInAirParam(0);
-        }
-
-        public void StartJump()
-        {
-            EnableCollider(_jumpCC);
-        }
-
-        public void EndJump()
-        {
-            EnableCollider(_standCC);
+            playerAnimation.SetTrigger("Landed");
+            
+            ResetMaxHeight();
         }
         #endregion
         
@@ -350,13 +367,29 @@ namespace Axiom.Player.StateMachine
         }
         #endregion
         
+        #region WallRun Functions
+        public void EnterWallRunState(Transform wallTransform, Vector3 normal, bool isWallOnRight)
+        {
+            _wallRunNormal = normal;
+            _isExitingRightWall = isWallOnRight;
+            previousWall = wallTransform;
+        }
+        
+        // Called when exiting the wall run state
+        public void ExitWallRunState()
+        {
+            _wallRunExitCounter = wallRunExitTime;
+            _wallRunJumpBufferCounter = wallRunJumpBufferTime;
+            isExitingWallRun = true;
+        }
+        #endregion
+        
         #region Capsule Collider Functions
 
         private void EnableCollider(CapsuleCollider col)
         {
             _standCC.enabled = _standCC == col;
             _crouchCC.enabled = _crouchCC == col;
-            _jumpCC.enabled = _jumpCC == col;
         }
         #endregion
         
@@ -366,20 +399,6 @@ namespace Axiom.Player.StateMachine
         {
             _gravityCounter = 0f;
             currentTargetGravity = gravityVal;
-        }
-
-        public void EnterWallRunState(Vector3 normal, bool isWallOnRight)
-        {
-            _wallRunNormal = normal;
-            _isExitingRightWall = isWallOnRight;
-        }
-        
-        // Called when exiting the wall run state
-        public void ExitWallRunState()
-        {
-            _wallRunExitCounter = wallRunExitTime;
-            _wallRunJumpBufferCounter = wallRunJumpBufferTime;
-            isExitingWallRun = true;
         }
 
         public void ExitSlideState()
@@ -392,12 +411,19 @@ namespace Axiom.Player.StateMachine
         public void SetTargetSpeed(float speedVal) => currentTargetSpeed = speedVal;
         // Set left and right movement multiplier
         public void SetLRMultiplier(float multiplier) => lrMultiplier = multiplier;
+
+        public void ResetMaxHeight() => _maxHeight = 0f;
+
+        public void SetMaxHeight(float val)
+        {
+            if (_maxHeight < val) _maxHeight = val;
+        }
         // Enables movement
         public void EnableMovement() => _movementEnabled = true;
         // Disables movement
         public void DisableMovement() => _movementEnabled = false;
         #endregion
-        
+
         #region Animation Functions
 
         private void HandleAnimations()
@@ -408,7 +434,7 @@ namespace Axiom.Player.StateMachine
 
         public void SetAnimatorBool(string param, bool val) => playerAnimation.SetBool(param, val);
         #endregion
-        
+
         #region Debug Functions
         private void DrawLine()
         {
@@ -416,8 +442,21 @@ namespace Axiom.Player.StateMachine
         }
         public string GetCurrentStateName() => CurrentState.stateName.ToString();
         public string GetPreviousStatename() => PreviousState.ToString();
-        public float GetCurrentSpeed() => _rb.velocity.magnitude;
+
+        public float GetCurrentSpeed()
+        {
+            Vector3 vel = _rb.velocity;
+            vel.y = 0;
+            return vel.magnitude;
+        }
 
         #endregion
     }
+}
+
+public enum PrevWallRun
+{
+    Left,
+    Right,
+    None
 }
