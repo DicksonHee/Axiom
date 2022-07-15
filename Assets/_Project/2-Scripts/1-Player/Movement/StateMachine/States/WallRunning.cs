@@ -50,8 +50,8 @@ namespace Axiom.Player.StateMachine
 		{
 			base.LogicUpdate();
 
-			if(isRightWallEnter && !MovementSystem.rbInfo.IsRightWallDetected() ||
-			   !isRightWallEnter && !MovementSystem.rbInfo.IsLeftWallDetected() ||
+			if(isRightWallEnter && !MovementSystem.rbInfo.WallRunningRightDetected() ||
+			   !isRightWallEnter && !MovementSystem.rbInfo.WallRunningLeftDetected() ||
 			   Time.time - stateStartTime > MovementSystem.wallRunMaxDuration)
 			{
 				MovementSystem.ChangeState(MovementSystem._inAirState);

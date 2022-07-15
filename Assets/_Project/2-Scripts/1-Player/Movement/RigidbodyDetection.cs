@@ -22,8 +22,13 @@ namespace Axiom.Player.Movement
         public LayerMask wallLayer;
 
         [Header("WallClimb Detection")] 
-        public float sphereCastRadius;
         public float wallClimbDetectionLength;
+
+        [Header("Ledge Detection")]
+        public float ledgeDetector;
+        public float ledgeHeightLength;
+        public float ledgeForwardOffset; 
+        public float ledgeDetectorHeightOffset;
 
         public RaycastHit slopeHit;
         private RaycastHit rightWallHit;
@@ -46,13 +51,14 @@ namespace Axiom.Player.Movement
         #endregion
         
         #region WallClimb Detection
-        public bool wallFrontDetected { get; private set; }
-        public float wallLookAngle { get; private set; }
-        
         public bool canWallClimb { get; private set; }
-        #endregion
-        
-        public event Action OnPlayerLanded;
+		#endregion
+
+		#region Ledge Detection
+        public bool isDetectingLedge { get; private set; }
+		#endregion
+
+		public event Action OnPlayerLanded;
         public event Action OnSlopeEnded;
 
         private void Update()
@@ -61,8 +67,7 @@ namespace Axiom.Player.Movement
             SlopeDetection();
             WallRunDetection();
             WallClimbCheck();
-            
-            Debug.Log(canWallClimb);
+            LedgeCheck();
         }
 
         #region Ground Functions
@@ -105,9 +110,12 @@ namespace Axiom.Player.Movement
             leftBackWallDetected = Physics.Raycast(position, (-right + back).normalized, out leftBackWallHit, wallCheckDistance * 1.2f, wallLayer);
         }
 
-        public bool IsLeftWallDetected() => leftWallDetected || leftFrontWallDetected || leftBackWallDetected;
-        public bool IsRightWallDetected() => rightWallDetected || rightFrontWallDetected || rightBackWallDetected;
-        
+        public bool IsLeftWallDetected() => !canWallClimb && (leftWallDetected || leftFrontWallDetected);
+        public bool IsRightWallDetected() => !canWallClimb && (rightWallDetected || rightFrontWallDetected);
+        public bool WallRunningLeftDetected() => leftWallDetected || leftFrontWallDetected || leftBackWallDetected;
+        public bool WallRunningRightDetected() => rightWallDetected || rightFrontWallDetected || rightBackWallDetected;
+
+
         public Vector3 GetLeftWallNormal()
         {
             if (leftWallDetected) return leftWallHit.normal;
@@ -139,9 +147,10 @@ namespace Axiom.Player.Movement
             if (rightBackWallDetected) return rightBackWallHit.transform;
             return null;
         }
-        #endregion
-        
-        private void WallClimbCheck()
+		#endregion
+
+		#region WallClimb Functions
+		private void WallClimbCheck()
         {
             var position = wallDetector.position;
             var forward = orientation.forward;
@@ -153,9 +162,25 @@ namespace Axiom.Player.Movement
             if (rightDetected && leftDetected) canWallClimb = true;
             else canWallClimb = false;
         }
-        
-        private void OnDrawGizmos()
+        #endregion
+
+        #region Ledge Functions
+        private void LedgeCheck()
         {
+            Vector3 frontPoint = orientation.position + orientation.forward.normalized * ledgeForwardOffset + orientation.up.normalized * ledgeDetectorHeightOffset;
+            bool ledgeDetected = Physics.Raycast(frontPoint, -transform.up, out RaycastHit hitInfo, 5f, wallLayer);
+
+            if (ledgeDetected && hitInfo.distance < ledgeHeightLength) isDetectingLedge = true; 
+            else isDetectingLedge = false;
+        }
+		#endregion
+
+		private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.blue;
+            Vector3 spawnPoint = orientation.position + orientation.forward.normalized * ledgeForwardOffset + orientation.up.normalized * ledgeDetectorHeightOffset;
+            Gizmos.DrawLine(spawnPoint, spawnPoint + -orientation.up.normalized * ledgeHeightLength);
+
             Gizmos.color = Color.green;
             Gizmos.DrawLine(wallDetector.position, wallDetector.position + (Quaternion.AngleAxis(15f, wallDetector.up) * orientation.forward).normalized * wallClimbDetectionLength);
             Gizmos.DrawLine(wallDetector.position, wallDetector.position + (Quaternion.AngleAxis(-15f, wallDetector.up) * orientation.forward).normalized * wallClimbDetectionLength);

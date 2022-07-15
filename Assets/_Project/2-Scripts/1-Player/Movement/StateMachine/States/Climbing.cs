@@ -17,6 +17,7 @@ namespace Axiom.Player.StateMachine
         {
             base.EnterState();
 
+            MovementSystem.EnterClimbState();
             MovementSystem.DisableMovement();
             MovementSystem.SetGravity(0f);
             
@@ -27,9 +28,8 @@ namespace Axiom.Player.StateMachine
         {
             base.LogicUpdate();
 
-            if (Time.time - stateStartTime > MovementSystem.wallClimbMaxDuration ||
-                !MovementSystem.rbInfo.canWallClimb)
-                MovementSystem.ChangeState(MovementSystem._inAirState);
+            if (Time.time - stateStartTime > MovementSystem.wallClimbMaxDuration || !MovementSystem.rbInfo.canWallClimb) MovementSystem.ChangeState(MovementSystem._inAirState);
+            else if (MovementSystem.rbInfo.isDetectingLedge && !MovementSystem.isExitingLedgeGrab) MovementSystem.ChangeState(MovementSystem._ledgeGrabbingState);
         }
 
         public override void PhysicsUpdate()
@@ -42,11 +42,11 @@ namespace Axiom.Player.StateMachine
         public override void ExitState()
         {
             base.ExitState();
-            
-            MovementSystem.isExitingClimb = true;
+
+            MovementSystem.ExitClimbState();
             MovementSystem.EnableMovement();
-            Vector3 inputVel = MovementSystem.moveDirection;
-            MovementSystem._rb.velocity = new Vector3(inputVel.x, MovementSystem.wallClimbSpeed * 1.5f, inputVel.z);
+            //Vector3 inputVel = MovementSystem.moveDirection;
+            //MovementSystem._rb.velocity = new Vector3(inputVel.x, MovementSystem.wallClimbSpeed * 1.5f, inputVel.z);
             
             MovementSystem.SetAnimatorBool("WallClimb", false);
         }
