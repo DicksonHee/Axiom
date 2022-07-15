@@ -91,9 +91,9 @@ namespace Axiom.Player.StateMachine
                 currentSpeed = Mathf.Clamp(initialSpeed - velDiff * MovementSystem.slideCurve.Evaluate((Time.time - stateStartTime) * distanceMultiplier), 0, float.MaxValue);
             }
 
-            Vector3 moveVel = initialDir.normalized * currentSpeed;
+            Vector3 moveVel = MovementSystem.moveDirection.normalized * currentSpeed;
             moveVel = MovementSystem.CheckSlopeMovementDirection(moveVel);
-            moveVel.y += MovementSystem._rb.velocity.y;
+            moveVel.y = MovementSystem._rb.velocity.y;
             MovementSystem._rb.velocity = moveVel;
         }
 
