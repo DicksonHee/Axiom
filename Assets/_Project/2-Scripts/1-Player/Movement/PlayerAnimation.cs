@@ -29,6 +29,16 @@ namespace Axiom.Player.Movement
             transform.DOLocalRotateQuaternion(orientation.rotation, 0.1f);
         }
 
+        public void MoveWithinCapsule(Vector3 targetPos)
+        {
+            transform.DOLocalMove(targetPos, 0.3f);
+        }
+
+        public void MoveToCenter()
+        {
+            transform.DOLocalMove(Vector3.zero, 0.25f);
+        }
+
         public void SetMovementDir(Vector3 movementDir)
         {
             _playerAnimator.SetFloat(XVel, movementDir.x, 0.1f, Time.deltaTime);

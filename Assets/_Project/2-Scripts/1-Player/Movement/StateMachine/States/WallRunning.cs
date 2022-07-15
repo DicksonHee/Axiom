@@ -38,6 +38,7 @@ namespace Axiom.Player.StateMachine
 			else MovementSystem.cameraLook.StartLeftWallRunCamera();
 
 			MovementSystem.DisableMovement();
+			MovementSystem.rbInfo.SetIsOnWall(MovementSystem.orientation.right, MovementSystem.orientation.forward);
 			MovementSystem.EnterWallRunState(wallTransform, wallNormal, isRightWallEnter);
 			MovementSystem.SetGravity(MovementSystem.inAirGravity);
 			
@@ -50,8 +51,9 @@ namespace Axiom.Player.StateMachine
 		{
 			base.LogicUpdate();
 
-			if(isRightWallEnter && !MovementSystem.rbInfo.WallRunningRightDetected() ||
-			   !isRightWallEnter && !MovementSystem.rbInfo.WallRunningLeftDetected() ||
+			if((isRightWallEnter && !MovementSystem.rbInfo.WallRunningRightDetected()) ||
+			   (!isRightWallEnter && !MovementSystem.rbInfo.WallRunningLeftDetected()) ||
+			   Vector3.Dot(MovementSystem.orientation.forward, wallNormal) >= 0.9f ||
 			   Time.time - stateStartTime > MovementSystem.wallRunMaxDuration)
 			{
 				MovementSystem.ChangeState(MovementSystem._inAirState);
@@ -78,7 +80,8 @@ namespace Axiom.Player.StateMachine
             {
 				MovementSystem._rb.velocity = exitVelocity;
             }
-			
+
+			MovementSystem.rbInfo.SetIsOffWall();
 			MovementSystem.cameraLook.ResetCamera();
 			MovementSystem.EnableMovement();
 			MovementSystem.ExitWallRunState();

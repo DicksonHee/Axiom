@@ -156,6 +156,7 @@ namespace Axiom.Player.StateMachine
             CheckIsTurning();
             CheckWallRunTimers();
             CheckSlideTimers();
+            CheckLedgeGrabTimers();
 
             CalculateMoveDirection();
             HandleAnimations();
@@ -210,7 +211,7 @@ namespace Axiom.Player.StateMachine
         // Set _turnMultiplier to the Dot product of the _currentVector and _currentFacingTransform, clamped from 0.5f, 1f
         private void CheckIsTurning()
         {
-            _turnMultiplier = Mathf.Clamp(Vector3.Dot(_currentFacingTransform, orientation.TransformDirection(Vector3.forward)), 0.5f, 1f);
+            _turnMultiplier = Mathf.Clamp(Vector3.Dot(_currentFacingTransform, orientation.forward), 0.5f, 1f);
             if (Mathf.Abs(cameraLook.mouseX) < 1f) _turnCheckCounter += Time.deltaTime;
             if (_turnCheckCounter > _turnCheckInterval)
             {
@@ -330,7 +331,7 @@ namespace Axiom.Player.StateMachine
         // Applies upwards and sideways force to the character
         private void WallRunJump()
         {
-            Vector3 jumpVel = transform.up.normalized * wallRunJumpUpForce + (_wallRunNormal + orientation.forward).normalized * wallRunJumpSideForce;
+            Vector3 jumpVel = transform.up.normalized * wallRunJumpUpForce + (_wallRunNormal * 0.5f + orientation.forward).normalized * wallRunJumpSideForce;
             _wallRunningState.SetIsJumpingOnExit(true, jumpVel);
             
             playerAnimation.ResetTrigger("Landed");

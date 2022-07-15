@@ -23,8 +23,12 @@ namespace Axiom.Player.StateMachine
 			isJumpingOnExit = false;
 			exitVelocity = Vector3.zero;
 
+			Vector3 targetPoint = MovementSystem.rbInfo.GetLedgeHandDifference();
+			targetPoint.y = 0;
+
 			MovementSystem.DisableMovement();
 			MovementSystem.SetGravity(0f);
+			MovementSystem.playerAnimation.MoveWithinCapsule(targetPoint);
 
 			MovementSystem.SetAnimatorBool("LedgeGrabbing", true);
 		}
@@ -57,6 +61,7 @@ namespace Axiom.Player.StateMachine
 
 			MovementSystem.EnableMovement();
 			MovementSystem.ExitLedgeGrabState();
+			MovementSystem.playerAnimation.MoveToCenter();
 
 			MovementSystem.SetAnimatorBool("LedgeGrabbing", false);
 		}
