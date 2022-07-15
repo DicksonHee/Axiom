@@ -63,6 +63,7 @@ namespace Axiom.Player.StateMachine
 
         [Header("WallClimb")] 
         public float wallClimbMaxDuration = 1f;
+        public float exitWallClimbDuration = 0.2f;
         #endregion
         
         #region Public Variables
@@ -74,11 +75,12 @@ namespace Axiom.Player.StateMachine
         public float lrMultiplier{ get; private set; }
         public bool isExitingWallRun{ get; private set; }
         public bool isExitingSlide{ get; private set; }
+        public bool isExitingClimb { get; private set; }
+        public bool isExitingLedgeGrab { get; private set; }
         #endregion
 
         private bool _movementEnabled = true;
         public float _maxHeight;
-        private bool earlyStopSlowSpeedCO;
 
         #region Turning Variables
         private Vector3 _currentFacingTransform;
@@ -105,7 +107,7 @@ namespace Axiom.Player.StateMachine
         private float _slideExitCounter;
         #endregion
 
-        public bool isExitingClimb;
+        private float _ledgeGrabExitCounter;
         
         #region States
         public Idle _idleState { get; private set; }
@@ -222,13 +224,19 @@ namespace Axiom.Player.StateMachine
         {
             _wallRunExitCounter -= Time.deltaTime;
             _wallRunJumpBufferCounter -= Time.deltaTime;
-            if (_wallRunExitCounter <= 0) isExitingWallRun = false;
+            isExitingWallRun = _wallRunExitCounter >= 0;
         }
 
         private void CheckSlideTimers()
         {
             _slideExitCounter -= Time.deltaTime;
-            if (_slideExitCounter <= 0) isExitingSlide = false;
+            isExitingSlide = _slideExitCounter >= 0;
+        }
+
+        private void CheckLedgeGrabTimers()
+        {
+            _ledgeGrabExitCounter -= Time.deltaTime;
+            isExitingLedgeGrab = _ledgeGrabExitCounter >= 0;
         }
 
         private void CheckChangeToAirState()
@@ -236,6 +244,8 @@ namespace Axiom.Player.StateMachine
             if(!rbInfo.isGrounded && 
                CurrentState.stateName != StateName.InAir && 
                CurrentState.stateName != StateName.WallRunning &&
+               CurrentState.stateName != StateName.LedgeGrabbing &&
+               CurrentState.stateName != StateName.LedgeClimbing &&
                CurrentState.stateName != StateName.Climbing &&
                CurrentState.stateName != StateName.Crouching &&
                CurrentState.stateName != StateName.Sliding) ChangeState(_inAirState);
@@ -256,6 +266,8 @@ namespace Axiom.Player.StateMachine
         // Apply constant downward force on the character
         private void ApplyGravity()
         {
+            if (currentTargetGravity == 0) return;
+
             _gravityCounter += Time.fixedDeltaTime;
             if (rbInfo.isOnSlope && !_isJumping) currentTargetGravity = 100f;
             else currentTargetGravity = rbInfo.isGrounded ? groundGravity : inAirGravity;
@@ -272,6 +284,10 @@ namespace Axiom.Player.StateMachine
             {
                 WallRunJump();
             }
+            else if (CurrentState == _ledgeGrabbingState)
+            {
+                LedgeGrabJump();
+            }
             else if (CurrentState == _inAirState && _wallRunJumpBufferCounter > 0f)
             {
                 InAirJump();
@@ -279,7 +295,6 @@ namespace Axiom.Player.StateMachine
             else if (rbInfo.isGrounded)
             {
                 Jump();
-                isExitingClimb = false;
             }
         }
         
@@ -336,6 +351,16 @@ namespace Axiom.Player.StateMachine
             _wallRunJumpBufferCounter = 0f;
         }
 
+        private void LedgeGrabJump()
+        {
+            Vector3 jumpVel = transform.up * wallRunJumpUpForce + orientation.forward.normalized * wallRunJumpSideForce;
+            _ledgeGrabbingState.SetIsJumpingOnExit(true, jumpVel);
+
+            playerAnimation.ResetTrigger("Landed");
+            playerAnimation.SetInAirParam(0f);
+            playerAnimation.SetLandParam(0f);
+            _wallRunJumpBufferCounter = 0f;
+        }
         private void Landed()
         {
             SetGravity(groundGravity);
@@ -343,7 +368,7 @@ namespace Axiom.Player.StateMachine
             _isJumping = false;
             previousWall = null;
             _wallRunExitCounter = 0;
-
+            isExitingClimb = false;
 
             playerAnimation.ResetTrigger("WallJump");
             playerAnimation.ResetTrigger("Jump");
@@ -401,6 +426,20 @@ namespace Axiom.Player.StateMachine
             currentTargetGravity = gravityVal;
         }
 
+        public void EnterClimbState()
+        {
+            isExitingClimb = false;
+        }
+
+        public void ExitClimbState()
+        {
+            isExitingClimb = true;
+        }
+
+        public void ExitLedgeGrabState()
+        {
+            _ledgeGrabExitCounter = 0.3f;
+        }
         public void ExitSlideState()
         {
             _slideExitCounter = 0.5f;

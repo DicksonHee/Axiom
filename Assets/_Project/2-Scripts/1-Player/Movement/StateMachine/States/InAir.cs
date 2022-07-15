@@ -11,6 +11,7 @@ namespace Axiom.Player.StateMachine
         private Vector3 initialDir;
         private float initialSpeed;
         private float initialHeight;
+
         private float wallClimbTimer;
 
         public InAir(MovementSystem movementSystem) : base(movementSystem)
@@ -41,18 +42,20 @@ namespace Axiom.Player.StateMachine
             if (MovementSystem.rbInfo.isGrounded) MovementSystem.ChangeState(MovementSystem._idleState);
             else if (MovementSystem.inputDetection.movementInput.z > 0f)
             {
-                if (MovementSystem._rb.velocity.y >= 0f && MovementSystem.rbInfo.canWallClimb && !MovementSystem.isExitingClimb) // Check for wall climb
+                if (MovementSystem.rbInfo.canWallClimb && !MovementSystem.isExitingClimb) // Check for wall climb
                 {
                     wallClimbTimer += Time.deltaTime;
                     if (ShouldWallClimb()) MovementSystem.ChangeState(MovementSystem._climbingState);
                 }
                 else if (((MovementSystem.rbInfo.IsLeftWallDetected() && MovementSystem.previousWall != MovementSystem.rbInfo.GetLeftWall()) ||
-                          (MovementSystem.rbInfo.IsRightWallDetected() && MovementSystem.previousWall != MovementSystem.rbInfo.GetRightWall()))) // Check for wall run
+                          (MovementSystem.rbInfo.IsRightWallDetected() && MovementSystem.previousWall != MovementSystem.rbInfo.GetRightWall()))
+                          && !MovementSystem.isExitingLedgeGrab) // Check for wall run
                 {
                     MovementSystem.ChangeState(MovementSystem._wallRunningState);
                 }
             }
-            
+            else if (MovementSystem.rbInfo.isDetectingLedge && !MovementSystem.isExitingLedgeGrab) MovementSystem.ChangeState(MovementSystem._ledgeGrabbingState);
+
             MovementSystem.SetMaxHeight(initialHeight - MovementSystem.transform.position.y);
             MovementSystem.playerAnimation.SetFloatParam("LandHeight", MovementSystem._maxHeight);
             CalculateMovementSpeed();
