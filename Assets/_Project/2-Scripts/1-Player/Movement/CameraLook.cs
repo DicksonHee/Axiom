@@ -115,6 +115,13 @@ namespace Axiom.Player.Movement
             ResetFov();
             ResetTilt();
         }
+
+        public void TransformForward(Matrix4x4 transformation)
+        {
+            camHolder.forward = transformation.MultiplyVector(camHolder.forward);
+            groundCamera.transform.forward = transformation.MultiplyVector(groundCamera.transform.forward);
+            orientation.forward = transformation.MultiplyVector(orientation.forward);
+        }
     }
 }
 

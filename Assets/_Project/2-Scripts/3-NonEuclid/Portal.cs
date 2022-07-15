@@ -22,6 +22,7 @@ namespace Axiom.NonEuclid.Portals
             portalCam = GetComponentInChildren<Camera>();
             portalCam.enabled = false;
             screenStartLocalPosition = screen.transform.localPosition;
+            ProtectScreenFromClipping();
         }
 
         private void CreateViewTexture()
@@ -75,6 +76,7 @@ namespace Axiom.NonEuclid.Portals
         {
             for (int i = 0; i < tracked.Count; i++)
             {
+                //print(Camera.main.transform.position - tracked[i].transform.position);
                 int dot = (int)Mathf.Sign(Vector3.Dot(transform.forward, tracked[i].transform.position - transform.position));
                 int last = tracked[i].lastDotSign;
                 tracked[i].lastDotSign = dot;
@@ -93,13 +95,16 @@ namespace Axiom.NonEuclid.Portals
         {
             print($"Teleporting from {gameObject.name}");
             Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * t.transform.localToWorldMatrix;
-            t.transform.SetPositionAndRotation(m.GetPosition(), m.rotation);
 
             if (t.transform.TryGetComponent(out Player.StateMachine.MovementSystem controller))
             {
-                m.SetColumn(3, Vector4.zero);
+                //m.SetColumn(3, Vector4.zero);
                 //controller.TransformTargetVelocity(m);
+                //controller.orientation.rotation = m.rotation;
+                controller.cameraLook.TransformForward(m);
+                t.transform.position = m.GetPosition();
             }
+            else t.transform.SetPositionAndRotation(m.GetPosition(), m.rotation);
 
             otherPortal.AddTrackedTransform(t);
         }
