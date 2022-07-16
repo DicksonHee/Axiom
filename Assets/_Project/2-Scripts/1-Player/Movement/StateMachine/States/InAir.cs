@@ -29,9 +29,11 @@ namespace Axiom.Player.StateMachine
             wallClimbTimer = 0f;
 
             MovementSystem.cameraLook.ApplyCameraXAxisMultiplier(0.5f);
+            MovementSystem.DisableMovement();
             MovementSystem.SetGravity(MovementSystem.inAirGravity);
             MovementSystem.SetTargetSpeed(MovementSystem.inAirSpeed);
             MovementSystem.SetLRMultiplier(0.25f);
+            
             MovementSystem.SetAnimatorBool("InAir", true);
         }
 
@@ -58,7 +60,8 @@ namespace Axiom.Player.StateMachine
 
             MovementSystem.SetMaxHeight(initialHeight - MovementSystem.transform.position.y);
             MovementSystem.playerAnimation.SetFloatParam("LandHeight", MovementSystem._maxHeight);
-            CalculateMovementSpeed();
+            
+            CalculateInAirSpeed();
         }
 
         public override void PhysicsUpdate()
@@ -69,8 +72,11 @@ namespace Axiom.Player.StateMachine
         public override void ExitState()
         {
             base.ExitState();
+            
             MovementSystem.cameraLook.ResetCameraXSens();
+            MovementSystem.EnableMovement();
             MovementSystem.SetLRMultiplier(1f);
+            
             MovementSystem.SetAnimatorBool("InAir", false);
         }
 
@@ -81,11 +87,10 @@ namespace Axiom.Player.StateMachine
 
         private void CalculateInAirSpeed()
         {
-            float velDiff = initialSpeed - MovementSystem.idleSpeed;
+            float velDiff = initialSpeed - MovementSystem.inAirSpeed;
             float currentSpeed = Mathf.Clamp(initialSpeed - velDiff * MovementSystem.inAirCurve.Evaluate(Time.time - stateStartTime), 0, float.MaxValue);
-            Vector3 movementInput = MovementSystem.moveDirection;
 
-            Vector3 moveVel = (initialDir + movementInput).normalized * currentSpeed;
+            Vector3 moveVel = initialDir.normalized * currentSpeed;
             moveVel.y = MovementSystem._rb.velocity.y;
             MovementSystem._rb.velocity = moveVel;
         }
