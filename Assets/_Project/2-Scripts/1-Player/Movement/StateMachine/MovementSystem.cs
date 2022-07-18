@@ -71,7 +71,7 @@ namespace Axiom.Player.StateMachine
         public Vector3 moveDirection { get; private set; }
         public float currentSpeed{ get; private set; }
         public float currentTargetSpeed{ get; private set; }
-        public float currentTargetGravity{ get; private set; }
+        public float currentTargetGravity { get; private set; }
         public float lrMultiplier{ get; private set; }
         public bool isExitingWallRun{ get; private set; }
         public bool isExitingSlide{ get; private set; }
@@ -157,7 +157,8 @@ namespace Axiom.Player.StateMachine
             CheckWallRunTimers();
             CheckSlideTimers();
             CheckLedgeGrabTimers();
-
+            CheckUpForce();
+            
             CalculateMoveDirection();
             HandleAnimations();
 
@@ -166,8 +167,8 @@ namespace Axiom.Player.StateMachine
 
         private void FixedUpdate()
         {
-            ApplyMovement();
             ApplyGravity();
+            ApplyMovement();
 
             CurrentState.PhysicsUpdate();
         }
@@ -176,7 +177,6 @@ namespace Axiom.Player.StateMachine
         // Calculate moveDirection based on the current input
         private void CalculateMoveDirection()
         {
-            //float wallJumpMultiplier = _wallRunExitCounter > 0f ? 0f : 1f;
             moveDirection = orientation.forward * inputDetection.movementInput.z + orientation.right * (inputDetection.movementInput.x * lrMultiplier);
             CheckSlopeMovementDirection();
         }
@@ -216,7 +216,7 @@ namespace Axiom.Player.StateMachine
             if (_turnCheckCounter > _turnCheckInterval)
             {
                 _turnCheckCounter = 0f;
-                _currentFacingTransform = orientation.TransformDirection(Vector3.forward);
+                _currentFacingTransform = orientation.forward;
             }
         }
         
@@ -259,20 +259,61 @@ namespace Axiom.Player.StateMachine
         {
             if (!_movementEnabled || _wallRunExitCounter > 0f) return;
 
-            Vector3 moveVel = moveDirection.normalized * (currentSpeed * _turnMultiplier * Time.deltaTime * 50f);
-            moveVel.y = _rb.velocity.y;
-            _rb.velocity = moveVel;
+            Vector3 movementInput = moveDirection;
+            Vector3 moveVel = ProjectDirectionOnPlane(movementInput.normalized, transform.up);
+            Vector3 verticalVel = Vector3.zero;
+            
+            if (_isVerticalMovementEnabled)
+            {
+                verticalVel = _upEvaluatedForce > 0 ? GetCurrentUpForce() : GetCurrentDownForce();
+            }
+            Debug.Log(_upForceAmount);
+            _rb.velocity = moveVel * (currentSpeed * _turnMultiplier * Time.deltaTime * 50f) + verticalVel;
         }
 
+        private bool _isVerticalMovementEnabled = true;
+
+        public void DisableVerticalMovement() => _isVerticalMovementEnabled = false;
+        public void EnableVerticalMovement() => _isVerticalMovementEnabled = true;
+        
+        public Vector3 ProjectDirectionOnPlane(Vector3 direction, Vector3 normal)
+        {
+            return (direction - normal * Vector3.Dot(direction, normal)).normalized;
+        }
+        
         // Apply constant downward force on the character
         private void ApplyGravity()
         {
-            if (currentTargetGravity == 0) return;
-
             _gravityCounter += Time.fixedDeltaTime;
-            if (rbInfo.isOnSlope && !_isJumping) currentTargetGravity = 100f;
-            else currentTargetGravity = rbInfo.isGrounded ? groundGravity : inAirGravity;
-            _rb.AddForce(Vector3.down * (currentTargetGravity * gravityCurve.Evaluate(_gravityCounter)), ForceMode.Force);
+        }
+
+        public Vector3 GetCurrentDownForce()
+        {
+            currentTargetGravity = rbInfo.isGrounded ? groundGravity : inAirGravity;
+            return -transform.up * (currentTargetGravity * gravityCurve.Evaluate(_gravityCounter));
+        }
+
+        private float _upForceCounter;
+        private float _upForceAmount;
+        private float _upEvaluatedForce;
+        private AnimationCurve _upAnimationCurve;
+        
+        public Vector3 GetCurrentUpForce()
+        {
+            return transform.up * _upEvaluatedForce;
+        }
+
+        private void StartUpForce(AnimationCurve curve, float forceAmount)
+        {
+            _upForceCounter = 0;
+            _upAnimationCurve = curve;
+            _upForceAmount = forceAmount;
+        }
+        
+        private void CheckUpForce()
+        {
+            _upForceCounter += Time.deltaTime;
+            _upEvaluatedForce = _upAnimationCurve.Evaluate(_upForceCounter) * _upForceAmount;
         }
         #endregion
         
@@ -304,8 +345,8 @@ namespace Axiom.Player.StateMachine
         {
             _isJumping = true;
             _rb.velocity = Vector3.zero;
-            _rb.velocity = new Vector3(moveDirection.normalized.x, upJumpForce, moveDirection.normalized.z);
-            
+            StartUpForce(inAirCurve, upJumpForce);
+
             if (rbInfo.IsLeftWallDetected() && inputDetection.movementInput.x < 0)
             {
                 playerAnimation.SetJumpParam(-1f);
@@ -327,7 +368,7 @@ namespace Axiom.Player.StateMachine
             playerAnimation.ResetTrigger("Landed");
             playerAnimation.SetTrigger("Jump");
         }
-        
+
         // Applies upwards and sideways force to the character
         private void WallRunJump()
         {
@@ -485,8 +526,9 @@ namespace Axiom.Player.StateMachine
 
         public float GetCurrentSpeed()
         {
-            Vector3 vel = _rb.velocity;
-            vel.y = 0;
+            Vector3 curVel = _rb.velocity;
+            curVel.y = 0f;
+            Vector3 vel = ProjectDirectionOnPlane(curVel, transform.up) * currentTargetSpeed;
             return vel.magnitude;
         }
 

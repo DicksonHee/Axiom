@@ -92,13 +92,13 @@ namespace Axiom.Player.Movement
         {
             bool wasOnSlope = isOnSlope;
 
-            if (Physics.Raycast(groundDetector.position, groundDetector.TransformDirection(Vector3.down), out slopeHit,
+            if (Physics.Raycast(groundDetector.position, -groundDetector.transform.up, out slopeHit,
                     groundDetectorRadius, groundLayer))
             {
-                isOnSlope = slopeHit.normal != Vector3.up;
+                isOnSlope = slopeHit.normal != transform.up;
             }
             else isOnSlope = false;
-
+            
             if (wasOnSlope && !isOnSlope) OnSlopeEnded?.Invoke();
         }
         #endregion

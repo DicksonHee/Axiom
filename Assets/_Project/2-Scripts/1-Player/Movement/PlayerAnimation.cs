@@ -26,7 +26,7 @@ namespace Axiom.Player.Movement
 
         private void Update()
         {
-            transform.DOLocalRotateQuaternion(orientation.rotation, 0.1f);
+            transform.DOLocalRotateQuaternion(orientation.localRotation, 0.1f);
         }
 
         public void MoveWithinCapsule(Vector3 targetPos)

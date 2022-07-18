@@ -12,7 +12,7 @@ namespace Axiom.Player.StateMachine
 		private Vector3 wallNormal;
 		private Vector3 wallForward;
 		private Vector3 exitVelocity;
-		private float initialYVel;
+		private Vector3 initialYVel;
 		private bool isRightWallEnter;
 		private bool isJumpingOnExit;
 		
@@ -25,7 +25,7 @@ namespace Axiom.Player.StateMachine
 		{
 			base.EnterState();
 
-			initialYVel = MovementSystem._rb.velocity.y;
+			initialYVel = MovementSystem.GetCurrentUpForce();
 			isRightWallEnter = MovementSystem.rbInfo.IsRightWallDetected();
 			isJumpingOnExit = false;
 			
@@ -37,6 +37,7 @@ namespace Axiom.Player.StateMachine
 			if (isRightWallEnter) MovementSystem.cameraLook.StartRightWallRunCamera();
 			else MovementSystem.cameraLook.StartLeftWallRunCamera();
 
+			MovementSystem.DisableVerticalMovement();
 			MovementSystem.DisableMovement();
 			MovementSystem.rbInfo.SetIsOnWall(MovementSystem.orientation.right, MovementSystem.orientation.forward);
 			MovementSystem.EnterWallRunState(wallTransform, wallNormal, isRightWallEnter);
@@ -72,8 +73,7 @@ namespace Axiom.Player.StateMachine
 		{
 			if (!isJumpingOnExit)
 			{
-				Vector3 moveVel = MovementSystem.moveDirection.normalized * MovementSystem.wallRunSpeed;
-				moveVel.y = 0f;
+				Vector3 moveVel = MovementSystem.ProjectDirectionOnPlane(MovementSystem.moveDirection.normalized, MovementSystem.transform.up) * MovementSystem.wallRunSpeed;
 				MovementSystem._rb.velocity = moveVel;
 			}
 			else
@@ -83,6 +83,7 @@ namespace Axiom.Player.StateMachine
 
 			MovementSystem.rbInfo.SetIsOffWall();
 			MovementSystem.cameraLook.ResetCamera();
+			MovementSystem.EnableVerticalMovement();
 			MovementSystem.EnableMovement();
 			MovementSystem.ExitWallRunState();
 			MovementSystem.SetAnimatorBool("WallRunning", false);
@@ -92,10 +93,12 @@ namespace Axiom.Player.StateMachine
 
 		private void WallRunningMovement()
 		{
-			float yVel = Mathf.Lerp(initialYVel, 0f, (Time.time - stateStartTime) * 2);
-			Vector3 velocity = (wallForward + -wallNormal) * MovementSystem.wallRunSpeed;
-			velocity = new Vector3(velocity.x, yVel, velocity.z);
-			MovementSystem._rb.velocity = velocity;
+			//float yVel = Mathf.Lerp(initialYVel, 0f, (Time.time - stateStartTime) * 2);
+			//Vector3 velocity = (wallForward + -wallNormal) * MovementSystem.wallRunSpeed;
+			Vector3 moveVel = MovementSystem.ProjectDirectionOnPlane((wallForward + -wallNormal).normalized, MovementSystem.transform.up) * MovementSystem.wallRunSpeed;
+			
+			//velocity = new Vector3(velocity.x, yVel, velocity.z);
+			MovementSystem._rb.velocity = moveVel;
 		}
 
 		public void SetIsJumpingOnExit(bool val, Vector3 exitVel)
