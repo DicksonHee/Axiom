@@ -30,17 +30,12 @@ namespace Axiom.Player.Movement
         private float initialMultiplier;
         private float initialSensX;
         private float initialSensY;
-        private Quaternion gravityAlignment;
 
         public float mouseX { get; private set; }
         public float mouseY { get; private set; }
 
         public float xRotation { get; private set; }
         public float yRotation { get; private set; }
-
-
-        private Vector2 orbitAngles = new(-90, 0);
-        private Quaternion orbitRotation;
 
         private void Start()
         {
@@ -51,9 +46,6 @@ namespace Axiom.Player.Movement
             initialMultiplier = multiplier;
             initialSensX = sensX;
             initialSensY = sensY;
-            
-            camHolder.transform.localRotation = orbitRotation = Quaternion.Euler(orbitAngles);
-            gravityAlignment = Quaternion.identity;
         }
 
         private void Update()
@@ -61,45 +53,6 @@ namespace Axiom.Player.Movement
             GetInput();
         }
 
-        private void LateUpdate()
-        {
-            // if (ManualRotation())
-            // {
-            //     ConstrainAngles();
-            //     orbitRotation = Quaternion.Euler(orbitAngles);
-            // }
-            //
-            // Quaternion lookRotation = gravityAlignment * Quaternion.Euler(orbitAngles);
-            //
-            // camHolder.transform.localRotation = lookRotation;
-            // groundCamera.transform.localRotation = lookRotation;
-            // lookRotation.x = 0;
-            // lookRotation.z = 0;
-            // orientation.transform.localRotation = lookRotation;
-        }
-
-        private bool ManualRotation()
-        {
-            Vector2 input = new Vector2(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X")
-            );
-            const float e = 0.001f;
-            if (input.x < -e || input.x > e || input.y < -e || input.y > e)
-            {
-                orbitAngles += multiplier * Time.unscaledDeltaTime * input;
-                return true;
-            }
-
-            return false;
-        }
-
-        private void ConstrainAngles()
-        {
-            orbitAngles.x = Mathf.Clamp(orbitAngles.x, xRotLimits.x, xRotLimits.y);
-
-            if (orbitAngles.y < 0f) orbitAngles.y += 360f;
-            else if (orbitAngles.y >= 360f) orbitAngles.y -= 360f;
-        }
-        
         private void GetInput()
         {
             mouseX = Input.GetAxis("Mouse X"); 
@@ -146,12 +99,14 @@ namespace Axiom.Player.Movement
 
         public void StartSlideCamera()
         {
-            LockCameraXAxis();
+            ChangeFov(wallRunFov);
+            ApplyCameraXAxisMultiplier(0.3f);
             ApplyCameraYAxisMultiplier(0.5f);
         }
 
         public void EndSlideCamera()
         {
+            ResetFov();
             ResetCameraXSens();
             ResetCameraYSens();
         }

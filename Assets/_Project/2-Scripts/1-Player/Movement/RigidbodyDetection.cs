@@ -92,8 +92,7 @@ namespace Axiom.Player.Movement
         {
             bool wasOnSlope = isOnSlope;
 
-            if (Physics.Raycast(groundDetector.position, -groundDetector.transform.up, out slopeHit,
-                    groundDetectorRadius, groundLayer))
+            if (Physics.Raycast(groundDetector.position, -groundDetector.transform.up, out slopeHit, groundDetectorRadius, groundLayer))
             {
                 isOnSlope = slopeHit.normal != transform.up;
             }
@@ -132,7 +131,6 @@ namespace Axiom.Player.Movement
 
             rightWallDetected = Physics.Raycast(position, right.normalized, out rightWallHit, wallCheckDistance, wallLayer);
             rightFrontWallDetected = Physics.Raycast(position, (right + -back).normalized, out rightFrontWallHit, wallCheckDistance * 1.2f, wallLayer);
-           
 
             leftWallDetected = Physics.Raycast(position, -right.normalized, out leftWallHit, wallCheckDistance, wallLayer);
             leftFrontWallDetected = Physics.Raycast(position, (-right + -back).normalized, out leftFrontWallHit, wallCheckDistance * 1.2f, wallLayer);

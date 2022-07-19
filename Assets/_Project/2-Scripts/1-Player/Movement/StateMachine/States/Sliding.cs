@@ -23,27 +23,28 @@ namespace Axiom.Player.StateMachine
         {
             base.EnterState();
 
-            MovementSystem.SetAnimatorBool("Sliding", true);
-
             slopeSpeed = 0f;
-            initialDir = MovementSystem.moveDirection;
+            initialDir = MovementSystem.orientation.forward;
             initialSpeed = MovementSystem._rb.velocity.magnitude;
             distanceMultiplier = Mathf.Clamp(1 - initialSpeed / MovementSystem.forwardSpeed, 0.5f, 1f);
-            
-            MovementSystem.cameraLook.StartSlideCamera();
-            MovementSystem.StartCrouch();
-            MovementSystem.SetTargetSpeed(0f);
-            MovementSystem.SetLRMultiplier(0.1f);
-            MovementSystem.DisableMovement();
 
             MovementSystem.rbInfo.OnSlopeEnded += ResetStateTimer;
+
+            MovementSystem.DisableMovement();
+            MovementSystem.SetTargetSpeed(0f);
+            MovementSystem.SetLRMultiplier(0.1f);
+            MovementSystem.StartCrouch();
+
+            MovementSystem.cameraLook.StartSlideCamera();
+            MovementSystem.SetAnimatorBool("Sliding", true);
         }
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
 
-            if (MovementSystem._rb.velocity.magnitude < 0.5f && Time.time - stateStartTime > 0.5f)
+            if ((Vector3.Dot(MovementSystem.orientation.forward, MovementSystem._rb.velocity) < 0.5f && Time.time - stateStartTime > 0.5f) ||
+                Vector3.Dot(MovementSystem.orientation.forward, initialDir) < 0.8f)
             {
                 if (!MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._idleState);
                 else if (MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._crouchingState);
@@ -64,37 +65,40 @@ namespace Axiom.Player.StateMachine
         public override void ExitState()
         {
             base.ExitState();
-            
-            MovementSystem.cameraLook.EndSlideCamera();
-            MovementSystem.EnableMovement();
+
+            MovementSystem.rbInfo.OnSlopeEnded -= ResetStateTimer;
+
             MovementSystem.EndCrouch();
             MovementSystem.SetLRMultiplier(1f);
+            MovementSystem.EnableMovement();
             MovementSystem.ExitSlideState();
-            MovementSystem.SetAnimatorBool("Sliding", false);
             
-            MovementSystem.rbInfo.OnSlopeEnded -= ResetStateTimer;
+            MovementSystem.cameraLook.EndSlideCamera();
+            MovementSystem.SetAnimatorBool("Sliding", false);
         }
 
         private void CalculateSlideSpeed()
         {
-            float currentSpeed = 0f;
-            if (MovementSystem.rbInfo.isOnSlope)
-            {
-                float velDiff = initialSpeed - MovementSystem.forwardSpeed * 2;
-                currentSpeed = Mathf.Clamp(initialSpeed + velDiff * MovementSystem.reverseSlideCurve.Evaluate((Time.time - stateStartTime) * distanceMultiplier), 0, float.MaxValue);
-                
-                if (MovementSystem._rb.velocity.magnitude > slopeSpeed) slopeSpeed = MovementSystem._rb.velocity.magnitude;
-            }
-            else if (!MovementSystem.rbInfo.isOnSlope)
-            {
-                float velDiff = initialSpeed - 0;
-                currentSpeed = Mathf.Clamp(initialSpeed - velDiff * MovementSystem.slideCurve.Evaluate((Time.time - stateStartTime) * distanceMultiplier), 0, float.MaxValue);
-            }
+            // float currentSpeed = 0f;
+            // if (MovementSystem.rbInfo.isOnSlope)
+            // {
+            //     float velDiff = initialSpeed - MovementSystem.forwardSpeed * 2;
+            //     currentSpeed = Mathf.Clamp(initialSpeed + velDiff * MovementSystem.reverseSlideCurve.Evaluate(1 - (Time.time - stateStartTime) * distanceMultiplier), 0, float.MaxValue);
+            //     
+            //     if (MovementSystem._rb.velocity.magnitude > slopeSpeed) slopeSpeed = MovementSystem._rb.velocity.magnitude;
+            // }
+            // else if (!MovementSystem.rbInfo.isOnSlope)
+            // {
+            //     float velDiff = initialSpeed - 0;
+            //     currentSpeed = Mathf.Clamp(initialSpeed - velDiff * MovementSystem.slideCurve.Evaluate(1 - (Time.time - stateStartTime) * distanceMultiplier), 0, float.MaxValue);
+            // }
 
-            Vector3 moveVel = MovementSystem.moveDirection.normalized * currentSpeed;
-            moveVel = MovementSystem.CheckSlopeMovementDirection(moveVel);
-            moveVel.y = MovementSystem._rb.velocity.y;
-            MovementSystem._rb.velocity = moveVel;
+            // Vector3 moveVel = initialDir * currentSpeed;
+            // moveVel = MovementSystem.CheckSlopeMovementDirection(moveVel);
+            // MovementSystem._rb.velocity = moveVel;
+
+            float currentSpeed = Mathf.Lerp(MovementSystem.forwardSpeed, 0, (Time.time - stateStartTime) * 0.5f);
+            MovementSystem._rb.AddForce(initialDir.normalized * currentSpeed, ForceMode.Acceleration);
         }
 
         private void ResetStateTimer()

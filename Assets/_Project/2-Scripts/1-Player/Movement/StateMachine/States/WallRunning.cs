@@ -25,7 +25,7 @@ namespace Axiom.Player.StateMachine
 		{
 			base.EnterState();
 
-			initialYVel = MovementSystem.GetCurrentUpForce();
+			initialYVel = MovementSystem.transform.up * Vector3.Dot(MovementSystem.transform.up, MovementSystem._rb.velocity);
 			isRightWallEnter = MovementSystem.rbInfo.IsRightWallDetected();
 			isJumpingOnExit = false;
 			
@@ -36,12 +36,11 @@ namespace Axiom.Player.StateMachine
 
 			if (isRightWallEnter) MovementSystem.cameraLook.StartRightWallRunCamera();
 			else MovementSystem.cameraLook.StartLeftWallRunCamera();
-
-			MovementSystem.DisableVerticalMovement();
+			
 			MovementSystem.DisableMovement();
 			MovementSystem.rbInfo.SetIsOnWall(MovementSystem.orientation.right, MovementSystem.orientation.forward);
 			MovementSystem.EnterWallRunState(wallTransform, wallNormal, isRightWallEnter);
-			MovementSystem.SetGravity(MovementSystem.inAirGravity);
+			MovementSystem.SetGravity(0);
 			
 			MovementSystem.SetAnimatorBool("WallRunning", true);
 			MovementSystem.playerAnimation.SetWallRunParam(isRightWallEnter ? 1 : -1);
@@ -83,7 +82,6 @@ namespace Axiom.Player.StateMachine
 
 			MovementSystem.rbInfo.SetIsOffWall();
 			MovementSystem.cameraLook.ResetCamera();
-			MovementSystem.EnableVerticalMovement();
 			MovementSystem.EnableMovement();
 			MovementSystem.ExitWallRunState();
 			MovementSystem.SetAnimatorBool("WallRunning", false);
@@ -93,12 +91,9 @@ namespace Axiom.Player.StateMachine
 
 		private void WallRunningMovement()
 		{
-			//float yVel = Mathf.Lerp(initialYVel, 0f, (Time.time - stateStartTime) * 2);
-			//Vector3 velocity = (wallForward + -wallNormal) * MovementSystem.wallRunSpeed;
+			Vector3 verticalVel = Vector3.Lerp(initialYVel, Vector3.zero, (Time.time - stateStartTime) * 2);
 			Vector3 moveVel = MovementSystem.ProjectDirectionOnPlane((wallForward + -wallNormal).normalized, MovementSystem.transform.up) * MovementSystem.wallRunSpeed;
-			
-			//velocity = new Vector3(velocity.x, yVel, velocity.z);
-			MovementSystem._rb.velocity = moveVel;
+			MovementSystem._rb.velocity = moveVel + verticalVel;
 		}
 
 		public void SetIsJumpingOnExit(bool val, Vector3 exitVel)

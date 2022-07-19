@@ -35,6 +35,8 @@ namespace Axiom.Player.StateMachine
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
+
+            CalculateClimbingMovement();
         }
         
         public override void ExitState()
@@ -52,9 +54,10 @@ namespace Axiom.Player.StateMachine
 
         private void CalculateClimbingMovement()
         {
+            Vector3 up = MovementSystem.transform.up;
             Vector3 inputVel = MovementSystem.moveDirection * 0.1f;
-            Vector3 moveVel = MovementSystem.ProjectDirectionOnPlane(inputVel, -MovementSystem.transform.forward);
-            MovementSystem._rb.velocity = moveVel * MovementSystem.wallClimbSpeed;
+            Vector3 moveVel = MovementSystem.ProjectDirectionOnPlane(inputVel, up);
+            MovementSystem._rb.velocity = (moveVel + up)  * MovementSystem.wallClimbSpeed;
         }
     }
 }

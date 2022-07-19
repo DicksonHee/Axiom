@@ -8,8 +8,6 @@ namespace Axiom.Player.StateMachine
 {
     public class InAir : State
     {
-        private Vector3 initialDir;
-        private float initialSpeed;
         private float initialHeight;
 
         private float wallClimbTimer;
@@ -22,14 +20,12 @@ namespace Axiom.Player.StateMachine
         public override void EnterState()
         {
             base.EnterState();
-
-            initialDir = MovementSystem._rb.velocity;
-            initialSpeed = MovementSystem._rb.velocity.magnitude;
+            
             initialHeight = MovementSystem.transform.position.y;
             wallClimbTimer = 0f;
 
             MovementSystem.cameraLook.ApplyCameraXAxisMultiplier(0.5f);
-            //MovementSystem.DisableMovement();
+            MovementSystem._rb.drag = 1f;
             MovementSystem.SetGravity(MovementSystem.inAirGravity);
             MovementSystem.SetTargetSpeed(MovementSystem.inAirSpeed);
             MovementSystem.SetLRMultiplier(0.25f);
@@ -61,7 +57,6 @@ namespace Axiom.Player.StateMachine
             MovementSystem.SetMaxHeight(initialHeight - MovementSystem.transform.position.y);
             MovementSystem.playerAnimation.SetFloatParam("LandHeight", MovementSystem._maxHeight);
             
-            //CalculateInAirSpeed();
             CalculateMovementSpeed();
         }
 
@@ -75,8 +70,8 @@ namespace Axiom.Player.StateMachine
             base.ExitState();
             
             MovementSystem.cameraLook.ResetCameraXSens();
-            //MovementSystem.EnableMovement();
             MovementSystem.SetLRMultiplier(1f);
+            MovementSystem._rb.drag = 5f;
             
             MovementSystem.SetAnimatorBool("InAir", false);
         }
@@ -84,22 +79,6 @@ namespace Axiom.Player.StateMachine
         private bool ShouldWallClimb()
         {
             return wallClimbTimer > 0.25f;
-        }
-
-        private void CalculateInAirSpeed()
-        {
-            float velDiff = initialSpeed - MovementSystem.inAirSpeed;
-            float currentSpeed = Mathf.Clamp(initialSpeed - velDiff * MovementSystem.inAirCurve.Evaluate(Time.time - stateStartTime), 0, float.MaxValue);
-
-            Vector3 moveVel = initialDir.normalized * currentSpeed;
-            //moveVel.y = MovementSystem._rb.velocity.y;
-            MovementSystem._rb.velocity = moveVel;
-        }
-
-        public void InAirJump(Vector3 jumpVel)
-        {
-            initialDir = jumpVel;
-            initialSpeed = jumpVel.magnitude;
         }
     }
 }

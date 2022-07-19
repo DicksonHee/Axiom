@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Numerics;
 using Axiom.Player.StateMachine;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -157,8 +156,7 @@ namespace Axiom.Player.StateMachine
             CheckWallRunTimers();
             CheckSlideTimers();
             CheckLedgeGrabTimers();
-            CheckUpForce();
-            
+
             CalculateMoveDirection();
             HandleAnimations();
 
@@ -254,28 +252,11 @@ namespace Axiom.Player.StateMachine
         #endregion
         
         #region FixedUpdate Functions
-        // Apply movement to the character
         private void ApplyMovement()
         {
-            if (!_movementEnabled || _wallRunExitCounter > 0f) return;
-
-            Vector3 movementInput = moveDirection;
-            Vector3 moveVel = ProjectDirectionOnPlane(movementInput.normalized, transform.up);
-            Vector3 verticalVel = Vector3.zero;
-            
-            if (_isVerticalMovementEnabled)
-            {
-                verticalVel = _upEvaluatedForce > 0 ? GetCurrentUpForce() : GetCurrentDownForce();
-            }
-            Debug.Log(_upForceAmount);
-            _rb.velocity = moveVel * (currentSpeed * _turnMultiplier * Time.deltaTime * 50f) + verticalVel;
+            _rb.AddForce(moveDirection * currentTargetSpeed, ForceMode.Acceleration);
         }
 
-        private bool _isVerticalMovementEnabled = true;
-
-        public void DisableVerticalMovement() => _isVerticalMovementEnabled = false;
-        public void EnableVerticalMovement() => _isVerticalMovementEnabled = true;
-        
         public Vector3 ProjectDirectionOnPlane(Vector3 direction, Vector3 normal)
         {
             return (direction - normal * Vector3.Dot(direction, normal)).normalized;
@@ -284,36 +265,7 @@ namespace Axiom.Player.StateMachine
         // Apply constant downward force on the character
         private void ApplyGravity()
         {
-            _gravityCounter += Time.fixedDeltaTime;
-        }
-
-        public Vector3 GetCurrentDownForce()
-        {
-            currentTargetGravity = rbInfo.isGrounded ? groundGravity : inAirGravity;
-            return -transform.up * (currentTargetGravity * gravityCurve.Evaluate(_gravityCounter));
-        }
-
-        private float _upForceCounter;
-        private float _upForceAmount;
-        private float _upEvaluatedForce;
-        private AnimationCurve _upAnimationCurve;
-        
-        public Vector3 GetCurrentUpForce()
-        {
-            return transform.up * _upEvaluatedForce;
-        }
-
-        private void StartUpForce(AnimationCurve curve, float forceAmount)
-        {
-            _upForceCounter = 0;
-            _upAnimationCurve = curve;
-            _upForceAmount = forceAmount;
-        }
-        
-        private void CheckUpForce()
-        {
-            _upForceCounter += Time.deltaTime;
-            _upEvaluatedForce = _upAnimationCurve.Evaluate(_upForceCounter) * _upForceAmount;
+            _rb.AddForce(-transform.up * currentTargetGravity, ForceMode.Force);
         }
         #endregion
         
@@ -344,8 +296,7 @@ namespace Axiom.Player.StateMachine
         private void Jump()
         {
             _isJumping = true;
-            _rb.velocity = Vector3.zero;
-            StartUpForce(inAirCurve, upJumpForce);
+            _rb.AddForce(transform.up * upJumpForce, ForceMode.Impulse);
 
             if (rbInfo.IsLeftWallDetected() && inputDetection.movementInput.x < 0)
             {
@@ -385,7 +336,7 @@ namespace Axiom.Player.StateMachine
         {
             float forwardForceMultiplier = Vector3.Dot(orientation.forward, _wallRunNormal) > 0 ? 1 : 0;
             Vector3 jumpVel = transform.up * wallRunJumpUpForce + (_wallRunNormal + orientation.forward).normalized * (forwardForceMultiplier * wallRunJumpSideForce);
-            _inAirState.InAirJump(jumpVel);
+            _rb.AddForce(jumpVel, ForceMode.Impulse);
 
             playerAnimation.ResetTrigger("Landed");
             playerAnimation.SetInAirParam(_isExitingRightWall ? 1 : -1);
@@ -526,10 +477,7 @@ namespace Axiom.Player.StateMachine
 
         public float GetCurrentSpeed()
         {
-            Vector3 curVel = _rb.velocity;
-            curVel.y = 0f;
-            Vector3 vel = ProjectDirectionOnPlane(curVel, transform.up) * currentTargetSpeed;
-            return vel.magnitude;
+            return _rb.velocity.magnitude - Vector3.Dot(-transform.up, _rb.velocity);
         }
 
         #endregion
