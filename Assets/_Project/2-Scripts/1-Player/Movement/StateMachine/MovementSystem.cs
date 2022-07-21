@@ -52,12 +52,13 @@ namespace Axiom.Player.StateMachine
         
         [Header("Jump")]
         public float upJumpForce = 10f;
+        public float inAirCoyoteTime = 0.15f;
 
         [Header("WallRun")]
         public float wallRunJumpUpForce = 10f;
         public float wallRunJumpSideForce = 10f;
         public float wallRunExitTime = 0.5f;
-        public float wallRunJumpBufferTime = 0.5f;
+        public float wallRunCoyoteTime = 0.5f;
         public float wallRunMaxDuration = 1f;
 
         [Header("WallClimb")] 
@@ -282,7 +283,7 @@ namespace Axiom.Player.StateMachine
             {
                 LedgeGrabJump();
             }
-            else if (CurrentState == _inAirState && _wallRunJumpBufferCounter > 0f)
+            else if (CurrentState == _inAirState)
             {
                 InAirJump();
             }
@@ -335,8 +336,16 @@ namespace Axiom.Player.StateMachine
         private void InAirJump()
         {
             float forwardForceMultiplier = Vector3.Dot(orientation.forward, _wallRunNormal) > 0 ? 1 : 0;
-            Vector3 jumpVel = transform.up * wallRunJumpUpForce + (_wallRunNormal + orientation.forward).normalized * (forwardForceMultiplier * wallRunJumpSideForce);
-            _rb.AddForce(jumpVel, ForceMode.Impulse);
+            if (_wallRunExitCounter > 0f)
+            {
+                Vector3 jumpVel = transform.up.normalized * wallRunJumpUpForce + (_wallRunNormal * 0.5f + orientation.forward).normalized * wallRunJumpSideForce;
+                _inAirState.WallRunJump(jumpVel);
+            }
+            else
+            {
+                Vector3 jumpVel = transform.up * wallRunJumpUpForce + orientation.forward.normalized * (forwardForceMultiplier * wallRunJumpSideForce);
+                _inAirState.InAirJump(jumpVel);
+            }
 
             playerAnimation.ResetTrigger("Landed");
             playerAnimation.SetInAirParam(_isExitingRightWall ? 1 : -1);
@@ -397,7 +406,7 @@ namespace Axiom.Player.StateMachine
         public void ExitWallRunState()
         {
             _wallRunExitCounter = wallRunExitTime;
-            _wallRunJumpBufferCounter = wallRunJumpBufferTime;
+            _wallRunJumpBufferCounter = wallRunCoyoteTime;
             isExitingWallRun = true;
         }
         #endregion
@@ -477,9 +486,8 @@ namespace Axiom.Player.StateMachine
 
         public float GetCurrentSpeed()
         {
-            return _rb.velocity.magnitude - Vector3.Dot(-transform.up, _rb.velocity);
+            return new Vector3(Vector3.Dot(orientation.forward, _rb.velocity), 0f, Vector3.Dot(orientation.right, _rb.velocity)).magnitude;
         }
-
         #endregion
     }
 }

@@ -8,9 +8,11 @@ namespace Axiom.Player.StateMachine
 {
     public class InAir : State
     {
-        private float initialHeight;
-
+        private bool hasAirJumped;
+        private bool hasWallJumped;
+        private float initialHorizontalSpeed;
         private float wallClimbTimer;
+        
 
         public InAir(MovementSystem movementSystem) : base(movementSystem)
         {
@@ -20,12 +22,14 @@ namespace Axiom.Player.StateMachine
         public override void EnterState()
         {
             base.EnterState();
-            
-            initialHeight = MovementSystem.transform.position.y;
+
+            initialHorizontalSpeed = new Vector3(Vector3.Dot(MovementSystem.orientation.forward, MovementSystem._rb.velocity), 0f, Vector3.Dot(MovementSystem.orientation.right, MovementSystem._rb.velocity)).magnitude;
+            hasAirJumped = false;
+            hasWallJumped = false;
             wallClimbTimer = 0f;
 
             MovementSystem.cameraLook.ApplyCameraXAxisMultiplier(0.5f);
-            MovementSystem._rb.drag = 1f;
+            MovementSystem._rb.drag = 0.5f;
             MovementSystem.SetGravity(MovementSystem.inAirGravity);
             MovementSystem.SetTargetSpeed(MovementSystem.inAirSpeed);
             MovementSystem.SetLRMultiplier(0.25f);
@@ -54,7 +58,7 @@ namespace Axiom.Player.StateMachine
             }
             else if (MovementSystem.rbInfo.isDetectingLedge && !MovementSystem.isExitingLedgeGrab) MovementSystem.ChangeState(MovementSystem._ledgeGrabbingState);
 
-            MovementSystem.SetMaxHeight(initialHeight - MovementSystem.transform.position.y);
+            MovementSystem.SetMaxHeight(Time.time - stateStartTime);
             MovementSystem.playerAnimation.SetFloatParam("LandHeight", MovementSystem._maxHeight);
             
             CalculateMovementSpeed();
@@ -76,9 +80,26 @@ namespace Axiom.Player.StateMachine
             MovementSystem.SetAnimatorBool("InAir", false);
         }
 
+        public void InAirJump(Vector3 jumpVelocity)
+        {
+            if(hasAirJumped || Time.time - stateStartTime > MovementSystem.inAirCoyoteTime) return;
+
+            hasAirJumped = true;
+            MovementSystem._rb.velocity = jumpVelocity;
+        }
+
+        public void WallRunJump(Vector3 jumpVelocity)
+        {
+            if (hasWallJumped) return;
+
+            hasWallJumped = true;
+            MovementSystem._rb.velocity = Vector3.zero;
+            MovementSystem._rb.velocity = jumpVelocity;
+        }
+
         private bool ShouldWallClimb()
         {
-            return wallClimbTimer > 0.25f;
+            return wallClimbTimer > 0.18f;
         }
     }
 }

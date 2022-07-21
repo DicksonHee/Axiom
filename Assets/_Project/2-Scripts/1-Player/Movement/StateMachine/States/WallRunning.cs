@@ -12,7 +12,7 @@ namespace Axiom.Player.StateMachine
 		private Vector3 wallNormal;
 		private Vector3 wallForward;
 		private Vector3 exitVelocity;
-		private Vector3 initialYVel;
+		private float initialYVel;
 		private bool isRightWallEnter;
 		private bool isJumpingOnExit;
 		
@@ -25,7 +25,7 @@ namespace Axiom.Player.StateMachine
 		{
 			base.EnterState();
 
-			initialYVel = MovementSystem.transform.up * Vector3.Dot(MovementSystem.transform.up, MovementSystem._rb.velocity);
+			initialYVel = Vector3.Dot(MovementSystem.transform.up, MovementSystem._rb.velocity);
 			isRightWallEnter = MovementSystem.rbInfo.IsRightWallDetected();
 			isJumpingOnExit = false;
 			
@@ -72,7 +72,7 @@ namespace Axiom.Player.StateMachine
 		{
 			if (!isJumpingOnExit)
 			{
-				Vector3 moveVel = MovementSystem.ProjectDirectionOnPlane(MovementSystem.moveDirection.normalized, MovementSystem.transform.up) * MovementSystem.wallRunSpeed;
+				Vector3 moveVel = MovementSystem.orientation.forward.normalized * MovementSystem.wallRunSpeed;
 				MovementSystem._rb.velocity = moveVel;
 			}
 			else
@@ -91,9 +91,9 @@ namespace Axiom.Player.StateMachine
 
 		private void WallRunningMovement()
 		{
-			Vector3 verticalVel = Vector3.Lerp(initialYVel, Vector3.zero, (Time.time - stateStartTime) * 2);
-			Vector3 moveVel = MovementSystem.ProjectDirectionOnPlane((wallForward + -wallNormal).normalized, MovementSystem.transform.up) * MovementSystem.wallRunSpeed;
-			MovementSystem._rb.velocity = moveVel + verticalVel;
+			float verticalVel = Mathf.Lerp(initialYVel, 0f, (Time.time - stateStartTime) * 2);
+			Vector3 moveVel = MovementSystem.ProjectDirectionOnPlane((wallForward + -wallNormal), MovementSystem.transform.up) * MovementSystem.wallRunSpeed;
+			MovementSystem._rb.velocity = moveVel + (MovementSystem.transform.up * verticalVel);
 		}
 
 		public void SetIsJumpingOnExit(bool val, Vector3 exitVel)
