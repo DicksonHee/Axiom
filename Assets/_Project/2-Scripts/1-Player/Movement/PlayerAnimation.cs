@@ -9,6 +9,9 @@ namespace Axiom.Player.Movement
     public class PlayerAnimation : MonoBehaviour
     {
         public Transform orientation;
+        public Transform leftHandClimb;
+        public Transform rightHandClimb;
+        public LayerMask groundLayer;
 
         private Animator _playerAnimator;
         private static readonly int JumpType = Animator.StringToHash("JumpType");
@@ -19,6 +22,11 @@ namespace Axiom.Player.Movement
         private static readonly int LandType = Animator.StringToHash("LandType");
         private static readonly int InAirType = Animator.StringToHash("InAirType");
 
+        // private RaycastHit leftHandRaycastHit;
+        // private RaycastHit rightHandRaycastHit;
+        public Transform leftHandClimbPositionTarget;
+        public Transform rightHandClimbPositionTarget;
+        
         private void Awake()
         {
             _playerAnimator = GetComponent<Animator>();
@@ -27,6 +35,7 @@ namespace Axiom.Player.Movement
         private void Update()
         {
             transform.DOLocalRotateQuaternion(orientation.localRotation, 0.1f);
+            GetClimbHandPositions();
         }
 
         public void MoveWithinCapsule(Vector3 targetPos)
@@ -43,6 +52,28 @@ namespace Axiom.Player.Movement
         {
             _playerAnimator.SetFloat(XVel, movementDir.x, 0.1f, Time.deltaTime);
             _playerAnimator.SetFloat(ZVel, movementDir.z, 0.1f, Time.deltaTime);
+        }
+
+        public void GetClimbHandPositions()
+        {
+            if (Physics.Raycast(leftHandClimb.position, orientation.forward, out RaycastHit leftHandRaycastHit, 5f, groundLayer))
+            {
+                leftHandClimbPositionTarget.position = leftHandRaycastHit.point;
+            }
+
+            if (Physics.Raycast(rightHandClimb.position, orientation.forward, out RaycastHit rightHandRaycastHit, 5f,groundLayer))
+            {
+                rightHandClimbPositionTarget.position = rightHandRaycastHit.point;
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(leftHandClimb.position, leftHandClimb.position + orientation.forward.normalized);
+            //Gizmos.DrawWireSphere(leftHandRaycastHit.point, 0.5f);
+            Gizmos.DrawLine(rightHandClimb.position, rightHandClimb.position + orientation.forward.normalized);
+            //Gizmos.DrawWireSphere(rightHandRaycastHit.point, 0.5f);
         }
 
         public void SetRotationDir(float movementDelta) => _playerAnimator.SetFloat(YDelta, movementDelta, 0.1f, Time.deltaTime);

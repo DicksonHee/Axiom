@@ -149,8 +149,8 @@ namespace Axiom.Player.Movement
             leftBackWallDetected = Physics.Raycast(position, (-enterWallRunRight + -enterWallRunForward).normalized, out leftBackWallHit, wallCheckDistance * 1.2f, wallLayer);
         }
 
-        public bool IsLeftWallDetected() => !canWallClimb && (leftWallDetected || leftFrontWallDetected);
-        public bool IsRightWallDetected() => !canWallClimb && (rightWallDetected || rightFrontWallDetected);
+        public bool IsLeftWallDetected() => !canWallClimb && (leftFrontWallDetected);
+        public bool IsRightWallDetected() => !canWallClimb && (rightFrontWallDetected);
         public bool WallRunningLeftDetected() => leftWallDetected || leftFrontWallDetected || leftBackWallDetected;
         public bool WallRunningRightDetected() => rightWallDetected || rightFrontWallDetected || rightBackWallDetected;
 
