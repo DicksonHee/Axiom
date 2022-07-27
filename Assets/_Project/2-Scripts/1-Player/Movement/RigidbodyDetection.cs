@@ -31,7 +31,11 @@ namespace Axiom.Player.Movement
         public float ledgeForwardOffset; 
         public float ledgeDetectorHeightOffset;
 
-        public RaycastHit slopeHit;
+        [Header("Vault Detection")]
+        public Transform vaultDetector;
+        public float maxVaultDepth;
+
+        [HideInInspector] public RaycastHit slopeHit;
 
         private RaycastHit rightWallHit;
         private RaycastHit rightFrontWallHit;
@@ -67,6 +71,10 @@ namespace Axiom.Player.Movement
         private RaycastHit ledgePosition;
 		#endregion
 
+		#region Vault Detection
+        public bool canVault { get; private set; }
+		#endregion
+
 		public event Action OnPlayerLanded;
         public event Action OnSlopeEnded;
 
@@ -77,6 +85,7 @@ namespace Axiom.Player.Movement
             DelegateWallDetection();
             WallClimbCheck();
             LedgeCheck();
+            VaultDetection();
         }
 
         #region Ground Functions
@@ -217,20 +226,24 @@ namespace Axiom.Player.Movement
         }
 
         public Vector3 GetLedgePosition() => ledgePosition.point;
-        public Vector3 GetLeftHandPosition()
-        {
-            return ledgePosition.point + -orientation.right.normalized * 0.5f;
-        }
-
-        public Vector3 GetRightHandPosition()
-        {
-            return ledgePosition.point + orientation.right.normalized * 0.5f;
-        }
-
         public Vector3 GetLedgeHandDifference() => GetRightHandPosition() - handPosition.position;
+        public Vector3 GetLeftHandPosition() => ledgePosition.point + -orientation.right.normalized * 0.5f;
+        public Vector3 GetRightHandPosition() =>ledgePosition.point + orientation.right.normalized * 0.5f;
         #endregion
 
-        private void OnDrawGizmos()
+        #region Vault Functions
+        private void VaultDetection()
+        {
+            int numHit = 0;
+            if (Physics.Raycast(vaultDetector.position, orientation.forward, out RaycastHit frontVaultHit, maxVaultDepth, wallLayer)) numHit++;
+            if (Physics.Raycast(vaultDetector.position + orientation.right.normalized * 0.25f, orientation.forward, out RaycastHit leftVaultHit, maxVaultDepth, wallLayer)) numHit++;
+            if (Physics.Raycast(vaultDetector.position + -orientation.right.normalized * 0.25f, orientation.forward, out RaycastHit rightVaultHit, maxVaultDepth, wallLayer)) numHit++;
+
+            canVault = numHit >= 2;
+        }
+		#endregion
+
+		private void OnDrawGizmos()
         {
             // Wall Climb
             Gizmos.color = canWallClimb ? Color.blue : Color.red;

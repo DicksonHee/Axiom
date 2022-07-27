@@ -30,7 +30,7 @@ namespace Axiom.Player.StateMachine
             else if(MovementSystem.inputDetection.movementInput.z < 0f) MovementSystem.ChangeState(MovementSystem._backRunningState);
             else if(Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f) MovementSystem.ChangeState(MovementSystem._strafingState);
             else if(MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._crouchingState);
-            
+
             CalculateMovementSpeed();
         }
         

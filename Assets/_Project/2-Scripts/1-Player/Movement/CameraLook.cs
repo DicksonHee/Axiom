@@ -110,11 +110,20 @@ namespace Axiom.Player.Movement
             ResetCameraXSens();
             ResetCameraYSens();
         }
-        
+
+        public void StartVaultCamera()
+        {
+            ApplyCameraXAxisMultiplier(0f);
+            ApplyCameraYAxisMultiplier(0f);
+            cam.transform.DOLocalRotate(new Vector3(0, 0, rTiltAmount), 0.25f);
+        }
+
         public void ResetCamera()
         {
             ResetFov();
             ResetTilt();
+            ResetCameraXSens();
+            ResetCameraYSens();
         }
 
         public void TransformForward(Matrix4x4 transformation)
