@@ -8,10 +8,14 @@ namespace Axiom.Player.Movement
 {
     public class PlayerAnimation : MonoBehaviour
     {
+        public RigidbodyDetection rbInfo;
         public Transform orientation;
-        public Transform leftHandClimb;
-        public Transform rightHandClimb;
         public LayerMask groundLayer;
+
+        public Transform leftHandClimbPositionTarget;
+        public Transform rightHandClimbPositionTarget;
+
+        private bool isRotationEnabled = true;
 
         private Animator _playerAnimator;
         private static readonly int JumpType = Animator.StringToHash("JumpType");
@@ -21,11 +25,7 @@ namespace Axiom.Player.Movement
         private static readonly int ZVel = Animator.StringToHash("ZVel");
         private static readonly int LandType = Animator.StringToHash("LandType");
         private static readonly int InAirType = Animator.StringToHash("InAirType");
-
-        // private RaycastHit leftHandRaycastHit;
-        // private RaycastHit rightHandRaycastHit;
-        public Transform leftHandClimbPositionTarget;
-        public Transform rightHandClimbPositionTarget;
+       
         
         private void Awake()
         {
@@ -34,14 +34,17 @@ namespace Axiom.Player.Movement
 
         private void Update()
         {
-            transform.DOLocalRotateQuaternion(orientation.localRotation, 0.1f);
-            GetClimbHandPositions();
+            if(isRotationEnabled) transform.DOLocalRotateQuaternion(orientation.localRotation, 0.1f);
+        }
+        public void MoveWithinCapsule()
+        {
+            transform.DOLocalMove(transform.forward.normalized * 0.2f, 0.1f);
         }
 
-        public void MoveWithinCapsule(Vector3 targetPos)
-        {
-            transform.DOLocalMove(targetPos, 0.3f);
-        }
+        //public void MoveWithinCapsule(Vector3 targetPos)
+        //{
+        //    transform.DOLocalMove(targetPos, 0.3f);
+        //}
 
         public void MoveToCenter()
         {
@@ -54,27 +57,17 @@ namespace Axiom.Player.Movement
             _playerAnimator.SetFloat(ZVel, movementDir.z, 0.1f, Time.deltaTime);
         }
 
-        public void GetClimbHandPositions()
+        public void SetClimbHandPositions()
         {
-            if (Physics.Raycast(leftHandClimb.position, orientation.forward, out RaycastHit leftHandRaycastHit, 5f, groundLayer))
-            {
-                leftHandClimbPositionTarget.position = leftHandRaycastHit.point;
-            }
+            if (!rbInfo.isDetectingLedge) return;
 
-            if (Physics.Raycast(rightHandClimb.position, orientation.forward, out RaycastHit rightHandRaycastHit, 5f,groundLayer))
-            {
-                rightHandClimbPositionTarget.position = rightHandRaycastHit.point;
-            }
+            leftHandClimbPositionTarget.position = rbInfo.GetLeftHandPosition();
+            rightHandClimbPositionTarget.position = rbInfo.GetRightHandPosition();
         }
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(leftHandClimb.position, leftHandClimb.position + orientation.forward.normalized);
-            //Gizmos.DrawWireSphere(leftHandRaycastHit.point, 0.5f);
-            Gizmos.DrawLine(rightHandClimb.position, rightHandClimb.position + orientation.forward.normalized);
-            //Gizmos.DrawWireSphere(rightHandRaycastHit.point, 0.5f);
-        }
+        public void SetRotation(Quaternion rot) => transform.DOLocalRotateQuaternion(rot, 0.1f);
+        public void DisableRotation() => isRotationEnabled = false;
+        public void EnableRotation() => isRotationEnabled = true;
 
         public void SetRotationDir(float movementDelta) => _playerAnimator.SetFloat(YDelta, movementDelta, 0.1f, Time.deltaTime);
         

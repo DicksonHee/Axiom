@@ -59,6 +59,7 @@ namespace Axiom.Player.Movement
 
         #region WallClimb Detection
         public bool canWallClimb { get; private set; }
+        public Vector3 wallClimbNormal { get; private set; }
 		#endregion
 
 		#region Ledge Detection
@@ -195,11 +196,13 @@ namespace Axiom.Player.Movement
             var forward = orientation.forward;
             var up = transform.up;
 
-            bool rightDetected = Physics.Raycast(position, (Quaternion.AngleAxis(15f, up) * forward).normalized, out _, wallClimbDetectionLength, wallLayer);
-            bool leftDetected = Physics.Raycast(position, (Quaternion.AngleAxis(-15f, up) * forward).normalized, out _, wallClimbDetectionLength, wallLayer);   
+            bool rightDetected = Physics.Raycast(position, (Quaternion.AngleAxis(15f, up) * forward).normalized, out RaycastHit rightWallClimbDetected, wallClimbDetectionLength, wallLayer);
+            bool leftDetected = Physics.Raycast(position, (Quaternion.AngleAxis(-15f, up) * forward).normalized, out RaycastHit leftWallClimbDetected, wallClimbDetectionLength, wallLayer);   
 
             if (rightDetected && leftDetected) canWallClimb = true;
             else canWallClimb = false;
+
+            wallClimbNormal = rightWallClimbDetected.normal;
         }
         #endregion
 
@@ -207,36 +210,61 @@ namespace Axiom.Player.Movement
         private void LedgeCheck()
         {
             Vector3 frontPoint = orientation.position + orientation.forward.normalized * ledgeForwardOffset + orientation.up.normalized * ledgeDetectorHeightOffset;
-            bool ledgeDetected = Physics.Raycast(frontPoint, -transform.up, out ledgePosition, 5f, wallLayer);
+            bool ledgeDetected = Physics.Raycast(frontPoint, -transform.up, out ledgePosition, 99f, wallLayer);
 
             if (ledgeDetected && ledgePosition.distance < ledgeHeightLength) isDetectingLedge = true; 
             else isDetectingLedge = false;
         }
 
         public Vector3 GetLedgePosition() => ledgePosition.point;
-
-        public Vector3 GetLedgeHandDifference() => handPosition.position - GetLedgePosition();
-		#endregion
-
-		private void OnDrawGizmos()
+        public Vector3 GetLeftHandPosition()
         {
-            Gizmos.color = Color.green;
+            return ledgePosition.point + -orientation.right.normalized * 0.5f;
+        }
+
+        public Vector3 GetRightHandPosition()
+        {
+            return ledgePosition.point + orientation.right.normalized * 0.5f;
+        }
+
+        public Vector3 GetLedgeHandDifference() => GetRightHandPosition() - handPosition.position;
+        #endregion
+
+        private void OnDrawGizmos()
+        {
+            // Wall Climb
+            Gizmos.color = canWallClimb ? Color.blue : Color.red;
             Gizmos.DrawLine(wallDetector.position, wallDetector.position + (Quaternion.AngleAxis(15f, wallDetector.up) * orientation.forward).normalized * wallClimbDetectionLength);
             Gizmos.DrawLine(wallDetector.position, wallDetector.position + (Quaternion.AngleAxis(-15f, wallDetector.up) * orientation.forward).normalized * wallClimbDetectionLength);
 
-            Gizmos.color = Color.red;
+            // Wall Run Right
+            Gizmos.color = rightWallDetected ? Color.blue : Color.red;
             Gizmos.DrawLine(wallDetector.position, orientation.position + orientation.right.normalized * wallCheckDistance);
+            Gizmos.color = rightFrontWallDetected ? Color.blue : Color.red;
             Gizmos.DrawLine(wallDetector.position, orientation.position + (orientation.right + orientation.forward).normalized * wallCheckDistance * 1.2f);
+            Gizmos.color = rightBackWallDetected? Color.blue: Color.red;
             Gizmos.DrawLine(wallDetector.position, orientation.position + (orientation.right + -orientation.forward).normalized * wallCheckDistance * 1.2f);
 
+            // Wall Run Left
+            Gizmos.color = leftWallDetected ? Color.blue : Color.red;
             Gizmos.DrawLine(wallDetector.position, orientation.position + -orientation.right.normalized * wallCheckDistance);
+            Gizmos.color = leftFrontWallDetected? Color.blue: Color.red;
             Gizmos.DrawLine(wallDetector.position, orientation.position + (-orientation.right + orientation.forward).normalized * wallCheckDistance * 1.2f);
+            Gizmos.color = leftBackWallDetected? Color.blue: Color.red;
             Gizmos.DrawLine(wallDetector.position, orientation.position + (-orientation.right + -orientation.forward).normalized * wallCheckDistance * 1.2f);
 
-            Gizmos.color = Color.blue;
+            // Ground Detection
+            Gizmos.color = isGrounded ? Color.blue : Color.red;
             Gizmos.DrawWireSphere(groundDetector.position, groundDetectorRadius);
-            Vector3 spawnPoint = orientation.position + orientation.forward.normalized * ledgeForwardOffset + orientation.up.normalized * ledgeDetectorHeightOffset;
-            Gizmos.DrawLine(spawnPoint, spawnPoint + -orientation.up.normalized * ledgeHeightLength);
+
+            // Ledge Grab
+            Gizmos.color = isDetectingLedge ? Color.blue : Color.red;
+            Vector3 ledgeRaySpawnPoint = orientation.position + orientation.forward.normalized * ledgeForwardOffset + orientation.up.normalized * ledgeDetectorHeightOffset;
+            Gizmos.DrawLine(ledgeRaySpawnPoint, ledgePosition.point);
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(GetLeftHandPosition(), 0.1f);
+            Gizmos.DrawWireSphere(GetRightHandPosition(), 0.1f);
         }
     }
 }
