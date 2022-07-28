@@ -289,7 +289,8 @@ namespace Axiom.Player.StateMachine
             }
             else if (rbInfo.isGrounded)
             {
-                Jump();
+                if (!rbInfo.canVault) Jump();
+                else ChangeState(_vaultingState);
             }
         }
         

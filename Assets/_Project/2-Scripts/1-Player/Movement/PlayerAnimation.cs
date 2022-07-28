@@ -8,7 +8,14 @@ namespace Axiom.Player.Movement
 {
     public class PlayerAnimation : MonoBehaviour
     {
+        public RigidbodyDetection rbInfo;
         public Transform orientation;
+        public LayerMask groundLayer;
+
+        public Transform leftHandClimbPositionTarget;
+        public Transform rightHandClimbPositionTarget;
+
+        private bool isRotationEnabled = true;
 
         private Animator _playerAnimator;
         private static readonly int JumpType = Animator.StringToHash("JumpType");
@@ -18,7 +25,8 @@ namespace Axiom.Player.Movement
         private static readonly int ZVel = Animator.StringToHash("ZVel");
         private static readonly int LandType = Animator.StringToHash("LandType");
         private static readonly int InAirType = Animator.StringToHash("InAirType");
-
+       
+        
         private void Awake()
         {
             _playerAnimator = GetComponent<Animator>();
@@ -26,13 +34,17 @@ namespace Axiom.Player.Movement
 
         private void Update()
         {
-            transform.DOLocalRotateQuaternion(orientation.localRotation, 0.1f);
+            if(isRotationEnabled) transform.DOLocalRotateQuaternion(orientation.localRotation, 0.1f);
+        }
+        public void MoveWithinCapsule()
+        {
+            transform.DOLocalMove(transform.forward.normalized * 0.2f, 0.1f);
         }
 
-        public void MoveWithinCapsule(Vector3 targetPos)
-        {
-            transform.DOLocalMove(targetPos, 0.3f);
-        }
+        //public void MoveWithinCapsule(Vector3 targetPos)
+        //{
+        //    transform.DOLocalMove(targetPos, 0.3f);
+        //}
 
         public void MoveToCenter()
         {
@@ -44,6 +56,18 @@ namespace Axiom.Player.Movement
             _playerAnimator.SetFloat(XVel, movementDir.x, 0.1f, Time.deltaTime);
             _playerAnimator.SetFloat(ZVel, movementDir.z, 0.1f, Time.deltaTime);
         }
+
+        public void SetClimbHandPositions()
+        {
+            if (!rbInfo.isDetectingLedge) return;
+
+            leftHandClimbPositionTarget.position = rbInfo.GetLeftHandPosition();
+            rightHandClimbPositionTarget.position = rbInfo.GetRightHandPosition();
+        }
+
+        public void SetRotation(Quaternion rot) => transform.DOLocalRotateQuaternion(rot, 0.1f);
+        public void DisableRotation() => isRotationEnabled = false;
+        public void EnableRotation() => isRotationEnabled = true;
 
         public void SetRotationDir(float movementDelta) => _playerAnimator.SetFloat(YDelta, movementDelta, 0.1f, Time.deltaTime);
         

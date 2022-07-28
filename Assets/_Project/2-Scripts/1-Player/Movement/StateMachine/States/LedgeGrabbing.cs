@@ -28,7 +28,11 @@ namespace Axiom.Player.StateMachine
 
 			MovementSystem.DisableMovement();
 			MovementSystem.SetGravity(0f);
-			MovementSystem.playerAnimation.MoveWithinCapsule(targetPoint);
+
+			MovementSystem.playerAnimation.DisableRotation();
+			MovementSystem.playerAnimation.SetRotation(Quaternion.LookRotation(-MovementSystem.rbInfo.wallClimbNormal, MovementSystem.transform.up));
+			MovementSystem.playerAnimation.SetClimbHandPositions();
+			MovementSystem.playerAnimation.MoveWithinCapsule();
 
 			MovementSystem.SetAnimatorBool("LedgeGrabbing", true);
 		}
@@ -62,6 +66,7 @@ namespace Axiom.Player.StateMachine
 			MovementSystem.EnableMovement();
 			MovementSystem.ExitLedgeGrabState();
 			MovementSystem.playerAnimation.MoveToCenter();
+			MovementSystem.playerAnimation.EnableRotation();
 
 			MovementSystem.SetAnimatorBool("LedgeGrabbing", false);
 		}
