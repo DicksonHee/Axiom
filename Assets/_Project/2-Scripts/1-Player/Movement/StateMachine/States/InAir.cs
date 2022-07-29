@@ -85,6 +85,7 @@ namespace Axiom.Player.StateMachine
             if(hasAirJumped || Time.time - stateStartTime > MovementSystem.inAirCoyoteTime) return;
 
             hasAirJumped = true;
+            MovementSystem._rb.velocity = Vector3.zero;
             MovementSystem._rb.velocity = jumpVelocity;
         }
 

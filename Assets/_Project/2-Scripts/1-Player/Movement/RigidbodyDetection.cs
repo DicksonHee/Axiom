@@ -234,12 +234,19 @@ namespace Axiom.Player.Movement
         #region Vault Functions
         private void VaultDetection()
         {
+            if (canWallClimb)
+            {
+                canVault = false;
+                return;
+            }
+            
             int numHit = 0;
             if (Physics.Raycast(vaultDetector.position, orientation.forward, out RaycastHit frontVaultHit, maxVaultDepth, wallLayer)) numHit++;
             if (Physics.Raycast(vaultDetector.position + orientation.right.normalized * 0.25f, orientation.forward, out RaycastHit leftVaultHit, maxVaultDepth, wallLayer)) numHit++;
             if (Physics.Raycast(vaultDetector.position + -orientation.right.normalized * 0.25f, orientation.forward, out RaycastHit rightVaultHit, maxVaultDepth, wallLayer)) numHit++;
 
-            canVault = numHit >= 2;
+            Debug.Log(numHit >= 2 && (!canWallClimb || !IsRightWallDetected() || !IsLeftWallDetected()));
+            canVault = numHit >= 2 && (!canWallClimb || !IsRightWallDetected() || !IsLeftWallDetected());
         }
 		#endregion
 
