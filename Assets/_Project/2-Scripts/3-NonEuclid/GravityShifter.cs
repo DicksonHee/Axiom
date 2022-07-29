@@ -12,6 +12,7 @@ namespace Axiom.NonEuclid.Gravity
         private Vector3 start, end;
         private Vector3 from, to;
         private float sqrLength;
+        private float t;
 
         private Transform target;
 
@@ -28,7 +29,7 @@ namespace Axiom.NonEuclid.Gravity
         {
             if (!target) return;
 
-            float t = Vector3.Dot(target.position - start, end - start) / sqrLength;
+            t = Vector3.Dot(target.position - start, end - start) / sqrLength;
             t = Mathf.Clamp01(t);
 
             Physics.gravity = Vector3.Lerp(from, to, t).normalized * Physics.gravity.magnitude;
@@ -45,14 +46,18 @@ namespace Axiom.NonEuclid.Gravity
         private void OnTriggerExit(Collider other)
         {
             if (other.TryGetComponent(out Player.StateMachine.MovementSystem c) && c.transform == target)
+            {
+                if (t.Between(0f, 1f, true))
+                    Physics.gravity = t > 0.5f ? to : from;
                 target = null;
+            }
         }
 
         private void OnDrawGizmos()
         {
             Debug.DrawLine(transform.localToWorldMatrix.MultiplyPoint(localStart), transform.localToWorldMatrix.MultiplyPoint(localEnd), Color.black);
-            Debug.DrawLine(transform.position, transform.localToWorldMatrix.MultiplyPoint(localGravityFrom * 5), Color.red);
-            Debug.DrawLine(transform.position, transform.localToWorldMatrix.MultiplyPoint(localGravityTo * 5), Color.blue);
+            Debug.DrawRay(transform.localToWorldMatrix.MultiplyPoint(localStart), localGravityFrom * 3, Color.red);
+            Debug.DrawRay(transform.localToWorldMatrix.MultiplyPoint(localEnd), localGravityTo * 3, Color.blue);
         }
     }
 }
