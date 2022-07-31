@@ -60,7 +60,8 @@ namespace Axiom.Player.StateMachine
 
 			if (isJumpingOnExit)
 			{
-				MovementSystem._rb.velocity = exitVelocity;
+				MovementSystem._rb.velocity = Vector3.zero;
+				MovementSystem._rb.velocity = exitVelocity * 2;
 			}
 
 			MovementSystem.EnableMovement();

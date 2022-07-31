@@ -160,6 +160,8 @@ namespace Axiom.Player.StateMachine
 
             CalculateMoveDirection();
             HandleAnimations();
+            
+            rbInfo.SetCurrentVelocity(GetCurrentSpeed());
 
             CurrentState.LogicUpdate();
         }
@@ -325,7 +327,8 @@ namespace Axiom.Player.StateMachine
         // Applies upwards and sideways force to the character
         private void WallRunJump()
         {
-            Vector3 jumpVel = transform.up.normalized * wallRunJumpUpForce + (_wallRunNormal * 0.5f + orientation.forward).normalized * wallRunJumpSideForce;
+            Vector3 forward = orientation.forward;
+            Vector3 jumpVel = transform.up.normalized * wallRunJumpUpForce + forward.normalized * (Mathf.Clamp(Vector3.Dot(_wallRunNormal, forward), 0.75f, 1f) * wallRunJumpSideForce);
             _wallRunningState.SetIsJumpingOnExit(true, jumpVel);
             
             playerAnimation.ResetTrigger("Landed");
