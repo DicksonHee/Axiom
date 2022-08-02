@@ -188,6 +188,7 @@ namespace Axiom.Player.StateMachine
         {
             if (!rbInfo.IsOnSlope()) return;
             moveDirection = Vector3.ProjectOnPlane(moveDirection, rbInfo.GetSlopeHit().normal);
+            Debug.Log(moveDirection);
         }
 
         // Calculate the current movement speed by evaluating from the curve
@@ -259,6 +260,7 @@ namespace Axiom.Player.StateMachine
         // Apply constant downward force on the character
         private void ApplyGravity()
         {
+            if ((rbInfo.IsOnSlope() || rbInfo.IsGrounded()) && !_isJumping) return;
             _rb.AddForce(-transform.up * currentTargetGravity, ForceMode.Force);
         }
         #endregion
@@ -270,17 +272,14 @@ namespace Axiom.Player.StateMachine
         {
             if (CurrentState == _wallRunningState)
             {
-                Debug.Log("wall");
                 WallRunJump();
             }
             else if (CurrentState == _ledgeGrabbingState)
             {
-                Debug.Log("le");
                 LedgeGrabJump();
             }
             else if (CurrentState == _inAirState && !_isJumping)
             {
-                Debug.Log("ai");
                 InAirJump();
             }
             else if (rbInfo.IsGrounded())

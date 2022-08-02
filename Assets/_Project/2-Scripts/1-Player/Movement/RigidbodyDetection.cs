@@ -146,7 +146,7 @@ namespace Axiom.Player.Movement
 
             if (Physics.Raycast(groundDetectorTransform.position, (Quaternion.AngleAxis(65f, orientation.right) * orientation.forward).normalized, out slopeHit, 2f, groundLayer))
             {
-                isOnSlope = Vector3.Angle(slopeHit.normal, orientation.up) is > 20f and < 90f;
+                isOnSlope = Vector3.Angle(slopeHit.normal, orientation.up) is > 10f and <= 45f;
             }
             else isOnSlope = false;
             
@@ -377,7 +377,7 @@ namespace Axiom.Player.Movement
             Gizmos.DrawWireSphere(groundHit.point, groundDetectorRadius);
 
             // Slope Detection
-            Gizmos.DrawLine(groundDetectorTransform.position, groundDetectorTransform.position + (Quaternion.AngleAxis(65f, orientation.right) * orientation.forward).normalized * 2f);
+            Gizmos.DrawLine(groundDetectorTransform.position, slopeHit.point);
             
             // Ledge Grab
             Gizmos.color = isDetectingLedge ? Color.blue : Color.red;

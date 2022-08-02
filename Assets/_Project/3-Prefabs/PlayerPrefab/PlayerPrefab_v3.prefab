@@ -239,6 +239,37 @@ Transform:
   m_Father: {fileID: 5343368}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 5.036, y: -77.549, z: -113.5}
+--- !u!1 &2011442433
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2011442434}
+  m_Layer: 0
+  m_Name: Crouch Detector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2011442434
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011442433}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.839, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6603163245038902508}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2018633539
 GameObject:
   m_ObjectHideFlags: 0
@@ -791,7 +822,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6603163244758501546}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 17.3, y: -11.77, z: -28.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1073,7 +1104,6 @@ MonoBehaviour:
   wallRunMaxDuration: 1
   wallClimbMaxDuration: 0.5
   exitWallClimbDuration: 0.2
-  _maxHeight: 0
   previousWall: {fileID: 0}
 --- !u!114 &6603163244758501550
 MonoBehaviour:
@@ -1089,24 +1119,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {fileID: 6603163244449240391}
   camera: {fileID: 6603163243623300483}
-  groundDetectorRadius: 0.2
-  groundDetector: {fileID: 6603163244747166275}
+  groundDetectorTransform: {fileID: 6603163244747166275}
+  groundDetectorRadius: 0.15
+  wallDetectorTransform: {fileID: 6603163244449240391}
+  wallRunDetectionDistance: 0.8
+  wallClimbDetectionDistance: 0.85
+  ledgeHeightDetectionDistance: 0.35
+  ledgeDetectorForwardOffset: 1
+  ledgeDetectorHeightOffset: 1
+  vaultDetectorTransform: {fileID: 2845272435659622977}
+  vaultDetectionDistance: 0.75
+  crouchDetectorTransform: {fileID: 2011442434}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  wallDetector: {fileID: 6603163244449240391}
-  wallCheckDistance: 1
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
-  wallClimbDetectionLength: 1
-  handPosition: {fileID: 466327923}
-  ledgeDetector: 0.5
-  ledgeHeightLength: 0.2
-  ledgeForwardOffset: 0.8
-  ledgeDetectorHeightOffset: 1
-  frontVaultDetector: {fileID: 2845272435659622977}
-  maxVaultDepth: 0.9
 --- !u!114 &6603163244758501549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1183,6 +1212,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6603163244747166275}
+  - {fileID: 2011442434}
   m_Father: {fileID: 6603163244758501547}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -9,10 +9,7 @@ namespace Axiom.Player.StateMachine
     public class Sliding : State
     {
         private Vector3 initialDir;
-        private float initialSpeed;
-        private float slopeSpeed;
         private float inAirCounter;
-        private float distanceMultiplier;
 
         public Sliding(MovementSystem movementSystem) : base(movementSystem)
         {
@@ -22,11 +19,8 @@ namespace Axiom.Player.StateMachine
         public override void EnterState()
         {
             base.EnterState();
-
-            slopeSpeed = 0f;
+            
             initialDir = MovementSystem.moveDirection;
-            initialSpeed = MovementSystem._rb.velocity.magnitude;
-            distanceMultiplier = Mathf.Clamp(1 - initialSpeed / MovementSystem.forwardSpeed, 0.5f, 1f);
 
             MovementSystem.rbInfo.OnSlopeEnded += ResetStateTimer;
 
@@ -43,31 +37,21 @@ namespace Axiom.Player.StateMachine
         {
             base.LogicUpdate();
 
-            if ((Vector3.Dot(MovementSystem.orientation.forward, MovementSystem._rb.velocity) < 0.5f && Time.time - stateStartTime > 0.5f) ||
-                Vector3.Dot(MovementSystem.orientation.forward, initialDir) < 0.8f)
+            if ((MovementSystem.GetCurrentSpeed() < 0.5f && Time.time - stateStartTime > 0.5f) ||
+                Vector3.Dot(MovementSystem.orientation.forward, initialDir) < 0.8f) // If too slow or looking away from slide direction
             {
                 CheckShouldCrouchOnExit();
             }
-            else if (Vector3.Dot(MovementSystem._rb.velocity, MovementSystem.orientation.up) > 0.1f)
+            else if (Vector3.Dot(MovementSystem._rb.velocity, MovementSystem.orientation.up) > 0.1f) // If sliding up
             {
                 CheckShouldCrouchOnExit();
             }
-            else if (!MovementSystem.inputDetection.crouchInput && MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem._idleState);
-            else if (inAirCounter > 0.8f) MovementSystem.ChangeState(MovementSystem._inAirState);
+            else if (!MovementSystem.inputDetection.crouchInput && MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem._idleState); // If letting go of crouch key
+            else if (inAirCounter > 0.8f) MovementSystem.ChangeState(MovementSystem._inAirState); // If in air
  
             CalculateInAirTime();
         }
 
-        private void CheckShouldCrouchOnExit()
-        {
-            if(MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._crouchingState);
-            else
-            {
-                if(MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem._idleState);
-                else MovementSystem.ChangeState(MovementSystem._crouchingState);
-            }
-        }
-        
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
@@ -106,14 +90,22 @@ namespace Axiom.Player.StateMachine
         private void ResetStateTimer()
         {
             stateStartTime = Time.time;
-            initialSpeed = slopeSpeed;
-            distanceMultiplier = Mathf.Clamp(1 - initialSpeed / MovementSystem.forwardSpeed, 0.5f, 1f);
         }
         
         private void CalculateInAirTime()
         {
             if (!MovementSystem.rbInfo.IsGrounded()) inAirCounter += Time.deltaTime;
             else inAirCounter = 0f;
+        }
+        
+        private void CheckShouldCrouchOnExit()
+        {
+            if(MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._crouchingState);
+            else
+            {
+                if(MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem._idleState);
+                else MovementSystem.ChangeState(MovementSystem._crouchingState);
+            }
         }
     }
 }
