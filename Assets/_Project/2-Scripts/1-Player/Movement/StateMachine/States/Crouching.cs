@@ -18,8 +18,7 @@ namespace Axiom.Player.StateMachine
         public override void EnterState()
         {
             base.EnterState();
-            
-            Debug.Log(previousSpeed);
+
             MovementSystem.StartCrouch();
             MovementSystem.SetTargetSpeed(MovementSystem.crouchSpeed);
             MovementSystem.SetAnimatorBool("Crouching", true);
@@ -30,7 +29,7 @@ namespace Axiom.Player.StateMachine
             base.LogicUpdate();
             CalculateInAirTime();
 
-            if (!MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._idleState);
+            if (!MovementSystem.inputDetection.crouchInput && MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem._idleState);
             if (inAirCounter > 0.8f) MovementSystem.ChangeState(MovementSystem._inAirState);
             
             CalculateMovementSpeed();
@@ -51,7 +50,7 @@ namespace Axiom.Player.StateMachine
 
         private void CalculateInAirTime()
         {
-            if (!MovementSystem.rbInfo.isGrounded) inAirCounter += Time.deltaTime;
+            if (!MovementSystem.rbInfo.IsGrounded()) inAirCounter += Time.deltaTime;
             else inAirCounter = 0f;
         }
     }

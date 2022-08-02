@@ -25,7 +25,9 @@ namespace Axiom.Player.Movement
         private static readonly int ZVel = Animator.StringToHash("ZVel");
         private static readonly int LandType = Animator.StringToHash("LandType");
         private static readonly int InAirType = Animator.StringToHash("InAirType");
-       
+        
+        private Vector3 currentModelRotation;
+        private bool rotationFinished;
         
         private void Awake()
         {
@@ -34,23 +36,26 @@ namespace Axiom.Player.Movement
 
         private void Update()
         {
-            if(isRotationEnabled) transform.DOLocalRotateQuaternion(orientation.localRotation, 0.1f);
+            if(isRotationEnabled) transform.localRotation = orientation.localRotation * Quaternion.Euler(currentModelRotation);
+            Debug.Log(currentModelRotation);
         }
-        public void MoveWithinCapsule()
+
+        private IEnumerator LerpRotation_CO(Vector3 rot, float duration)
         {
-            transform.DOLocalMove(transform.forward.normalized * 0.2f, 0.1f);
+            rotationFinished = false;
+            float startTime = Time.time;
+            Vector3 initialModelRotation = transform.localRotation.eulerAngles;
+            initialModelRotation.y = 0;
+            while (Time.time - startTime < duration)
+            {
+                currentModelRotation = Vector3.Lerp(initialModelRotation, rot, (Time.time - startTime) / duration);
+                yield return null;
+            }
+
+            currentModelRotation = rot;
+            rotationFinished = true;
         }
-
-        //public void MoveWithinCapsule(Vector3 targetPos)
-        //{
-        //    transform.DOLocalMove(targetPos, 0.3f);
-        //}
-
-        public void MoveToCenter()
-        {
-            transform.DOLocalMove(Vector3.zero, 0.25f);
-        }
-
+        
         public void SetMovementDir(Vector3 movementDir)
         {
             _playerAnimator.SetFloat(XVel, movementDir.x, 0.1f, Time.deltaTime);
@@ -59,7 +64,7 @@ namespace Axiom.Player.Movement
 
         public void SetClimbHandPositions()
         {
-            if (!rbInfo.isDetectingLedge) return;
+            if (!rbInfo.CanClimbLedge()) return;
 
             leftHandClimbPositionTarget.position = rbInfo.GetLeftHandPosition();
             rightHandClimbPositionTarget.position = rbInfo.GetRightHandPosition();
@@ -71,7 +76,18 @@ namespace Axiom.Player.Movement
             rightHandClimbPositionTarget.position = rbInfo.GetRightHandPosition();
         }
 
-        public void SetRotation(Quaternion rot) => transform.DOLocalRotateQuaternion(rot, 0.1f);
+        public void SetRotation(Vector3 rot, float duration)
+        {
+            if(!rotationFinished || Vector3.Dot(rot, currentModelRotation) > 0.8f) return;
+            
+            rot.y = 0;
+            StartCoroutine(LerpRotation_CO(rot, duration));
+        }
+
+        public void ResetRotation()
+        {
+            StartCoroutine(LerpRotation_CO(Vector3.zero, 1f));
+        }
         public void DisableRotation() => isRotationEnabled = false;
         public void EnableRotation() => isRotationEnabled = true;
 

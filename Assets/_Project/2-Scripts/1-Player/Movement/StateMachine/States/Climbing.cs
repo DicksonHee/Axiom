@@ -28,8 +28,8 @@ namespace Axiom.Player.StateMachine
         {
             base.LogicUpdate();
 
-            if (Time.time - stateStartTime > MovementSystem.wallClimbMaxDuration || !MovementSystem.rbInfo.canWallClimb) MovementSystem.ChangeState(MovementSystem._inAirState);
-            else if (MovementSystem.rbInfo.isDetectingLedge && !MovementSystem.isExitingLedgeGrab) MovementSystem.ChangeState(MovementSystem._ledgeGrabbingState);
+            if (Time.time - stateStartTime > MovementSystem.wallClimbMaxDuration || !MovementSystem.rbInfo.CanWallClimb()) MovementSystem.ChangeState(MovementSystem._inAirState);
+            else if (MovementSystem.rbInfo.CanClimbLedge() && !MovementSystem.isExitingLedgeGrab) MovementSystem.ChangeState(MovementSystem._ledgeGrabbingState);
         }
 
         public override void PhysicsUpdate()

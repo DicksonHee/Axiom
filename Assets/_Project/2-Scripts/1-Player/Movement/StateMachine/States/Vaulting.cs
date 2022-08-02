@@ -31,9 +31,9 @@ namespace Axiom.Player.StateMachine
 			MovementSystem.cameraLook.StartVaultCamera();
 			MovementSystem.playerAnimation.SetVaultHandPositions();
 			MovementSystem.playerAnimation.DisableRotation();
-			MovementSystem.playerAnimation.SetFloatParam("VaultHeight", MovementSystem.rbInfo.vaultAnimHeight);
+			MovementSystem.playerAnimation.SetFloatParam("VaultHeight", MovementSystem.rbInfo.GetVaultHeight());
 			
-			if (MovementSystem.rbInfo.canVaultOver)
+			if (MovementSystem.rbInfo.CanVaultOver())
 			{
 				MovementSystem.SetAnimatorBool("VaultingOver", true);
 

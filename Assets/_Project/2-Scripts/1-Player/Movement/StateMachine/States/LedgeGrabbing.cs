@@ -20,56 +20,60 @@ namespace Axiom.Player.StateMachine
 		{
 			base.EnterState();
 
-			isJumpingOnExit = false;
-			exitVelocity = Vector3.zero;
+			MovementSystem._rb.velocity = MovementSystem.transform.up * MovementSystem.wallRunJumpUpForce * 1.5f + MovementSystem.orientation.forward.normalized * MovementSystem.wallRunJumpSideForce;
 
-			Vector3 targetPoint = MovementSystem.rbInfo.GetLedgeHandDifference();
-			targetPoint.y = 0;
+			MovementSystem.ChangeState(MovementSystem._inAirState);
 
-			MovementSystem.DisableMovement();
-			MovementSystem.SetGravity(0f);
-
-			MovementSystem.playerAnimation.DisableRotation();
-			MovementSystem.playerAnimation.SetRotation(Quaternion.LookRotation(-MovementSystem.rbInfo.wallClimbNormal, MovementSystem.transform.up));
-			MovementSystem.playerAnimation.SetClimbHandPositions();
-			MovementSystem.playerAnimation.MoveWithinCapsule();
-
-			MovementSystem.SetAnimatorBool("LedgeGrabbing", true);
+			// isJumpingOnExit = false;
+			// exitVelocity = Vector3.zero;
+			//
+			// Vector3 targetPoint = MovementSystem.rbInfo.GetLedgeHandDifference();
+			// targetPoint.y = 0;
+			//
+			// MovementSystem.DisableMovement();
+			// MovementSystem.SetGravity(0f);
+			//
+			// MovementSystem.playerAnimation.DisableRotation();
+			// MovementSystem.playerAnimation.SetRotation(Quaternion.LookRotation(-MovementSystem.rbInfo.wallClimbNormal, MovementSystem.transform.up));
+			// MovementSystem.playerAnimation.SetClimbHandPositions();
+			// MovementSystem.playerAnimation.MoveWithinCapsule();
+			//
+			// MovementSystem.SetAnimatorBool("LedgeGrabbing", true);
 		}
 
 		public override void LogicUpdate()
 		{
 			base.LogicUpdate();
 
-			if (Time.time - stateStartTime > 1.25f)
-			{
-				if (MovementSystem.inputDetection.movementInput.z > 0f && MovementSystem.rbInfo.canWallClimb) MovementSystem.ChangeState(MovementSystem._ledgeClimbingState);
-			}
+			// if (Time.time - stateStartTime > 1.25f)
+			// {
+			// 	if (MovementSystem.inputDetection.movementInput.z > 0f && MovementSystem.rbInfo.canWallClimb) MovementSystem.ChangeState(MovementSystem._ledgeClimbingState);
+			// }
 		}
 
 		public override void PhysicsUpdate()
 		{
 			base.PhysicsUpdate();
 
-			MovementSystem._rb.velocity = Vector3.zero;
+			//MovementSystem._rb.velocity = Vector3.zero;
 		}
 
 		public override void ExitState()
 		{
 			base.ExitState();
 
-			if (isJumpingOnExit)
-			{
-				MovementSystem._rb.velocity = Vector3.zero;
-				MovementSystem._rb.velocity = exitVelocity * 2;
-			}
-
-			MovementSystem.EnableMovement();
-			MovementSystem.ExitLedgeGrabState();
-			MovementSystem.playerAnimation.MoveToCenter();
-			MovementSystem.playerAnimation.EnableRotation();
-
-			MovementSystem.SetAnimatorBool("LedgeGrabbing", false);
+			// if (isJumpingOnExit)
+			// {
+			// 	MovementSystem._rb.velocity = Vector3.zero;
+			// 	MovementSystem._rb.velocity = exitVelocity * 2;
+			// }
+			//
+			// MovementSystem.EnableMovement();
+			// MovementSystem.ExitLedgeGrabState();
+			// MovementSystem.playerAnimation.MoveToCenter();
+			// MovementSystem.playerAnimation.EnableRotation();
+			//
+			// MovementSystem.SetAnimatorBool("LedgeGrabbing", false);
 		}
 
 		public void SetIsJumpingOnExit(bool val, Vector3 exitVel)

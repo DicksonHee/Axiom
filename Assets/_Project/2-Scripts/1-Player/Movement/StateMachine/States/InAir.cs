@@ -39,10 +39,10 @@ namespace Axiom.Player.StateMachine
         {
             base.LogicUpdate();
             
-            if (MovementSystem.rbInfo.isGrounded) MovementSystem.ChangeState(MovementSystem._idleState);
+            if (MovementSystem.rbInfo.IsGrounded()) MovementSystem.ChangeState(MovementSystem._idleState);
             else if (MovementSystem.inputDetection.movementInput.z > 0f)
             {
-                if (MovementSystem.rbInfo.canWallClimb && !MovementSystem.isExitingClimb) // Check for wall climb
+                if (MovementSystem.rbInfo.CanWallClimb() && !MovementSystem.isExitingClimb) // Check for wall climb
                 {
                     wallClimbTimer += Time.deltaTime;
                     if (ShouldWallClimb()) MovementSystem.ChangeState(MovementSystem._climbingState);
@@ -54,10 +54,12 @@ namespace Axiom.Player.StateMachine
                     MovementSystem.ChangeState(MovementSystem._wallRunningState);
                 }
             }
-            else if (MovementSystem.rbInfo.isDetectingLedge && !MovementSystem.isExitingLedgeGrab) MovementSystem.ChangeState(MovementSystem._ledgeGrabbingState);
-
-            MovementSystem.SetMaxHeight(Time.time - stateStartTime);
-            MovementSystem.playerAnimation.SetFloatParam("LandHeight", MovementSystem._maxHeight);
+            else if (MovementSystem.rbInfo.CanClimbLedge() && !MovementSystem.isExitingLedgeGrab)
+            {
+                MovementSystem.ChangeState(MovementSystem._ledgeGrabbingState);
+            }
+            
+            MovementSystem.playerAnimation.SetFloatParam("LandHeight", Time.time - stateStartTime);
             
             CalculateMovementSpeed();
         }
@@ -84,6 +86,14 @@ namespace Axiom.Player.StateMachine
 
             hasWallJumped = true;
             MovementSystem._rb.velocity = jumpVelocity;
+        }
+
+        public void InAirJump(Vector3 jumpVelocity)
+        {
+            if (hasAirJumped) return;
+
+            hasAirJumped = true;
+            MovementSystem._rb.AddForce(jumpVelocity);
         }
 
         private bool ShouldWallClimb()

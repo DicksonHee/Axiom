@@ -20,14 +20,8 @@ public class InputDetection : MonoBehaviour
         playerInputActions = new PlayerInputActions();
 
         playerInputActions.Enable();
-        playerInputActions.Player.Crouch.performed += DetectCrouchInput;
     }
 
-    private void DetectCrouchInput(InputAction.CallbackContext context)
-    {
-        crouchInput = !crouchInput;
-    }
-    
     private void Update()
     {
         DetectMovementInput();
@@ -49,7 +43,7 @@ public class InputDetection : MonoBehaviour
 
     private void DetectCrouchInput()
     {
-        //crouchInput = playerInputActions.Player.Crouch.ReadValue<bool>();
+        crouchInput = Input.GetKey(KeyCode.LeftControl);
     }
 
     private void DetectLeftHoldInput()

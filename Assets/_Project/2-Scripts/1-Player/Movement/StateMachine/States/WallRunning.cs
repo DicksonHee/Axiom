@@ -58,7 +58,7 @@ namespace Axiom.Player.StateMachine
 			{
 				MovementSystem.ChangeState(MovementSystem._inAirState);
 			}
-			else if(MovementSystem.rbInfo.isGrounded) MovementSystem.ChangeState(MovementSystem._idleState);
+			else if(MovementSystem.rbInfo.IsGrounded()) MovementSystem.ChangeState(MovementSystem._idleState);
 		}
 
 		public override void PhysicsUpdate()

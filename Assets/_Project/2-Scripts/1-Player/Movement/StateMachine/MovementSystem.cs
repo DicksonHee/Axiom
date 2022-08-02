@@ -80,8 +80,8 @@ namespace Axiom.Player.StateMachine
         #endregion
 
         private bool _movementEnabled = true;
-        public float _maxHeight;
-
+        private bool _coyoteJumpEnabled = true;
+        
         #region Turning Variables
         private Vector3 _currentFacingTransform;
         private float _turnCheckCounter;
@@ -107,6 +107,8 @@ namespace Axiom.Player.StateMachine
         private float _slideExitCounter;
         #endregion
 
+        
+        
         private float _ledgeGrabExitCounter;
         
         #region States
@@ -184,21 +186,10 @@ namespace Axiom.Player.StateMachine
         
         private void CheckSlopeMovementDirection()
         {
-            if (!rbInfo.isOnSlope) return;
-            moveDirection = Vector3.ProjectOnPlane(moveDirection, rbInfo.slopeHit.normal);
+            if (!rbInfo.IsOnSlope()) return;
+            moveDirection = Vector3.ProjectOnPlane(moveDirection, rbInfo.GetSlopeHit().normal);
         }
-        
-        public Vector3 CheckSlopeMovementDirection(Vector3 direction)
-        {
-            if (!rbInfo.isOnSlope) return direction;
-            
-            var slopeRotation = Quaternion.FromToRotation(orientation.up, rbInfo.slopeHit.normal);
-            var adjustedVel = slopeRotation * direction;
-            if (adjustedVel.y <= -0.1f || adjustedVel.y >= 0.1f) return adjustedVel;
 
-            return direction;
-        }
-        
         // Calculate the current movement speed by evaluating from the curve
         public void CalculateMovementSpeed(AnimationCurve curve, float prevSpeed, float time)
         {
@@ -220,7 +211,7 @@ namespace Axiom.Player.StateMachine
                 _currentFacingTransform = orientation.forward;
             }
         }
-        
+
         // Decrements wall run timers
         private void CheckWallRunTimers()
         {
@@ -243,7 +234,7 @@ namespace Axiom.Player.StateMachine
 
         private void CheckChangeToAirState()
         {
-            if(!rbInfo.isGrounded && 
+            if(!rbInfo.IsGrounded() && 
                CurrentState.stateName != StateName.InAir && 
                CurrentState.stateName != StateName.WallRunning &&
                CurrentState.stateName != StateName.LedgeGrabbing &&
@@ -279,20 +270,23 @@ namespace Axiom.Player.StateMachine
         {
             if (CurrentState == _wallRunningState)
             {
+                Debug.Log("wall");
                 WallRunJump();
             }
             else if (CurrentState == _ledgeGrabbingState)
             {
+                Debug.Log("le");
                 LedgeGrabJump();
             }
-            else if (CurrentState == _inAirState)
+            else if (CurrentState == _inAirState && !_isJumping)
             {
+                Debug.Log("ai");
                 InAirJump();
             }
-            else if (rbInfo.isGrounded)
+            else if (rbInfo.IsGrounded())
             {
-                if (!rbInfo.canVaultOver && !rbInfo.canVaultOn) Jump();
-                else ChangeState(_vaultingState);
+                if (rbInfo.CanVaultOn() || rbInfo.CanVaultOver()) ChangeState(_vaultingState);
+                else if(!_isJumping) Jump();
             }
         }
         
@@ -312,12 +306,12 @@ namespace Axiom.Player.StateMachine
                 playerAnimation.SetJumpParam(1f);
                 ChangeState(_wallRunningState);
             }
-            else if (!rbInfo.isGrounded && CurrentState.stateName != StateName.InAir)
+            else if (!rbInfo.IsGrounded() && CurrentState.stateName != StateName.InAir)
             {
                 playerAnimation.SetJumpParam(0);
                 ChangeState(_inAirState);
             }
-
+            
             playerAnimation.SetLandParam(0f);
             playerAnimation.SetInAirParam(0f);
             playerAnimation.ResetTrigger("Landed");
@@ -348,7 +342,8 @@ namespace Axiom.Player.StateMachine
             }
             else
             {
-                _rb.AddForce(transform.up * upJumpForce, ForceMode.Impulse);
+                Vector3 jumpVel = transform.up * upJumpForce;
+                _inAirState.InAirJump(jumpVel);
             }
 
             playerAnimation.ResetTrigger("Landed");
@@ -376,13 +371,12 @@ namespace Axiom.Player.StateMachine
             _wallRunExitCounter = 0;
             isExitingClimb = false;
 
+            _coyoteJumpEnabled = false;
             playerAnimation.ResetTrigger("WallJump");
             playerAnimation.ResetTrigger("Jump");
 
             playerAnimation.SetInAirParam(0);
             playerAnimation.SetTrigger("Landed");
-            
-            ResetMaxHeight();
         }
         #endregion
         
@@ -456,13 +450,6 @@ namespace Axiom.Player.StateMachine
         public void SetTargetSpeed(float speedVal) => currentTargetSpeed = speedVal;
         // Set left and right movement multiplier
         public void SetLRMultiplier(float multiplier) => lrMultiplier = multiplier;
-
-        public void ResetMaxHeight() => _maxHeight = 0f;
-
-        public void SetMaxHeight(float val)
-        {
-            if (_maxHeight < val) _maxHeight = val;
-        }
         // Enables movement
         public void EnableMovement() => _movementEnabled = true;
         // Disables movement
@@ -483,7 +470,7 @@ namespace Axiom.Player.StateMachine
         #region Debug Functions
         private void DrawLine()
         {
-            Debug.DrawLine(rbInfo.groundDetector.position, rbInfo.groundDetector.position + new Vector3(0,5,0), Color.red, 99f);
+            Debug.DrawLine(rbInfo.groundDetectorTransform.position, rbInfo.groundDetectorTransform.position + new Vector3(0,5,0), Color.red, 99f);
         }
         public string GetCurrentStateName() => CurrentState.stateName.ToString();
         public string GetPreviousStatename() => PreviousState.ToString();

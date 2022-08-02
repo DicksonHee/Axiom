@@ -11,37 +11,53 @@ namespace Axiom.Player.Movement
     [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider))]
     public class RigidbodyDetection : MonoBehaviour
     {
+        #region Inspector Variables
         public Transform orientation;
         public Camera camera;
         
         [Header("Ground Detection")]
+        public Transform groundDetectorTransform;
         public float groundDetectorRadius = 0.5f;
-        public Transform groundDetector;
-        public LayerMask groundLayer;
 
         [Header("WallRun Detection")]
-        public Transform wallDetector;
-        public float wallCheckDistance = 0.5f;
-        public LayerMask wallLayer;
+        public Transform wallDetectorTransform;
+        public float wallRunDetectionDistance = 0.5f;
 
         [Header("WallClimb Detection")] 
-        public float wallClimbDetectionLength;
+        public float wallClimbDetectionDistance;
 
         [Header("Ledge Detection")]
-        public Transform handPosition;
-        public float ledgeDetector;
-        public float ledgeHeightLength;
-        public float ledgeForwardOffset; 
+        public float ledgeHeightDetectionDistance;
+        public float ledgeDetectorForwardOffset; 
         public float ledgeDetectorHeightOffset;
 
         [Header("Vault Detection")]
-        public Transform frontVaultDetector;
-        public float maxVaultDepth;
+        public Transform vaultDetectorTransform;
+        public float vaultDetectionDistance;
 
-        [HideInInspector] public RaycastHit slopeHit;
+        [Header("Crouch Detection")] 
+        public Transform crouchDetectorTransform;
 
+        [Header("Layers")]
+        public LayerMask groundLayer;
+        public LayerMask wallLayer;
+        #endregion
+
+        public event Action OnPlayerLanded;
+        public event Action OnSlopeEnded;
+        
+        private bool isGrounded;
+        private bool isOnSlope;
+
+        private bool isOnWall;
+        private Vector3 enterWallRunRight;
+        private Vector3 enterWallRunForward;
+        
         private float currentVelocity;
-
+        
+        #region Raycasts
+        private RaycastHit slopeHit;
+        
         private RaycastHit cameraHit;
         private GameObject cameraHitObject;
 
@@ -56,59 +72,69 @@ namespace Axiom.Player.Movement
         private RaycastHit leftBackWallHit;
         
         private RaycastHit vaultHit;
+        #endregion
 
-        public bool isGrounded { get; private set; }
-        public bool isOnSlope { get; private set; }
-
-        private bool isOnWall;
-        private Vector3 enterWallRunRight;
-        private Vector3 enterWallRunForward;
-        
         #region WallRun Detection
-        public bool leftWallDetected {get; private set; }
-        public bool leftFrontWallDetected {get; private set; }
-        public bool leftBackWallDetected {get; private set; }
-        public bool rightWallDetected { get; private set; }
-        public bool rightFrontWallDetected { get; private set; }
-        public bool rightBackWallDetected { get; private set; }
+        private bool leftWallDetected;
+        private bool leftFrontWallDetected;
+        private bool leftBackWallDetected;
+        private bool rightWallDetected;
+        private bool rightFrontWallDetected;
+        private bool rightBackWallDetected;
         #endregion
 
         #region WallClimb Detection
-        public bool canWallClimb { get; private set; }
-        public Vector3 wallClimbNormal { get; private set; }
-		#endregion
+        private bool canWallClimb;
+        #endregion
 
 		#region Ledge Detection
-        public bool isDetectingLedge { get; private set; }
+        private bool isDetectingLedge;
         private RaycastHit ledgePosition;
 		#endregion
 
 		#region Vault Detection
-        public bool canVaultOver { get; private set; }
-        public bool canVaultOn { get; private set; }
-        public float vaultAnimHeight { get; private set; }
+        private bool canVaultOver;
+        private bool canVaultOn;
+        private float vaultAnimHeight;
+        #endregion
+        
+        #region Crouch Detection
+        private bool canUncrouch;
         #endregion
 
-		public event Action OnPlayerLanded;
-        public event Action OnSlopeEnded;
+        #region Public Getters
+
+        public bool IsGrounded() => isGrounded;
+        public bool IsOnSlope() => isOnSlope;
+        public bool CanWallClimb() => canWallClimb;
+        public bool CanClimbLedge() => isDetectingLedge;
+        public bool CanVaultOver() => canVaultOver;
+        public bool CanVaultOn() => canVaultOn;
+        public float GetVaultHeight() => vaultAnimHeight;
+        public bool CanUncrouch() => canUncrouch;
+        public RaycastHit GetSlopeHit() => slopeHit;
+        #endregion
 
         private void Update()
         {
             GroundDetection();
             SlopeDetection();
+            CrouchDetection();
 
             CameraRaycastDetection();
             DelegateWallDetection();
             WallClimbCheck();
             LedgeCheck();
             VaultDetection();
+            
+            Debug.Log(isGrounded);
         }
 
         #region Ground Functions
         private void GroundDetection()
         {
             bool previouslyGrounded = isGrounded;
-            isGrounded = Physics.SphereCast(groundDetector.position, groundDetectorRadius, -transform.up, out groundHit, 1f, groundLayer);
+            isGrounded = Physics.SphereCast(groundDetectorTransform.position, groundDetectorRadius, -transform.up, out groundHit, 1f, groundLayer);
             if (!previouslyGrounded && isGrounded) OnPlayerLanded?.Invoke();
         }
         #endregion
@@ -118,9 +144,9 @@ namespace Axiom.Player.Movement
         {
             bool wasOnSlope = isOnSlope;
 
-            if (Physics.Raycast(groundDetector.position, -transform.up, out slopeHit, groundDetectorRadius, groundLayer))
+            if (Physics.Raycast(groundDetectorTransform.position, (Quaternion.AngleAxis(65f, orientation.right) * orientation.forward).normalized, out slopeHit, 2f, groundLayer))
             {
-                isOnSlope = slopeHit.normal != transform.up;
+                isOnSlope = Vector3.Angle(slopeHit.normal, orientation.up) is > 20f and < 90f;
             }
             else isOnSlope = false;
             
@@ -151,35 +177,35 @@ namespace Axiom.Player.Movement
 
         private void WallRunDetection()
         {
-            var position = wallDetector.position;
+            var position = wallDetectorTransform.position;
             var forward = orientation.forward.normalized;
             var right = orientation.right.normalized;
             
-            rightWallDetected = Physics.Raycast(position, right, out rightWallHit, wallCheckDistance, wallLayer);
-            rightFrontWallDetected = Physics.Raycast(position, (forward + right).normalized, out rightFrontWallHit, wallCheckDistance, wallLayer);
-            rightBackWallDetected = Physics.Raycast(position, (-forward + right).normalized, out rightBackWallHit, wallCheckDistance, wallLayer);
+            rightWallDetected = Physics.Raycast(position, right, out rightWallHit, wallRunDetectionDistance, wallLayer);
+            rightFrontWallDetected = Physics.Raycast(position, (forward + right).normalized, out rightFrontWallHit, wallRunDetectionDistance, wallLayer);
+            rightBackWallDetected = Physics.Raycast(position, (-forward + right).normalized, out rightBackWallHit, wallRunDetectionDistance, wallLayer);
 
-            leftWallDetected = Physics.Raycast(position, -right, out leftWallHit, wallCheckDistance, wallLayer);
-            leftFrontWallDetected = Physics.Raycast(position, (forward + -right).normalized, out leftFrontWallHit, wallCheckDistance, wallLayer);
-            leftBackWallDetected = Physics.Raycast(position, (-forward + -right).normalized, out leftBackWallHit, wallCheckDistance, wallLayer);
+            leftWallDetected = Physics.Raycast(position, -right, out leftWallHit, wallRunDetectionDistance, wallLayer);
+            leftFrontWallDetected = Physics.Raycast(position, (forward + -right).normalized, out leftFrontWallHit, wallRunDetectionDistance, wallLayer);
+            leftBackWallDetected = Physics.Raycast(position, (-forward + -right).normalized, out leftBackWallHit, wallRunDetectionDistance, wallLayer);
         }
 
         private void OnWallDetection()
         {
-            var position = wallDetector.position;
+            var position = wallDetectorTransform.position;
 
-            rightWallDetected = Physics.Raycast(position, enterWallRunRight.normalized, out rightWallHit, wallCheckDistance, wallLayer);
-            rightFrontWallDetected = Physics.Raycast(position, (enterWallRunRight + enterWallRunForward).normalized, out rightFrontWallHit, wallCheckDistance, wallLayer);
-            rightBackWallDetected = Physics.Raycast(position, (enterWallRunRight + -enterWallRunForward).normalized, out rightBackWallHit, wallCheckDistance, wallLayer);
+            rightWallDetected = Physics.Raycast(position, enterWallRunRight.normalized, out rightWallHit, wallRunDetectionDistance, wallLayer);
+            rightFrontWallDetected = Physics.Raycast(position, (enterWallRunRight + enterWallRunForward).normalized, out rightFrontWallHit, wallRunDetectionDistance, wallLayer);
+            rightBackWallDetected = Physics.Raycast(position, (enterWallRunRight + -enterWallRunForward).normalized, out rightBackWallHit, wallRunDetectionDistance, wallLayer);
 
-            leftWallDetected = Physics.Raycast(position, -enterWallRunRight.normalized, out leftWallHit, wallCheckDistance, wallLayer);
-            leftFrontWallDetected = Physics.Raycast(position, (-enterWallRunRight + enterWallRunForward).normalized, out leftFrontWallHit, wallCheckDistance, wallLayer);
-            leftBackWallDetected = Physics.Raycast(position, (-enterWallRunRight + -enterWallRunForward).normalized, out leftBackWallHit, wallCheckDistance, wallLayer);
+            leftWallDetected = Physics.Raycast(position, -enterWallRunRight.normalized, out leftWallHit, wallRunDetectionDistance, wallLayer);
+            leftFrontWallDetected = Physics.Raycast(position, (-enterWallRunRight + enterWallRunForward).normalized, out leftFrontWallHit, wallRunDetectionDistance, wallLayer);
+            leftBackWallDetected = Physics.Raycast(position, (-enterWallRunRight + -enterWallRunForward).normalized, out leftBackWallHit, wallRunDetectionDistance, wallLayer);
         }
 
         private void CameraRaycastDetection()
         {
-            if (Physics.Raycast(camera.ScreenPointToRay(new Vector3(width / 2, height / 2, 0)), out cameraHit, 10f, groundLayer))
+            if (Physics.Raycast(camera.ScreenPointToRay(new Vector3(width / 2f, height / 2f, 0)), out cameraHit, 10f, groundLayer))
             {
                 cameraHitObject = cameraHit.collider.gameObject;
             }
@@ -242,32 +268,28 @@ namespace Axiom.Player.Movement
 		#region WallClimb Functions
 		private void WallClimbCheck()
         {
-            var position = wallDetector.position;
+            var position = wallDetectorTransform.position;
             var forward = orientation.forward;
             var up = transform.up;
 
-            bool rightDetected = Physics.Raycast(position, (Quaternion.AngleAxis(15f, up) * forward).normalized, out RaycastHit rightWallClimbDetected, wallClimbDetectionLength, wallLayer);
-            bool leftDetected = Physics.Raycast(position, (Quaternion.AngleAxis(-15f, up) * forward).normalized, out RaycastHit leftWallClimbDetected, wallClimbDetectionLength, wallLayer);   
+            bool rightDetected = Physics.Raycast(position, (Quaternion.AngleAxis(15f, up) * forward).normalized, wallClimbDetectionDistance, wallLayer);
+            bool leftDetected = Physics.Raycast(position, (Quaternion.AngleAxis(-15f, up) * forward).normalized, wallClimbDetectionDistance, wallLayer);   
 
             if (rightDetected && leftDetected) canWallClimb = true;
             else canWallClimb = false;
-
-            wallClimbNormal = rightWallClimbDetected.normal;
         }
         #endregion
 
         #region Ledge Functions
         private void LedgeCheck()
         {
-            Vector3 frontPoint = orientation.position + orientation.forward.normalized * ledgeForwardOffset + orientation.up.normalized * ledgeDetectorHeightOffset;
-            bool ledgeDetected = Physics.Raycast(frontPoint, -transform.up, out ledgePosition, 99f, wallLayer);
+            Vector3 up = orientation.up;
+            Vector3 frontPoint = orientation.position + orientation.forward.normalized * ledgeDetectorForwardOffset + up.normalized * ledgeDetectorHeightOffset;
+            bool ledgeDetected = Physics.Raycast(frontPoint, -up, out ledgePosition, 5f, wallLayer);
 
-            if (ledgeDetected && ledgePosition.distance < ledgeHeightLength) isDetectingLedge = true; 
-            else isDetectingLedge = false;
+            isDetectingLedge = ledgeDetected && ledgePosition.distance < ledgeHeightDetectionDistance;
         }
 
-        public Vector3 GetLedgePosition() => ledgePosition.point;
-        public Vector3 GetLedgeHandDifference() => GetRightHandPosition() - handPosition.position;
         public Vector3 GetLeftHandPosition() => ledgePosition.point + -orientation.right.normalized * 0.5f;
         public Vector3 GetRightHandPosition() =>ledgePosition.point + orientation.right.normalized * 0.5f;
         #endregion
@@ -279,19 +301,19 @@ namespace Axiom.Player.Movement
 
             float vaultOnHeight = 0f;
             float vaultHeight = 0f;
-            Vector3 vaultPosition = frontVaultDetector.position;
+            Vector3 vaultPosition = vaultDetectorTransform.position;
             Vector3 normalizedFront = orientation.forward.normalized;
             Vector3 normalizedUp = orientation.up.normalized;
             
-            if (Physics.Raycast(vaultPosition, normalizedFront, out RaycastHit frontVaultHit, maxVaultDepth * (1 + currentVelocity / 10f), wallLayer))
+            if (Physics.Raycast(vaultPosition, normalizedFront, out RaycastHit frontVaultHit, vaultDetectionDistance * (1 + currentVelocity / 10f), wallLayer))
             {
                 if (Vector3.Dot(orientation.forward, frontVaultHit.normal) < -0.8f)
                 {
-                    if (Physics.Raycast(vaultPosition + normalizedUp * 1.45f + normalizedFront * (maxVaultDepth * (1f + currentVelocity / 10f)), -normalizedUp, out vaultHit, 2f, wallLayer))
+                    if (Physics.Raycast(vaultPosition + normalizedUp * 1.45f + normalizedFront * frontVaultHit.distance, -normalizedUp, out vaultHit, 2f, wallLayer))
                     {
                         vaultHeight = vaultHit.distance;
                     }
-                    if (Physics.Raycast(vaultPosition + normalizedUp * 1.45f + normalizedFront * (maxVaultDepth * (2f + currentVelocity / 10f)), -normalizedUp, out RaycastHit vaultOnHit, 2f, wallLayer))
+                    if (Physics.Raycast(vaultPosition + normalizedUp * 1.45f + normalizedFront * (frontVaultHit.distance + 1f), -normalizedUp, out RaycastHit vaultOnHit, 2f, wallLayer))
                     {
                         vaultOnHeight = vaultOnHit.distance;
                     }
@@ -306,12 +328,17 @@ namespace Axiom.Player.Movement
             vaultAnimHeight = 1.45f - vaultHeight;
             canVaultOn = vaultAnimHeight is > 1f and < 1.35f && Mathf.Abs(vaultHeight - vaultOnHeight) < 0.1f;
             canVaultOver = vaultAnimHeight is > 1f and < 1.35f && vaultOnHeight > 0.5f;
-            
-            // Debug.Log("VaultOn: " + canVaultOn + "|" + vaultOnHeight);
-            // Debug.Log("VaultOver: " + canVaultOver + "|" + vaultAnimHeight);
         }
         #endregion
 
+        #region Crouch Detection
+
+        private void CrouchDetection()
+        {
+            canUncrouch = !Physics.Raycast(crouchDetectorTransform.position, orientation.up, 1f, wallLayer);
+        }
+        #endregion
+        
         public void SetCurrentVelocity(float velocity)
         {
             currentVelocity = velocity;
@@ -319,47 +346,50 @@ namespace Axiom.Player.Movement
         
 		private void OnDrawGizmos()
         {
-            Vector3 wallDetectorPosition = wallDetector.position;
-            Vector3 wallDetectorUp = wallDetector.up;
+            Vector3 wallDetectorPosition = wallDetectorTransform.position;
+            Vector3 wallDetectorUp = wallDetectorTransform.up;
             Vector3 orientationForward = orientation.forward;
             
             // Wall Climb
             Gizmos.color = canWallClimb ? Color.blue : Color.red;
-            Gizmos.DrawLine(wallDetectorPosition, wallDetectorPosition + (Quaternion.AngleAxis(15f, wallDetectorUp) * orientationForward).normalized * wallClimbDetectionLength);
-            Gizmos.DrawLine(wallDetectorPosition, wallDetectorPosition + (Quaternion.AngleAxis(-15f, wallDetectorUp) * orientationForward).normalized * wallClimbDetectionLength);
+            Gizmos.DrawLine(wallDetectorPosition, wallDetectorPosition + (Quaternion.AngleAxis(15f, wallDetectorUp) * orientationForward).normalized * wallClimbDetectionDistance);
+            Gizmos.DrawLine(wallDetectorPosition, wallDetectorPosition + (Quaternion.AngleAxis(-15f, wallDetectorUp) * orientationForward).normalized * wallClimbDetectionDistance);
 
             // Wall Run Right
             Gizmos.color = rightWallDetected ? Color.blue : Color.red;
-            Gizmos.DrawLine(wallDetector.position, orientation.position + orientation.right.normalized * wallCheckDistance);
+            Gizmos.DrawLine(wallDetectorTransform.position, orientation.position + orientation.right.normalized * wallRunDetectionDistance);
             Gizmos.color = rightFrontWallDetected ? Color.blue : Color.red;
-            Gizmos.DrawLine(wallDetector.position, orientation.position + (orientation.right + orientation.forward).normalized * wallCheckDistance);
+            Gizmos.DrawLine(wallDetectorTransform.position, orientation.position + (orientation.right + orientation.forward).normalized * wallRunDetectionDistance);
             Gizmos.color = rightBackWallDetected? Color.blue: Color.red;
-            Gizmos.DrawLine(wallDetector.position, orientation.position + (orientation.right + -orientation.forward).normalized * wallCheckDistance);
+            Gizmos.DrawLine(wallDetectorTransform.position, orientation.position + (orientation.right + -orientation.forward).normalized * wallRunDetectionDistance);
 
             // Wall Run Left
             Gizmos.color = leftWallDetected ? Color.blue : Color.red;
-            Gizmos.DrawLine(wallDetector.position, orientation.position + -orientation.right.normalized * wallCheckDistance);
+            Gizmos.DrawLine(wallDetectorTransform.position, orientation.position + -orientation.right.normalized * wallRunDetectionDistance);
             Gizmos.color = leftFrontWallDetected? Color.blue: Color.red;
-            Gizmos.DrawLine(wallDetector.position, orientation.position + (-orientation.right + orientation.forward).normalized * wallCheckDistance);
+            Gizmos.DrawLine(wallDetectorTransform.position, orientation.position + (-orientation.right + orientation.forward).normalized * wallRunDetectionDistance);
             Gizmos.color = leftBackWallDetected? Color.blue: Color.red;
-            Gizmos.DrawLine(wallDetector.position, orientation.position + (-orientation.right + -orientation.forward).normalized * wallCheckDistance);
+            Gizmos.DrawLine(wallDetectorTransform.position, orientation.position + (-orientation.right + -orientation.forward).normalized * wallRunDetectionDistance);
 
             // Ground Detection
             Gizmos.color = isGrounded ? Color.blue : Color.red;
-            Gizmos.DrawLine(groundDetector.position, groundDetector.position + -transform.up);
+            Gizmos.DrawLine(groundDetectorTransform.position, groundDetectorTransform.position + -transform.up);
             Gizmos.DrawWireSphere(groundHit.point, groundDetectorRadius);
 
+            // Slope Detection
+            Gizmos.DrawLine(groundDetectorTransform.position, groundDetectorTransform.position + (Quaternion.AngleAxis(65f, orientation.right) * orientation.forward).normalized * 2f);
+            
             // Ledge Grab
             Gizmos.color = isDetectingLedge ? Color.blue : Color.red;
-            Vector3 ledgeRaySpawnPoint = orientation.position + orientation.forward.normalized * ledgeForwardOffset + orientation.up.normalized * ledgeDetectorHeightOffset;
+            Vector3 ledgeRaySpawnPoint = orientation.position + orientation.forward.normalized * ledgeDetectorForwardOffset + orientation.up.normalized * ledgeDetectorHeightOffset;
             Gizmos.DrawLine(ledgeRaySpawnPoint, ledgePosition.point);
 
             // Vault
-            Gizmos.DrawLine(frontVaultDetector.position, frontVaultDetector.position + orientationForward.normalized * maxVaultDepth * (1 + currentVelocity / 10f));
-            Gizmos.DrawLine(frontVaultDetector.position + orientation.forward.normalized * (maxVaultDepth * 1 + (currentVelocity/10f)) + orientation.up.normalized * 1.45f,
-                frontVaultDetector.position + orientation.forward.normalized * (maxVaultDepth * 1 + (currentVelocity/10f)) + orientation.up.normalized * 1.45f + -orientation.up * 2f);
-            Gizmos.DrawLine(frontVaultDetector.position + orientation.forward.normalized * (maxVaultDepth * 2f + (currentVelocity/10f)) + orientation.up.normalized * 1.45f,
-                frontVaultDetector.position + orientation.forward.normalized * (maxVaultDepth * 2f + (currentVelocity/10f)) + orientation.up.normalized * 1.45f + -orientation.up * 2f);
+            Gizmos.DrawLine(vaultDetectorTransform.position, vaultDetectorTransform.position + orientationForward.normalized * vaultDetectionDistance * (1 + currentVelocity / 10f));
+            Gizmos.DrawLine(vaultDetectorTransform.position + orientation.forward.normalized * (vaultDetectionDistance * 1 + (currentVelocity/10f)) + orientation.up.normalized * 1.45f,
+                vaultDetectorTransform.position + orientation.forward.normalized * (vaultDetectionDistance * 1 + (currentVelocity/10f)) + orientation.up.normalized * 1.45f + -orientation.up * 2f);
+            Gizmos.DrawLine(vaultDetectorTransform.position + orientation.forward.normalized * (vaultDetectionDistance * 2f + (currentVelocity/10f)) + orientation.up.normalized * 1.45f,
+                vaultDetectorTransform.position + orientation.forward.normalized * (vaultDetectionDistance * 2f + (currentVelocity/10f)) + orientation.up.normalized * 1.45f + -orientation.up * 2f);
             
             
             Gizmos.color = Color.yellow;
