@@ -9002,14 +9002,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1592963161, guid: fab9e760b78e738469b22e6ec410898c, type: 3}
-      propertyPath: m_Name
-      value: VaultDetectorTop
-      objectReference: {fileID: 0}
-    - target: {fileID: 1592963162, guid: fab9e760b78e738469b22e6ec410898c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 6603163243843799761, guid: fab9e760b78e738469b22e6ec410898c,
         type: 3}
       propertyPath: m_Name
@@ -9069,36 +9061,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6603163244758501547, guid: fab9e760b78e738469b22e6ec410898c,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 5.941
-      objectReference: {fileID: 0}
-    - target: {fileID: 6603163244758501550, guid: fab9e760b78e738469b22e6ec410898c,
-        type: 3}
-      propertyPath: camera
-      value: 
-      objectReference: {fileID: 473363212}
-    - target: {fileID: 6603163244758501550, guid: fab9e760b78e738469b22e6ec410898c,
-        type: 3}
-      propertyPath: maxVaultDepth
-      value: 0.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 6603163244758501550, guid: fab9e760b78e738469b22e6ec410898c,
-        type: 3}
-      propertyPath: wallCheckDistance
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6603163244758501550, guid: fab9e760b78e738469b22e6ec410898c,
-        type: 3}
-      propertyPath: wallClimbDetectionLength
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6603163244758501551, guid: fab9e760b78e738469b22e6ec410898c,
-        type: 3}
-      propertyPath: inAirGravity
-      value: 40
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fab9e760b78e738469b22e6ec410898c, type: 3}
@@ -9610,12 +9572,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!20 &473363212 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 6603163243623300483, guid: fab9e760b78e738469b22e6ec410898c,
-    type: 3}
-  m_PrefabInstance: {fileID: 410291572}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &479639864
 Mesh:
   m_ObjectHideFlags: 0

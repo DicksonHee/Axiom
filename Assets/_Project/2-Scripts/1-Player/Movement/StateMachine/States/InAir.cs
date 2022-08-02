@@ -10,7 +10,6 @@ namespace Axiom.Player.StateMachine
     {
         private bool hasAirJumped;
         private bool hasWallJumped;
-        private float initialHorizontalSpeed;
         private float wallClimbTimer;
         
 
@@ -23,7 +22,6 @@ namespace Axiom.Player.StateMachine
         {
             base.EnterState();
 
-            initialHorizontalSpeed = new Vector3(Vector3.Dot(MovementSystem.orientation.forward, MovementSystem._rb.velocity), 0f, Vector3.Dot(MovementSystem.orientation.right, MovementSystem._rb.velocity)).magnitude;
             hasAirJumped = false;
             hasWallJumped = false;
             wallClimbTimer = 0f;
@@ -80,21 +78,11 @@ namespace Axiom.Player.StateMachine
             MovementSystem.SetAnimatorBool("InAir", false);
         }
 
-        public void InAirJump(Vector3 jumpVelocity)
-        {
-            if(hasAirJumped || Time.time - stateStartTime > MovementSystem.inAirCoyoteTime) return;
-
-            hasAirJumped = true;
-            MovementSystem._rb.velocity = Vector3.zero;
-            MovementSystem._rb.velocity = jumpVelocity;
-        }
-
         public void WallRunJump(Vector3 jumpVelocity)
         {
             if (hasWallJumped) return;
 
             hasWallJumped = true;
-            MovementSystem._rb.velocity = Vector3.zero;
             MovementSystem._rb.velocity = jumpVelocity;
         }
 

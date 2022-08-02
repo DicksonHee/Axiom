@@ -65,6 +65,12 @@ namespace Axiom.Player.Movement
             rightHandClimbPositionTarget.position = rbInfo.GetRightHandPosition();
         }
 
+        public void SetVaultHandPositions()
+        {
+            leftHandClimbPositionTarget.position = rbInfo.GetLeftHandPosition();
+            rightHandClimbPositionTarget.position = rbInfo.GetRightHandPosition();
+        }
+
         public void SetRotation(Quaternion rot) => transform.DOLocalRotateQuaternion(rot, 0.1f);
         public void DisableRotation() => isRotationEnabled = false;
         public void EnableRotation() => isRotationEnabled = true;

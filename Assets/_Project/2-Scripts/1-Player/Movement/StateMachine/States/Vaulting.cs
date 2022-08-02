@@ -8,11 +8,11 @@ namespace Axiom.Player.StateMachine
 {
     public class Vaulting : State
     {
-		Vector3 initialPos;
-		Vector3 initialDir;
-		float initialVelocity;
+		private Vector3 initialPos;
+		private Vector3 initialDir;
+		private float initialVelocity;
 
-        public Vaulting(MovementSystem movementSystem) : base(movementSystem)
+		public Vaulting(MovementSystem movementSystem) : base(movementSystem)
         {
             stateName = StateName.Vaulting;
         }
@@ -29,18 +29,42 @@ namespace Axiom.Player.StateMachine
 			MovementSystem._rb.isKinematic = true;
 
 			MovementSystem.cameraLook.StartVaultCamera();
+			MovementSystem.playerAnimation.SetVaultHandPositions();
 			MovementSystem.playerAnimation.DisableRotation();
-			MovementSystem.playerAnimation.SetFloatParam("VaultHeight", 1.1f);
-			MovementSystem.SetAnimatorBool("Vaulting", true);
+			MovementSystem.playerAnimation.SetFloatParam("VaultHeight", MovementSystem.rbInfo.vaultAnimHeight);
+			
+			if (MovementSystem.rbInfo.canVaultOver)
+			{
+				MovementSystem.SetAnimatorBool("VaultingOver", true);
 
-			MovementSystem.StartCoroutine(LerpPosition_CO(Mathf.Lerp(0.1f, 0.5f, 1 - initialVelocity / 15f)));
+				MovementSystem.StartCoroutine(LerpForwardPosition_CO(Mathf.Lerp(0.1f, 0.5f, 1 - initialVelocity / 15f)));
+			}
+			else
+			{
+				MovementSystem.SetAnimatorBool("VaultingOn", true);
+
+				MovementSystem.StartCoroutine(LerpUpwardPosition_CO(Mathf.Lerp(0.1f, 0.5f, 1 - initialVelocity / 15f)));
+			}
 		}
 
-		private IEnumerator LerpPosition_CO(float seconds)
+		private IEnumerator LerpForwardPosition_CO(float seconds)
 		{
-			while (Time.time - stateStartTime < seconds)
+			float startTime = Time.time;
+			while (Time.time - startTime < seconds)
 			{
-				MovementSystem.transform.position = Vector3.Lerp(initialPos, initialPos + initialDir * 2f, (Time.time - stateStartTime) / seconds);
+				MovementSystem.transform.position = Vector3.Lerp(initialPos, initialPos + initialDir * 2f, (Time.time - startTime) / seconds);
+				yield return null;
+			}
+
+			MovementSystem.ChangeState(MovementSystem._idleState);
+		}
+
+		private IEnumerator LerpUpwardPosition_CO(float seconds)
+		{
+			float startTime = Time.time;
+			while (Time.time - startTime < seconds)
+			{
+				MovementSystem.transform.position = Vector3.Lerp(initialPos, initialPos + (initialDir + MovementSystem.orientation.up).normalized * 2f, (Time.time - startTime) / seconds);
 				yield return null;
 			}
 
@@ -56,7 +80,8 @@ namespace Axiom.Player.StateMachine
 
 			MovementSystem.cameraLook.ResetCamera();
 			MovementSystem.playerAnimation.EnableRotation();
-			MovementSystem.SetAnimatorBool("Vaulting", false);
+			MovementSystem.SetAnimatorBool("VaultingOn", false);
+			MovementSystem.SetAnimatorBool("VaultingOver", false);
 		}
 	}
 }

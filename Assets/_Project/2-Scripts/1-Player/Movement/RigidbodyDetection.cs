@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.YamlDotNet.Serialization;
 using UnityEngine;
 using UnityEngine.Serialization;
 using static UnityEngine.Screen;
@@ -34,7 +35,7 @@ namespace Axiom.Player.Movement
         public float ledgeDetectorHeightOffset;
 
         [Header("Vault Detection")]
-        public Transform vaultDetector;
+        public Transform frontVaultDetector;
         public float maxVaultDepth;
 
         [HideInInspector] public RaycastHit slopeHit;
@@ -43,6 +44,8 @@ namespace Axiom.Player.Movement
 
         private RaycastHit cameraHit;
         private GameObject cameraHitObject;
+
+        private RaycastHit groundHit;
         
         private RaycastHit rightWallHit;
         private RaycastHit rightFrontWallHit;
@@ -53,7 +56,6 @@ namespace Axiom.Player.Movement
         private RaycastHit leftBackWallHit;
         
         private RaycastHit vaultHit;
-        private float vaultHeight;
 
         public bool isGrounded { get; private set; }
         public bool isOnSlope { get; private set; }
@@ -82,7 +84,9 @@ namespace Axiom.Player.Movement
 		#endregion
 
 		#region Vault Detection
-        public bool canVault { get; private set; }
+        public bool canVaultOver { get; private set; }
+        public bool canVaultOn { get; private set; }
+        public float vaultAnimHeight { get; private set; }
         #endregion
 
 		public event Action OnPlayerLanded;
@@ -98,15 +102,13 @@ namespace Axiom.Player.Movement
             WallClimbCheck();
             LedgeCheck();
             VaultDetection();
-            
-            Debug.Log(IsLeftWallDetected());
         }
 
         #region Ground Functions
         private void GroundDetection()
         {
             bool previouslyGrounded = isGrounded;
-            isGrounded = Physics.CheckSphere(groundDetector.position, groundDetectorRadius, groundLayer);
+            isGrounded = Physics.SphereCast(groundDetector.position, groundDetectorRadius, -transform.up, out groundHit, 1f, groundLayer);
             if (!previouslyGrounded && isGrounded) OnPlayerLanded?.Invoke();
         }
         #endregion
@@ -116,7 +118,7 @@ namespace Axiom.Player.Movement
         {
             bool wasOnSlope = isOnSlope;
 
-            if (Physics.Raycast(groundDetector.position, -groundDetector.transform.up, out slopeHit, groundDetectorRadius, groundLayer))
+            if (Physics.Raycast(groundDetector.position, -transform.up, out slopeHit, groundDetectorRadius, groundLayer))
             {
                 isOnSlope = slopeHit.normal != transform.up;
             }
@@ -275,20 +277,38 @@ namespace Axiom.Player.Movement
         {
             if (canWallClimb || IsLeftWallDetected() || IsRightWallDetected()) return;
 
-            if (Physics.Raycast(vaultDetector.position, orientation.forward.normalized, out RaycastHit frontVaultHit, maxVaultDepth * (1 + currentVelocity / 10f), wallLayer))
+            float vaultOnHeight = 0f;
+            float vaultHeight = 0f;
+            Vector3 vaultPosition = frontVaultDetector.position;
+            Vector3 normalizedFront = orientation.forward.normalized;
+            Vector3 normalizedUp = orientation.up.normalized;
+            
+            if (Physics.Raycast(vaultPosition, normalizedFront, out RaycastHit frontVaultHit, maxVaultDepth * (1 + currentVelocity / 10f), wallLayer))
             {
-                if (Physics.Raycast(frontVaultHit.point + orientation.up.normalized * 0.1f, -orientation.up, out vaultHit, 2f, wallLayer))
+                if (Vector3.Dot(orientation.forward, frontVaultHit.normal) < -0.8f)
                 {
-                    Debug.Log("ASD");
-                    vaultHeight = 1.35f - vaultHit.distance;
+                    if (Physics.Raycast(vaultPosition + normalizedUp * 1.45f + normalizedFront * (maxVaultDepth * (1f + currentVelocity / 10f)), -normalizedUp, out vaultHit, 2f, wallLayer))
+                    {
+                        vaultHeight = vaultHit.distance;
+                    }
+                    if (Physics.Raycast(vaultPosition + normalizedUp * 1.45f + normalizedFront * (maxVaultDepth * (2f + currentVelocity / 10f)), -normalizedUp, out RaycastHit vaultOnHit, 2f, wallLayer))
+                    {
+                        vaultOnHeight = vaultOnHit.distance;
+                    }
                 }
             }
             else
             {
                 vaultHeight = 0f;
+                vaultOnHeight = 0f;
             }
 
-            canVault = vaultHeight is > 0.5f and < 1.35f;
+            vaultAnimHeight = 1.45f - vaultHeight;
+            canVaultOn = vaultAnimHeight is > 1f and < 1.35f && Mathf.Abs(vaultHeight - vaultOnHeight) < 0.1f;
+            canVaultOver = vaultAnimHeight is > 1f and < 1.35f && vaultOnHeight > 0.5f;
+            
+            // Debug.Log("VaultOn: " + canVaultOn + "|" + vaultOnHeight);
+            // Debug.Log("VaultOver: " + canVaultOver + "|" + vaultAnimHeight);
         }
         #endregion
 
@@ -299,10 +319,14 @@ namespace Axiom.Player.Movement
         
 		private void OnDrawGizmos()
         {
+            Vector3 wallDetectorPosition = wallDetector.position;
+            Vector3 wallDetectorUp = wallDetector.up;
+            Vector3 orientationForward = orientation.forward;
+            
             // Wall Climb
             Gizmos.color = canWallClimb ? Color.blue : Color.red;
-            Gizmos.DrawLine(wallDetector.position, wallDetector.position + (Quaternion.AngleAxis(15f, wallDetector.up) * orientation.forward).normalized * wallClimbDetectionLength);
-            Gizmos.DrawLine(wallDetector.position, wallDetector.position + (Quaternion.AngleAxis(-15f, wallDetector.up) * orientation.forward).normalized * wallClimbDetectionLength);
+            Gizmos.DrawLine(wallDetectorPosition, wallDetectorPosition + (Quaternion.AngleAxis(15f, wallDetectorUp) * orientationForward).normalized * wallClimbDetectionLength);
+            Gizmos.DrawLine(wallDetectorPosition, wallDetectorPosition + (Quaternion.AngleAxis(-15f, wallDetectorUp) * orientationForward).normalized * wallClimbDetectionLength);
 
             // Wall Run Right
             Gizmos.color = rightWallDetected ? Color.blue : Color.red;
@@ -322,7 +346,8 @@ namespace Axiom.Player.Movement
 
             // Ground Detection
             Gizmos.color = isGrounded ? Color.blue : Color.red;
-            Gizmos.DrawWireSphere(groundDetector.position, groundDetectorRadius);
+            Gizmos.DrawLine(groundDetector.position, groundDetector.position + -transform.up);
+            Gizmos.DrawWireSphere(groundHit.point, groundDetectorRadius);
 
             // Ledge Grab
             Gizmos.color = isDetectingLedge ? Color.blue : Color.red;
@@ -330,9 +355,13 @@ namespace Axiom.Player.Movement
             Gizmos.DrawLine(ledgeRaySpawnPoint, ledgePosition.point);
 
             // Vault
-            Gizmos.DrawLine(vaultDetector.position + orientation.forward.normalized * (maxVaultDepth * 1 + (currentVelocity/10f)),
-                vaultDetector.position + orientation.forward.normalized * (maxVaultDepth * 1 + (currentVelocity/10f)) + -orientation.up * 2f);
-
+            Gizmos.DrawLine(frontVaultDetector.position, frontVaultDetector.position + orientationForward.normalized * maxVaultDepth * (1 + currentVelocity / 10f));
+            Gizmos.DrawLine(frontVaultDetector.position + orientation.forward.normalized * (maxVaultDepth * 1 + (currentVelocity/10f)) + orientation.up.normalized * 1.45f,
+                frontVaultDetector.position + orientation.forward.normalized * (maxVaultDepth * 1 + (currentVelocity/10f)) + orientation.up.normalized * 1.45f + -orientation.up * 2f);
+            Gizmos.DrawLine(frontVaultDetector.position + orientation.forward.normalized * (maxVaultDepth * 2f + (currentVelocity/10f)) + orientation.up.normalized * 1.45f,
+                frontVaultDetector.position + orientation.forward.normalized * (maxVaultDepth * 2f + (currentVelocity/10f)) + orientation.up.normalized * 1.45f + -orientation.up * 2f);
+            
+            
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(GetLeftHandPosition(), 0.1f);
             Gizmos.DrawWireSphere(GetRightHandPosition(), 0.1f);

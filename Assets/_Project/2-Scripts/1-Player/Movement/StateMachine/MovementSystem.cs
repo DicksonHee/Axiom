@@ -291,7 +291,7 @@ namespace Axiom.Player.StateMachine
             }
             else if (rbInfo.isGrounded)
             {
-                if (!rbInfo.canVault) Jump();
+                if (!rbInfo.canVaultOver && !rbInfo.canVaultOn) Jump();
                 else ChangeState(_vaultingState);
             }
         }
@@ -339,16 +339,16 @@ namespace Axiom.Player.StateMachine
 
         private void InAirJump()
         {
-            float forwardForceMultiplier = Vector3.Dot(orientation.forward, _wallRunNormal) > 0 ? 1 : 0;
+            Vector3 forward = orientation.forward;
+            
             if (_wallRunExitCounter > 0f)
             {
-                Vector3 jumpVel = transform.up.normalized * wallRunJumpUpForce + (_wallRunNormal * 0.5f + orientation.forward).normalized * wallRunJumpSideForce;
+                Vector3 jumpVel = transform.up.normalized * wallRunJumpUpForce + forward.normalized * (Mathf.Clamp(Vector3.Dot(_wallRunNormal, forward), 0.75f, 1f) * wallRunJumpSideForce);
                 _inAirState.WallRunJump(jumpVel);
             }
             else
             {
-                Vector3 jumpVel = transform.up * wallRunJumpUpForce + orientation.forward.normalized * (forwardForceMultiplier * wallRunJumpSideForce);
-                _inAirState.InAirJump(jumpVel);
+                _rb.AddForce(transform.up * upJumpForce, ForceMode.Impulse);
             }
 
             playerAnimation.ResetTrigger("Landed");
@@ -490,15 +490,8 @@ namespace Axiom.Player.StateMachine
 
         public float GetCurrentSpeed()
         {
-            return new Vector3(Vector3.Dot(orientation.forward, _rb.velocity), 0f, Vector3.Dot(orientation.right, _rb.velocity)).magnitude;
+            return new Vector3(Vector3.Dot(_rb.velocity,orientation.forward), 0f, Vector3.Dot(_rb.velocity, orientation.right)).magnitude;
         }
         #endregion
     }
-}
-
-public enum PrevWallRun
-{
-    Left,
-    Right,
-    None
 }
