@@ -46,7 +46,8 @@ namespace Axiom.Player.StateMachine
             {
                 CheckShouldCrouchOnExit();
             }
-            else if (!MovementSystem.inputDetection.crouchInput && MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem._idleState); // If letting go of crouch key
+            else if (!MovementSystem.inputDetection.crouchInput) CheckShouldCrouchOnExit();
+            else if (MovementSystem.inputDetection.movementInput.z <= 0) CheckShouldCrouchOnExit();// If letting go of crouch key
             else if (inAirCounter > 0.8f) MovementSystem.ChangeState(MovementSystem._inAirState); // If in air
  
             CalculateInAirTime();

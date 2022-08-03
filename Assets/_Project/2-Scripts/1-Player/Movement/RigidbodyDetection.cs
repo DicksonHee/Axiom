@@ -126,8 +126,6 @@ namespace Axiom.Player.Movement
             WallClimbCheck();
             LedgeCheck();
             VaultDetection();
-            
-            Debug.Log(isGrounded);
         }
 
         #region Ground Functions
@@ -144,7 +142,7 @@ namespace Axiom.Player.Movement
         {
             bool wasOnSlope = isOnSlope;
 
-            if (Physics.Raycast(groundDetectorTransform.position, (Quaternion.AngleAxis(65f, orientation.right) * orientation.forward).normalized, out slopeHit, 2f, groundLayer))
+            if (Physics.Raycast(groundDetectorTransform.position, (Quaternion.AngleAxis(60f, orientation.right) * orientation.forward).normalized, out slopeHit, 2f, groundLayer))
             {
                 isOnSlope = Vector3.Angle(slopeHit.normal, orientation.up) is > 10f and <= 45f;
             }
