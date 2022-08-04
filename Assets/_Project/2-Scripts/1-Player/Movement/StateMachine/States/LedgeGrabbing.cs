@@ -20,8 +20,7 @@ namespace Axiom.Player.StateMachine
 		{
 			base.EnterState();
 
-			MovementSystem._rb.velocity = MovementSystem.transform.up * MovementSystem.wallRunJumpUpForce * 1.5f + MovementSystem.orientation.forward.normalized * MovementSystem.wallRunJumpSideForce;
-
+			MovementSystem._rb.velocity = Vector3.zero;
 			MovementSystem.ChangeState(MovementSystem._inAirState);
 
 			// isJumpingOnExit = false;
@@ -61,7 +60,7 @@ namespace Axiom.Player.StateMachine
 		public override void ExitState()
 		{
 			base.ExitState();
-
+			MovementSystem._rb.velocity = MovementSystem.transform.up * MovementSystem.wallRunJumpUpForce * 1.5f + MovementSystem.orientation.forward.normalized * MovementSystem.wallRunJumpSideForce;
 			// if (isJumpingOnExit)
 			// {
 			// 	MovementSystem._rb.velocity = Vector3.zero;

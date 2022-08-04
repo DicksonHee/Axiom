@@ -249,7 +249,7 @@ namespace Axiom.Player.StateMachine
         #region FixedUpdate Functions
         private void ApplyMovement()
         {
-            if(moveDirection == Vector3.zero && rbInfo.IsGrounded()) _rb.velocity = Vector3.zero + Vector3.Cross(orientation.forward, orientation.right) * Vector3.Dot(_rb.velocity, orientation.up);
+            if(moveDirection == Vector3.zero && rbInfo.IsGrounded()) _rb.velocity = Vector3.zero + (Vector3.Cross(orientation.forward, orientation.right) * Vector3.Dot(_rb.velocity, orientation.up));
             else _rb.AddForce(moveDirection * currentTargetSpeed, ForceMode.Acceleration);
         }
 

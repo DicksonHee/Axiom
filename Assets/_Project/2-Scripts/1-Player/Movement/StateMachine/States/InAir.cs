@@ -40,6 +40,11 @@ namespace Axiom.Player.StateMachine
             base.LogicUpdate();
             
             if (MovementSystem.rbInfo.IsGrounded()) MovementSystem.ChangeState(MovementSystem._idleState);
+            else if (MovementSystem.rbInfo.CanClimbLedge() && !MovementSystem.isExitingLedgeGrab)
+            {
+                Debug.Log("ASD");
+                MovementSystem.ChangeState(MovementSystem._ledgeGrabbingState);
+            }
             else if (MovementSystem.inputDetection.movementInput.z > 0f)
             {
                 if (MovementSystem.rbInfo.CanWallClimb() && !MovementSystem.isExitingClimb) // Check for wall climb
@@ -53,10 +58,6 @@ namespace Axiom.Player.StateMachine
                 {
                     MovementSystem.ChangeState(MovementSystem._wallRunningState);
                 }
-            }
-            else if (MovementSystem.rbInfo.CanClimbLedge() && !MovementSystem.isExitingLedgeGrab)
-            {
-                MovementSystem.ChangeState(MovementSystem._ledgeGrabbingState);
             }
             
             MovementSystem.playerAnimation.SetFloatParam("LandHeight", Time.time - stateStartTime);

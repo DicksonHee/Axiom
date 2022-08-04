@@ -283,8 +283,9 @@ namespace Axiom.Player.Movement
         {
             Vector3 up = orientation.up;
             Vector3 frontPoint = orientation.position + orientation.forward.normalized * ledgeDetectorForwardOffset + up.normalized * ledgeDetectorHeightOffset;
-            bool ledgeDetected = Physics.Raycast(frontPoint, -up, out ledgePosition, 5f, wallLayer);
-
+            bool ledgeDetected = Physics.SphereCast(frontPoint, 0.5f, -up, out ledgePosition, 1f, groundLayer);
+            //bool ledgeDetected = Physics.Raycast(frontPoint, -up, out ledgePosition, 5f, wallLayer);
+            if(ledgeDetected) Debug.Log(ledgeDetected);
             isDetectingLedge = ledgeDetected && ledgePosition.distance < ledgeHeightDetectionDistance;
         }
 
@@ -381,6 +382,7 @@ namespace Axiom.Player.Movement
             Gizmos.color = isDetectingLedge ? Color.blue : Color.red;
             Vector3 ledgeRaySpawnPoint = orientation.position + orientation.forward.normalized * ledgeDetectorForwardOffset + orientation.up.normalized * ledgeDetectorHeightOffset;
             Gizmos.DrawLine(ledgeRaySpawnPoint, ledgePosition.point);
+            Gizmos.DrawWireSphere(ledgePosition.point, 0.5f);
 
             // Vault
             Gizmos.DrawLine(vaultDetectorTransform.position, vaultDetectorTransform.position + orientationForward.normalized * vaultDetectionDistance * (1 + currentVelocity / 10f));
