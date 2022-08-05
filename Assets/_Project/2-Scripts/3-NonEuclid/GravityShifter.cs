@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Axiom.Player.Movement.StateMachine;
 using UnityEngine;
 
-namespace Axiom.NonEuclid.Gravity
+namespace Axiom.Player.Movement.NonEuclid.Gravity
 {
     public class GravityShifter : MonoBehaviour
     {
@@ -39,13 +40,13 @@ namespace Axiom.NonEuclid.Gravity
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out Player.StateMachine.MovementSystem c))
+            if (other.TryGetComponent(out MovementSystem c))
                 target = c.transform;
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.TryGetComponent(out Player.StateMachine.MovementSystem c) && c.transform == target)
+            if (other.TryGetComponent(out MovementSystem c) && c.transform == target)
             {
                 if (t.Between(0f, 1f, true))
                     Physics.gravity = t > 0.5f ? to : from;

@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Axiom.Player.Movement;
-using Axiom.Player.StateMachine;
 using UnityEngine;
 
-namespace Axiom.Player.StateMachine
+namespace Axiom.Player.Movement.StateMachine.States
 {
     public class InAir : State
     {
@@ -27,7 +23,7 @@ namespace Axiom.Player.StateMachine
             wallClimbTimer = 0f;
 
             MovementSystem.cameraLook.ApplyCameraXAxisMultiplier(0.5f);
-            MovementSystem._rb.drag = 0.5f;
+            MovementSystem.rb.drag = 0.5f;
             MovementSystem.SetGravity(MovementSystem.inAirGravity);
             MovementSystem.SetTargetSpeed(MovementSystem.inAirSpeed);
             MovementSystem.SetLRMultiplier(0.25f);
@@ -42,7 +38,6 @@ namespace Axiom.Player.StateMachine
             if (MovementSystem.rbInfo.IsGrounded()) MovementSystem.ChangeState(MovementSystem._idleState);
             else if (MovementSystem.rbInfo.CanClimbLedge() && !MovementSystem.isExitingLedgeGrab)
             {
-                Debug.Log("ASD");
                 MovementSystem.ChangeState(MovementSystem._ledgeGrabbingState);
             }
             else if (MovementSystem.inputDetection.movementInput.z > 0f)
@@ -52,9 +47,10 @@ namespace Axiom.Player.StateMachine
                     wallClimbTimer += Time.deltaTime;
                     if (ShouldWallClimb()) MovementSystem.ChangeState(MovementSystem._climbingState);
                 }
-                else if (((MovementSystem.rbInfo.IsLeftWallDetected() && MovementSystem.previousWall != MovementSystem.rbInfo.GetLeftWall()) ||
-                          (MovementSystem.rbInfo.IsRightWallDetected() && MovementSystem.previousWall != MovementSystem.rbInfo.GetRightWall()))
-                          && !MovementSystem.isExitingLedgeGrab) // Check for wall run
+                else if (((MovementSystem.rbInfo.IsLeftWallDetected() && MovementSystem.GetPreviousWall() != MovementSystem.rbInfo.GetLeftWall()) ||
+                          (MovementSystem.rbInfo.IsRightWallDetected() && MovementSystem.GetPreviousWall() != MovementSystem.rbInfo.GetRightWall())) && 
+                           !MovementSystem.isExitingLedgeGrab && 
+                           !MovementSystem.isExitingWallRun) // Check for wall run
                 {
                     MovementSystem.ChangeState(MovementSystem._wallRunningState);
                 }
@@ -76,30 +72,30 @@ namespace Axiom.Player.StateMachine
             
             MovementSystem.cameraLook.ResetCameraXSens();
             MovementSystem.SetLRMultiplier(1f);
-            MovementSystem._rb.drag = 5f;
+            MovementSystem.rb.drag = 5f;
             
             MovementSystem.SetAnimatorBool("InAir", false);
         }
 
         public void WallRunJump(Vector3 jumpVelocity)
         {
-            if (hasWallJumped) return;
+            if (hasWallJumped || Time.time - stateStartTime > MovementSystem.wallRunCoyoteTime) return;
 
             hasWallJumped = true;
-            MovementSystem._rb.velocity = jumpVelocity;
+            MovementSystem.rb.velocity = jumpVelocity;
         }
 
         public void InAirJump(Vector3 jumpVelocity)
         {
-            if (hasAirJumped) return;
+            if (hasAirJumped || Time.time - stateStartTime > MovementSystem.inAirCoyoteTime) return;
 
             hasAirJumped = true;
-            MovementSystem._rb.AddForce(jumpVelocity);
+            MovementSystem.rb.AddForce(jumpVelocity);
         }
 
         private bool ShouldWallClimb()
         {
-            return wallClimbTimer > 0.18f;
+            return wallClimbTimer > 0.1f;
         }
     }
 }

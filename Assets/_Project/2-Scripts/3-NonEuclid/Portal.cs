@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Axiom.Player.Movement.StateMachine;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-namespace Axiom.NonEuclid.Portals
+namespace Axiom.Player.Movement.NonEuclid.Portals
 {
     public class Portal : MonoBehaviour
     {
@@ -96,7 +97,7 @@ namespace Axiom.NonEuclid.Portals
             print($"Teleporting from {gameObject.name}");
             Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * t.transform.localToWorldMatrix;
 
-            if (t.transform.TryGetComponent(out Player.StateMachine.MovementSystem controller))
+            if (t.transform.TryGetComponent(out MovementSystem controller))
             {
                 //m.SetColumn(3, Vector4.zero);
                 //controller.TransformTargetVelocity(m);

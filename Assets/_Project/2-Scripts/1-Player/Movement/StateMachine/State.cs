@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Axiom.Player.Movement;
 using UnityEngine;
 
-namespace Axiom.Player.StateMachine
+namespace Axiom.Player.Movement.StateMachine
 {
     public abstract class State
     {

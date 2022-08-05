@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Axiom.Player.Movement;
-using Axiom.Player.StateMachine;
 using UnityEngine;
 
-namespace Axiom.Player.StateMachine
+namespace Axiom.Player.Movement.StateMachine.States
 {
     public class Crouching : State
     {

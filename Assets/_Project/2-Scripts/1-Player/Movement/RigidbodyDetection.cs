@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting.YamlDotNet.Serialization;
 using UnityEngine;
-using UnityEngine.Serialization;
 using static UnityEngine.Screen;
 
 namespace Axiom.Player.Movement
@@ -283,9 +279,7 @@ namespace Axiom.Player.Movement
         {
             Vector3 up = orientation.up;
             Vector3 frontPoint = orientation.position + orientation.forward.normalized * ledgeDetectorForwardOffset + up.normalized * ledgeDetectorHeightOffset;
-            bool ledgeDetected = Physics.SphereCast(frontPoint, 0.5f, -up, out ledgePosition, 1f, groundLayer);
-            //bool ledgeDetected = Physics.Raycast(frontPoint, -up, out ledgePosition, 5f, wallLayer);
-            if(ledgeDetected) Debug.Log(ledgeDetected);
+            bool ledgeDetected = Physics.SphereCast(frontPoint, 0.3f, -up, out ledgePosition, 1f, groundLayer);
             isDetectingLedge = ledgeDetected && ledgePosition.distance < ledgeHeightDetectionDistance;
         }
 
@@ -376,13 +370,23 @@ namespace Axiom.Player.Movement
             Gizmos.DrawWireSphere(groundHit.point, groundDetectorRadius);
 
             // Slope Detection
-            Gizmos.DrawLine(groundDetectorTransform.position, slopeHit.point);
+            if(IsOnSlope()) Gizmos.DrawLine(groundDetectorTransform.position, slopeHit.point);
+            else Gizmos.DrawLine(groundDetectorTransform.position, groundDetectorTransform.position + (Quaternion.AngleAxis(60f, orientation.right) * orientation.forward).normalized * 2f);
             
             // Ledge Grab
             Gizmos.color = isDetectingLedge ? Color.blue : Color.red;
             Vector3 ledgeRaySpawnPoint = orientation.position + orientation.forward.normalized * ledgeDetectorForwardOffset + orientation.up.normalized * ledgeDetectorHeightOffset;
-            Gizmos.DrawLine(ledgeRaySpawnPoint, ledgePosition.point);
-            Gizmos.DrawWireSphere(ledgePosition.point, 0.5f);
+            if (CanClimbLedge())
+            {
+                Gizmos.DrawLine(ledgeRaySpawnPoint, ledgePosition.point);
+                Gizmos.DrawWireSphere(ledgePosition.point, 0.3f);
+            }
+            else
+            {
+                Gizmos.DrawLine(ledgeRaySpawnPoint, ledgeRaySpawnPoint + -orientation.up);
+                Gizmos.DrawWireSphere(ledgeRaySpawnPoint + -orientation.up, 0.3f);
+            }
+            
 
             // Vault
             Gizmos.DrawLine(vaultDetectorTransform.position, vaultDetectorTransform.position + orientationForward.normalized * vaultDetectionDistance * (1 + currentVelocity / 10f));

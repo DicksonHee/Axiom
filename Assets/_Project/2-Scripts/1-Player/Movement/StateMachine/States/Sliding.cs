@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Axiom.Player.Movement;
-using Axiom.Player.StateMachine;
 using UnityEngine;
 
-namespace Axiom.Player.StateMachine
+namespace Axiom.Player.Movement.StateMachine.States
 {
     public class Sliding : State
     {
@@ -38,11 +34,11 @@ namespace Axiom.Player.StateMachine
             base.LogicUpdate();
 
             if ((MovementSystem.GetCurrentSpeed() < 0.5f && Time.time - stateStartTime > 0.5f) ||
-                Vector3.Dot(MovementSystem.orientation.forward, initialDir) < 0.8f) // If too slow or looking away from slide direction
+                Vector3.Dot(MovementSystem.forwardDirection, initialDir) < 0.8f) // If too slow or looking away from slide direction
             {
                 CheckShouldCrouchOnExit();
             }
-            else if (Vector3.Dot(MovementSystem._rb.velocity, MovementSystem.orientation.up) > 0.1f) // If sliding up
+            else if (Vector3.Dot(MovementSystem.rb.velocity, MovementSystem.upDirection) > 0.1f) // If sliding up
             {
                 CheckShouldCrouchOnExit();
             }
@@ -69,9 +65,8 @@ namespace Axiom.Player.StateMachine
             MovementSystem.EndCrouch();
             MovementSystem.SetLRMultiplier(1f);
             MovementSystem.EnableMovement();
-            MovementSystem.ExitSlideState();
-            
-            MovementSystem.cameraLook.EndSlideCamera();
+
+            MovementSystem.cameraLook.ResetCamera();
             MovementSystem.playerAnimation.ResetRotation();
             MovementSystem.SetAnimatorBool("Sliding", false);
         }
@@ -80,12 +75,12 @@ namespace Axiom.Player.StateMachine
         {
             float targetSpeed = 0;
             if (MovementSystem.rbInfo.IsOnSlope() && 
-                Vector3.Dot(MovementSystem._rb.velocity, MovementSystem.orientation.up) < 0.1f)
+                Vector3.Dot(MovementSystem.rb.velocity, MovementSystem.orientation.up) < 0.1f)
             {
                 targetSpeed = MovementSystem.forwardSpeed * 2;
             }
             float currentSpeed = Mathf.Lerp(MovementSystem.forwardSpeed, targetSpeed, (Time.time - stateStartTime) * 0.5f);
-            MovementSystem._rb.AddForce(initialDir.normalized * currentSpeed, ForceMode.Acceleration);
+            MovementSystem.rb.AddForce(initialDir.normalized * currentSpeed, ForceMode.Acceleration);
         }
 
         private void ResetStateTimer()

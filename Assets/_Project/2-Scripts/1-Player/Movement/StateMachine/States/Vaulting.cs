@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
-using Axiom.Player.Movement;
-using Axiom.Player.StateMachine;
 using UnityEngine;
 
-namespace Axiom.Player.StateMachine
+namespace Axiom.Player.Movement.StateMachine.States
 {
     public class Vaulting : State
     {
@@ -22,11 +19,11 @@ namespace Axiom.Player.StateMachine
 			base.EnterState();
 
 			initialPos = MovementSystem.transform.position;
-			initialDir = MovementSystem.orientation.forward;
+			initialDir = MovementSystem.forwardDirection;
 			initialVelocity = MovementSystem.GetCurrentSpeed();
 
 			MovementSystem.DisableMovement();
-			MovementSystem._rb.isKinematic = true;
+			MovementSystem.rb.isKinematic = true;
 
 			MovementSystem.cameraLook.StartVaultCamera();
 			MovementSystem.playerAnimation.SetVaultHandPositions();
@@ -64,7 +61,7 @@ namespace Axiom.Player.StateMachine
 			float startTime = Time.time;
 			while (Time.time - startTime < seconds)
 			{
-				MovementSystem.transform.position = Vector3.Lerp(initialPos, initialPos + (initialDir + MovementSystem.orientation.up).normalized * 2f, (Time.time - startTime) / seconds);
+				MovementSystem.transform.position = Vector3.Lerp(initialPos, initialPos + (initialDir + MovementSystem.upDirection).normalized * 2f, (Time.time - startTime) / seconds);
 				yield return null;
 			}
 
@@ -76,7 +73,7 @@ namespace Axiom.Player.StateMachine
 			base.ExitState();
 
 			MovementSystem.EnableMovement();
-			MovementSystem._rb.isKinematic = false;
+			MovementSystem.rb.isKinematic = false;
 
 			MovementSystem.cameraLook.ResetCamera();
 			MovementSystem.playerAnimation.EnableRotation();

@@ -572,7 +572,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 90
+  field of view: 120
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -613,7 +613,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -926,7 +926,6 @@ MonoBehaviour:
   cameraLook: {fileID: 6603163244758501548}
   playerAnimation: {fileID: 6603163244428278009}
   orientation: {fileID: 6603163244449240391}
-  cameraPosition: {fileID: 6603163244185050849}
   _standCC: {fileID: 6603163244758501538}
   _crouchCC: {fileID: 6603163244758501536}
   accelerationCurve:
@@ -977,144 +976,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  gravityCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.0008927208
-      value: 1.0058211
-      inSlope: 0.032996528
-      outSlope: 0.032996528
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.23119327
-    - serializedVersion: 3
-      time: 0.7188678
-      value: 1.6806684
-      inSlope: 3.1387925
-      outSlope: 3.1387925
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.059085693
-      outWeight: 0.05327529
-    - serializedVersion: 3
-      time: 1
-      value: 2.002571
-      inSlope: 0.21422283
-      outSlope: 0.21422283
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.1935682
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  inAirCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -0.18185043
-      outSlope: -0.18185043
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.25460696
-    - serializedVersion: 3
-      time: 0.4
-      value: 0
-      inSlope: -2.7078426
-      outSlope: -2.7078426
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.10713264
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  wallRunCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.5300638
-      value: 0.28096765
-      inSlope: 1.0601275
-      outSlope: 1.0601275
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  slideCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: -0.625671
-      outSlope: -0.625671
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.08718861
-    - serializedVersion: 3
-      time: 1.5
-      value: 1
-      inSlope: -0.019874485
-      outSlope: -0.019874485
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.15140422
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverseSlideCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0.011264746
-      outSlope: 0.011264746
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.42715654
-    - serializedVersion: 3
-      time: 0.9960022
-      value: -1
-      inSlope: -2.9651017
-      outSlope: -2.9651017
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.04681761
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   groundGravity: 20
   inAirGravity: 40
   idleSpeed: 40
@@ -1129,12 +990,11 @@ MonoBehaviour:
   upJumpForce: 13
   inAirCoyoteTime: 0.15
   wallRunJumpUpForce: 13
-  wallRunJumpSideForce: 13
-  wallRunExitTime: 0.5
+  wallRunJumpSideForce: 15
+  wallRunExitTime: 0.2
   wallRunCoyoteTime: 0.15
   wallRunMaxDuration: 1
   wallClimbMaxDuration: 0.5
-  exitWallClimbDuration: 0.2
   previousWall: {fileID: 0}
 --- !u!114 &6603163244758501550
 MonoBehaviour:
@@ -1201,7 +1061,8 @@ MonoBehaviour:
   multiplier: 1
   lTiltAmount: -10
   rTiltAmount: 10
-  wallRunFov: 95
+  wallRunFov: 125
+  wallRunXRotLimits: {x: -90, y: -45}
 --- !u!114 &7720773925828565866
 MonoBehaviour:
   m_ObjectHideFlags: 0

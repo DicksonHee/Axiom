@@ -1,23 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Axiom.Player.StateMachine
+namespace Axiom.Player.Movement.StateMachine
 {
     public abstract class StateMachine : MonoBehaviour
     {
         protected State CurrentState;
-        protected StateName PreviousState;
+        protected State PreviousState;
 
         protected void InitializeState(State state)
         {
+            PreviousState = state;
             CurrentState = state;
             CurrentState.EnterState();
         }
         
         public void ChangeState(State state)
         {
-            PreviousState = CurrentState.stateName;
+            PreviousState = CurrentState;
             CurrentState.ExitState();
             CurrentState = state;
             CurrentState.EnterState();
