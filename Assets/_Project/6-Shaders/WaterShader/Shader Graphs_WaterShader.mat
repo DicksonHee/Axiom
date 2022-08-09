@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ConcreteSeamless
-  m_Shader: {fileID: -6465566751694194690, guid: df86449e7881a8a408a9b458fe70a9fe,
+  m_Name: Shader Graphs_WaterShader
+  m_Shader: {fileID: -6465566751694194690, guid: ba3db7978f8b8ef4db6525564f33c77f,
     type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -21,16 +21,12 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 9005f331c3d3f3448998a65aeb82c36c, type: 3}
+    - _MainNormal:
+        m_Texture: {fileID: 2800000, guid: f6795dc83caa6ce489bfa40cdc47a76f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SideTexture:
-        m_Texture: {fileID: 2800000, guid: 36f4647d8f064f74798e21bdd71f99d9, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _TopTexture:
-        m_Texture: {fileID: 2800000, guid: 36f4647d8f064f74798e21bdd71f99d9, type: 3}
+    - _SecondNormal:
+        m_Texture: {fileID: 2800000, guid: b2b8c41fccf76e6499348e128f0bec14, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -47,27 +43,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AlphaClip: 0
-    - _Blend: 0
-    - _CastShadows: 1
-    - _Cull: 2
-    - _DstBlend: 0
-    - _NormalStrength: 2
+    - _Displacement: 1
+    - _GlowPower: 3
+    - _Offset: 0.75
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _ReceiveShadows: 1
-    - _Scale: 0.1
-    - _SrcBlend: 1
-    - _Surface: 0
-    - _WorkflowMode: 1
-    - _ZTest: 4
-    - _ZWrite: 1
-    - _ZWriteControl: 0
+    - _Scale: 0.8
     m_Colors:
-    - _Color: {r: 0.722839, g: 0.745283, b: 0.68551975, a: 1}
-    - _Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _InnerColor: {r: 0.5235849, g: 0.7986321, b: 1, a: 1}
+    - _OuterColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &4885613817475438738
+--- !u!114 &8573804956323480835
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

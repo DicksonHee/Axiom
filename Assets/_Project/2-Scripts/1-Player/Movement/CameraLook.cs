@@ -9,7 +9,6 @@ namespace Axiom.Player.Movement
         [SerializeField] private Transform camHolder;
         [SerializeField] private Transform orientation;
         [SerializeField] private Camera cam;
-        [SerializeField] private Camera groundCamera;
 
         [Header("Mouse Variables")]
         [SerializeField] private float sensX;
@@ -70,7 +69,6 @@ namespace Axiom.Player.Movement
 
             //Perform the rotations
             camHolder.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
-            groundCamera.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
             orientation.transform.localRotation = Quaternion.Euler(0, yRotation, 0);
         }
 
@@ -132,7 +130,6 @@ namespace Axiom.Player.Movement
         public void TransformForward(Matrix4x4 transformation)
         {
             camHolder.forward = transformation.MultiplyVector(camHolder.forward);
-            groundCamera.transform.forward = transformation.MultiplyVector(groundCamera.transform.forward);
             orientation.forward = transformation.MultiplyVector(orientation.forward);
         }
     }

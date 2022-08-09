@@ -222,13 +222,13 @@ namespace Axiom.Player.Movement.StateMachine
         private void CheckChangeToAirState()
         {
             if(!rbInfo.IsGrounded() && 
-               CurrentState.stateName != StateName.InAir && 
-               CurrentState.stateName != StateName.WallRunning &&
-               CurrentState.stateName != StateName.LedgeGrabbing &&
-               CurrentState.stateName != StateName.LedgeClimbing &&
-               CurrentState.stateName != StateName.Climbing &&
-               CurrentState.stateName != StateName.Crouching &&
-               CurrentState.stateName != StateName.Sliding) ChangeState(_inAirState);
+               CurrentState != _inAirState && 
+               CurrentState != _wallRunningState &&
+               CurrentState != _ledgeGrabbingState &&
+               CurrentState != _ledgeClimbingState &&
+               CurrentState != _climbingState &&
+               CurrentState != _crouchingState &&
+               CurrentState != _slidingState) ChangeState(_inAirState);
         }
         #endregion
         
@@ -302,6 +302,7 @@ namespace Axiom.Player.Movement.StateMachine
         // Determines which jump to use
         private void DelegateJump()
         {
+            Debug.Log("JumpPressed");
             if (CurrentState == _wallRunningState)
             {
                 WallRunJump();
@@ -312,6 +313,7 @@ namespace Axiom.Player.Movement.StateMachine
             }
             else if (rbInfo.IsGrounded())
             {
+                Debug.Log("Grounded");
                 if (rbInfo.CanVaultOn() || rbInfo.CanVaultOver()) ChangeState(_vaultingState);
                 else if(!_isJumping) Jump();
             }
@@ -333,7 +335,7 @@ namespace Axiom.Player.Movement.StateMachine
                 playerAnimation.SetJumpParam(1f);
                 ChangeState(_wallRunningState);
             }
-            else if (!rbInfo.IsGrounded() && CurrentState.stateName != StateName.InAir)
+            else if (!rbInfo.IsGrounded() && CurrentState != _inAirState)
             {
                 playerAnimation.SetJumpParam(0);
                 ChangeState(_inAirState);
@@ -439,10 +441,9 @@ namespace Axiom.Player.Movement.StateMachine
         #endregion
         
         #region VFX Functions
-
-        public void HandleVFX()
+        private void HandleVFX()
         {
-            if (isSpeedLinesShowing && GetCurrentSpeed() < 14f)
+            if (isSpeedLinesShowing && (GetCurrentSpeed() < 5f || inputDetection.movementInput.x != 0))
             {
                 isSpeedLinesShowing = false;
                 DisableSpeedLines();
