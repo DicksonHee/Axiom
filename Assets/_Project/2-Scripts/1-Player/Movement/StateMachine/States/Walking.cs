@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Axiom.Player.Movement;
-using Axiom.Player.StateMachine;
 using UnityEngine;
 
-namespace Axiom.Player.StateMachine
+namespace Axiom.Player.Movement.StateMachine.States
 {
     public class Walking : State
     {
@@ -34,7 +30,7 @@ namespace Axiom.Player.StateMachine
             else if (MovementSystem.inputDetection.movementInput.z > 0 && Time.time - stateStartTime > 0.75f) MovementSystem.ChangeState(MovementSystem._runningState);
             else if (MovementSystem.inputDetection.crouchInput)
             {
-                if((MovementSystem.rbInfo.isOnSlope && MovementSystem._rb.velocity.y < 0f) ||
+                if((MovementSystem.rbInfo.IsOnSlope() && MovementSystem.rb.velocity.y < 0f) ||
                    (MovementSystem.GetCurrentSpeed() > 5f)) MovementSystem.ChangeState(MovementSystem._slidingState);
                 else MovementSystem.ChangeState(MovementSystem._crouchingState);
             }

@@ -1,14 +1,14 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveCamera : MonoBehaviour
+namespace Axiom.Player.Movement
 {
-    [SerializeField] private Transform cameraPosition;
-
-    private void Update()
+    public class MoveCamera : MonoBehaviour
     {
-        transform.position = cameraPosition.position;
+        [SerializeField] private Transform cameraPosition;
+
+        private void Update()
+        {
+            transform.position = cameraPosition.position;
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Axiom.NonEuclid.Portals
+namespace Axiom.Player.Movement.NonEuclid.Portals
 {
     public class PortalRenderer : MonoBehaviour
     {

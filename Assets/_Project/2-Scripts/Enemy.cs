@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Axiom.Enemy
+namespace Axiom.Player.Movement.Enemy
 {
     public class Enemy : MonoBehaviour
     {

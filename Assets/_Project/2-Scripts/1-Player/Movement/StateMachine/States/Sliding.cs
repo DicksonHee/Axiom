@@ -1,18 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using Axiom.Player.Movement;
-using Axiom.Player.StateMachine;
 using UnityEngine;
 
-namespace Axiom.Player.StateMachine
+namespace Axiom.Player.Movement.StateMachine.States
 {
     public class Sliding : State
     {
         private Vector3 initialDir;
-        private float initialSpeed;
-        private float slopeSpeed;
         private float inAirCounter;
-        private float distanceMultiplier;
 
         public Sliding(MovementSystem movementSystem) : base(movementSystem)
         {
@@ -22,11 +15,8 @@ namespace Axiom.Player.StateMachine
         public override void EnterState()
         {
             base.EnterState();
-
-            slopeSpeed = 0f;
-            initialDir = MovementSystem.orientation.forward;
-            initialSpeed = MovementSystem._rb.velocity.magnitude;
-            distanceMultiplier = Mathf.Clamp(1 - initialSpeed / MovementSystem.forwardSpeed, 0.5f, 1f);
+            
+            initialDir = MovementSystem.moveDirection;
 
             MovementSystem.rbInfo.OnSlopeEnded += ResetStateTimer;
 
@@ -43,15 +33,19 @@ namespace Axiom.Player.StateMachine
         {
             base.LogicUpdate();
 
-            if ((Vector3.Dot(MovementSystem.orientation.forward, MovementSystem._rb.velocity) < 0.5f && Time.time - stateStartTime > 0.5f) ||
-                Vector3.Dot(MovementSystem.orientation.forward, initialDir) < 0.8f)
+            if ((MovementSystem.GetCurrentSpeed() < 0.5f && Time.time - stateStartTime > 0.5f) ||
+                Vector3.Dot(MovementSystem.forwardDirection, initialDir) < 0.8f) // If too slow or looking away from slide direction
             {
-                if (!MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._idleState);
-                else if (MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._crouchingState);
+                CheckShouldCrouchOnExit();
             }
-            else if (!MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._idleState);
-            else if (inAirCounter > 0.8f) MovementSystem.ChangeState(MovementSystem._inAirState);
-            
+            else if (Vector3.Dot(MovementSystem.rb.velocity, MovementSystem.upDirection) > 0.1f) // If sliding up
+            {
+                CheckShouldCrouchOnExit();
+            }
+            else if (!MovementSystem.inputDetection.crouchInput) CheckShouldCrouchOnExit();
+            else if (MovementSystem.inputDetection.movementInput.z <= 0) CheckShouldCrouchOnExit();// If letting go of crouch key
+            else if (inAirCounter > 0.8f) MovementSystem.ChangeState(MovementSystem._inAirState); // If in air
+ 
             CalculateInAirTime();
         }
 
@@ -71,47 +65,43 @@ namespace Axiom.Player.StateMachine
             MovementSystem.EndCrouch();
             MovementSystem.SetLRMultiplier(1f);
             MovementSystem.EnableMovement();
-            MovementSystem.ExitSlideState();
-            
-            MovementSystem.cameraLook.EndSlideCamera();
+
+            MovementSystem.cameraLook.ResetCamera();
+            MovementSystem.playerAnimation.ResetRotation();
             MovementSystem.SetAnimatorBool("Sliding", false);
         }
 
         private void CalculateSlideSpeed()
         {
-            // float currentSpeed = 0f;
-            // if (MovementSystem.rbInfo.isOnSlope)
-            // {
-            //     float velDiff = initialSpeed - MovementSystem.forwardSpeed * 2;
-            //     currentSpeed = Mathf.Clamp(initialSpeed + velDiff * MovementSystem.reverseSlideCurve.Evaluate(1 - (Time.time - stateStartTime) * distanceMultiplier), 0, float.MaxValue);
-            //     
-            //     if (MovementSystem._rb.velocity.magnitude > slopeSpeed) slopeSpeed = MovementSystem._rb.velocity.magnitude;
-            // }
-            // else if (!MovementSystem.rbInfo.isOnSlope)
-            // {
-            //     float velDiff = initialSpeed - 0;
-            //     currentSpeed = Mathf.Clamp(initialSpeed - velDiff * MovementSystem.slideCurve.Evaluate(1 - (Time.time - stateStartTime) * distanceMultiplier), 0, float.MaxValue);
-            // }
-
-            // Vector3 moveVel = initialDir * currentSpeed;
-            // moveVel = MovementSystem.CheckSlopeMovementDirection(moveVel);
-            // MovementSystem._rb.velocity = moveVel;
-
-            float currentSpeed = Mathf.Lerp(MovementSystem.forwardSpeed, 0, (Time.time - stateStartTime) * 0.5f);
-            MovementSystem._rb.AddForce(initialDir.normalized * currentSpeed, ForceMode.Acceleration);
+            float targetSpeed = 0;
+            if (MovementSystem.rbInfo.IsOnSlope() && 
+                Vector3.Dot(MovementSystem.rb.velocity, MovementSystem.orientation.up) < 0.1f)
+            {
+                targetSpeed = MovementSystem.forwardSpeed * 2;
+            }
+            float currentSpeed = Mathf.Lerp(MovementSystem.forwardSpeed, targetSpeed, (Time.time - stateStartTime) * 0.5f);
+            MovementSystem.rb.AddForce(initialDir.normalized * currentSpeed, ForceMode.Acceleration);
         }
 
         private void ResetStateTimer()
         {
             stateStartTime = Time.time;
-            initialSpeed = slopeSpeed;
-            distanceMultiplier = Mathf.Clamp(1 - initialSpeed / MovementSystem.forwardSpeed, 0.5f, 1f);
         }
         
         private void CalculateInAirTime()
         {
-            if (!MovementSystem.rbInfo.isGrounded) inAirCounter += Time.deltaTime;
+            if (!MovementSystem.rbInfo.IsGrounded()) inAirCounter += Time.deltaTime;
             else inAirCounter = 0f;
+        }
+        
+        private void CheckShouldCrouchOnExit()
+        {
+            if(MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._crouchingState);
+            else
+            {
+                if(MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem._idleState);
+                else MovementSystem.ChangeState(MovementSystem._crouchingState);
+            }
         }
     }
 }
