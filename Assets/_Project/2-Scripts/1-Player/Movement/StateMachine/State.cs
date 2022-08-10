@@ -51,6 +51,7 @@ namespace Axiom.Player.Movement.StateMachine
         }
 	}
 
+    // For Debugging only
 	public enum StateName
     {
         Idle,
@@ -66,6 +67,7 @@ namespace Axiom.Player.Movement.StateMachine
         LedgeGrabbing,
         LedgeClimbing,
         Vaulting,
+        Landing,
         None
     }
 }

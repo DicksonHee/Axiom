@@ -69,7 +69,8 @@ namespace Axiom.Player.Movement.StateMachine.States
         public override void ExitState()
         {
             base.ExitState();
-            
+
+            MovementSystem.totalAirTime = Time.time - stateStartTime;
             MovementSystem.cameraLook.ResetCameraXSens();
             MovementSystem.SetLRMultiplier(1f);
             MovementSystem.rb.drag = 5f;
