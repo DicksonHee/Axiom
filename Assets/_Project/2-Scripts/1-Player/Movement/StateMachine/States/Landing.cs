@@ -16,10 +16,13 @@ namespace Axiom.Player.Movement.StateMachine.States
 		public override void EnterState()
 		{
 			base.EnterState();
-
+			
+			MovementSystem.SetGravity(MovementSystem.groundGravity);
+			MovementSystem.SetTargetSpeed(MovementSystem.walkSpeed);
+			
 			if (MovementSystem.totalAirTime < 0.75f)
 			{
-				delayTime = 0.15f;
+				delayTime = 0.1f;
 				MovementSystem.playerAnimation.SetFloatParam("LandIntensity", 0);
 			}
 			else if (MovementSystem.totalAirTime < 1.5f)
@@ -34,22 +37,18 @@ namespace Axiom.Player.Movement.StateMachine.States
 
 				if (rollSuccess)
 				{
-					MovementSystem.EnableMovement();
 					MovementSystem.playerAnimation.DisableRotation();
 					MovementSystem.cameraLook.StartRollCamera();
 				}
 				else
 				{
+					MovementSystem.DisableMovement();
 					MovementSystem.cameraLook.StartHardLandingCamera(30f);
 					MovementSystem.rb.velocity = Vector3.zero;
 				}
 				MovementSystem.playerAnimation.SetFloatParam("LandIntensity", 2);
 				MovementSystem.playerAnimation.SetFloatParam("LandSuccess", rollSuccess ? 1 : 0);
 			}
-
-			MovementSystem.SetGravity(MovementSystem.groundGravity);
-			
-			MovementSystem.DisableMovement();
 
 			MovementSystem.playerAnimation.ResetTrigger("WallJump");
 			MovementSystem.playerAnimation.ResetTrigger("Jump");

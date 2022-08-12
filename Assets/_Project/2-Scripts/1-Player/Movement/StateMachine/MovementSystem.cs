@@ -347,7 +347,6 @@ namespace Axiom.Player.Movement.StateMachine
             
             playerAnimation.SetLandParam(0f);
             playerAnimation.SetInAirParam(0f);
-            playerAnimation.ResetTrigger("Landed");
             playerAnimation.SetTrigger("Jump");
         }
 
@@ -357,7 +356,6 @@ namespace Axiom.Player.Movement.StateMachine
             Vector3 jumpVel = upDirection.normalized * wallRunJumpUpForce + forwardDirection * (Mathf.Clamp(Vector3.Dot(_wallRunNormal, forwardDirection), 0.75f, 1f) * wallRunJumpSideForce);
             _wallRunningState.SetIsJumpingOnExit(true, jumpVel);
             
-            playerAnimation.ResetTrigger("Landed");
             playerAnimation.SetInAirParam(_isExitingRightWall ? 1 : -1);
             playerAnimation.SetLandParam(_isExitingRightWall ? 1 : -1);
         }
@@ -374,8 +372,7 @@ namespace Axiom.Player.Movement.StateMachine
                 Vector3 jumpVel = upDirection * upJumpForce;
                 _inAirState.InAirJump(jumpVel);
             }
-
-            playerAnimation.ResetTrigger("Landed");
+            
             playerAnimation.SetInAirParam(_isExitingRightWall ? 1 : -1);
             playerAnimation.SetLandParam(_isExitingRightWall ? 1 : -1);
         }
@@ -387,7 +384,8 @@ namespace Axiom.Player.Movement.StateMachine
             _wallRunExitCounter = 0;
             isExitingClimb = false;
 
-            ChangeState(_landingState);
+            if(CurrentState != _landingState ||
+               CurrentState != _wallRunningState) ChangeState(_landingState);
         }
         #endregion
         

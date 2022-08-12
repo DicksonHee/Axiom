@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -9,11 +10,12 @@ namespace Axiom.UI.MainMenu
     public class MainMenuAnimManager : MonoBehaviour
     {
         public List<MainMenuAnim> animObjects;
-    
+
+        public UnityEvent OnStartEvent;
+        
         private PerspectiveSwitcher perspectiveSwitcher;
         private AxiomAnimator axiomAnimator;
 
-        public UnityEvent OnStartEvent;
 
         private void Awake()
         {
@@ -23,14 +25,23 @@ namespace Axiom.UI.MainMenu
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space)) StartCoroutine(GameStart_CO());
-            if (Input.GetKeyDown(KeyCode.Alpha1)) NextScene();
+            if (Display.displays.Length > 1)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1)) Display.displays[1].Activate();
+                if (Input.GetKeyDown(KeyCode.Alpha2)) Display.displays[2].Activate();
+            }
         }
 
+        public void StartGame()
+        {
+            StartCoroutine(GameStart_CO());
+        }
+        
         private IEnumerator GameStart_CO()
         {
             OnStartEvent?.Invoke();
             axiomAnimator.StopAnim();
+            transform.DOMove(new Vector3(0, 0, -16), 1.5f);
             yield return new WaitForSeconds(2f);
 
             perspectiveSwitcher.StartPerspectiveSwitch();

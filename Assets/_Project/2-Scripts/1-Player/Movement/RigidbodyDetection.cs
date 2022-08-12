@@ -9,7 +9,7 @@ namespace Axiom.Player.Movement
     {
         #region Inspector Variables
         public Transform orientation;
-        public Camera camera;
+        public Camera cam;
         
         [Header("Ground Detection")]
         public Transform groundDetectorTransform;
@@ -206,7 +206,7 @@ namespace Axiom.Player.Movement
 
         private void CameraRaycastDetection()
         {
-            if (Physics.Raycast(camera.ScreenPointToRay(screenMiddle), out cameraHit, 10f, groundLayer))
+            if (Physics.Raycast(cam.ScreenPointToRay(screenMiddle), out cameraHit, 10f, groundLayer))
             {
                 cameraHitObject = cameraHit.collider.gameObject;
             }
