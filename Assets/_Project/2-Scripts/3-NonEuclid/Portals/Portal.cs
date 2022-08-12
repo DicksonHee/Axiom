@@ -1,11 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using Axiom.Player.Movement.StateMachine;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-namespace Axiom.Player.Movement.NonEuclid.Portals
+namespace Axiom.NonEuclidean
 {
     public class Portal : MonoBehaviour
     {

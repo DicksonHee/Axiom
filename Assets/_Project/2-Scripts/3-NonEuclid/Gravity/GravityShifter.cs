@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using Axiom.Core;
 using Axiom.Player.Movement.StateMachine;
 using UnityEngine;
 
-namespace Axiom.Player.Movement.NonEuclid.Gravity
+namespace Axiom.NonEuclidean
 {
     public class GravityShifter : MonoBehaviour
     {

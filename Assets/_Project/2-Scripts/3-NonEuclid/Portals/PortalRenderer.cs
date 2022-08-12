@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Axiom.Player.Movement.NonEuclid.Portals
+namespace Axiom.NonEuclidean
 {
     public class PortalRenderer : MonoBehaviour
     {
