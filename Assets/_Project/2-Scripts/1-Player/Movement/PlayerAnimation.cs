@@ -11,6 +11,7 @@ namespace Axiom.Player.Movement
 
         public Transform leftHandClimbPositionTarget;
         public Transform rightHandClimbPositionTarget;
+        public Transform cameraPosition;
 
         private bool isRotationEnabled = true;
 
@@ -33,7 +34,7 @@ namespace Axiom.Player.Movement
 
         private void Update()
         {
-            if(isRotationEnabled) transform.localRotation = orientation.localRotation * Quaternion.Euler(currentModelRotation);
+            if (isRotationEnabled) transform.localRotation = orientation.localRotation * Quaternion.Euler(currentModelRotation);
         }
 
         private IEnumerator LerpRotation_CO(Vector3 rot, float duration)

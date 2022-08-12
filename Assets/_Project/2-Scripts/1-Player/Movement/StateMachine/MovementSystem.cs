@@ -15,6 +15,7 @@ namespace Axiom.Player.Movement.StateMachine
         public InputDetection inputDetection;
         public CameraLook cameraLook;
         public PlayerAnimation playerAnimation;
+        public MoveCamera moveCamera;
         public Transform orientation;
 
         [Header("VFX")] 
@@ -97,6 +98,7 @@ namespace Axiom.Player.Movement.StateMachine
         
         private float _ledgeGrabExitCounter;
 
+        public float totalAirTime;
         public Vector3 upDirection { get; private set; }
         public Vector3 forwardDirection { get; private set; }
         public Vector3 rightDirection { get; private set; }
@@ -115,6 +117,7 @@ namespace Axiom.Player.Movement.StateMachine
         public LedgeClimbing _ledgeClimbingState { get; private set; }
         public LedgeGrabbing _ledgeGrabbingState { get; private set; }
         public Vaulting _vaultingState { get; private set; }
+        public Landing _landingState { get; private set; }
         #endregion
 
         private void Awake()
@@ -134,6 +137,7 @@ namespace Axiom.Player.Movement.StateMachine
             _ledgeClimbingState = new LedgeClimbing(this);
             _ledgeGrabbingState = new LedgeGrabbing(this);
             _vaultingState = new Vaulting(this);
+            _landingState = new Landing(this);
 
             InitializeState(_idleState);
 
@@ -378,18 +382,12 @@ namespace Axiom.Player.Movement.StateMachine
 
         private void Landed()
         {
-            SetGravity(groundGravity);
-            
             _isJumping = false;
             previousWall = null;
             _wallRunExitCounter = 0;
             isExitingClimb = false;
 
-            playerAnimation.ResetTrigger("WallJump");
-            playerAnimation.ResetTrigger("Jump");
-
-            playerAnimation.SetInAirParam(0);
-            playerAnimation.SetTrigger("Landed");
+            ChangeState(_landingState);
         }
         #endregion
         
