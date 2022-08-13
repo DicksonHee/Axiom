@@ -435,6 +435,13 @@ namespace Axiom.Player.Movement.StateMachine
 
         public void SetAnimatorBool(string param, bool val) => playerAnimation.SetBool(param, val);
         #endregion
+
+        public void TransformTargetVelocity()
+        {
+            Vector3 currentVel = rb.velocity;
+            Vector3 newMoveDir = orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;
+            rb.velocity = newMoveDir.normalized * currentVel.magnitude;
+        }
         
         #region VFX Functions
         private void HandleVFX()
