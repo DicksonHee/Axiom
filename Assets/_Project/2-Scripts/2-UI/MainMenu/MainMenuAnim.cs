@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -61,6 +62,21 @@ namespace Axiom.UI.MainMenu
                 Color targetCol = Random.Range(0, 2) == 0 ? redCol : blueCol;
                 t.GetComponent<MeshRenderer>().material.DOColor(targetCol, Random.Range(0.5f, 1f));
                 t.transform.DOLocalRotate(new Vector3(0, 0, 360), 2f, RotateMode.LocalAxisAdd).SetLoops(-1);
+            }
+        }
+
+        private IEnumerator LerpEmission_CO(MeshRenderer mesh, Color targetCol)
+        {
+            Color initialCol = mesh.material.GetColor("_EmissionColor");
+            float duration = 0f;
+
+            while (duration < 0.5f)
+            {
+                duration += Time.deltaTime;
+                Color lerpCol = Color.Lerp(initialCol, targetCol, duration / 0.5f);
+                mesh.material.SetColor("_BaseColor", lerpCol);
+                mesh.material.SetColor("_EmissionColor", lerpCol * 2);
+                yield return null;
             }
         }
 

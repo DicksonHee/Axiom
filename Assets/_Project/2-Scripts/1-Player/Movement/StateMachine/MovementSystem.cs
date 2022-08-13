@@ -379,13 +379,13 @@ namespace Axiom.Player.Movement.StateMachine
 
         private void Landed()
         {
+            if (CurrentState != _inAirState) return;
+            
             _isJumping = false;
             previousWall = null;
             _wallRunExitCounter = 0;
             isExitingClimb = false;
-
-            if(CurrentState != _landingState ||
-               CurrentState != _wallRunningState) ChangeState(_landingState);
+            ChangeState(_landingState);
         }
         #endregion
         

@@ -23,15 +23,6 @@ namespace Axiom.UI.MainMenu
             axiomAnimator = GetComponent<AxiomAnimator>();
         }
 
-        private void Update()
-        {
-            if (Display.displays.Length > 1)
-            {
-                if (Input.GetKeyDown(KeyCode.Alpha1)) Display.displays[1].Activate();
-                if (Input.GetKeyDown(KeyCode.Alpha2)) Display.displays[2].Activate();
-            }
-        }
-
         public void StartGame()
         {
             StartCoroutine(GameStart_CO());
