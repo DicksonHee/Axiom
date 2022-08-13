@@ -436,6 +436,13 @@ namespace Axiom.Player.Movement.StateMachine
         public void SetAnimatorBool(string param, bool val) => playerAnimation.SetBool(param, val);
         #endregion
 
+        public void TeleportPlayer(Quaternion newRotation)
+        {
+            cameraLook.TransformForward(newRotation);
+            playerAnimation.ForceRotate();
+            TransformTargetVelocity();
+        }
+        
         public void TransformTargetVelocity()
         {
             Vector3 currentVel = rb.velocity;

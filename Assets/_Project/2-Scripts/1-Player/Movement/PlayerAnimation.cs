@@ -37,6 +37,11 @@ namespace Axiom.Player.Movement
             if (isRotationEnabled) transform.localRotation = orientation.localRotation * Quaternion.Euler(currentModelRotation);
         }
 
+        public void ForceRotate()
+        {
+            transform.localRotation = orientation.localRotation * Quaternion.Euler(currentModelRotation);
+        }
+
         private IEnumerator LerpRotation_CO(Vector3 rot, float duration)
         {
             rotationFinished = false;

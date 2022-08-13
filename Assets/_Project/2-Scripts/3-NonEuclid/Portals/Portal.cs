@@ -108,8 +108,7 @@ namespace Axiom.NonEuclidean
                 if (changeTest)
                 {
                     m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.orientation.localToWorldMatrix;
-                    controller.cameraLook.TransformForward(m.rotation);
-                    controller.TransformTargetVelocity();
+                    controller.TeleportPlayer(m.rotation);
                 }
                 
                 t.transform.position = m.GetPosition();
