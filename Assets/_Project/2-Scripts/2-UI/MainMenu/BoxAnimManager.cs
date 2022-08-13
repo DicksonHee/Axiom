@@ -1,34 +1,36 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxAnimManager : MonoBehaviour
+namespace Axiom.UI.MainMenu
 {
-    public MainMenuAnim[] menuAnims;
-    public List<GameObject> showObjects;
-
-    private IEnumerator StartBoxes()
+    public class BoxAnimManager : MonoBehaviour
     {
-        Camera.main.orthographic = false;
+        public MainMenuAnim[] menuAnims;
+        public List<GameObject> showObjects;
 
-        foreach (GameObject obj in showObjects)
+        private IEnumerator StartBoxes()
         {
-            obj.SetActive(true);
-            yield return new WaitForSeconds(0.5f);
-        }
+            Camera.main.orthographic = false;
 
-        foreach (MainMenuAnim anim in menuAnims)
-        {
-            anim.ObjectRotation(new Vector3(360f, 360f, 360f), 1f, ObjectAnimMode.Random);
-            yield return new WaitForSeconds(0.1f);
-        }
+            foreach (GameObject obj in showObjects)
+            {
+                obj.SetActive(true);
+                yield return new WaitForSeconds(0.5f);
+            }
 
-        float startTime = Time.time;
-        while(Time.time < startTime + 2f)
-        {
-            foreach (MainMenuAnim anim in menuAnims) anim.transform.position -= new Vector3(0, 0, 5 * Time.deltaTime);
-            yield return null;
+            foreach (MainMenuAnim anim in menuAnims)
+            {
+                anim.ObjectRotation(new Vector3(360f, 360f, 360f), 1f, ObjectAnimMode.Random);
+                yield return new WaitForSeconds(0.1f);
+            }
+
+            float startTime = Time.time;
+            while(Time.time < startTime + 2f)
+            {
+                foreach (MainMenuAnim anim in menuAnims) anim.transform.position -= new Vector3(0, 0, 5 * Time.deltaTime);
+                yield return null;
+            }
         }
     }
 }

@@ -56,8 +56,6 @@ namespace Axiom.Player.Movement.StateMachine.States
                 }
             }
             
-            MovementSystem.playerAnimation.SetFloatParam("LandHeight", Time.time - stateStartTime);
-            
             CalculateMovementSpeed();
         }
 
@@ -69,7 +67,8 @@ namespace Axiom.Player.Movement.StateMachine.States
         public override void ExitState()
         {
             base.ExitState();
-            
+
+            MovementSystem.totalAirTime = Time.time - stateStartTime;
             MovementSystem.cameraLook.ResetCameraXSens();
             MovementSystem.SetLRMultiplier(1f);
             MovementSystem.rb.drag = 5f;
@@ -90,7 +89,7 @@ namespace Axiom.Player.Movement.StateMachine.States
             if (hasAirJumped || Time.time - stateStartTime > MovementSystem.inAirCoyoteTime) return;
 
             hasAirJumped = true;
-            MovementSystem.rb.AddForce(jumpVelocity);
+            MovementSystem.rb.AddForce(jumpVelocity, ForceMode.Impulse);
         }
 
         private bool ShouldWallClimb()

@@ -257,8 +257,8 @@ VisualEffect:
       m_Array:
       - m_Value:
           serializedVersion: 2
-          key0: {r: 1, g: 1, b: 1, a: 1}
-          key1: {r: 1, g: 1, b: 1, a: 1}
+          key0: {r: 1, g: 1, b: 1, a: 0.46666667}
+          key1: {r: 1, g: 1, b: 1, a: 0.36078432}
           key2: {r: 0, g: 0, b: 0, a: 0}
           key3: {r: 0, g: 0, b: 0, a: 0}
           key4: {r: 0, g: 0, b: 0, a: 0}
@@ -904,7 +904,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6603163244185050848}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.33, y: 0.89, z: 0.19}
+  m_LocalPosition: {x: 0, y: 0.89, z: 0.19}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1080,6 +1080,7 @@ MonoBehaviour:
   inputDetection: {fileID: 6603163244758501549}
   cameraLook: {fileID: 6603163244758501548}
   playerAnimation: {fileID: 6603163244428278009}
+  moveCamera: {fileID: 6603163243959911413}
   orientation: {fileID: 6603163244449240391}
   movementVFX: {fileID: 1151955496726623624}
   _standCC: {fileID: 6603163244758501538}
@@ -1151,6 +1152,7 @@ MonoBehaviour:
   wallRunCoyoteTime: 0.15
   wallRunMaxDuration: 1
   wallClimbMaxDuration: 0.5
+  totalAirTime: 0
 --- !u!114 &6603163244758501550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1164,7 +1166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orientation: {fileID: 6603163244449240391}
-  camera: {fileID: 6603163243623300483}
+  cam: {fileID: 6603163243623300483}
   groundDetectorTransform: {fileID: 6603163244747166275}
   groundDetectorRadius: 0.15
   wallDetectorTransform: {fileID: 6603163244449240391}
@@ -1206,10 +1208,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79c6c069713076d4aac77ca55f31936c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animatorCamPosition: {fileID: 6603163244185050849}
   camHolder: {fileID: 6603163243959911411}
   orientation: {fileID: 6603163244449240391}
   cam: {fileID: 6603163243623300483}
-  groundCamera: {fileID: 4607354369188583829}
   sensX: 200
   sensY: 200
   xRotLimits: {x: -90, y: 60}
@@ -1544,6 +1546,7 @@ MonoBehaviour:
     m_Bits: 64
   leftHandClimbPositionTarget: {fileID: 1854055498}
   rightHandClimbPositionTarget: {fileID: 2018633540}
+  cameraPosition: {fileID: 6603163244185050849}
 --- !u!4 &6641011203528014369 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 53a9bb75b5abf2340ab92ec7121e5e00,

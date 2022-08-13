@@ -33,6 +33,8 @@ namespace Axiom.Player.Movement.StateMachine.States
         {
             base.LogicUpdate();
 
+             CalculateInAirTime();
+             
             if ((MovementSystem.GetCurrentSpeed() < 0.5f && Time.time - stateStartTime > 0.5f) ||
                 Vector3.Dot(MovementSystem.forwardDirection, initialDir) < 0.8f) // If too slow or looking away from slide direction
             {
@@ -42,11 +44,13 @@ namespace Axiom.Player.Movement.StateMachine.States
             {
                 CheckShouldCrouchOnExit();
             }
-            else if (!MovementSystem.inputDetection.crouchInput) CheckShouldCrouchOnExit();
+            else if (!MovementSystem.inputDetection.crouchInput)
+            {
+                if (MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem._idleState);
+                else MovementSystem.ChangeState(MovementSystem._crouchingState);
+            }
             else if (MovementSystem.inputDetection.movementInput.z <= 0) CheckShouldCrouchOnExit();// If letting go of crouch key
-            else if (inAirCounter > 0.8f) MovementSystem.ChangeState(MovementSystem._inAirState); // If in air
- 
-            CalculateInAirTime();
+            else if (inAirCounter > 0.2f) MovementSystem.ChangeState(MovementSystem._inAirState); // If in air
         }
 
         public override void PhysicsUpdate()

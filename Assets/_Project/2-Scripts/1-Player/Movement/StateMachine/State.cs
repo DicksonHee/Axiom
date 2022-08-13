@@ -7,12 +7,12 @@ namespace Axiom.Player.Movement.StateMachine
         protected MovementSystem MovementSystem;
 
         protected float stateStartTime;
-        
-        protected AnimationCurve movementCurve;
-        protected float previousSpeed;
+
+        private AnimationCurve movementCurve;
+        private float previousSpeed;
 
         public StateName stateName { get; protected set; }
-
+ 
         public State(MovementSystem movementSystem)
         {
             MovementSystem = movementSystem;
@@ -51,6 +51,7 @@ namespace Axiom.Player.Movement.StateMachine
         }
 	}
 
+    // For Debugging only
 	public enum StateName
     {
         Idle,
@@ -66,6 +67,7 @@ namespace Axiom.Player.Movement.StateMachine
         LedgeGrabbing,
         LedgeClimbing,
         Vaulting,
+        Landing,
         None
     }
 }

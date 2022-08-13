@@ -9,6 +9,7 @@ namespace Axiom.Player.Movement
         public bool crouchInput { get; private set; }
         public bool leftHoldInput { get; private set; }
         public bool rightHoldInput { get; private set; }
+        public float crouchPressedTime { get; private set; }
 
         private PlayerInputActions playerInputActions;
 
@@ -42,6 +43,7 @@ namespace Axiom.Player.Movement
 
         private void DetectCrouchInput()
         {
+            if (Input.GetKeyDown(KeyCode.LeftControl)) crouchPressedTime = Time.time;
             crouchInput = Input.GetKey(KeyCode.LeftControl);
         }
 
