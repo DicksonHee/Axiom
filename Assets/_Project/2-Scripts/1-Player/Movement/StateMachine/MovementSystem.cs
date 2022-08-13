@@ -440,6 +440,7 @@ namespace Axiom.Player.Movement.StateMachine
         {
             Vector3 currentVel = rb.velocity;
             Vector3 newMoveDir = orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;
+            newMoveDir.y = Vector3.Dot(currentVel, upDirection);
             rb.velocity = newMoveDir.normalized * currentVel.magnitude;
         }
         

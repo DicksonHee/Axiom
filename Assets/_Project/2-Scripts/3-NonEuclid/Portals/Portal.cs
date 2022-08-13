@@ -17,6 +17,8 @@ namespace Axiom.NonEuclidean
         private List<TrackedTransform> tracked = new List<TrackedTransform>();
         private Vector3 screenStartLocalPosition;
 
+        public bool changeTest = true;
+        
         private void Awake()
         {
             playerCam = Camera.main;
@@ -103,9 +105,13 @@ namespace Axiom.NonEuclidean
                 //controller.TransformTargetVelocity(m);
                 //controller.orientation.rotation = m.rotation;
 
-                m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.orientation.localToWorldMatrix;
-                controller.cameraLook.TransformForward(m.rotation);
-                controller.TransformTargetVelocity();
+                if (changeTest)
+                {
+                    m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.orientation.localToWorldMatrix;
+                    controller.cameraLook.TransformForward(m.rotation);
+                    controller.TransformTargetVelocity();
+                }
+                
                 t.transform.position = m.GetPosition();
             }
             else t.transform.SetPositionAndRotation(m.GetPosition(), m.rotation);
