@@ -1077,7 +1077,6 @@ GameObject:
   m_Component:
   - component: {fileID: 488290282}
   - component: {fileID: 488290280}
-  - component: {fileID: 488290283}
   m_Layer: 0
   m_Name: AudioTest
   m_TagString: Untagged
@@ -1112,36 +1111,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &488290283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 488290279}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 372899234
-      Data2: 1131089963
-      Data3: -1207656042
-      Data4: 290373396
-    Path: event:/Test123 3D
-  Event: 
-  PlayEvent: 11
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  Params: []
-  OverrideAttenuation: 1
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1 &502897631
 GameObject:
   m_ObjectHideFlags: 0
@@ -1478,7 +1447,7 @@ GameObject:
   m_Layer: 0
   m_Name: FmodScript
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1490,7 +1459,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 605236824}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 395.40002, y: 193, z: 0}
+  m_LocalPosition: {x: -6, y: 0, z: 14.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1506,9 +1475,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 605236824}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 559ef94799de4034293693e52b396ecf, type: 3}
+  m_Script: {fileID: 11500000, guid: e2e2bf6092db3734d95a20f85674c06c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventName:
+    Guid:
+      Data1: -822925814
+      Data2: 1173617094
+      Data3: 146961585
+      Data4: 2088245625
+    Path: event:/Audiotable Test
 --- !u!1 &669320766
 GameObject:
   m_ObjectHideFlags: 0
