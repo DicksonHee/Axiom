@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Axiom.Player.Movement.StateMachine;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace Axiom.NonEuclidean
         private List<TrackedTransform> tracked = new List<TrackedTransform>();
         private Vector3 screenStartLocalPosition;
 
+        public bool changeTest = true;
+        
         private void Awake()
         {
             playerCam = Camera.main;
@@ -101,7 +104,13 @@ namespace Axiom.NonEuclidean
                 //m.SetColumn(3, Vector4.zero);
                 //controller.TransformTargetVelocity(m);
                 //controller.orientation.rotation = m.rotation;
-                controller.cameraLook.TransformForward(m);
+
+                if (changeTest)
+                {
+                    m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.orientation.localToWorldMatrix;
+                    controller.TeleportPlayer(m.rotation);
+                }
+                
                 t.transform.position = m.GetPosition();
             }
             else t.transform.SetPositionAndRotation(m.GetPosition(), m.rotation);
@@ -163,5 +172,16 @@ namespace Axiom.NonEuclidean
                 this.lastDotSign = lastDotSign;
             }
         }
+        
+        #if UNITY_EDITOR
+        private void OnDrawGizmos()
+        {
+            if (otherPortal != null)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawLine(screen.transform.position, otherPortal.screen.transform.position);
+            }
+        }
+        #endif
     }
 }
