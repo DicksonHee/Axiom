@@ -275,8 +275,6 @@ namespace Axiom.Player.Movement
 
             if (rightDetected && leftDetected) canWallClimb = true;
             else canWallClimb = false;
-
-            wallClimbNormal = rightWallClimbDetected.normal;
         }
         #endregion
 
