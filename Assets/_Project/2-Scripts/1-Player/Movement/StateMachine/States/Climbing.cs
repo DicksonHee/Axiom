@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Axiom.Player.Movement;
-using Axiom.Player.StateMachine;
 using UnityEngine;
 
-namespace Axiom.Player.StateMachine
+namespace Axiom.Player.Movement.StateMachine.States
 {
     public class Climbing : State
     {
@@ -20,7 +16,8 @@ namespace Axiom.Player.StateMachine
             MovementSystem.EnterClimbState();
             MovementSystem.DisableMovement();
             MovementSystem.SetGravity(0f);
-            
+
+            MovementSystem.cameraLook.StartClimbCamera();
             MovementSystem.SetAnimatorBool("WallClimb", true);
         }
 
@@ -28,8 +25,8 @@ namespace Axiom.Player.StateMachine
         {
             base.LogicUpdate();
 
-            if (Time.time - stateStartTime > MovementSystem.wallClimbMaxDuration || !MovementSystem.rbInfo.canWallClimb) MovementSystem.ChangeState(MovementSystem._inAirState);
-            else if (MovementSystem.rbInfo.isDetectingLedge && !MovementSystem.isExitingLedgeGrab) MovementSystem.ChangeState(MovementSystem._ledgeGrabbingState);
+            if (Time.time - stateStartTime > MovementSystem.wallClimbMaxDuration || !MovementSystem.rbInfo.CanWallClimb()) MovementSystem.ChangeState(MovementSystem._inAirState);
+            else if (MovementSystem.rbInfo.CanClimbLedge() && !MovementSystem.isExitingLedgeGrab) MovementSystem.ChangeState(MovementSystem._ledgeGrabbingState);
         }
 
         public override void PhysicsUpdate()
@@ -46,9 +43,8 @@ namespace Axiom.Player.StateMachine
             MovementSystem.ExitClimbState();
             MovementSystem.EnableMovement();
             MovementSystem.SetGravity(MovementSystem.inAirGravity);
-            //Vector3 inputVel = MovementSystem.moveDirection;
-            //MovementSystem._rb.velocity = new Vector3(inputVel.x, MovementSystem.wallClimbSpeed * 1.5f, inputVel.z);
-            
+
+            MovementSystem.cameraLook.ResetCamera();
             MovementSystem.SetAnimatorBool("WallClimb", false);
         }
 
@@ -57,7 +53,7 @@ namespace Axiom.Player.StateMachine
             Vector3 up = MovementSystem.transform.up;
             Vector3 inputVel = MovementSystem.moveDirection * 0.1f;
             Vector3 moveVel = MovementSystem.ProjectDirectionOnPlane(inputVel, up);
-            MovementSystem._rb.velocity = (moveVel + up)  * MovementSystem.wallClimbSpeed;
+            MovementSystem.rb.velocity = (moveVel + up)  * MovementSystem.wallClimbSpeed;
         }
     }
 }

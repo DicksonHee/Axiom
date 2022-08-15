@@ -1,22 +1,18 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Axiom.Player.Movement;
 using UnityEngine;
 
-namespace Axiom.Player.StateMachine
+namespace Axiom.Player.Movement.StateMachine
 {
     public abstract class State
     {
         protected MovementSystem MovementSystem;
 
         protected float stateStartTime;
-        
-        protected AnimationCurve movementCurve;
-        protected float previousSpeed;
+
+        private AnimationCurve movementCurve;
+        private float previousSpeed;
 
         public StateName stateName { get; protected set; }
-
+ 
         public State(MovementSystem movementSystem)
         {
             MovementSystem = movementSystem;
@@ -55,6 +51,7 @@ namespace Axiom.Player.StateMachine
         }
 	}
 
+    // For Debugging only
 	public enum StateName
     {
         Idle,
@@ -70,6 +67,7 @@ namespace Axiom.Player.StateMachine
         LedgeGrabbing,
         LedgeClimbing,
         Vaulting,
+        Landing,
         None
     }
 }

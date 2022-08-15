@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Axiom.Player.Movement;
-using Axiom.Player.StateMachine;
 using UnityEngine;
 
-namespace Axiom.Player.StateMachine
+namespace Axiom.Player.Movement.StateMachine.States
 {
     public class Running : State
     {
@@ -16,9 +12,10 @@ namespace Axiom.Player.StateMachine
         public override void EnterState()
         {
             base.EnterState();
-
-            MovementSystem.SetAnimatorBool("Running", true);
+            
             MovementSystem.SetTargetSpeed(MovementSystem.forwardSpeed);
+            
+            MovementSystem.SetAnimatorBool("Running", true);
         }
 
         public override void LogicUpdate()
