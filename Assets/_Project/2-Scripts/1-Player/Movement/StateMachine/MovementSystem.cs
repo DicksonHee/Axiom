@@ -75,7 +75,6 @@ namespace Axiom.Player.Movement.StateMachine
         #region Turning Variables
         private Vector3 _currentFacingTransform;
         private float _turnCheckCounter;
-        private float _turnMultiplier;
         private float _turnCheckInterval = 0.5f;
         #endregion
 
@@ -141,6 +140,7 @@ namespace Axiom.Player.Movement.StateMachine
 
             InitializeState(_idleState);
 
+            lrMultiplier = 1;
             inputDetection.OnJumpPressed += DelegateJump;
             rbInfo.OnPlayerLanded += Landed;
             //InvokeRepeating(nameof(DrawLine), 0f, 0.01f);
@@ -201,7 +201,6 @@ namespace Axiom.Player.Movement.StateMachine
         // Set _turnMultiplier to the Dot product of the _currentVector and _currentFacingTransform, clamped from 0.5f, 1f
         private void CheckIsTurning()
         {
-            _turnMultiplier = Mathf.Clamp(Vector3.Dot(_currentFacingTransform, forwardDirection), 0.5f, 1f);
             if (Mathf.Abs(cameraLook.mouseX) < 1f) _turnCheckCounter += Time.deltaTime;
             if (_turnCheckCounter > _turnCheckInterval)
             {
@@ -379,12 +378,11 @@ namespace Axiom.Player.Movement.StateMachine
 
         private void Landed()
         {
-            if (CurrentState != _inAirState) return;
-            
             _isJumping = false;
             previousWall = null;
             _wallRunExitCounter = 0;
             isExitingClimb = false;
+
             ChangeState(_landingState);
         }
         #endregion
@@ -443,7 +441,7 @@ namespace Axiom.Player.Movement.StateMachine
             TransformTargetVelocity();
         }
         
-        public void TransformTargetVelocity()
+        private void TransformTargetVelocity()
         {
             Vector3 currentVel = rb.velocity;
             Vector3 newMoveDir = orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;
