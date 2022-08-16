@@ -7,6 +7,7 @@ namespace Axiom.Player.Movement.StateMachine.States
     public class Landing : State
     {
 		private float delayTime;
+		private float enterSpeed;
 
         public Landing(MovementSystem movementSystem) : base(movementSystem)
         {
@@ -16,6 +17,8 @@ namespace Axiom.Player.Movement.StateMachine.States
 		public override void EnterState()
 		{
 			base.EnterState();
+
+			enterSpeed = MovementSystem.GetCurrentSpeed();
 			
 			MovementSystem.SetGravity(MovementSystem.groundGravity);
 			MovementSystem.SetTargetSpeed(MovementSystem.walkSpeed);
@@ -39,12 +42,14 @@ namespace Axiom.Player.Movement.StateMachine.States
 				{
 					MovementSystem.playerAnimation.DisableRotation();
 					MovementSystem.cameraLook.StartRollCamera();
+					enterSpeed = 16f;
 				}
 				else
 				{
 					MovementSystem.DisableMovement();
 					MovementSystem.cameraLook.StartHardLandingCamera(30f);
 					MovementSystem.rb.velocity = Vector3.zero;
+					enterSpeed = 0f;
 				}
 				MovementSystem.playerAnimation.SetFloatParam("LandIntensity", 2);
 				MovementSystem.playerAnimation.SetFloatParam("LandSuccess", rollSuccess ? 1 : 0);
@@ -62,7 +67,12 @@ namespace Axiom.Player.Movement.StateMachine.States
 
 			if (Time.time - stateStartTime >= delayTime)
 			{
-				MovementSystem.ChangeState(MovementSystem._idleState);
+				if(MovementSystem.inputDetection.movementInput.z == 0) MovementSystem.ChangeState(MovementSystem._idleState);
+				else if (Mathf.Abs(MovementSystem.inputDetection.movementInput.z) > 0)
+				{
+					if(enterSpeed > 15f) MovementSystem.ChangeState(MovementSystem._runningState);
+					else MovementSystem.ChangeState(MovementSystem._walkingState);
+				}
 			}
 			else
 			{

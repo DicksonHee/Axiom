@@ -157,6 +157,7 @@ namespace Axiom.Player.Movement.StateMachine
             CheckWallRunTimers();
             CheckLedgeGrabTimers();
 
+            LandedCheck();
             CalculateMoveDirection();
             HandleAnimations();
             HandleVFX();
@@ -305,8 +306,7 @@ namespace Axiom.Player.Movement.StateMachine
         // Determines which jump to use
         private void DelegateJump()
         {
-            Debug.Log("JumpPressed");
-            if (CurrentState == _wallRunningState)
+            if (CurrentState == _wallRunningState && !_isJumping)
             {
                 WallRunJump();
             }
@@ -314,9 +314,8 @@ namespace Axiom.Player.Movement.StateMachine
             {
                 InAirJump();
             }
-            else if (rbInfo.IsGrounded())
+            else if (rbInfo.IsGrounded() && CurrentState != _landingState)
             {
-                Debug.Log("Grounded");
                 if (rbInfo.CanVaultOn() || rbInfo.CanVaultOver()) ChangeState(_vaultingState);
                 else if(!_isJumping) Jump();
             }
@@ -365,25 +364,34 @@ namespace Axiom.Player.Movement.StateMachine
             {
                 Vector3 jumpVel = upDirection.normalized * wallRunJumpUpForce + forwardDirection.normalized * (Mathf.Clamp(Vector3.Dot(_wallRunNormal, forwardDirection), 0.75f, 1f) * wallRunJumpSideForce);
                 _inAirState.WallRunJump(jumpVel);
+                playerAnimation.SetInAirParam(_isExitingRightWall ? 1 : -1);
+                playerAnimation.SetLandParam(_isExitingRightWall ? 1 : -1);
             }
             else
             {
                 Vector3 jumpVel = upDirection * upJumpForce;
                 _inAirState.InAirJump(jumpVel);
+                playerAnimation.SetInAirParam(0);
+                playerAnimation.SetLandParam(0);
             }
             
-            playerAnimation.SetInAirParam(_isExitingRightWall ? 1 : -1);
-            playerAnimation.SetLandParam(_isExitingRightWall ? 1 : -1);
+            
         }
 
         private void Landed()
         {
-            _isJumping = false;
-            previousWall = null;
-            _wallRunExitCounter = 0;
-            isExitingClimb = false;
-
             ChangeState(_landingState);
+        }
+
+        private void LandedCheck()
+        {
+            if (rbInfo.IsGrounded())
+            {
+                _isJumping = false;
+                previousWall = null;
+                _wallRunExitCounter = 0;
+                isExitingClimb = false;
+            }
         }
         #endregion
         

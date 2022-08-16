@@ -89,7 +89,7 @@ namespace Axiom.Player.Movement.StateMachine.States
             if (hasAirJumped || Time.time - stateStartTime > MovementSystem.inAirCoyoteTime) return;
 
             hasAirJumped = true;
-            MovementSystem.rb.AddForce(jumpVelocity, ForceMode.Impulse);
+            MovementSystem.rb.AddForce(jumpVelocity, ForceMode.VelocityChange);
         }
 
         private bool ShouldWallClimb()
