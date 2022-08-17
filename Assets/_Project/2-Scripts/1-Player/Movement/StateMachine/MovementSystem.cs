@@ -250,9 +250,16 @@ namespace Axiom.Player.Movement.StateMachine
             Vector3 currentVel = rb.velocity;
             Vector3 rightVel = Vector3.Cross(upDirection, forwardDirection) * Vector3.Dot(currentVel, rightDirection);
             Vector3 forwardVel = Vector3.Cross(rightDirection, upDirection) * Vector3.Dot(currentVel, forwardDirection);
+            Vector3 downVel = Vector3.Cross(rightDirection, -forwardDirection) * Vector3.Dot(currentVel, upDirection);
             
-            if(moveDirection.x == 0 && rightVel.magnitude > 0) rb.AddForce(-rightVel * 5f, ForceMode.Acceleration);
-            if(moveDirection.z == 0 && forwardVel.magnitude > 0) rb.AddForce(-forwardVel * 5f, ForceMode.Acceleration);
+            // if(Mathf.Abs(inputDetection.movementInput.x) < 0.1f && rightVel.magnitude > 0) rb.AddForce(-rightVel * 15f, ForceMode.Acceleration);
+            // if(Mathf.Abs(inputDetection.movementInput.z) < 0.1f && forwardVel.magnitude > 0) rb.AddForce(-forwardVel * 15f, ForceMode.Acceleration);
+
+            if(Mathf.Abs(inputDetection.movementInput.x) < 0.1f && rightVel.magnitude > 0) rightVel = Vector3.zero;
+            if(Mathf.Abs(inputDetection.movementInput.z) < 0.1f && forwardVel.magnitude > 0) forwardVel = Vector3.zero;
+
+
+            rb.velocity = rightVel + forwardVel + downVel;
         }
         
         public Vector3 ProjectDirectionOnPlane(Vector3 direction, Vector3 normal)
