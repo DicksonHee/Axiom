@@ -4,11 +4,8 @@ namespace Axiom.Player.Movement.StateMachine.States
 {
     public class InAir : State
     {
-        private bool hasAirJumped;
-        private bool hasWallJumped;
         private float wallClimbTimer;
         
-
         public InAir(MovementSystem movementSystem) : base(movementSystem)
         {
             stateName = StateName.InAir;
@@ -17,9 +14,6 @@ namespace Axiom.Player.Movement.StateMachine.States
         public override void EnterState()
         {
             base.EnterState();
-
-            hasAirJumped = false;
-            hasWallJumped = false;
             wallClimbTimer = 0f;
 
             MovementSystem.cameraLook.ApplyCameraXAxisMultiplier(0.5f);

@@ -409,9 +409,9 @@ namespace Axiom.Player.Movement.StateMachine
         {
             Vector3 currentVel = Rb.velocity;
             Vector3 newMoveDir = orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;
-            newMoveDir.y = Vector3.Dot(currentVel, upDirection);
-            rb.velocity = newMoveDir.normalized * currentVel.magnitude;
-            print(rb.velocity);
+            newMoveDir.y = Vector3.Dot(currentVel, UpDirection);
+            Rb.velocity = newMoveDir.normalized * currentVel.magnitude;
+            print(Rb.velocity);
         }
         
         #region VFX Functions

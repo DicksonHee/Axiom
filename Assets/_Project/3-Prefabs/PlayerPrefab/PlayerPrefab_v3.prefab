@@ -1082,8 +1082,8 @@ MonoBehaviour:
   playerAnimation: {fileID: 6603163244428278009}
   orientation: {fileID: 6603163244449240391}
   movementVFX: {fileID: 1151955496726623624}
-  _standCC: {fileID: 6603163244758501538}
-  _crouchCC: {fileID: 6603163244758501536}
+  standingCollider: {fileID: 6603163244758501538}
+  crouchingCollider: {fileID: 6603163244758501536}
   accelerationCurve:
     serializedVersion: 2
     m_Curve:
@@ -1152,7 +1152,6 @@ MonoBehaviour:
   wallRunCoyoteTime: 0.15
   wallRunMaxDuration: 1
   wallClimbMaxDuration: 0.5
-  totalAirTime: 0
 --- !u!114 &6603163244758501550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1541,12 +1540,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rbInfo: {fileID: 6603163244758501550}
   orientation: {fileID: 6603163244449240391}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
   leftHandClimbPositionTarget: {fileID: 1854055498}
   rightHandClimbPositionTarget: {fileID: 2018633540}
-  cameraPosition: {fileID: 6603163244185050849}
 --- !u!4 &6641011203528014369 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 53a9bb75b5abf2340ab92ec7121e5e00,
