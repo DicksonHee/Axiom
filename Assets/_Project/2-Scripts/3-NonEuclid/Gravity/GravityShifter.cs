@@ -56,8 +56,8 @@ namespace Axiom.NonEuclidean
         private void OnDrawGizmos()
         {
             Debug.DrawLine(transform.localToWorldMatrix.MultiplyPoint(localStart), transform.localToWorldMatrix.MultiplyPoint(localEnd), Color.black);
-            Debug.DrawRay(transform.localToWorldMatrix.MultiplyPoint(localStart), localGravityFrom * 3, Color.red);
-            Debug.DrawRay(transform.localToWorldMatrix.MultiplyPoint(localEnd), localGravityTo * 3, Color.blue);
+            Debug.DrawRay(transform.localToWorldMatrix.MultiplyPoint(localStart), transform.rotation * localGravityFrom * 3, Color.red);
+            Debug.DrawRay(transform.localToWorldMatrix.MultiplyPoint(localEnd), transform.rotation * localGravityTo * 3, Color.blue);
         }
     }
 }
