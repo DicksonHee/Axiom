@@ -25,10 +25,8 @@ namespace Axiom.Player.Movement.StateMachine.States
             base.LogicUpdate();
             CalculateInAirTime();
 
-            if (!MovementSystem.inputDetection.crouchInput && MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem._idleState);
-            if (inAirCounter > 0.8f) MovementSystem.ChangeState(MovementSystem._inAirState);
-            
-            CalculateMovementSpeed();
+            if (!MovementSystem.inputDetection.crouchInput && MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem.IdleState);
+            if (inAirCounter > 0.8f) MovementSystem.ChangeState(MovementSystem.InAirState);
         }
 
         public override void PhysicsUpdate()

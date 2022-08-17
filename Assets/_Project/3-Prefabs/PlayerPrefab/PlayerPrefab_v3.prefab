@@ -711,7 +711,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.99872637, g: 0.9669811, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -732,7 +732,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 631
+    m_Bits: 887
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1080,7 +1080,6 @@ MonoBehaviour:
   inputDetection: {fileID: 6603163244758501549}
   cameraLook: {fileID: 6603163244758501548}
   playerAnimation: {fileID: 6603163244428278009}
-  moveCamera: {fileID: 6603163243959911413}
   orientation: {fileID: 6603163244449240391}
   movementVFX: {fileID: 1151955496726623624}
   _standCC: {fileID: 6603163244758501538}
@@ -1144,6 +1143,7 @@ MonoBehaviour:
   crouchSpeed: 20
   wallRunSpeed: 17
   wallClimbSpeed: 17
+  decelerationSpeed: 50
   upJumpForce: 13
   inAirCoyoteTime: 0.15
   wallRunJumpUpForce: 13

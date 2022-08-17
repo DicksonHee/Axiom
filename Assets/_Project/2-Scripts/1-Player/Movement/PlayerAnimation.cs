@@ -7,11 +7,8 @@ namespace Axiom.Player.Movement
     {
         public RigidbodyDetection rbInfo;
         public Transform orientation;
-        public LayerMask groundLayer;
-
         public Transform leftHandClimbPositionTarget;
         public Transform rightHandClimbPositionTarget;
-        public Transform cameraPosition;
 
         private bool isRotationEnabled = true;
 
