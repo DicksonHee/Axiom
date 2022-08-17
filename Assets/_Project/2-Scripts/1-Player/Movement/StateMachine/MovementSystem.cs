@@ -15,7 +15,6 @@ namespace Axiom.Player.Movement.StateMachine
         public InputDetection inputDetection;
         public CameraLook cameraLook;
         public PlayerAnimation playerAnimation;
-        public MoveCamera moveCamera;
         public Transform orientation;
 
         [Header("VFX")] 
@@ -43,6 +42,7 @@ namespace Axiom.Player.Movement.StateMachine
         public float crouchSpeed = 8f;
         public float wallRunSpeed = 25f;
         public float wallClimbSpeed = 12f;
+        public float decelerationSpeed = 50f;
         
         [Header("Jump")]
         public float upJumpForce = 10f;
@@ -83,6 +83,8 @@ namespace Axiom.Player.Movement.StateMachine
         private bool _isJumping;
         #endregion
 
+        private float _jumpCounter;
+        
         #region Wall Run Variables
         private float _wallRunExitCounter;
         private bool _isExitingRightWall;
@@ -154,10 +156,10 @@ namespace Axiom.Player.Movement.StateMachine
             
             CheckChangeToAirState();
             CheckIsTurning();
+            CheckGroundedTimers();
             CheckWallRunTimers();
             CheckLedgeGrabTimers();
-
-            LandedCheck();
+            
             CalculateMoveDirection();
             HandleAnimations();
             HandleVFX();
@@ -209,7 +211,13 @@ namespace Axiom.Player.Movement.StateMachine
                 _currentFacingTransform = forwardDirection;
             }
         }
-
+        
+        private void CheckGroundedTimers()
+        {
+            float timeDelta = rbInfo.IsGrounded() ? Time.deltaTime : -Time.deltaTime;
+            _jumpCounter = Mathf.Clamp(_jumpCounter + timeDelta,0,inAirCoyoteTime);
+        }
+        
         // Decrements wall run timers
         private void CheckWallRunTimers()
         {
@@ -250,16 +258,9 @@ namespace Axiom.Player.Movement.StateMachine
             Vector3 currentVel = rb.velocity;
             Vector3 rightVel = Vector3.Cross(upDirection, forwardDirection) * Vector3.Dot(currentVel, rightDirection);
             Vector3 forwardVel = Vector3.Cross(rightDirection, upDirection) * Vector3.Dot(currentVel, forwardDirection);
-            Vector3 downVel = Vector3.Cross(rightDirection, -forwardDirection) * Vector3.Dot(currentVel, upDirection);
-            
-            // if(Mathf.Abs(inputDetection.movementInput.x) < 0.1f && rightVel.magnitude > 0) rb.AddForce(-rightVel * 15f, ForceMode.Acceleration);
-            // if(Mathf.Abs(inputDetection.movementInput.z) < 0.1f && forwardVel.magnitude > 0) rb.AddForce(-forwardVel * 15f, ForceMode.Acceleration);
 
-            if(Mathf.Abs(inputDetection.movementInput.x) < 0.1f && rightVel.magnitude > 0) rightVel = Vector3.zero;
-            if(Mathf.Abs(inputDetection.movementInput.z) < 0.1f && forwardVel.magnitude > 0) forwardVel = Vector3.zero;
-
-
-            rb.velocity = rightVel + forwardVel + downVel;
+            if(Mathf.Abs(inputDetection.movementInput.x) < 0.1f && rightVel.magnitude > 0) rb.AddForce(-rightVel * decelerationSpeed, ForceMode.Acceleration);
+            if(Mathf.Abs(inputDetection.movementInput.z) < 0.1f && forwardVel.magnitude > 0) rb.AddForce(-forwardVel * decelerationSpeed, ForceMode.Acceleration);
         }
         
         public Vector3 ProjectDirectionOnPlane(Vector3 direction, Vector3 normal)
@@ -313,18 +314,19 @@ namespace Axiom.Player.Movement.StateMachine
         // Determines which jump to use
         private void DelegateJump()
         {
-            if (CurrentState == _wallRunningState && !_isJumping)
+            if (CurrentState != _landingState && _jumpCounter > 0f)
             {
+                _jumpCounter = -1f;
+                Jump();
+            }
+            else if (CurrentState == _wallRunningState)
+            {
+                _jumpCounter = -1f;
                 WallRunJump();
             }
-            else if (CurrentState == _inAirState && !_isJumping)
+            else if (rbInfo.CanVaultOn() || rbInfo.CanVaultOver())
             {
-                InAirJump();
-            }
-            else if (rbInfo.IsGrounded() && CurrentState != _landingState)
-            {
-                if (rbInfo.CanVaultOn() || rbInfo.CanVaultOver()) ChangeState(_vaultingState);
-                else if(!_isJumping) Jump();
+                ChangeState(_vaultingState);
             }
         }
         
@@ -370,14 +372,17 @@ namespace Axiom.Player.Movement.StateMachine
             if (PreviousState == _wallRunningState)
             {
                 Vector3 jumpVel = upDirection.normalized * wallRunJumpUpForce + forwardDirection.normalized * (Mathf.Clamp(Vector3.Dot(_wallRunNormal, forwardDirection), 0.75f, 1f) * wallRunJumpSideForce);
-                _inAirState.WallRunJump(jumpVel);
+                rb.AddForce(jumpVel, ForceMode.Impulse);
+                
+                //_inAirState.WallRunJump(jumpVel);
                 playerAnimation.SetInAirParam(_isExitingRightWall ? 1 : -1);
                 playerAnimation.SetLandParam(_isExitingRightWall ? 1 : -1);
             }
             else
             {
                 Vector3 jumpVel = upDirection * upJumpForce;
-                _inAirState.InAirJump(jumpVel);
+                rb.AddForce(jumpVel, ForceMode.Impulse);
+                //_inAirState.InAirJump(jumpVel);
                 playerAnimation.SetInAirParam(0);
                 playerAnimation.SetLandParam(0);
             }
@@ -387,19 +392,12 @@ namespace Axiom.Player.Movement.StateMachine
 
         private void Landed()
         {
+            previousWall = null;
+            _wallRunExitCounter = 0;
+            isExitingClimb = false;
             ChangeState(_landingState);
         }
 
-        private void LandedCheck()
-        {
-            if (rbInfo.IsGrounded())
-            {
-                _isJumping = false;
-                previousWall = null;
-                _wallRunExitCounter = 0;
-                isExitingClimb = false;
-            }
-        }
         #endregion
         
         #region Crouch Functions
