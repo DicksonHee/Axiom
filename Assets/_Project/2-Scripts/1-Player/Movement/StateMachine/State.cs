@@ -39,17 +39,9 @@ namespace Axiom.Player.Movement.StateMachine
         protected void SelectMovementCurve()
         {
 	        previousSpeed = MovementSystem.GetCurrentSpeed();
-            movementCurve = MovementSystem.currentTargetSpeed > previousSpeed ? MovementSystem.accelerationCurve : MovementSystem.decelerationCurve;
+            movementCurve = MovementSystem.CurrentTargetSpeed > previousSpeed ? MovementSystem.accelerationCurve : MovementSystem.decelerationCurve;
 		}
-
-		protected void CalculateMovementSpeed(AnimationCurve curve = null, float startSpeed = 0f, bool resetTime = false)
-        {
-            if (movementCurve == null) return;
-            if (startSpeed > 0f) previousSpeed = startSpeed;
-            if (resetTime) stateStartTime = Time.time;
-            MovementSystem.CalculateMovementSpeed(curve ?? movementCurve, previousSpeed, Time.time - stateStartTime);
-        }
-	}
+    }
 
     // For Debugging only
 	public enum StateName

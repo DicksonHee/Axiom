@@ -32,8 +32,7 @@ namespace Axiom.Player.Movement
         private float initialSensX;
         private float initialSensY;
         private Vector2 initialXRotLimits;
-        private Transform cameraTransform;
-        
+
         public float mouseX { get; private set; }
         public float mouseY { get; private set; }
 
@@ -44,8 +43,7 @@ namespace Axiom.Player.Movement
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            cameraTransform = cam.transform;
-
+            
             initialFov = cam.fieldOfView;
             initialMultiplier = multiplier;
             initialSensX = sensX;
@@ -145,10 +143,10 @@ namespace Axiom.Player.Movement
             UnlockCamera();
         }
 
-        public void TransformForward(Matrix4x4 transformation)
+        public void TransformForward(Quaternion transformation)
         {
-            camHolder.forward = transformation.MultiplyVector(camHolder.forward);
-            orientation.forward = transformation.MultiplyVector(orientation.forward);
+            camHolder.transform.Rotate((Quaternion.Inverse(camHolder.localRotation) * transformation).eulerAngles);
+            orientation.transform.Rotate((Quaternion.Inverse(orientation.localRotation) * transformation).eulerAngles);
         }
     }
 }

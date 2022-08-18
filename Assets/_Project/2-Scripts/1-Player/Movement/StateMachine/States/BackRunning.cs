@@ -21,11 +21,9 @@ namespace Axiom.Player.Movement.StateMachine.States
         {
             base.LogicUpdate();
             
-            if (MovementSystem.inputDetection.movementInput.magnitude <= 0 || MovementSystem.inputDetection.movementInput.z > 0f) MovementSystem.ChangeState(MovementSystem._idleState);
-            else if(MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._crouchingState);
-            else if(Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0) MovementSystem.ChangeState(MovementSystem._strafingState);
-            
-            CalculateMovementSpeed();
+            if (MovementSystem.inputDetection.movementInput.magnitude <= 0 || MovementSystem.inputDetection.movementInput.z > 0f) MovementSystem.ChangeState(MovementSystem.IdleState);
+            else if(MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem.CrouchingState);
+            else if(Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0) MovementSystem.ChangeState(MovementSystem.StrafingState);
         }
 
         public override void PhysicsUpdate()

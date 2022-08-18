@@ -16,7 +16,7 @@ namespace Axiom.Player.Movement.StateMachine.States
         {
             base.EnterState();
             
-            initialDir = MovementSystem.moveDirection;
+            initialDir = MovementSystem.MoveDirection;
 
             MovementSystem.rbInfo.OnSlopeEnded += ResetStateTimer;
 
@@ -36,21 +36,21 @@ namespace Axiom.Player.Movement.StateMachine.States
              CalculateInAirTime();
              
             if ((MovementSystem.GetCurrentSpeed() < 0.5f && Time.time - stateStartTime > 0.5f) ||
-                Vector3.Dot(MovementSystem.forwardDirection, initialDir) < 0.8f) // If too slow or looking away from slide direction
+                Vector3.Dot(MovementSystem.ForwardDirection, initialDir) < 0.8f) // If too slow or looking away from slide direction
             {
                 CheckShouldCrouchOnExit();
             }
-            else if (Vector3.Dot(MovementSystem.rb.velocity, MovementSystem.upDirection) > 0.1f) // If sliding up
+            else if (Vector3.Dot(MovementSystem.Rb.velocity, MovementSystem.UpDirection) > 0.1f) // If sliding up
             {
                 CheckShouldCrouchOnExit();
             }
             else if (!MovementSystem.inputDetection.crouchInput)
             {
-                if (MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem._idleState);
-                else MovementSystem.ChangeState(MovementSystem._crouchingState);
+                if (MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem.IdleState);
+                else MovementSystem.ChangeState(MovementSystem.CrouchingState);
             }
             else if (MovementSystem.inputDetection.movementInput.z <= 0) CheckShouldCrouchOnExit();// If letting go of crouch key
-            else if (inAirCounter > 0.2f) MovementSystem.ChangeState(MovementSystem._inAirState); // If in air
+            else if (inAirCounter > 0.2f) MovementSystem.ChangeState(MovementSystem.InAirState); // If in air
         }
 
         public override void PhysicsUpdate()
@@ -79,12 +79,12 @@ namespace Axiom.Player.Movement.StateMachine.States
         {
             float targetSpeed = 0;
             if (MovementSystem.rbInfo.IsOnSlope() && 
-                Vector3.Dot(MovementSystem.rb.velocity, MovementSystem.orientation.up) < 0.1f)
+                Vector3.Dot(MovementSystem.Rb.velocity, MovementSystem.orientation.up) < 0.1f)
             {
                 targetSpeed = MovementSystem.forwardSpeed * 2;
             }
             float currentSpeed = Mathf.Lerp(MovementSystem.forwardSpeed, targetSpeed, (Time.time - stateStartTime) * 0.5f);
-            MovementSystem.rb.AddForce(initialDir.normalized * currentSpeed, ForceMode.Acceleration);
+            MovementSystem.Rb.AddForce(initialDir.normalized * currentSpeed, ForceMode.Acceleration);
         }
 
         private void ResetStateTimer()
@@ -100,11 +100,11 @@ namespace Axiom.Player.Movement.StateMachine.States
         
         private void CheckShouldCrouchOnExit()
         {
-            if(MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._crouchingState);
+            if(MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem.CrouchingState);
             else
             {
-                if(MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem._idleState);
-                else MovementSystem.ChangeState(MovementSystem._crouchingState);
+                if(MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem.IdleState);
+                else MovementSystem.ChangeState(MovementSystem.CrouchingState);
             }
         }
     }

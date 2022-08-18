@@ -19,11 +19,11 @@ namespace Axiom.Player.Movement.StateMachine.States
 			base.EnterState();
 
 			initialPos = MovementSystem.transform.position;
-			initialDir = MovementSystem.forwardDirection;
+			initialDir = MovementSystem.ForwardDirection;
 			initialVelocity = MovementSystem.GetCurrentSpeed();
 
 			MovementSystem.DisableMovement();
-			MovementSystem.rb.isKinematic = true;
+			MovementSystem.Rb.isKinematic = true;
 
 			MovementSystem.cameraLook.StartVaultCamera();
 			MovementSystem.playerAnimation.SetVaultHandPositions();
@@ -53,7 +53,7 @@ namespace Axiom.Player.Movement.StateMachine.States
 				yield return null;
 			}
 
-			MovementSystem.ChangeState(MovementSystem._idleState);
+			MovementSystem.ChangeState(MovementSystem.IdleState);
 		}
 
 		private IEnumerator LerpUpwardPosition_CO(float seconds)
@@ -61,11 +61,11 @@ namespace Axiom.Player.Movement.StateMachine.States
 			float startTime = Time.time;
 			while (Time.time - startTime < seconds)
 			{
-				MovementSystem.transform.position = Vector3.Lerp(initialPos, initialPos + (initialDir + MovementSystem.upDirection).normalized * 2f, (Time.time - startTime) / seconds);
+				MovementSystem.transform.position = Vector3.Lerp(initialPos, initialPos + (initialDir + MovementSystem.UpDirection).normalized * 2f, (Time.time - startTime) / seconds);
 				yield return null;
 			}
 
-			MovementSystem.ChangeState(MovementSystem._idleState);
+			MovementSystem.ChangeState(MovementSystem.IdleState);
 		}
 
 		public override void ExitState()
@@ -73,7 +73,7 @@ namespace Axiom.Player.Movement.StateMachine.States
 			base.ExitState();
 
 			MovementSystem.EnableMovement();
-			MovementSystem.rb.isKinematic = false;
+			MovementSystem.Rb.isKinematic = false;
 
 			MovementSystem.cameraLook.ResetCamera();
 			MovementSystem.playerAnimation.EnableRotation();

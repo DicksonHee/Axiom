@@ -16,14 +16,14 @@ namespace Axiom.Player.Movement.StateMachine.States
 		{
 			base.EnterState();
 
-			MovementSystem.rb.velocity = Vector3.zero;
-			MovementSystem.ChangeState(MovementSystem._inAirState);
+			MovementSystem.Rb.velocity = Vector3.zero;
+			MovementSystem.ChangeState(MovementSystem.InAirState);
 		}
 
 		public override void ExitState()
 		{
 			base.ExitState();
-			MovementSystem.rb.velocity = MovementSystem.transform.up * (MovementSystem.wallRunJumpUpForce * 1.5f) + MovementSystem.forwardDirection.normalized * MovementSystem.wallRunJumpSideForce;
+			MovementSystem.Rb.velocity = MovementSystem.transform.up * (MovementSystem.wallRunJumpUpForce * 1.5f) + MovementSystem.ForwardDirection.normalized * MovementSystem.wallRunJumpSideForce;
 		}
     }
 }
