@@ -34,12 +34,12 @@ public class Boid : MonoBehaviour
     private IEnumerator FadeIn_CO()
     {
         float duration = 0f;
-        vfx.SetInt("BurstAmount", spawner.particleSpawnAmount);
         
         while (duration < spawner.fadeDuration)
         {
             duration += Time.deltaTime;
             meshRenderer.material.SetFloat("_DissolveAmount", Mathf.Lerp(1, 0, duration / spawner.fadeDuration));
+            vfx.SetInt("BurstAmount", (int) Mathf.Lerp(spawner.particleSpawnAmount, 0, duration / spawner.fadeDuration));
             yield return null;
         }
         
@@ -49,12 +49,12 @@ public class Boid : MonoBehaviour
     private IEnumerator FadeOut_CO()
     {
         float duration = 0f;
-        vfx.SetInt("BurstAmount", spawner.particleSpawnAmount);
 
         while (duration < spawner.fadeDuration)
         {
             duration += Time.deltaTime;
             meshRenderer.material.SetFloat("_DissolveAmount", Mathf.Lerp(0, 1, duration / spawner.fadeDuration));
+            vfx.SetInt("BurstAmount", (int)Mathf.Lerp(spawner.particleSpawnAmount, 0, duration / spawner.fadeDuration));
             yield return null;
         }
 
