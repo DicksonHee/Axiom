@@ -394,9 +394,10 @@ namespace Axiom.Player.Movement.StateMachine
         }
 
         public void SetAnimatorBool(string param, bool val) => playerAnimation.SetBool(param, val);
-        #endregion
+		#endregion
 
-        public void RotatePlayerAndVelocity(Matrix4x4 m)
+		#region Teleport Functions
+		public void RotatePlayerAndVelocity(Matrix4x4 m)
         {
             print("Teleporting Player");
             //cameraLook.TransformForward(newRotation);
@@ -411,11 +412,11 @@ namespace Axiom.Player.Movement.StateMachine
             Vector3 newMoveDir = orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;
             newMoveDir.y = Vector3.Dot(currentVel, UpDirection);
             Rb.velocity = newMoveDir.normalized * currentVel.magnitude;
-            print(Rb.velocity);
         }
-        
-        #region VFX Functions
-        private void HandleVFX()
+		#endregion
+
+		#region VFX Functions
+		private void HandleVFX()
         {
             if (isSpeedLinesShowing && (GetCurrentSpeed() < 5f || inputDetection.movementInput.x != 0))
             {
