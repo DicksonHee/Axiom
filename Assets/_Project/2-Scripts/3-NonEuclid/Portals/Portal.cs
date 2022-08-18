@@ -57,6 +57,7 @@ namespace Axiom.NonEuclidean
             portalCam.transform.SetPositionAndRotation(m.GetPosition(), m.rotation);
 
             SetNearClipPlane();
+            ProtectScreenFromClipping();
 
             //portalCam.Render();
             UniversalRenderPipeline.RenderSingleCamera(ctx, portalCam);
@@ -135,7 +136,7 @@ namespace Axiom.NonEuclidean
                 screen.transform.localScale.y,
                 dstToNearClipPlaneCorner);
 
-            print(gameObject.name + ", " + camFacingSameDirAsPortal);
+            //print(gameObject.name + ", " + camFacingSameDirAsPortal);
             screen.transform.localPosition = screenStartLocalPosition + Vector3.forward * dstToNearClipPlaneCorner * (camFacingSameDirAsPortal ? 0.5f : -0.5f);
         }
 
