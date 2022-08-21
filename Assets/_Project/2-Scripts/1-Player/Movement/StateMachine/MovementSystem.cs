@@ -77,6 +77,7 @@ namespace Axiom.Player.Movement.StateMachine
         #region Movement Variables
         private float lrMultiplier;
         private bool movementEnabled = true;
+        private bool counterMovementEnabled = true;
         #endregion
         
         #region Gravity Variables
@@ -246,12 +247,14 @@ namespace Axiom.Player.Movement.StateMachine
         // Applies counter movement to reduce slippery movement
         private void ApplyCounterMovement()
         {
+            if (!counterMovementEnabled) return;
+            
             Vector3 currentVel = Rb.velocity;
             Vector3 rightVel = Vector3.Cross(UpDirection, ForwardDirection) * Vector3.Dot(currentVel, RightDirection);
             Vector3 forwardVel = Vector3.Cross(RightDirection, UpDirection) * Vector3.Dot(currentVel, ForwardDirection);
 
-            if(Mathf.Abs(inputDetection.movementInput.x) < 0.1f && rightVel.magnitude > 0) Rb.AddForce(-rightVel * decelerationSpeed, ForceMode.Acceleration);
-            if(Mathf.Abs(inputDetection.movementInput.z) < 0.1f && forwardVel.magnitude > 0) Rb.AddForce(-forwardVel * decelerationSpeed, ForceMode.Acceleration);
+            if (inputDetection.movementInput.x == 0f && rightVel.magnitude > 0.1f) Rb.AddForce(-rightVel * decelerationSpeed, ForceMode.Acceleration);
+            if (inputDetection.movementInput.z == 0f && forwardVel.magnitude > 0.1f) Rb.AddForce(-forwardVel * decelerationSpeed, ForceMode.Acceleration);
         }
 
         // Apply constant downward force on the character
@@ -277,6 +280,8 @@ namespace Axiom.Player.Movement.StateMachine
         public void EnableMovement() => movementEnabled = true;
         // Disables movement
         public void DisableMovement() => movementEnabled = false;
+        public void EnableCounterMovement() => counterMovementEnabled = true;
+        public void DisableCounterMovement() => counterMovementEnabled = false;
         #endregion
         
         #region Get Functions
@@ -397,21 +402,53 @@ namespace Axiom.Player.Movement.StateMachine
 		#endregion
 
 		#region Teleport Functions
-		public void RotatePlayerAndVelocity(Matrix4x4 m)
+        public void TeleportPlayer(Quaternion? facingRotation, Vector3? gravityDirection)
         {
             print("Teleporting Player");
-            //cameraLook.TransformForward(newRotation);
-            cameraLook.TransformForward(m.rotation);
-            playerAnimation.ForceRotate();
-            TransformTargetVelocity(m);
+            
+            DisableCounterMovement();
+            Vector3 currentVel = Rb.velocity;
+            
+            if (facingRotation != null)
+            {
+                cameraLook.TransformForward(facingRotation.Value);
+                playerAnimation.ForceRotate();
+            }
+
+            if (gravityDirection != null)
+            {
+                Physics.gravity = gravityDirection.Value;
+            }
+            
+            TransformTargetVelocity(currentVel);
+            Invoke(nameof(EnableCounterMovement), 0.1f);
         }
         
-        public void TransformTargetVelocity(Matrix4x4 m)
+		public void TeleportPlayer(Matrix4x4? matrix, Vector3? gravityDirection)
         {
+            print("Teleporting Player");
             Vector3 currentVel = Rb.velocity;
+            
+            if (matrix != null)
+            {
+                cameraLook.TransformForward(matrix.Value.rotation);
+                playerAnimation.ForceRotate();
+            }
+
+            if (gravityDirection != null)
+            {
+                Physics.gravity = gravityDirection.Value;
+            }
+                
+            TransformTargetVelocity(currentVel);
+        }
+        
+        private void TransformTargetVelocity(Vector3 vel)
+        {
             Vector3 newMoveDir = orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;
-            newMoveDir.y = Vector3.Dot(currentVel, UpDirection);
-            Rb.velocity = newMoveDir.normalized * currentVel.magnitude;
+            newMoveDir.y = Vector3.Dot(vel, UpDirection);
+
+            Rb.velocity = newMoveDir.normalized * vel.magnitude;
         }
 		#endregion
 

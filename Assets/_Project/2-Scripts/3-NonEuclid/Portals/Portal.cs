@@ -77,8 +77,8 @@ namespace Axiom.NonEuclidean
         private void FixedUpdate()
         {
             //print($"({gameObject.name}) {tracked.Count}");
-            foreach (TrackedTransform t in tracked)
-                print($"{Time.time}, {t.transform.name} ({transform.name})");
+            //foreach (TrackedTransform t in tracked)
+                //print($"{Time.time}, {t.transform.name} ({transform.name})");
             CheckTrackedTransforms();
         }
 
@@ -90,7 +90,7 @@ namespace Axiom.NonEuclidean
                 int dot = (int)Mathf.Sign(Vector3.Dot(transform.forward, tracked[i].transform.position - transform.position));
                 int last = tracked[i].lastDotSign;
                 tracked[i].lastDotSign = dot;
-                print($"({gameObject.name}) dot: {dot}, last: {last}, position: {tracked[i].transform.position - transform.position}");
+                //print($"({gameObject.name}) dot: {dot}, last: {last}, position: {tracked[i].transform.position - transform.position}");
 
                 if (last < 0 && dot > 0 || last > 0 && dot < 0)
                 {
@@ -103,7 +103,7 @@ namespace Axiom.NonEuclidean
 
         private void Teleport(TrackedTransform t)
         {
-            print($"Teleporting from {gameObject.name}");
+            //print($"Teleporting from {gameObject.name}");
 
             if (t.transform.parent.parent.TryGetComponent(out MovementSystem controller))
             {
@@ -115,9 +115,10 @@ namespace Axiom.NonEuclidean
 
                 if (changeTest)
                 {
+                    Quaternion rotateDir = controller.orientation.rotation * Quaternion.FromToRotation(transform.forward, otherPortal.transform.forward);
                     m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.orientation.localToWorldMatrix;
                     print($"teleporting from {controller.transform.position - transform.position} to {m.GetPosition() - otherPortal.transform.position}");
-                    controller.RotatePlayerAndVelocity(m);
+                    controller.TeleportPlayer(rotateDir, null);
                 }
                 
             }
@@ -198,6 +199,7 @@ namespace Axiom.NonEuclidean
             {
                 Gizmos.color = Color.blue;
                 Gizmos.DrawLine(screen.transform.position, otherPortal.screen.transform.position);
+                DrawArrow.ForGizmo(transform.position, transform.forward, Color.blue);
             }
         }
         #endif

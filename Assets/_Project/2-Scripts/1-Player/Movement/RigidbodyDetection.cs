@@ -358,7 +358,6 @@ namespace Axiom.Player.Movement
                 }
             }
 
-            Debug.Log(isValidRespawnPoint);
             if (isValidRespawnPoint)
             {
                 PlayerMovementDetails.lastGroundedPosition = currentPosition;
@@ -385,7 +384,6 @@ namespace Axiom.Player.Movement
 			int sectionDegrees = 360 / 6;
 			for (int ii = 0; ii < 6; ii++)
 			{
-                Debug.Log((wallDetectorPosition + Quaternion.AngleAxis(ii * sectionDegrees, upDirection) * forwardDirection).normalized);
                 Gizmos.DrawLine((wallDetectorPosition + Quaternion.AngleAxis(ii * sectionDegrees, upDirection) * forwardDirection).normalized * 1f,
                     (wallDetectorPosition + Quaternion.AngleAxis(ii * sectionDegrees, upDirection) * forwardDirection).normalized + -upDirection * 3f);
             }

@@ -1,55 +1,50 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Axiom.Player.Movement.StateMachine;
+using DG.Tweening;
 using UnityEngine;
 
 public class RespawnArea : MonoBehaviour
 {
-	public Transform defaultRespawnPoint;
-	public Vector3 defaultPlayerRotation;
+	public Transform spawnPosition;
 
-	private Bounds colliderBounds;
-	private GameObject playerGO;
-
-	private bool isActive;
-	private string respawnAreaGUID;
-
+	private Quaternion forwardLookDirection;
+	private Vector3 gravityDirection;
+	
 	private void Awake()
 	{
-		colliderBounds = GetComponent<BoxCollider>().bounds;
-		respawnAreaGUID = System.Guid.NewGuid().ToString();
-
-		RespawnManager.OnRequestRespawn += CheckRespawnPoint;
+		forwardLookDirection = Quaternion.LookRotation(spawnPosition.forward, spawnPosition.up);
+		gravityDirection = -spawnPosition.up.normalized * Physics.gravity.magnitude;
 	}
 
-	private void CheckRespawnPoint(string guid, Vector3 lastGroundedPosition, Vector3 lastGroundedRotation)
+	private void Update()
 	{
-		if (respawnAreaGUID == guid && IsWithinBounds(lastGroundedPosition))
-		{
-			RespawnManager.RespawnPlayer(lastGroundedPosition, lastGroundedRotation);
-		}
+		if(Input.GetKeyDown(KeyCode.R)) RespawnManager.RequestRespawnPlayer();
 	}
 
-	private bool IsWithinBounds(Vector3 position) => colliderBounds.Contains(position);
-
-	public void SetIsActive(bool val)
+	public void RespawnPlayer(GameObject playerGO)
 	{
-		isActive = val;
-		if (isActive)
-		{
-			RespawnManager.SetCurrentAreaGUID(respawnAreaGUID);
-		}
-		else
-		{
-			RespawnManager.SetCurrentAreaGUID(null);
-		}
+		playerGO.transform.position = spawnPosition.position;
+		playerGO.GetComponent<MovementSystem>().TeleportPlayer(forwardLookDirection, gravityDirection);
 	}
-
-	private void OnTriggerExit(Collider other)
+	
+	private void OnTriggerEnter(Collider other)
 	{
 		if (other.CompareTag("Player"))
 		{
-			if (playerGO == null) playerGO = GameObject.FindGameObjectWithTag("Player");
-			//playerGO.transform.SetPositionAndRotation(position, Quaternion.Euler(rotation));
+			RespawnManager.SetCurrentRespawnArea(this);
 		}
+	}
+
+	private void OnDrawGizmos()
+	{
+		BoxCollider boxCollider = GetComponent<BoxCollider>();
+		
+		Gizmos.color = Color.green;
+		Gizmos.DrawWireCube(boxCollider.center + transform.position, boxCollider.size);
+		
+		DrawArrow.ForGizmo(spawnPosition.position, spawnPosition.forward, Color.red);
+		DrawArrow.ForGizmo(spawnPosition.position, -spawnPosition.up, Color.blue);
 	}
 }

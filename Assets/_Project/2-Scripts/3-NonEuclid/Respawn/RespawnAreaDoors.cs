@@ -11,7 +11,6 @@ public class RespawnAreaDoors : MonoBehaviour
 	{
 		if (other.CompareTag("Player"))
 		{
-			respawnArea.SetIsActive(isEntranceDoor);
 		}
 	}
 }
