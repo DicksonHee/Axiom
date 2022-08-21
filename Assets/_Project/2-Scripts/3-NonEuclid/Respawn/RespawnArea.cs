@@ -39,10 +39,10 @@ public class RespawnArea : MonoBehaviour
 
 	private void OnDrawGizmos()
 	{
-		BoxCollider boxCollider = GetComponent<BoxCollider>();
+		SphereCollider sphereCollider = GetComponent<SphereCollider>();
 		
 		Gizmos.color = Color.green;
-		Gizmos.DrawWireCube(boxCollider.center + transform.position, boxCollider.size);
+		Gizmos.DrawWireSphere(transform.position, sphereCollider.radius);
 		
 		DrawArrow.ForGizmo(spawnPosition.position, spawnPosition.forward, Color.red);
 		DrawArrow.ForGizmo(spawnPosition.position, -spawnPosition.up, Color.blue);

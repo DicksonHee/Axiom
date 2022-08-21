@@ -113,14 +113,9 @@ namespace Axiom.NonEuclidean
                 //controller.orientation.rotation = m.rotation;
                 controller.transform.position = m.GetPosition();
 
-                if (changeTest)
-                {
-                    Quaternion rotateDir = controller.orientation.rotation * Quaternion.FromToRotation(transform.forward, otherPortal.transform.forward);
-                    m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.orientation.localToWorldMatrix;
-                    print($"teleporting from {controller.transform.position - transform.position} to {m.GetPosition() - otherPortal.transform.position}");
-                    controller.TeleportPlayer(rotateDir, null);
-                }
-                
+                Quaternion rotateDir = controller.orientation.rotation * Quaternion.FromToRotation(transform.forward, otherPortal.transform.forward);
+                controller.TeleportPlayer(rotateDir, null);
+                print($"teleporting from {controller.transform.position - transform.position} to {m.GetPosition() - otherPortal.transform.position}");
             }
             //else t.transform.SetPositionAndRotation(m.GetPosition(), m.rotation);
 
