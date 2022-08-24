@@ -423,8 +423,30 @@ namespace Axiom.Player.Movement.StateMachine
             TransformTargetVelocity(currentVel);
             Invoke(nameof(EnableCounterMovement), 0.1f);
         }
-        
-		public void TeleportPlayer(Matrix4x4? matrix, Vector3? gravityDirection)
+
+        public void TeleportPlayer(Vector3? forwardDir, Vector3? upwardDir, Vector3? gravityDirection)
+        {
+            print("Teleporting Player");
+
+            DisableCounterMovement();
+            Vector3 currentVel = Rb.velocity;
+
+            if (forwardDir != null && upwardDir != null)
+            {
+                cameraLook.TransformForward(forwardDir.Value, upwardDir.Value);
+                playerAnimation.ForceRotate();
+            }
+
+            if (gravityDirection != null)
+            {
+                Physics.gravity = gravityDirection.Value;
+            }
+
+            TransformTargetVelocity(currentVel);
+            Invoke(nameof(EnableCounterMovement), 0.1f);
+        }
+
+        public void TeleportPlayer(Matrix4x4? matrix, Vector3? gravityDirection)
         {
             print("Teleporting Player");
             Vector3 currentVel = Rb.velocity;
