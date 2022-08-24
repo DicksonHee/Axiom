@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Axiom.Core;
 using static UnityEngine.Screen;
 
 namespace Axiom.Player.Movement
@@ -114,14 +115,19 @@ namespace Axiom.Player.Movement
         public float GetVaultHeight() => vaultAnimHeight;
         public bool CanUncrouch() => canUncrouch;
         public RaycastHit GetSlopeHit() => slopeHit;
-        #endregion
+		#endregion
 
-        private void Update()
+		private void Awake()
+		{
+            InvokeRepeating(nameof(ValidGroundDetection), 0, 0.5f);
+		}
+
+		private void Update()
         {
             upDirection = orientation.up;
             rightDirection = orientation.right;
             forwardDirection = orientation.forward;
-            
+
             GroundDetection();
             SlopeDetection();
             CrouchDetection();
@@ -138,7 +144,11 @@ namespace Axiom.Player.Movement
         {
             bool previouslyGrounded = isGrounded;
             isGrounded = Physics.SphereCast(groundDetectorTransform.position, groundDetectorRadius, -transform.up, out groundHit, 1f, groundLayer);
-            if (!previouslyGrounded && isGrounded) OnPlayerLanded?.Invoke();
+            if (!previouslyGrounded && isGrounded)
+            {
+                ValidGroundDetection();
+                OnPlayerLanded?.Invoke();
+            }
         }
         #endregion
         
@@ -326,14 +336,38 @@ namespace Axiom.Player.Movement
         #endregion
 
         #region Crouch Detection
-
         private void CrouchDetection()
         {
             canUncrouch = !Physics.Raycast(crouchDetectorTransform.position, upDirection, 1f, wallLayer);
         }
         #endregion
-        
-        public void SetCurrentVelocity(float velocity)
+
+        #region ValidGround Functions
+
+        private void ValidGroundDetection()
+        {
+            bool isValidRespawnPoint = true;
+            int sectionDegrees = 360 / 6;
+            Vector3 currentPosition = transform.position;
+            for (int ii = 0; ii < 6; ii++)
+            {
+                if (!Physics.Raycast((currentPosition + Quaternion.AngleAxis(ii * sectionDegrees, upDirection) * forwardDirection).normalized * 1f, -upDirection, 3f, wallLayer))
+                {
+                    isValidRespawnPoint = false;
+                    break;
+                }
+            }
+
+            if (isValidRespawnPoint)
+            {
+                PlayerMovementDetails.lastGroundedPosition = currentPosition;
+                PlayerMovementDetails.lastGroundedRotation = transform.rotation.eulerAngles;
+            }
+        }
+
+		#endregion
+
+		public void SetCurrentVelocity(float velocity)
         {
             currentVelocity = velocity;
         }
@@ -346,8 +380,18 @@ namespace Axiom.Player.Movement
             Vector3 wallDetectorPosition = wallDetectorTransform.position;
             Vector3 wallDetectorUp = wallDetectorTransform.up;
 
-            // Wall Climb
-            Gizmos.color = canWallClimb ? Color.blue : Color.red;
+            Gizmos.color = Color.yellow;
+			int sectionDegrees = 360 / 6;
+			for (int ii = 0; ii < 6; ii++)
+			{
+                Gizmos.DrawLine((wallDetectorPosition + Quaternion.AngleAxis(ii * sectionDegrees, upDirection) * forwardDirection).normalized * 1f,
+                    (wallDetectorPosition + Quaternion.AngleAxis(ii * sectionDegrees, upDirection) * forwardDirection).normalized + -upDirection * 3f);
+            }
+
+
+
+			// Wall Climb
+			Gizmos.color = canWallClimb ? Color.blue : Color.red;
             Gizmos.DrawLine(wallDetectorPosition, wallDetectorPosition + (Quaternion.AngleAxis(15f, wallDetectorUp) * forwardDirection).normalized * wallClimbDetectionDistance);
             Gizmos.DrawLine(wallDetectorPosition, wallDetectorPosition + (Quaternion.AngleAxis(-15f, wallDetectorUp) * forwardDirection).normalized * wallClimbDetectionDistance);
 

@@ -145,8 +145,8 @@ namespace Axiom.Player.Movement
 
         public void TransformForward(Quaternion transformation)
         {
-            camHolder.transform.Rotate((Quaternion.Inverse(camHolder.localRotation) * transformation).eulerAngles);
-            orientation.transform.Rotate((Quaternion.Inverse(orientation.localRotation) * transformation).eulerAngles);
+            camHolder.transform.rotation = transformation;
+            orientation.transform.rotation = transformation;
         }
     }
 }

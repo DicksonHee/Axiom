@@ -24,6 +24,11 @@ namespace Axiom.Core
         public static void Order66 (this Transform parent) { for (int i = 0; i < parent.childCount; i++) Object.Destroy (parent.GetChild (i).gameObject); }
         public static Vector2 ClampPoint(this Vector2 point, Rect bounds) => new Vector2(Mathf.Clamp(point.x, bounds.xMin, bounds.xMax), Mathf.Clamp(point.y, bounds.yMin, bounds.yMax));
         public static Vector3 Ground(this Vector3 vector) => new Vector3(vector.x, 0, vector.z);
+
+        public static Vector3 RoundToSpecificNumber(this Vector3 vector, int num)
+        {
+            return new Vector3(Mathf.Round(vector.x/num) * num, Mathf.Round(vector.y/num) * num, Mathf.Round(vector.z/num) * num);
+        }
         public static bool WithinBounds (Vector2 point, Rect bounds) => point.x >= bounds.xMin && point.x <= bounds.xMax && point.y >= bounds.yMin && point.y <= bounds.yMax;
         public static float Map(this float v, float fromMin, float fromMax, float toMin = 0f, float toMax = 1f) => toMin + (v - fromMin) * (toMax - toMin) / (fromMax - fromMin);
 

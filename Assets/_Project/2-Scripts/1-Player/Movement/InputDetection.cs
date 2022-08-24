@@ -33,7 +33,7 @@ namespace Axiom.Player.Movement
 
         private void DetectMovementInput()
         {
-            movementInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+            movementInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
         }
 
         private void DetectJumpInput()
