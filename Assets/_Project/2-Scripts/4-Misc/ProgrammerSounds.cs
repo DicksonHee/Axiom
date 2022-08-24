@@ -31,10 +31,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
 using Yarn.Unity;
+using FMODUnity;
+using FMOD.Studio;
+
 
 class ProgrammerSounds : MonoBehaviour
 {
-    FMOD.Studio.EVENT_CALLBACK dialogueCallback;
+    EVENT_CALLBACK dialogueCallback;
 
     public FMODUnity.EventReference eventName;
 
@@ -49,15 +52,15 @@ class ProgrammerSounds : MonoBehaviour
     {
         // Explicitly create the delegate object and assign it to a member so it doesn't get freed
         // by the garbage collected while it's being used
-        dialogueCallback = new FMOD.Studio.EVENT_CALLBACK(DialogueEventCallback);
+        dialogueCallback = new EVENT_CALLBACK(DialogueEventCallback);
     }
 
     [YarnCommand("play")]
     public void PlayDialogue(string key)
     {
-        var dialogueInstance = FMODUnity.RuntimeManager.CreateInstance(eventName);
+        EventInstance dialogueInstance = RuntimeManager.CreateInstance(eventName);
         //possible fix to error
-        dialogueInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject.transform)); 
+        dialogueInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject.transform)); 
         
 
         // Pin the key string in memory and pass a pointer through the user data
@@ -68,6 +71,8 @@ class ProgrammerSounds : MonoBehaviour
         dialogueInstance.start();
         dialogueInstance.release();
     }
+    
+    
 
     [AOT.MonoPInvokeCallback(typeof(FMOD.Studio.EVENT_CALLBACK))]
     static FMOD.RESULT DialogueEventCallback(FMOD.Studio.EVENT_CALLBACK_TYPE type, IntPtr instancePtr, IntPtr parameterPtr)

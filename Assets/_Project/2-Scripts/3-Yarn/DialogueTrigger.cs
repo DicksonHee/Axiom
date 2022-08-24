@@ -6,6 +6,7 @@ using Yarn.Unity;
 public class DialogueTrigger : MonoBehaviour
 {
     private DialogueRunner dr;
+    public string yarnNodeToStartFrom;
     // Start is called before the first frame update
     void Awake()
     {
@@ -15,9 +16,16 @@ public class DialogueTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.Space)) //change it to on trigger enter
+        if(Input.GetKey(KeyCode.Space)) //for testing
         {
-            dr.StartDialogue("Start");
+            dr.StartDialogue(yarnNodeToStartFrom);
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+             dr.StartDialogue(yarnNodeToStartFrom);
         }
     }
 }
