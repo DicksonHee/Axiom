@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Axiom.Player.Movement.StateMachine;
 using UnityEngine;
@@ -56,8 +57,8 @@ namespace Axiom.NonEuclidean
             screen.enabled = false;
             CreateViewTexture();
 
-            Matrix4x4 m = transform.localToWorldMatrix * otherPortal.transform.worldToLocalMatrix * playerCam.transform.localToWorldMatrix;
-            portalCam.transform.SetPositionAndRotation(m.GetPosition(), m.rotation);
+            Matrix4x4 m = transform.localToWorldMatrix * otherPortal.transform.worldToLocalMatrix * playerCam.transform.localToWorldMatrix;            
+            portalCam.transform.SetPositionAndRotation(m.GetColumn(3), m.rotation);
 
             SetNearClipPlane();
             ProtectScreenFromClipping();
@@ -87,10 +88,10 @@ namespace Axiom.NonEuclidean
             for (int i = 0; i < tracked.Count; i++)
             {
                 //print(Camera.main.transform.position - tracked[i].transform.position);
-                int dot = (int)Mathf.Sign(Vector3.Dot(transform.forward, tracked[i].transform.position - transform.position));
+                int dot = (int)Mathf.Sign(Vector3.Dot(transform.forward, transform.position - tracked[i].transform.position));
                 int last = tracked[i].lastDotSign;
                 tracked[i].lastDotSign = dot;
-                //print($"({gameObject.name}) dot: {dot}, last: {last}, position: {tracked[i].transform.position - transform.position}");
+                print($"({gameObject.name}) dot: {dot}, last: {last}, position: {tracked[i].transform.position - transform.position}");
 
                 if (last < 0 && dot > 0 || last > 0 && dot < 0)
                 {
@@ -101,12 +102,16 @@ namespace Axiom.NonEuclidean
             }
         }
 
+        public bool isTeleportToBlue;
+        public bool canTeleport = true;
+
         private void Teleport(TrackedTransform t)
         {
             //print($"Teleporting from {gameObject.name}");
 
-            if (t.transform.parent.parent.TryGetComponent(out MovementSystem controller))
+            if (t.transform.parent.parent.TryGetComponent(out MovementSystem controller) && canTeleport)
             {
+                StartCoroutine(DelayTeleport());
                 Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
                 //m.SetColumn(3, Vector4.zero);
                 //controller.TransformTargetVelocity(m);
@@ -114,13 +119,23 @@ namespace Axiom.NonEuclidean
                 controller.transform.position = m.GetPosition();
 
                 Quaternion rotateDir = controller.orientation.rotation * Quaternion.FromToRotation(transform.forward, otherPortal.transform.forward);
-                controller.TeleportPlayer(rotateDir, null);
-                print($"teleporting from {controller.transform.position - transform.position} to {m.GetPosition() - otherPortal.transform.position}");
+
+                controller.TeleportPlayer(otherPortal.GetTeleportDirection(), otherPortal.transform.up, null);
+                //print($"teleporting from {controller.transform.position - transform.position} to {m.GetPosition() - otherPortal.transform.position}");
             }
             //else t.transform.SetPositionAndRotation(m.GetPosition(), m.rotation);
 
             t.lastDotSign = 0;
             otherPortal.AddTrackedTransform(t);
+        }
+
+        public Vector3 GetTeleportDirection() => isTeleportToBlue ? transform.forward : -transform.forward;
+
+        private IEnumerator DelayTeleport()
+        {
+            otherPortal.canTeleport = false;
+            yield return new WaitForSeconds(0.1f);
+            otherPortal.canTeleport = true;
         }
 
         private void SetNearClipPlane()
@@ -194,7 +209,9 @@ namespace Axiom.NonEuclidean
             {
                 Gizmos.color = Color.blue;
                 Gizmos.DrawLine(screen.transform.position, otherPortal.screen.transform.position);
+
                 DrawArrow.ForGizmo(transform.position, transform.forward, Color.blue);
+                DrawArrow.ForGizmo(transform.position, -transform.forward, Color.red);
             }
         }
         #endif

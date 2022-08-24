@@ -143,6 +143,11 @@ namespace Axiom.Player.Movement
             UnlockCamera();
         }
 
+        public void TransformForward(Vector3 forwardDir, Vector3 upwardDir)
+        {
+            camHolder.rotation = Quaternion.LookRotation(forwardDir, upwardDir);
+            orientation.rotation = Quaternion.LookRotation(forwardDir, upwardDir);
+        }
         public void TransformForward(Quaternion transformation)
         {
             camHolder.transform.rotation = transformation;
