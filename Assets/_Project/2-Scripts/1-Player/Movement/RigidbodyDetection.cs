@@ -380,16 +380,6 @@ namespace Axiom.Player.Movement
             Vector3 wallDetectorPosition = wallDetectorTransform.position;
             Vector3 wallDetectorUp = wallDetectorTransform.up;
 
-            Gizmos.color = Color.yellow;
-			int sectionDegrees = 360 / 6;
-			for (int ii = 0; ii < 6; ii++)
-			{
-                Gizmos.DrawLine((wallDetectorPosition + Quaternion.AngleAxis(ii * sectionDegrees, upDirection) * forwardDirection).normalized * 1f,
-                    (wallDetectorPosition + Quaternion.AngleAxis(ii * sectionDegrees, upDirection) * forwardDirection).normalized + -upDirection * 3f);
-            }
-
-
-
 			// Wall Climb
 			Gizmos.color = canWallClimb ? Color.blue : Color.red;
             Gizmos.DrawLine(wallDetectorPosition, wallDetectorPosition + (Quaternion.AngleAxis(15f, wallDetectorUp) * forwardDirection).normalized * wallClimbDetectionDistance);
