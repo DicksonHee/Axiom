@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Axiom.Player.Movement.StateMachine;
+using Axiom.Player.Movement;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -75,7 +76,7 @@ namespace Axiom.NonEuclidean
                 tracked.Add(t); ProtectScreenFromClipping(); 
         }
 
-        private void FixedUpdate()
+        private void LateUpdate()
         {
             //print($"({gameObject.name}) {tracked.Count}");
             //foreach (TrackedTransform t in tracked)
@@ -91,7 +92,7 @@ namespace Axiom.NonEuclidean
                 int dot = (int)Mathf.Sign(Vector3.Dot(transform.forward, transform.position - tracked[i].transform.position));
                 int last = tracked[i].lastDotSign;
                 tracked[i].lastDotSign = dot;
-                print($"({gameObject.name}) dot: {dot}, last: {last}, position: {tracked[i].transform.position - transform.position}");
+                //print($"({gameObject.name}) dot: {dot}, last: {last}, position: {tracked[i].transform.position - transform.position}");
 
                 if (last < 0 && dot > 0 || last > 0 && dot < 0)
                 {
@@ -113,14 +114,11 @@ namespace Axiom.NonEuclidean
             {
                 StartCoroutine(DelayTeleport());
                 Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
-                //m.SetColumn(3, Vector4.zero);
-                //controller.TransformTargetVelocity(m);
-                //controller.orientation.rotation = m.rotation;
+
                 controller.transform.position = m.GetPosition();
-
-                Quaternion rotateDir = controller.orientation.rotation * Quaternion.FromToRotation(transform.forward, otherPortal.transform.forward);
-
-                controller.TeleportPlayer(otherPortal.GetTeleportDirection(), otherPortal.transform.up, null);
+               
+                controller.TeleportPlayerRotateBy(GetTeleportDirection(), null);
+                t.transform.gameObject.GetComponentInParent<MoveCamera>().ForceUpdate();
                 //print($"teleporting from {controller.transform.position - transform.position} to {m.GetPosition() - otherPortal.transform.position}");
             }
             //else t.transform.SetPositionAndRotation(m.GetPosition(), m.rotation);
@@ -129,7 +127,16 @@ namespace Axiom.NonEuclidean
             otherPortal.AddTrackedTransform(t);
         }
 
-        public Vector3 GetTeleportDirection() => isTeleportToBlue ? transform.forward : -transform.forward;
+        public Vector3 GetPortalForwardDirection() => transform.forward;
+
+        public Quaternion GetTeleportDirection()
+        {
+            Vector3 thisForward = GetPortalForwardDirection();
+            Vector3 otherForward = otherPortal.GetPortalForwardDirection();
+
+            Quaternion rot = Quaternion.FromToRotation(thisForward, otherForward);
+            return rot;
+        }
 
         private IEnumerator DelayTeleport()
         {

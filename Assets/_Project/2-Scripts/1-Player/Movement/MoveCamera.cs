@@ -10,5 +10,10 @@ namespace Axiom.Player.Movement
         {
             transform.position = cameraPosition.position;
         }
+
+        public void ForceUpdate()
+        {
+            transform.position = cameraPosition.position;
+        }
     }
 }
