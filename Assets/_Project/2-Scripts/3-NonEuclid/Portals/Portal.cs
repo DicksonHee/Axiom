@@ -92,7 +92,7 @@ namespace Axiom.NonEuclidean
                 int dot = (int)Mathf.Sign(Vector3.Dot(transform.forward, transform.position - tracked[i].transform.position));
                 int last = tracked[i].lastDotSign;
                 tracked[i].lastDotSign = dot;
-                //print($"({gameObject.name}) dot: {dot}, last: {last}, position: {tracked[i].transform.position - transform.position}");
+                print($"({gameObject.name}) dot: {dot}, last: {last}, position: {tracked[i].transform.position - transform.position}");
 
                 if (last < 0 && dot > 0 || last > 0 && dot < 0)
                 {
@@ -108,7 +108,7 @@ namespace Axiom.NonEuclidean
 
         private void Teleport(TrackedTransform t)
         {
-            //print($"Teleporting from {gameObject.name}");
+            print($"Teleporting from {gameObject.name}");
 
             if (t.transform.parent.parent.TryGetComponent(out MovementSystem controller) && canTeleport)
             {

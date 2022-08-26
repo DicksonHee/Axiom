@@ -404,16 +404,16 @@ namespace Axiom.Player.Movement.StateMachine
 		#region Teleport Functions
         
         // Force rotation
-        public void TeleportPlayerForceRotate(Quaternion? facingRotation, Vector3? gravityDirection)
+        public void TeleportPlayerForceRotate(Quaternion? forwardRotation, Vector3? gravityDirection)
         {
             print("Teleporting Player");
             
             DisableCounterMovement();
             Vector3 currentVel = Rb.velocity;
             
-            if (facingRotation != null)
+            if (forwardRotation != null)
             {
-                cameraLook.TransformForward(facingRotation.Value);
+                cameraLook.TransformForwardForceRotate(forwardRotation.Value);
                 playerAnimation.ForceRotate();
             }
 
@@ -436,7 +436,7 @@ namespace Axiom.Player.Movement.StateMachine
 
 			if (rotationDiff != null)
 			{
-				cameraLook.TransformForward(rotationDiff.Value);
+				cameraLook.TransformForwardRotateBy(rotationDiff.Value);
 				playerAnimation.ForceRotate();
 			}
 
@@ -448,25 +448,6 @@ namespace Axiom.Player.Movement.StateMachine
 			TransformTargetVelocity(currentVel);
 			Invoke(nameof(EnableCounterMovement), 0.1f);
 		}
-
-		public void TeleportPlayer(Matrix4x4? matrix, Vector3? gravityDirection)
-        {
-            print("Teleporting Player");
-            Vector3 currentVel = Rb.velocity;
-            
-            if (matrix != null)
-            {
-                cameraLook.TransformForward(matrix.Value.rotation);
-                playerAnimation.ForceRotate();
-            }
-
-            if (gravityDirection != null)
-            {
-                Physics.gravity = gravityDirection.Value;
-            }
-                
-            TransformTargetVelocity(currentVel);
-        }
         
         private void TransformTargetVelocity(Vector3 vel)
         {

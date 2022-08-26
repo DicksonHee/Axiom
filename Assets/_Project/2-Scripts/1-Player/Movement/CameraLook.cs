@@ -71,7 +71,6 @@ namespace Axiom.Player.Movement
             xRotation = Mathf.Clamp(xRotation, xRotLimits.x, xRotLimits.y);
 
             //Perform the rotations
-            Debug.Log("Rot");
             camHolder.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
             orientation.transform.localRotation = Quaternion.Euler(0, yRotation, 0);
         }
@@ -145,18 +144,16 @@ namespace Axiom.Player.Movement
             UnlockCamera();
         }
 
-        public void TransformForward(Vector3 forwardDir, Vector3 upwardDir)
+        public void TransformForwardForceRotate(Quaternion rot)
         {
-            camHolder.rotation = Quaternion.LookRotation(forwardDir, upwardDir);
-            orientation.rotation = Quaternion.LookRotation(forwardDir, upwardDir);
+            camHolder.localRotation = rot;
+            orientation.localRotation = rot;
         }
 
-        public void TransformForward(Quaternion transformation)
+        public void TransformForwardRotateBy(Quaternion transformation)
         {
-            Debug.Log("Start");
             camHolder.localRotation = transformation * Quaternion.Euler(xRotation, yRotation, 0);
             orientation.localRotation = transformation * Quaternion.Euler(0, yRotation, 0);
-            Debug.Log("End");
         }
     }
 }
