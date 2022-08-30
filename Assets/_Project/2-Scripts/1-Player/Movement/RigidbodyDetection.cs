@@ -143,7 +143,7 @@ namespace Axiom.Player.Movement
         private void GroundDetection()
         {
             bool previouslyGrounded = isGrounded;
-            isGrounded = Physics.SphereCast(groundDetectorTransform.position, groundDetectorRadius, -transform.up, out groundHit, 1f, groundLayer);
+            isGrounded = Physics.SphereCast(groundDetectorTransform.position, groundDetectorRadius, -upDirection, out groundHit, 1f, groundLayer);
             if (!previouslyGrounded && isGrounded)
             {
                 ValidGroundDetection();
@@ -159,7 +159,7 @@ namespace Axiom.Player.Movement
 
             if (Physics.Raycast(groundDetectorTransform.position, (Quaternion.AngleAxis(60f, rightDirection) * forwardDirection).normalized, out slopeHit, 2f, groundLayer))
             {
-                isOnSlope = Vector3.Angle(slopeHit.normal, upDirection) is > 10f and <= 45f;
+                isOnSlope = Vector3.Angle(slopeHit.normal, upDirection) is > 5f and <= 45f or >= -45f and < -5f;
             }
             else isOnSlope = false;
             

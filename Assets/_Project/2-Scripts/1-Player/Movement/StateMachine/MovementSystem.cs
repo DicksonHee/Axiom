@@ -260,7 +260,7 @@ namespace Axiom.Player.Movement.StateMachine
         // Apply constant downward force on the character
         private void ApplyGravity()
         {
-            if (rbInfo.IsOnSlope() || rbInfo.IsGrounded()) return;
+            //if (rbInfo.IsOnSlope() || rbInfo.IsGrounded()) return;
             Rb.AddForce(-UpDirection * currentTargetGravity, ForceMode.Force);
         }
         #endregion

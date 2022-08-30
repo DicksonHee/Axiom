@@ -78,6 +78,7 @@ namespace Axiom.Player.Movement.StateMachine.States
         private void CalculateSlideSpeed()
         {
             float targetSpeed = 0;
+            Debug.Log(MovementSystem.rbInfo.IsOnSlope());
             if (MovementSystem.rbInfo.IsOnSlope() && 
                 Vector3.Dot(MovementSystem.Rb.velocity, MovementSystem.orientation.up) < 0.1f)
             {

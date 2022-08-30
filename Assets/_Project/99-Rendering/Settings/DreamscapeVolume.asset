@@ -85,6 +85,7 @@ MonoBehaviour:
   - {fileID: -6244191859046921726}
   - {fileID: 4070875318170033827}
   - {fileID: 8483444421955757914}
+  - {fileID: 8513708619602488697}
 --- !u!114 &4070875318170033827
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -156,3 +157,59 @@ MonoBehaviour:
   bladeRotation:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &8513708619602488697
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8ca37f13bb89c144a71832585b7a6ac, type: 3}
+  m_Name: EdgeDetection
+  m_EditorClassIdentifier: 
+  active: 1
+  debug:
+    m_OverrideState: 1
+    m_Value: 0
+  mode:
+    m_OverrideState: 1
+    m_Value: 1
+  invertFadeDistance:
+    m_OverrideState: 1
+    m_Value: 0
+  distanceFade:
+    m_OverrideState: 1
+    m_Value: 0
+  startFadeDistance:
+    m_OverrideState: 1
+    m_Value: 0
+  endFadeDistance:
+    m_OverrideState: 1
+    m_Value: 1000
+  sensitivityDepth:
+    m_OverrideState: 1
+    m_Value: 0
+  sensitivityNormals:
+    m_OverrideState: 1
+    m_Value: 1
+  lumThreshold:
+    m_OverrideState: 1
+    m_Value: 0.01
+  edgeColor:
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
+  edgeExp:
+    m_OverrideState: 1
+    m_Value: 1
+  edgeSize:
+    m_OverrideState: 1
+    m_Value: 1
+  edgeOpacity:
+    m_OverrideState: 1
+    m_Value: 1
+  sobelThin:
+    m_OverrideState: 1
+    m_Value: 0
+  DepthNormalsShader: {fileID: 4800000, guid: 516d67fad41db074ca871164dfde9e71, type: 3}
