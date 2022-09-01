@@ -31,7 +31,7 @@ namespace Axiom.Player.Movement
 
         private void Update()
         {
-            if (isRotationEnabled) transform.localRotation = orientation.localRotation * Quaternion.Euler(currentModelRotation);
+            if (isRotationEnabled) transform.localRotation = orientation.localRotation;
         }
 
         public void ForceRotate()
@@ -73,14 +73,6 @@ namespace Axiom.Player.Movement
         {
             leftHandClimbPositionTarget.position = rbInfo.GetLeftHandPosition();
             rightHandClimbPositionTarget.position = rbInfo.GetRightHandPosition();
-        }
-
-        public void SetRotation(Vector3 rot, float duration)
-        {
-            if(!rotationFinished || Vector3.Dot(rot, currentModelRotation) > 0.8f) return;
-            
-            rot.y = 0;
-            StartCoroutine(LerpRotation_CO(rot, duration));
         }
 
         public void ResetRotation()

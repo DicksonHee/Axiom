@@ -404,13 +404,14 @@ namespace Axiom.Player.Movement.StateMachine
 		#region Teleport Functions
         
         // Force rotation
-        public void TeleportPlayerRotateTo(Quaternion? forwardRotation, Vector3? gravityDirection)
+        public void TeleportPlayerRotateTo(Vector3 teleportPosition, Quaternion? forwardRotation, Vector3? gravityDirection)
         {
             DisableCounterMovement();
             Vector3 currentVel = Rb.velocity;
             
             if (forwardRotation != null)
             {
+                transform.position = teleportPosition;
                 cameraLook.TransformForwardRotateTo(forwardRotation.Value);
                 playerAnimation.ForceRotate();
             }
@@ -425,13 +426,14 @@ namespace Axiom.Player.Movement.StateMachine
         }
 
         // Add rotation
-		public void TeleportPlayerRotateBy(Quaternion? rotationDiff, Vector3? gravityDirection)
+		public void TeleportPlayerRotateBy(Vector3 teleportPosition, Quaternion? rotationDiff, Vector3? gravityDirection)
 		{
             DisableCounterMovement();
 			Vector3 currentVel = Rb.velocity;
 
 			if (rotationDiff != null)
-			{
+            {
+                transform.position = teleportPosition;
                 cameraLook.TransformForwardRotateBy(rotationDiff.Value);
 				playerAnimation.ForceRotate();
 			}

@@ -92,7 +92,7 @@ namespace Axiom.NonEuclidean
                 int dot = (int)Mathf.Sign(Vector3.Dot(transform.forward, transform.position - tracked[i].transform.position));
                 int last = tracked[i].lastDotSign;
                 tracked[i].lastDotSign = dot;
-                print($"({gameObject.name}) dot: {dot}, last: {last}, position: {tracked[i].transform.position - transform.position}");
+                //print($"({gameObject.name}) dot: {dot}, last: {last}, position: {tracked[i].transform.position - transform.position}");
 
                 if (last < 0 && dot > 0 || last > 0 && dot < 0)
                 {
@@ -108,16 +108,14 @@ namespace Axiom.NonEuclidean
 
         private void Teleport(TrackedTransform t)
         {
-            print($"Teleporting from {gameObject.name}");
+            //print($"Teleporting from {gameObject.name}");
 
             if (t.transform.parent.parent.TryGetComponent(out MovementSystem controller) && canTeleport)
             {
                 StartCoroutine(DelayTeleport());
                 Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
 
-                controller.transform.position = m.GetPosition();
-               
-                controller.TeleportPlayerRotateBy(GetTeleportDirection(), null);
+                controller.TeleportPlayerRotateBy(m.GetPosition(),GetTeleportDirection(), null);
                 t.transform.gameObject.GetComponentInParent<MoveCamera>().ForceUpdate();
                 //print($"teleporting from {controller.transform.position - transform.position} to {m.GetPosition() - otherPortal.transform.position}");
             }

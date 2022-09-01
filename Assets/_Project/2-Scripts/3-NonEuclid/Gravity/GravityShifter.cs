@@ -34,7 +34,7 @@ namespace Axiom.NonEuclidean
 
             Physics.gravity = Vector3.Lerp(from, to, t).normalized * Physics.gravity.magnitude;
 
-            print($"{from}, {to}, {t} = {Physics.gravity}");
+            //print($"{from}, {to}, {t} = {Physics.gravity}");
         }
 
         private void OnTriggerEnter(Collider other)

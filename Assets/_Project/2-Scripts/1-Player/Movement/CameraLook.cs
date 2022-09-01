@@ -146,6 +146,7 @@ namespace Axiom.Player.Movement
 
         public void TransformForwardRotateTo(Quaternion rot)
         {
+            transform.localRotation = Quaternion.identity;
             camHolder.localRotation = rot;
             orientation.localRotation = rot;
         }
@@ -154,6 +155,7 @@ namespace Axiom.Player.Movement
         {
             camHolder.localRotation = transformation * Quaternion.Euler(xRotation, yRotation, 0);
             orientation.localRotation = transformation * Quaternion.Euler(0, yRotation, 0);
+            
         }
     }
 }
