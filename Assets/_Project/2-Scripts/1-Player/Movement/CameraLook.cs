@@ -144,7 +144,7 @@ namespace Axiom.Player.Movement
             UnlockCamera();
         }
 
-        public void TransformForwardForceRotate(Quaternion rot)
+        public void TransformForwardRotateTo(Quaternion rot)
         {
             camHolder.localRotation = rot;
             orientation.localRotation = rot;

@@ -127,13 +127,14 @@ namespace Axiom.NonEuclidean
             otherPortal.AddTrackedTransform(t);
         }
 
-        public Vector3 GetPortalForwardDirection() => transform.forward;
+        public Vector3 GetPortalTeleportDirection() => isTeleportToBlue ? transform.forward : -transform.forward;
+        public Vector3 GetPortalForwardDirection() => isTeleportToBlue ? -transform.forward : transform.forward;
 
         public Quaternion GetTeleportDirection()
         {
             Vector3 thisForward = GetPortalForwardDirection();
-            Vector3 otherForward = otherPortal.GetPortalForwardDirection();
-
+            Vector3 otherForward = otherPortal.GetPortalTeleportDirection();
+        
             Quaternion rot = Quaternion.FromToRotation(thisForward, otherForward);
             return rot;
         }

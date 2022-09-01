@@ -423,7 +423,6 @@ namespace Axiom.Player.Movement
                 Gizmos.DrawLine(ledgeRaySpawnPoint, ledgeRaySpawnPoint + -upDirection);
                 Gizmos.DrawWireSphere(ledgeRaySpawnPoint + -orientation.up, 0.3f);
             }
-            
 
             // Vault
             Gizmos.DrawLine(vaultDetectorTransform.position, vaultDetectorTransform.position + forwardDirection * vaultDetectionDistance * (1 + currentVelocity / 10f));

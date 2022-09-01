@@ -195,7 +195,7 @@ namespace Axiom.Player.Movement.StateMachine
         private void CheckSlopeMovementDirection()
         {
             if (!rbInfo.IsOnSlope()) return;
-            MoveDirection = Vector3.ProjectOnPlane(MoveDirection, rbInfo.GetSlopeHit().normal);
+            MoveDirection = Vector3.ProjectOnPlane(ForwardDirection, rbInfo.GetSlopeHit().normal);
         }
 
         // Check if player is on ground and decrements jump counter if not on ground
@@ -260,7 +260,7 @@ namespace Axiom.Player.Movement.StateMachine
         // Apply constant downward force on the character
         private void ApplyGravity()
         {
-            //if (rbInfo.IsOnSlope() || rbInfo.IsGrounded()) return;
+            if (rbInfo.IsGrounded()) return;
             Rb.AddForce(-UpDirection * currentTargetGravity, ForceMode.Force);
         }
         #endregion
@@ -404,16 +404,14 @@ namespace Axiom.Player.Movement.StateMachine
 		#region Teleport Functions
         
         // Force rotation
-        public void TeleportPlayerForceRotate(Quaternion? forwardRotation, Vector3? gravityDirection)
+        public void TeleportPlayerRotateTo(Quaternion? forwardRotation, Vector3? gravityDirection)
         {
-            print("Teleporting Player");
-            
             DisableCounterMovement();
             Vector3 currentVel = Rb.velocity;
             
             if (forwardRotation != null)
             {
-                cameraLook.TransformForwardForceRotate(forwardRotation.Value);
+                cameraLook.TransformForwardRotateTo(forwardRotation.Value);
                 playerAnimation.ForceRotate();
             }
 
@@ -429,14 +427,12 @@ namespace Axiom.Player.Movement.StateMachine
         // Add rotation
 		public void TeleportPlayerRotateBy(Quaternion? rotationDiff, Vector3? gravityDirection)
 		{
-			print("Teleporting Player");
-
-			DisableCounterMovement();
+            DisableCounterMovement();
 			Vector3 currentVel = Rb.velocity;
 
 			if (rotationDiff != null)
 			{
-				cameraLook.TransformForwardRotateBy(rotationDiff.Value);
+                cameraLook.TransformForwardRotateBy(rotationDiff.Value);
 				playerAnimation.ForceRotate();
 			}
 
