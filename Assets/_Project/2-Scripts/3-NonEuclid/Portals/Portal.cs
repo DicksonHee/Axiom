@@ -25,6 +25,7 @@ namespace Axiom.NonEuclidean
         {
             playerCam = Camera.main;
             portalCam = GetComponentInChildren<Camera>();
+            portalCam.hideFlags = HideFlags.DontSave;
             portalCam.enabled = false;
             screenStartLocalPosition = screen.transform.localPosition;
             ProtectScreenFromClipping();
