@@ -33,13 +33,18 @@ using System.Runtime.InteropServices;
 using Yarn.Unity;
 using FMODUnity;
 using FMOD.Studio;
+using FMOD;
 
 
 class ProgrammerSounds : MonoBehaviour
 {
     EVENT_CALLBACK dialogueCallback;
-
+    private PLAYBACK_STATE state;
+    private EventInstance dialogueInstance;
     public FMODUnity.EventReference eventName;
+    [SerializeField]
+    private float thelength;
+    static FMOD.Sound dialogueSound;
 
 #if UNITY_EDITOR
     void Reset()
@@ -58,7 +63,7 @@ class ProgrammerSounds : MonoBehaviour
     [YarnCommand("play")]
     public void PlayDialogue(string key)
     {
-        EventInstance dialogueInstance = RuntimeManager.CreateInstance(eventName);
+        dialogueInstance = RuntimeManager.CreateInstance(eventName);
         //possible fix to error
         dialogueInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject.transform)); 
         
@@ -70,14 +75,21 @@ class ProgrammerSounds : MonoBehaviour
         dialogueInstance.setCallback(dialogueCallback);
         dialogueInstance.start();
         dialogueInstance.release();
+
+      //  TIMEUNIT type = TIMEUNIT.MS;//ms is milisec, no fucking idea what others are
+      //  dialogueSound.getLength(out uint length, type);
+      //  thelength = length;
+        
+       // FMODUnity.RuntimeManager.CoreSystem.createSound()
+    
     }
     
     
 
-    [AOT.MonoPInvokeCallback(typeof(FMOD.Studio.EVENT_CALLBACK))]
-    static FMOD.RESULT DialogueEventCallback(FMOD.Studio.EVENT_CALLBACK_TYPE type, IntPtr instancePtr, IntPtr parameterPtr)
+    [AOT.MonoPInvokeCallback(typeof(EVENT_CALLBACK))]
+    static RESULT DialogueEventCallback(EVENT_CALLBACK_TYPE type, IntPtr instancePtr, IntPtr parameterPtr)
     {
-        FMOD.Studio.EventInstance instance = new FMOD.Studio.EventInstance(instancePtr);
+        EventInstance instance = new EventInstance(instancePtr);
 
         // Retrieve the user data
         IntPtr stringPtr;
@@ -89,18 +101,19 @@ class ProgrammerSounds : MonoBehaviour
 
         switch (type)
         {
-            case FMOD.Studio.EVENT_CALLBACK_TYPE.CREATE_PROGRAMMER_SOUND:
+            case EVENT_CALLBACK_TYPE.CREATE_PROGRAMMER_SOUND:
             {
                 //FMOD.MODE soundMode = FMOD.MODE.LOOP_NORMAL | FMOD.MODE.CREATECOMPRESSEDSAMPLE | FMOD.MODE.NONBLOCKING;
 
                 //Loading delay error possible fix
-                FMOD.MODE soundMode = FMOD.MODE.CREATESTREAM;
-                var parameter = (FMOD.Studio.PROGRAMMER_SOUND_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.PROGRAMMER_SOUND_PROPERTIES));
+                MODE soundMode = MODE.CREATESTREAM;
+                var parameter = (PROGRAMMER_SOUND_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(PROGRAMMER_SOUND_PROPERTIES));
 
                 if (key.Contains("."))
                 {
-                    FMOD.Sound dialogueSound;
-                    var soundResult = FMODUnity.RuntimeManager.CoreSystem.createSound(Application.streamingAssetsPath + "/" + key, soundMode, out dialogueSound);
+                    //FMOD.Sound dialogueSound;
+                    var soundResult = RuntimeManager.CoreSystem.createSound(Application.streamingAssetsPath + "/" + key, soundMode, out dialogueSound);
+                   
                     if (soundResult == FMOD.RESULT.OK)
                     {
                         parameter.sound = dialogueSound.handle;
@@ -116,8 +129,17 @@ class ProgrammerSounds : MonoBehaviour
                     {
                         break;
                     }
-                    FMOD.Sound dialogueSound;
-                    var soundResult = FMODUnity.RuntimeManager.CoreSystem.createSound(dialogueSoundInfo.name_or_data, soundMode | dialogueSoundInfo.mode, ref dialogueSoundInfo.exinfo, out dialogueSound);
+                    //FMOD.Sound dialogueSound;
+                    
+                    //attempt to get length
+                    var soundResult = RuntimeManager.CoreSystem.createSound(dialogueSoundInfo.name_or_data, soundMode | dialogueSoundInfo.mode, ref dialogueSoundInfo.exinfo, out dialogueSound);
+                    FMOD.Sound subSound; 
+                    dialogueSound.getSubSound(dialogueSoundInfo.subsoundindex, out subSound); 
+                    uint length = 0; 
+                    subSound.getLength(out length, FMOD.TIMEUNIT.MS); 
+                    UnityEngine.Debug.Log(length);
+                    //end attempt
+
                     if (soundResult == FMOD.RESULT.OK)
                     {
                         parameter.sound = dialogueSound.handle;
@@ -129,9 +151,10 @@ class ProgrammerSounds : MonoBehaviour
             }
             case FMOD.Studio.EVENT_CALLBACK_TYPE.DESTROY_PROGRAMMER_SOUND:
             {
-                var parameter = (FMOD.Studio.PROGRAMMER_SOUND_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.PROGRAMMER_SOUND_PROPERTIES));
-                var sound = new FMOD.Sound(parameter.sound);
+                var parameter = (PROGRAMMER_SOUND_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(PROGRAMMER_SOUND_PROPERTIES));
+                var sound = new Sound(parameter.sound);
                 sound.release();
+                
 
                 break;
             }
@@ -147,7 +170,7 @@ class ProgrammerSounds : MonoBehaviour
     }
 
 //For testing
-   /* void Update()
+   void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -161,5 +184,11 @@ class ProgrammerSounds : MonoBehaviour
         {
             PlayDialogue("three");
         }
-    }*/
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            PlayDialogue("why");
+        }
+        dialogueInstance.getPlaybackState(out state);
+        //print(state);
+    }
 }

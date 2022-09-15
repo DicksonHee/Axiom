@@ -1,3 +1,5 @@
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +7,8 @@ using Yarn.Unity;
 
 public class DialogueTrigger : MonoBehaviour
 {
+    public List<DialogList> dialogLists;
+
     private DialogueRunner dr;
     public string yarnNodeToStartFrom;
     // Start is called before the first frame update
@@ -29,3 +33,4 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 }
+
