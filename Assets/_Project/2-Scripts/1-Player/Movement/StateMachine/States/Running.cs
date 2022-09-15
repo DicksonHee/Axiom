@@ -14,6 +14,7 @@ namespace Axiom.Player.Movement.StateMachine.States
             base.EnterState();
             
             MovementSystem.SetTargetSpeed(MovementSystem.forwardSpeed);
+            MovementSystem.SetLastForwardState(this);
             
             MovementSystem.SetAnimatorBool("Running", true);
         }
@@ -22,11 +23,9 @@ namespace Axiom.Player.Movement.StateMachine.States
         {
             base.LogicUpdate();
             
-            if(MovementSystem.inputDetection.movementInput.z < 0 || MovementSystem.inputDetection.movementInput.magnitude <= 0) MovementSystem.ChangeState(MovementSystem._idleState);
-            else if(Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f) MovementSystem.ChangeState(MovementSystem._strafingState);
-            else if (MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem._slidingState);
-            
-            CalculateMovementSpeed();
+            if(MovementSystem.inputDetection.movementInput.z < 0 || MovementSystem.inputDetection.movementInput.magnitude <= 0) MovementSystem.ChangeState(MovementSystem.IdleState);
+            else if(Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f) MovementSystem.ChangeState(MovementSystem.StrafingState);
+            else if (MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem.SlidingState);
         }
 
         public override void PhysicsUpdate()

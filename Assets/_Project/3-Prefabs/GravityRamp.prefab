@@ -146,8 +146,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   localGravityFrom: {x: 0, y: -1, z: 0}
   localGravityTo: {x: 0, y: 0, z: 1}
-  localStart: {x: 0, y: 0.25, z: -1.4}
-  localEnd: {x: 0, y: 1.4, z: -0.25}
+  localStart: {x: 0, y: -0.55, z: -3.09}
+  localEnd: {x: 0, y: 2.59, z: 0.25}
 --- !u!65 &603618311285928141
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -159,8 +159,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.4053404, y: 3.8803926, z: 4.241543}
-  m_Center: {x: 0.037394606, y: 1.0640233, z: -0.7768576}
+  m_Size: {x: 3.4053404, y: 3.8803926, z: 4.182615}
+  m_Center: {x: 0.037394635, y: 1.0640233, z: -1.4545282}
 --- !u!1001 &5693204497221480069
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -168,6 +168,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 603618311285928138}
     m_Modifications:
+    - target: {fileID: -9093424640841063930, guid: 19a6ecf66f00e44439b573efa4e6291c,
+        type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -9093424640841063930, guid: 19a6ecf66f00e44439b573efa4e6291c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 19a6ecf66f00e44439b573efa4e6291c,
         type: 3}
       propertyPath: m_RootOrder
@@ -282,6 +292,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3582485502554205722, guid: 19a6ecf66f00e44439b573efa4e6291c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19a6ecf66f00e44439b573efa4e6291c, type: 3}

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Axiom.Player.Movement.StateMachine;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace Axiom.NonEuclidean
         private List<TrackedTransform> tracked = new List<TrackedTransform>();
         private Vector3 screenStartLocalPosition;
 
+        public bool changeTest = true;
+        
         private void Awake()
         {
             playerCam = Camera.main;
@@ -57,6 +60,7 @@ namespace Axiom.NonEuclidean
             portalCam.transform.SetPositionAndRotation(m.GetPosition(), m.rotation);
 
             SetNearClipPlane();
+            ProtectScreenFromClipping();
 
             //portalCam.Render();
             UniversalRenderPipeline.RenderSingleCamera(ctx, portalCam);
@@ -64,11 +68,17 @@ namespace Axiom.NonEuclidean
             screen.enabled = true;
         }
 
-        protected void AddTrackedTransform(TrackedTransform t) { tracked.Add(t); ProtectScreenFromClipping(); }
+        protected void AddTrackedTransform(TrackedTransform t)
+        {
+            if (tracked.FindIndex(x => x.transform == t.transform) < 0)
+                tracked.Add(t); ProtectScreenFromClipping(); 
+        }
 
-        private void Update()
+        private void FixedUpdate()
         {
             //print($"({gameObject.name}) {tracked.Count}");
+            //foreach (TrackedTransform t in tracked)
+                //print($"{Time.time}, {t.transform.name} ({transform.name})");
             CheckTrackedTransforms();
         }
 
@@ -93,19 +103,23 @@ namespace Axiom.NonEuclidean
 
         private void Teleport(TrackedTransform t)
         {
-            print($"Teleporting from {gameObject.name}");
-            Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * t.transform.localToWorldMatrix;
+            //print($"Teleporting from {gameObject.name}");
 
-            if (t.transform.TryGetComponent(out MovementSystem controller))
+            if (t.transform.parent.parent.TryGetComponent(out MovementSystem controller))
             {
+                Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
                 //m.SetColumn(3, Vector4.zero);
                 //controller.TransformTargetVelocity(m);
                 //controller.orientation.rotation = m.rotation;
-                controller.cameraLook.TransformForward(m);
-                t.transform.position = m.GetPosition();
-            }
-            else t.transform.SetPositionAndRotation(m.GetPosition(), m.rotation);
+                controller.transform.position = m.GetPosition();
 
+                Quaternion rotateDir = controller.orientation.rotation * Quaternion.FromToRotation(transform.forward, otherPortal.transform.forward);
+                controller.TeleportPlayer(rotateDir, null);
+                print($"teleporting from {controller.transform.position - transform.position} to {m.GetPosition() - otherPortal.transform.position}");
+            }
+            //else t.transform.SetPositionAndRotation(m.GetPosition(), m.rotation);
+
+            t.lastDotSign = 0;
             otherPortal.AddTrackedTransform(t);
         }
 
@@ -135,19 +149,28 @@ namespace Axiom.NonEuclidean
                 screen.transform.localScale.y,
                 dstToNearClipPlaneCorner);
 
-            print(gameObject.name + ", " + camFacingSameDirAsPortal);
+            //print(gameObject.name + ", " + camFacingSameDirAsPortal);
             screen.transform.localPosition = screenStartLocalPosition + Vector3.forward * dstToNearClipPlaneCorner * (camFacingSameDirAsPortal ? 0.5f : -0.5f);
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (tracked.FindIndex(x => x.transform == other.transform) < 0)
-                tracked.Add(new TrackedTransform(other.transform, 0));
+            Transform otherT = other.transform;
+            if (other.TryGetComponent(out MovementSystem controller))
+                otherT = playerCam.transform;
+
+            if (tracked.FindIndex(x => x.transform == otherT) < 0)
+                tracked.Add(new TrackedTransform(otherT, 0));
         }
 
         private void OnTriggerExit(Collider other)
         {
-            int index = tracked.FindIndex(x => x.transform == other.transform);
+            Transform otherT = other.transform;
+            if (other.TryGetComponent(out MovementSystem controller))
+                otherT = playerCam.transform;
+
+            //print($"{transform.name}, {other.transform.name}");
+            int index = tracked.FindIndex(x => x.transform == otherT);
             if (index >= 0)
                 tracked.RemoveAt(index);
         }
@@ -163,5 +186,17 @@ namespace Axiom.NonEuclidean
                 this.lastDotSign = lastDotSign;
             }
         }
+        
+        #if UNITY_EDITOR
+        private void OnDrawGizmos()
+        {
+            if (otherPortal != null)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawLine(screen.transform.position, otherPortal.screen.transform.position);
+                DrawArrow.ForGizmo(transform.position, transform.forward, Color.blue);
+            }
+        }
+        #endif
     }
 }

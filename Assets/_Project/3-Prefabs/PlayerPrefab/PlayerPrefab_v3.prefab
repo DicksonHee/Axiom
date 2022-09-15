@@ -711,7 +711,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.99872637, g: 0.9669811, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -732,7 +732,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 631
+    m_Bits: 887
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1080,11 +1080,10 @@ MonoBehaviour:
   inputDetection: {fileID: 6603163244758501549}
   cameraLook: {fileID: 6603163244758501548}
   playerAnimation: {fileID: 6603163244428278009}
-  moveCamera: {fileID: 6603163243959911413}
   orientation: {fileID: 6603163244449240391}
   movementVFX: {fileID: 1151955496726623624}
-  _standCC: {fileID: 6603163244758501538}
-  _crouchCC: {fileID: 6603163244758501536}
+  standingCollider: {fileID: 6603163244758501538}
+  crouchingCollider: {fileID: 6603163244758501536}
   accelerationCurve:
     serializedVersion: 2
     m_Curve:
@@ -1144,6 +1143,7 @@ MonoBehaviour:
   crouchSpeed: 20
   wallRunSpeed: 17
   wallClimbSpeed: 17
+  decelerationSpeed: 50
   upJumpForce: 13
   inAirCoyoteTime: 0.15
   wallRunJumpUpForce: 13
@@ -1152,7 +1152,6 @@ MonoBehaviour:
   wallRunCoyoteTime: 0.15
   wallRunMaxDuration: 1
   wallClimbMaxDuration: 0.5
-  totalAirTime: 0
 --- !u!114 &6603163244758501550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1541,12 +1540,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rbInfo: {fileID: 6603163244758501550}
   orientation: {fileID: 6603163244449240391}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
   leftHandClimbPositionTarget: {fileID: 1854055498}
   rightHandClimbPositionTarget: {fileID: 2018633540}
-  cameraPosition: {fileID: 6603163244185050849}
 --- !u!4 &6641011203528014369 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 53a9bb75b5abf2340ab92ec7121e5e00,
