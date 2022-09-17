@@ -8,12 +8,10 @@ using Axiom.Dialogue;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    public List<DialogList> dialogLists;
-    [SerializeField]
-    ProgrammerSounds fmodScript;
+    public DialogListData dialogListData;
+    [SerializeField] private ProgrammerSounds fmodScript;
 
     public float dialogueVolume;
-    float waitTime;
 
     // private DialogueRunner dr;
     // public string yarnNodeToStartFrom;
@@ -43,18 +41,29 @@ public class DialogueTrigger : MonoBehaviour
     }
     public IEnumerator DialogueToShow()
     {
-        for(int x = 0; x < dialogLists.Count;)
+        foreach (DialogList dialog in dialogListData.dialogLists) // Loop over each dialog in dialog list
         {
-           
-            fmodScript.PlayDialogue(dialogLists[x].audioFileName, dialogueVolume);
-            //show text
-            print(dialogLists[x].textToShow);
+            // Get the start time and play the audio file
+            fmodScript.PlayDialog(dialog.audioFileName, dialogueVolume);
+            float audioFileLength = fmodScript.dialogueLength;
+            float startTime = Time.time;
 
-            waitTime = fmodScript.dialogueLength;
-            WaitForSecondsRealtime wait = new WaitForSecondsRealtime(waitTime/1000);
-            Debug.Log("wait time: " + waitTime);
-            yield return wait;
-            x++;
+            // Get next dialog line to show
+            DialogLine dialogToShow = dialog.GetNextLineToShow();
+            
+            // While the audio clip is still playing
+            while (Time.time < startTime + audioFileLength / 1000)
+            {
+                // If there is more dialog to show on screen and the current audio clip time is more than the timestamp
+                // Show the next line, otherwise do nothing and wait until the audio clip finishes
+                if (dialogToShow != null && Time.time - startTime > dialogToShow.timeStamp)
+                {
+                    Debug.Log(dialogToShow.textToShow);
+                    dialogToShow = dialog.GetNextLineToShow();
+                }
+
+                yield return null;
+            }
         }
     }
 }

@@ -13,7 +13,25 @@ public class DialogListData : ScriptableObject
 [Serializable]
 public class DialogList
 {
+    private int currentDialogLine;
+    
     public string audioFileName;
-   // public float timeStamp;
+    public List<DialogLine> dialogLines;
+
+    public DialogLine GetNextLineToShow()
+    {
+        if (currentDialogLine >= dialogLines.Count) return null;
+        
+        DialogLine retVal = dialogLines[currentDialogLine];
+        currentDialogLine++;
+
+        return retVal;
+    }
+}
+
+[Serializable]
+public class DialogLine
+{
+    public float timeStamp;
     public string textToShow;
 }

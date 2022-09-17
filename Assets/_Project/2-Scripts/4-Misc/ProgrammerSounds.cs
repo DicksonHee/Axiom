@@ -61,7 +61,7 @@ class ProgrammerSounds : MonoBehaviour
     }
 
     [YarnCommand("play")]
-    public void PlayDialogue(string key, float volume = 1f)
+    public void PlayDialog(string key, float volume = 1f)
     {
         dialogueInstance = RuntimeManager.CreateInstance(eventName);
         //possible fix to error
@@ -80,17 +80,17 @@ class ProgrammerSounds : MonoBehaviour
        // Idk what im doing, but I know this is getting the length before playing the audio.
        // half of it is repeated code under DialogueEventCallback
        // not sure if this made some code redundant or will cause performance issues later on
-         MODE soundMode = MODE.CREATESTREAM;
-         FMOD.Studio.SOUND_INFO dialogueSoundInfo;
-                    var keyResult = FMODUnity.RuntimeManager.StudioSystem.getSoundInfo(key, out dialogueSoundInfo);
-                    //FMOD.Sound dialogueSound;
-                    
-                    //attempt to get length
-                    var soundResult = RuntimeManager.CoreSystem.createSound(dialogueSoundInfo.name_or_data, soundMode | dialogueSoundInfo.mode, ref dialogueSoundInfo.exinfo, out dialogueSound);
-                    FMOD.Sound subSound; 
-                    dialogueSound.getSubSound(dialogueSoundInfo.subsoundindex, out subSound); 
-                   // uint length = 0; 
-                    subSound.getLength(out dialogueLength, FMOD.TIMEUNIT.MS); 
+        MODE soundMode = MODE.CREATESTREAM;
+        FMOD.Studio.SOUND_INFO dialogueSoundInfo;
+        var keyResult = FMODUnity.RuntimeManager.StudioSystem.getSoundInfo(key, out dialogueSoundInfo);
+        //FMOD.Sound dialogueSound;
+        
+        //attempt to get length
+        var soundResult = RuntimeManager.CoreSystem.createSound(dialogueSoundInfo.name_or_data, soundMode | dialogueSoundInfo.mode, ref dialogueSoundInfo.exinfo, out dialogueSound);
+        FMOD.Sound subSound; 
+        dialogueSound.getSubSound(dialogueSoundInfo.subsoundindex, out subSound); 
+       // uint length = 0; 
+        subSound.getLength(out dialogueLength, FMOD.TIMEUNIT.MS); 
         //end attempt get sound length
 
         dialogueInstance.start();
@@ -181,19 +181,19 @@ class ProgrammerSounds : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            PlayDialogue("one",10);
+            PlayDialog("one",10);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            PlayDialogue("two",10);
+            PlayDialog("two",10);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            PlayDialogue("three",10);
+            PlayDialog("three",10);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            PlayDialogue("why",10);
+            PlayDialog("why",10);
         }
         dialogueInstance.getPlaybackState(out state);
         //print(state);
