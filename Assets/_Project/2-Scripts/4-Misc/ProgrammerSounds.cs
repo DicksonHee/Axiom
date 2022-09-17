@@ -76,7 +76,10 @@ class ProgrammerSounds : MonoBehaviour
 
         dialogueInstance.setCallback(dialogueCallback);
 
-       //Idk what im doing
+       // need to get length before playing audio, otherwise for loop will fire multiple times due to wait time being 0
+       // Idk what im doing, but I know this is getting the length before playing the audio.
+       // half of it is repeated code under DialogueEventCallback
+       // not sure if this made some code redundant or will cause performance issues later on
          MODE soundMode = MODE.CREATESTREAM;
          FMOD.Studio.SOUND_INFO dialogueSoundInfo;
                     var keyResult = FMODUnity.RuntimeManager.StudioSystem.getSoundInfo(key, out dialogueSoundInfo);
@@ -88,15 +91,10 @@ class ProgrammerSounds : MonoBehaviour
                     dialogueSound.getSubSound(dialogueSoundInfo.subsoundindex, out subSound); 
                    // uint length = 0; 
                     subSound.getLength(out dialogueLength, FMOD.TIMEUNIT.MS); 
-        
+        //end attempt get sound length
+
         dialogueInstance.start();
         dialogueInstance.release();
-
-      //  TIMEUNIT type = TIMEUNIT.MS;//ms is milisec, no fucking idea what others are
-      //  dialogueSound.getLength(out uint length, type);
-      //  thelength = length;
-        
-       // FMODUnity.RuntimeManager.CoreSystem.createSound()
     
     }
     
