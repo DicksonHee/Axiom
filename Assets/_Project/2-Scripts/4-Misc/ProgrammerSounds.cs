@@ -35,7 +35,7 @@ using FMODUnity;
 using FMOD.Studio;
 using FMOD;
 
-
+namespace Axiom.Dialogue{
 class ProgrammerSounds : MonoBehaviour
 {
     EVENT_CALLBACK dialogueCallback;
@@ -43,8 +43,8 @@ class ProgrammerSounds : MonoBehaviour
     private EventInstance dialogueInstance;
     public FMODUnity.EventReference eventName;
     [SerializeField]
-    private float thelength;
     static FMOD.Sound dialogueSound;
+    public uint dialogueLength;
 
 #if UNITY_EDITOR
     void Reset()
@@ -61,11 +61,13 @@ class ProgrammerSounds : MonoBehaviour
     }
 
     [YarnCommand("play")]
-    public void PlayDialogue(string key)
+    public void PlayDialogue(string key, float volume = 1f)
     {
         dialogueInstance = RuntimeManager.CreateInstance(eventName);
         //possible fix to error
         dialogueInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject.transform)); 
+
+        dialogueInstance.setVolume(volume);
         
 
         // Pin the key string in memory and pass a pointer through the user data
@@ -73,6 +75,20 @@ class ProgrammerSounds : MonoBehaviour
         dialogueInstance.setUserData(GCHandle.ToIntPtr(stringHandle));
 
         dialogueInstance.setCallback(dialogueCallback);
+
+       //Idk what im doing
+         MODE soundMode = MODE.CREATESTREAM;
+         FMOD.Studio.SOUND_INFO dialogueSoundInfo;
+                    var keyResult = FMODUnity.RuntimeManager.StudioSystem.getSoundInfo(key, out dialogueSoundInfo);
+                    //FMOD.Sound dialogueSound;
+                    
+                    //attempt to get length
+                    var soundResult = RuntimeManager.CoreSystem.createSound(dialogueSoundInfo.name_or_data, soundMode | dialogueSoundInfo.mode, ref dialogueSoundInfo.exinfo, out dialogueSound);
+                    FMOD.Sound subSound; 
+                    dialogueSound.getSubSound(dialogueSoundInfo.subsoundindex, out subSound); 
+                   // uint length = 0; 
+                    subSound.getLength(out dialogueLength, FMOD.TIMEUNIT.MS); 
+        
         dialogueInstance.start();
         dialogueInstance.release();
 
@@ -131,14 +147,7 @@ class ProgrammerSounds : MonoBehaviour
                     }
                     //FMOD.Sound dialogueSound;
                     
-                    //attempt to get length
                     var soundResult = RuntimeManager.CoreSystem.createSound(dialogueSoundInfo.name_or_data, soundMode | dialogueSoundInfo.mode, ref dialogueSoundInfo.exinfo, out dialogueSound);
-                    FMOD.Sound subSound; 
-                    dialogueSound.getSubSound(dialogueSoundInfo.subsoundindex, out subSound); 
-                    uint length = 0; 
-                    subSound.getLength(out length, FMOD.TIMEUNIT.MS); 
-                    UnityEngine.Debug.Log(length);
-                    //end attempt
 
                     if (soundResult == FMOD.RESULT.OK)
                     {
@@ -174,21 +183,21 @@ class ProgrammerSounds : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            PlayDialogue("one");
+            PlayDialogue("one",10);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            PlayDialogue("two");
+            PlayDialogue("two",10);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            PlayDialogue("three");
+            PlayDialogue("three",10);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            PlayDialogue("why");
+            PlayDialogue("why",10);
         }
         dialogueInstance.getPlaybackState(out state);
         //print(state);
     }
-}
+}}

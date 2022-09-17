@@ -14,6 +14,6 @@ public class DialogListData : ScriptableObject
 public class DialogList
 {
     public string audioFileName;
-    public float timeStamp;
+   // public float timeStamp;
     public string textToShow;
 }
