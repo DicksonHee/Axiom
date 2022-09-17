@@ -13,11 +13,14 @@ public class DialogListData : ScriptableObject
 [Serializable]
 public class DialogList
 {
-    private int currentDialogLine;
+    public int currentDialogLine;
     
     public string audioFileName;
     public List<DialogLine> dialogLines;
-
+    public void ResetCurrentDialogLine()
+    {
+        currentDialogLine = 0;
+    }
     public DialogLine GetNextLineToShow()
     {
         if (currentDialogLine >= dialogLines.Count) return null;

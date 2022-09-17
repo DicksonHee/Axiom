@@ -10,8 +10,9 @@ public class DialogueTrigger : MonoBehaviour
 {
     public DialogListData dialogListData;
     [SerializeField] private ProgrammerSounds fmodScript;
-
     public float dialogueVolume;
+    DialogLine dialogToShow;
+    Coroutine dialogCoroutine;
 
     // private DialogueRunner dr;
     // public string yarnNodeToStartFrom;
@@ -28,8 +29,19 @@ public class DialogueTrigger : MonoBehaviour
     {
          if(Input.GetKeyDown(KeyCode.Space)) //for testing
         {
+            bool start = false;
              //dr.StartDialogue(yarnNodeToStartFrom);
-            StartCoroutine(DialogueToShow());
+           
+            //reset dialogue to show after running
+            for(int x = 0; x < dialogListData.dialogLists.Count; x++)
+            {
+                dialogListData.dialogLists[x].currentDialogLine = 0;
+                start = true;
+            }
+            if(start)
+            {
+                dialogCoroutine = StartCoroutine(DialogueToShow());
+            }
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -49,7 +61,7 @@ public class DialogueTrigger : MonoBehaviour
             float startTime = Time.time; //the time from the start of foreach loop
 
             // Get next dialog line to show
-            DialogLine dialogToShow = dialog.GetNextLineToShow();
+            dialogToShow = dialog.GetNextLineToShow();
             
             // While the audio clip is still playing
             while (Time.time < startTime + audioFileLength / 1000)
@@ -61,7 +73,7 @@ public class DialogueTrigger : MonoBehaviour
                     Debug.Log(dialogToShow.textToShow);
                     dialogToShow = dialog.GetNextLineToShow();
                 }
-
+              //  Debug.Log(Time.time.ToString() + "//" +(startTime + audioFileLength / 1000).ToString());
                 yield return null;
             }
         }
