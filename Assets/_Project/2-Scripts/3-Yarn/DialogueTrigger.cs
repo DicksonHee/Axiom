@@ -46,7 +46,7 @@ public class DialogueTrigger : MonoBehaviour
             // Get the start time and play the audio file
             fmodScript.PlayDialog(dialog.audioFileName, dialogueVolume);
             float audioFileLength = fmodScript.dialogueLength;
-            float startTime = Time.time;
+            float startTime = Time.time; //the time from the start of foreach loop
 
             // Get next dialog line to show
             DialogLine dialogToShow = dialog.GetNextLineToShow();

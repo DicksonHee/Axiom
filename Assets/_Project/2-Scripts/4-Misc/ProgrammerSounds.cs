@@ -79,18 +79,18 @@ class ProgrammerSounds : MonoBehaviour
        // need to get length before playing audio, otherwise for loop will fire multiple times due to wait time being 0
        // Idk what im doing, but I know this is getting the length before playing the audio.
        // half of it is repeated code under DialogueEventCallback
-       // not sure if this made some code redundant or will cause performance issues later on
-        MODE soundMode = MODE.CREATESTREAM;
-        FMOD.Studio.SOUND_INFO dialogueSoundInfo;
-        var keyResult = FMODUnity.RuntimeManager.StudioSystem.getSoundInfo(key, out dialogueSoundInfo);
-        //FMOD.Sound dialogueSound;
-        
-        //attempt to get length
-        var soundResult = RuntimeManager.CoreSystem.createSound(dialogueSoundInfo.name_or_data, soundMode | dialogueSoundInfo.mode, ref dialogueSoundInfo.exinfo, out dialogueSound);
-        FMOD.Sound subSound; 
-        dialogueSound.getSubSound(dialogueSoundInfo.subsoundindex, out subSound); 
-       // uint length = 0; 
-        subSound.getLength(out dialogueLength, FMOD.TIMEUNIT.MS); 
+       // not sure if this made some code redundant or will cause issues later on
+         MODE soundMode = MODE.CREATESTREAM;
+         FMOD.Studio.SOUND_INFO dialogueSoundInfo;
+                    var keyResult = FMODUnity.RuntimeManager.StudioSystem.getSoundInfo(key, out dialogueSoundInfo);
+                    //FMOD.Sound dialogueSound;
+                    
+                    //attempt to get length
+                    var soundResult = RuntimeManager.CoreSystem.createSound(dialogueSoundInfo.name_or_data, soundMode | dialogueSoundInfo.mode, ref dialogueSoundInfo.exinfo, out dialogueSound);
+                    FMOD.Sound subSound; 
+                    dialogueSound.getSubSound(dialogueSoundInfo.subsoundindex, out subSound); 
+                   // uint length = 0; 
+                    subSound.getLength(out dialogueLength, FMOD.TIMEUNIT.MS); 
         //end attempt get sound length
 
         dialogueInstance.start();
