@@ -20,14 +20,12 @@ public class DialogueTrigger : MonoBehaviour
     void Start()
     {
       //  dr = FindObjectOfType<DialogueRunner>();
-
-      
     }
 
     // Update is called once per frame
     void Update()
     {
-         if(Input.GetKeyDown(KeyCode.Space)) //for testing
+         if(Input.GetKeyDown(KeyCode.Space) && dialogCoroutine == null) //for testing
         {
             bool start = false;
              //dr.StartDialogue(yarnNodeToStartFrom);
@@ -44,14 +42,8 @@ public class DialogueTrigger : MonoBehaviour
             }
         }
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        // if(other.tag == "Player")
-        // {
-        //      dr.StartDialogue(yarnNodeToStartFrom);
-        // }
-    }
-    public IEnumerator DialogueToShow()
+    
+    private IEnumerator DialogueToShow()
     {
         foreach (DialogList dialog in dialogListData.dialogLists) // Loop over each dialog in dialog list
         {
@@ -70,13 +62,26 @@ public class DialogueTrigger : MonoBehaviour
                 // Show the next line, otherwise do nothing and wait until the audio clip finishes
                 if (dialogToShow != null && Time.time - startTime > dialogToShow.timeStamp)
                 {
-                    Debug.Log(dialogToShow.textToShow);
+                    DialogUI.current.UpdateText(dialogToShow.textToShow);
                     dialogToShow = dialog.GetNextLineToShow();
                 }
+                
               //  Debug.Log(Time.time.ToString() + "//" +(startTime + audioFileLength / 1000).ToString());
                 yield return null;
             }
         }
+
+        yield return new WaitForSeconds(2f);
+        dialogCoroutine = null;
+        DialogUI.current.HideText();
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        // if(other.tag == "Player")
+        // {
+        //      dr.StartDialogue(yarnNodeToStartFrom);
+        // }
     }
 }
 
