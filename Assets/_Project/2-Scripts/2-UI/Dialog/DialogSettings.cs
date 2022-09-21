@@ -15,6 +15,11 @@ public class DialogSettings : MonoBehaviour
 
     private void Awake()
     {
+        ApplySettings();
+    }
+
+    private void ApplySettings()
+    {
         switch (dialogSize)
         {
             case DialogSize.Small:
@@ -31,6 +36,11 @@ public class DialogSettings : MonoBehaviour
         Color bgCol = backgroundImage.color;
         bgCol.a = alphaValue;
         backgroundImage.color = bgCol;
+    }
+    
+    private void OnValidate()
+    {
+        ApplySettings();
     }
 }
 
