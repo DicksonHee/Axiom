@@ -17,6 +17,10 @@ namespace Axiom.Player.Movement.StateMachine
         public CameraLook cameraLook;
         public PlayerAnimation playerAnimation;
         public Transform orientation;
+        
+        [Header("Awake Bools")]
+        public bool enableMovementOnAwake;
+        public bool enableCameraOnAwake;
 
         [Header("VFX")] 
         public MovementVFX movementVFX;
@@ -139,6 +143,9 @@ namespace Axiom.Player.Movement.StateMachine
             Rb = GetComponent<Rigidbody>();
             lrMultiplier = 1;
             LastForwardState = WalkingState;
+            
+            PlayerMovementDetails.movementInputEnabled = enableMovementOnAwake;
+            PlayerMovementDetails.cameraLookEnabled = enableCameraOnAwake;
             
             InitializeState(IdleState);
         }

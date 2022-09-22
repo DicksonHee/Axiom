@@ -7,6 +7,9 @@ public class ApartmentAnimations : MonoBehaviour
 {
     public GameObject cutsceneModel;
     public GameObject playerGO;
+
+    public float blackBarAmount;
+    public float blurAmount;
     
     private void Update()
     {

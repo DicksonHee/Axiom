@@ -11,7 +11,7 @@ namespace Axiom.Player.Movement
         #region Inspector Variables
         public Transform orientation;
         public Camera cam;
-        
+
         [Header("Ground Detection")]
         public Transform groundDetectorTransform;
         public float groundDetectorRadius = 0.5f;
@@ -119,8 +119,8 @@ namespace Axiom.Player.Movement
 
 		private void Awake()
 		{
-            InvokeRepeating(nameof(ValidGroundDetection), 0, 0.5f);
-		}
+            //InvokeRepeating(nameof(ValidGroundDetection), 0, 0.5f);
+        }
 
 		private void Update()
         {
@@ -146,7 +146,7 @@ namespace Axiom.Player.Movement
             isGrounded = Physics.SphereCast(groundDetectorTransform.position, groundDetectorRadius, -upDirection, out groundHit, 1f, groundLayer);
             if (!previouslyGrounded && isGrounded)
             {
-                ValidGroundDetection();
+                //ValidGroundDetection();
                 OnPlayerLanded?.Invoke();
             }
         }
@@ -344,26 +344,26 @@ namespace Axiom.Player.Movement
 
         #region ValidGround Functions
 
-        private void ValidGroundDetection()
-        {
-            bool isValidRespawnPoint = true;
-            int sectionDegrees = 360 / 6;
-            Vector3 currentPosition = transform.position;
-            for (int ii = 0; ii < 6; ii++)
-            {
-                if (!Physics.Raycast((currentPosition + Quaternion.AngleAxis(ii * sectionDegrees, upDirection) * forwardDirection).normalized * 1f, -upDirection, 3f, wallLayer))
-                {
-                    isValidRespawnPoint = false;
-                    break;
-                }
-            }
-
-            if (isValidRespawnPoint)
-            {
-                PlayerMovementDetails.lastGroundedPosition = currentPosition;
-                PlayerMovementDetails.lastGroundedRotation = transform.rotation.eulerAngles;
-            }
-        }
+        // private void ValidGroundDetection()
+        // {
+        //     bool isValidRespawnPoint = true;
+        //     int sectionDegrees = 360 / 6;
+        //     Vector3 currentPosition = transform.position;
+        //     for (int ii = 0; ii < 6; ii++)
+        //     {
+        //         if (!Physics.Raycast((currentPosition + Quaternion.AngleAxis(ii * sectionDegrees, upDirection) * forwardDirection).normalized * 1f, -upDirection, 3f, wallLayer))
+        //         {
+        //             isValidRespawnPoint = false;
+        //             break;
+        //         }
+        //     }
+        //
+        //     if (isValidRespawnPoint)
+        //     {
+        //         PlayerMovementDetails.lastGroundedPosition = currentPosition;
+        //         PlayerMovementDetails.lastGroundedRotation = transform.rotation.eulerAngles;
+        //     }
+        // }
 
 		#endregion
 

@@ -6,7 +6,7 @@ namespace Axiom.Core
 {
 	public static class PlayerMovementDetails
 	{
-		public static Vector3 lastGroundedPosition;
-		public static Vector3 lastGroundedRotation;
+		public static bool movementInputEnabled = false;
+		public static bool cameraLookEnabled = false;
 	}
 }
