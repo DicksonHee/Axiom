@@ -37,17 +37,16 @@ namespace Axiom.Player.Movement
         {
             mouseX = Input.GetAxis("Mouse X"); 
             mouseY = Input.GetAxis("Mouse Y");
-            
-            //Find current look rotation
-            Vector3 rot = mainCam.transform.localRotation.eulerAngles;
-            yRotation = rot.y + mouseX * sensX * Time.fixedDeltaTime * multiplier;
-            
+
             //Rotate, and also make sure we dont over- or under-rotate.
             xRotation -= mouseY * sensY * Time.fixedDeltaTime * multiplier;
+            yRotation += mouseX * sensX * Time.fixedDeltaTime * multiplier;
+
             xRotation = Mathf.Clamp(xRotation, xRotLimits.x, xRotLimits.y);
+            yRotation = Mathf.Clamp(yRotation, yRotLimits.x, yRotLimits.y);
 
             //Perform the rotations
-            mainCam.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+            mainCam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
         }
     }
 }

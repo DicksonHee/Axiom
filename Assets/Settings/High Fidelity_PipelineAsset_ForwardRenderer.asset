@@ -95,6 +95,9 @@ MonoBehaviour:
   - {fileID: 5872682991502099426}
   - {fileID: -3379530977680460427}
   - {fileID: -1799240490785858561}
+  - {fileID: 5857711839121812924}
+  - {fileID: 7173614812765577527}
+  - {fileID: 4559138921131392619}
   m_RendererFeatureMap: 37fbde176b84e9b2e203f6e210f67f51
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -135,6 +138,40 @@ MonoBehaviour:
   m_ClusteredRendering: 0
   m_TileSize: 32
   m_IntermediateTextureMode: 1
+--- !u!114 &4559138921131392619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c3aa9cc45b3c6d41931da538b5008f9, type: 3}
+  m_Name: '[SCPE] MosaicRenderer'
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    injectionPoint: 550
+    alwaysEnable: 0
+    cameraTypes: 5
+--- !u!114 &5857711839121812924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de805ffa8db69e8499306de22402dca3, type: 3}
+  m_Name: '[SCPE] AmbientOcclusion2DRenderer'
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    injectionPoint: 550
+    alwaysEnable: 0
+    cameraTypes: 5
 --- !u!114 &5872682991502099426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,3 +192,20 @@ MonoBehaviour:
     downsample: 2
     copyToFramebuffer: 0
     targetName: _blurTexture
+--- !u!114 &7173614812765577527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 400dc2baa0a22054cb259512e4ce8907, type: 3}
+  m_Name: '[SCPE] KuwaharaRenderer'
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    injectionPoint: 550
+    alwaysEnable: 0
+    cameraTypes: 5
