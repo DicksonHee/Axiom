@@ -40,18 +40,24 @@ public class DialogList
 [Serializable]
 public class DialogLine
 {
-    [Header("Time Stamp // when to start displaying text after audio plays")]
+    [Header("when to start displaying text after audio plays")]
     public float timeStamp;
     [Header("Text")]
     public string textToShow;
     public bool showText = true;
-    [Header("Choose hide index // start from 0")]
+    [Header("start from 0")]
     public List<int> _hiddenWordIndex;
     
     
     public string GetPart()
     {
+        //init modded text
         string ModdedText = new string(textToShow);
+
+        //sort list to accending order, because in for loop requires it
+        _hiddenWordIndex.Sort();
+
+        //regex
         string pattern = @"\[(\S*?\s*?){0,10}?\]";
         Regex regex = new Regex(pattern, RegexOptions.None);
 
