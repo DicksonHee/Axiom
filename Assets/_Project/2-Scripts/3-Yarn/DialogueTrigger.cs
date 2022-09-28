@@ -48,7 +48,15 @@ public class DialogueTrigger : MonoBehaviour
         foreach (DialogList dialog in dialogListData.dialogLists) // Loop over each dialog in dialog list
         {
             // Get the start time and play the audio file
-            fmodScript.PlayDialog(dialog.audioFileName, dialogueVolume);
+            if(dialog.playAudio)
+            {
+                fmodScript.PlayDialog(dialog.audioFileName, dialogueVolume);
+            }
+            else
+            {
+                //if not audio is hidden set volume = 0
+                fmodScript.PlayDialog(dialog.audioFileName, 0);
+            }
             float audioFileLength = fmodScript.dialogueLength;
             float startTime = Time.time; //the time from the start of foreach loop
 
@@ -62,8 +70,28 @@ public class DialogueTrigger : MonoBehaviour
                 // Show the next line, otherwise do nothing and wait until the audio clip finishes
                 if (dialogToShow != null && Time.time - startTime > dialogToShow.timeStamp)
                 {
-                    DialogUI.current.UpdateText(dialogToShow.textToShow);
-                    dialogToShow = dialog.GetNextLineToShow();
+                    if(dialogToShow.showText)
+                    {
+                        if(DialogUI.current!=null)
+                        DialogUI.current.UpdateText(dialogToShow.textToShow);
+
+                        try
+                        {
+                            Debug.Log(dialogToShow.GetPart());
+                        }
+                        catch(ArgumentOutOfRangeException e)
+                        {
+                            Debug.Log(e);
+                        }
+
+                        dialogToShow = dialog.GetNextLineToShow();
+                    }
+                    else //if dialogue line is hidden
+                    {
+                        Debug.Log("text hidden");
+                        dialogToShow = dialog.GetNextLineToShow();
+                    }
+                    
                 }
                 
               //  Debug.Log(Time.time.ToString() + "//" +(startTime + audioFileLength / 1000).ToString());
@@ -73,6 +101,8 @@ public class DialogueTrigger : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
         dialogCoroutine = null;
+
+        if(DialogUI.current!=null)
         DialogUI.current.HideText();
     }
     

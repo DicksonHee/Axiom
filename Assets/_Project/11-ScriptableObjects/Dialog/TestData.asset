@@ -13,25 +13,39 @@ MonoBehaviour:
   m_Name: TestData
   m_EditorClassIdentifier: 
   dialogLists:
-  - currentDialogLine: 1
-    audioFileName: one
+  - audioFileName: one
+    playAudio: 1
+    currentDialogLine: 1
     dialogLines:
     - timeStamp: 0
-      textToShow: One
-  - currentDialogLine: 2
-    audioFileName: why
+      textToShow: One [0][1][2][3]
+      showText: 1
+      _hiddenWordIndex: 0100000002000000
+  - audioFileName: why
+    playAudio: 1
+    currentDialogLine: 2
     dialogLines:
     - timeStamp: 0
-      textToShow: Why are we still here?
+      textToShow: Why are we still here? [remove brackets]
+      showText: 1
+      _hiddenWordIndex: 
     - timeStamp: 3.5
-      textToShow: Just to suffer.
-  - currentDialogLine: 1
-    audioFileName: two
+      textToShow: Just to suffer. [mind ass][ass]
+      showText: 1
+      _hiddenWordIndex: 00000000
+  - audioFileName: two
+    playAudio: 1
+    currentDialogLine: 1
     dialogLines:
     - timeStamp: 0
-      textToShow: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-  - currentDialogLine: 1
-    audioFileName: three
+      textToShow: two(){}[]
+      showText: 1
+      _hiddenWordIndex: 00000000
+  - audioFileName: three
+    playAudio: 1
+    currentDialogLine: 1
     dialogLines:
     - timeStamp: 0
-      textToShow: 3?
+      textToShow: 3? [77]
+      showText: 1
+      _hiddenWordIndex: 00000000
