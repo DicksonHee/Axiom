@@ -1,0 +1,127 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4428488224860983277
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5848277230252263924}
+  - component: {fileID: 6765796419337316873}
+  - component: {fileID: 4507742527049267069}
+  m_Layer: 0
+  m_Name: SpiralBezier
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5848277230252263924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4428488224860983277}
+  m_LocalRotation: {x: 0.3551965, y: -0.61142087, z: 0.3551965, w: 0.61142087}
+  m_LocalPosition: {x: -43.49416, y: 22.15, z: -20.43}
+  m_LocalScale: {x: 0.37782308, y: 0.37782308, z: 0.37782308}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 60.308, y: -90, z: 0}
+--- !u!114 &6765796419337316873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4428488224860983277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e5ac92bc18f545cc84cd886ece82b4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorData:
+    _bezierPath:
+      points:
+      - {x: -4.0145216, y: -1.183677, z: 1.0531518}
+      - {x: -3.2747412, y: -2.6434073, z: -0.40250713}
+      - {x: -2.5349605, y: -4.103138, z: -1.8581661}
+      - {x: -0.04186629, y: -3.1998193, z: -3.4779065}
+      - {x: 2.4910936, y: -2.2820563, z: -5.123547}
+      - {x: 3.896508, y: -1.3654053, z: -3.8948348}
+      - {x: 4.013797, y: 1.7804649, z: -4.1315904}
+      - {x: 4.1431513, y: 5.2499485, z: -4.3927007}
+      - {x: 2.4070413, y: 6.674601, z: -1.9774504}
+      - {x: -0.03600692, y: 7.6350646, z: -4.2646437}
+      - {x: -2.148731, y: 8.465664, z: -6.242586}
+      - {x: -2.3289108, y: 5.6249323, z: -6.448268}
+      - {x: -2.048616, y: 4.7401767, z: -9.312599}
+      - {x: -1.8574897, y: 4.1368837, z: -11.265716}
+      - {x: -1.1355573, y: 3.6734824, z: -11.4907055}
+      - {x: 0.017597195, y: 4.523933, z: -12.961122}
+      - {x: 1.1445365, y: 5.3550496, z: -14.39811}
+      - {x: 1.9759893, y: 5.8447742, z: -13.836691}
+      - {x: 2.0426784, y: 7.717945, z: -14.55256}
+      - {x: 2.1190906, y: 9.864222, z: -15.372801}
+      - {x: 1.0584676, y: 10.830404, z: -15.529625}
+      - {x: -0.0021553035, y: 11.796586, z: -15.686448}
+      isClosed: 0
+      space: 0
+      controlMode: 3
+      autoControlLength: 0.489
+      boundsUpToDate: 0
+      bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 0, y: 0, z: 0}
+      perAnchorNormalsAngle:
+      - 160.11104
+      - 161.47736
+      - 37.815224
+      - 150.56071
+      - 161.13913
+      - 162.92557
+      - 163.59515
+      - 164.26126
+      globalNormalsAngle: 0
+      flipNormals: 0
+    vertexPathUpToDate: 1
+    vertexPathMaxAngleError: 0.3
+    vertexPathMinVertexSpacing: 0.01
+    showTransformTool: 1
+    showPathBounds: 0
+    showPerSegmentBounds: 0
+    displayAnchorPoints: 1
+    displayControlPoints: 1
+    bezierHandleScale: 1
+    globalDisplaySettingsFoldout: 0
+    keepConstantHandleSize: 0
+    showNormalsInVertexMode: 0
+    showBezierPathInVertexMode: 0
+    showDisplayOptions: 1
+    showPathOptions: 1
+    showVertexPathDisplayOptions: 0
+    showVertexPathOptions: 1
+    showNormals: 1
+    showNormalsHelpInfo: 0
+    tabIndex: 0
+  initialized: 1
+--- !u!114 &4507742527049267069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4428488224860983277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6afeddddeeebe449bc4003aa6b61226, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bezierCurve: {fileID: 6765796419337316873}
+  listOfVFX:
+  - {fileID: 0}
