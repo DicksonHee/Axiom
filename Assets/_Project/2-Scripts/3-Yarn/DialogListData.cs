@@ -21,6 +21,7 @@ public class DialogList
     [Header("Dialog Line")]
     public int currentDialogLine;
     public List<DialogLine> dialogLines;
+    public List<TimeStamps> timeStamps;
    
     public void ResetCurrentDialogLine()
     {
@@ -40,16 +41,23 @@ public class DialogList
 [Serializable]
 public class DialogLine
 {
-    [Header("when to start displaying text after audio plays")]
-    public float timeStamp;
+    //[Header("when to start displaying text after audio plays")]
+    //public float timeStamp;
     [Header("Text")]
     public string textToShow;
     public bool showText = true;
     [Header("start from 0")]
     public List<int> _hiddenWordIndex;
+    [SerializeField]
+    //public List<Vector2> MuteTimeStamps;
     
+    //public Vector2 currentMuteTimeStamp()
+    //{
+
+       // return Vector2.zero;
+   // }
     
-    public string GetPart()
+    public string RedactDialog()
     {
         //init modded text
         string ModdedText = new string(textToShow);
@@ -80,9 +88,9 @@ public class DialogLine
 
             foreach(string s in stringToRedact)
             {
-              ModdedText = ModdedText.Replace(s,"");
+              ModdedText = ModdedText.Replace(s,"▇▇▇▇");
             }
-            //if no redacted words and no array of words need to be hidden
+            
             ModdedText = ModdedText.Replace("[","");
             ModdedText = ModdedText.Replace("]","");
 
@@ -91,10 +99,25 @@ public class DialogLine
 
         else
         {
+            //if no redacted words and no array of words need to be hidden
             ModdedText = ModdedText.Replace("[","");
             ModdedText = ModdedText.Replace("]","");
 
             return ModdedText;
         }
     }
+    
 }
+[Serializable]
+    public class TimeStamps
+    {
+        public float timeStamp;
+        public commands command;
+        public enum commands
+        {
+            ShowText,
+            NextDialogLine,
+            Mute,
+            Unmute,
+        }
+    }

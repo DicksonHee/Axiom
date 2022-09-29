@@ -40,7 +40,7 @@ class ProgrammerSounds : MonoBehaviour
 {
     EVENT_CALLBACK dialogueCallback;
     private PLAYBACK_STATE state;
-    private EventInstance dialogueInstance;
+    public EventInstance dialogueInstance;
     public FMODUnity.EventReference eventName;
     [SerializeField]
     static FMOD.Sound dialogueSound;
@@ -92,10 +92,16 @@ class ProgrammerSounds : MonoBehaviour
                    // uint length = 0; 
                     subSound.getLength(out dialogueLength, FMOD.TIMEUNIT.MS); 
         //end attempt get sound length
+        float delay = dialogueLength/1000;
 
         dialogueInstance.start();
+        //UnityEngine.Debug.Log("playD");
+        Invoke(nameof(RealseInstance), delay);
+        
+    }
+    void RealseInstance()
+    {
         dialogueInstance.release();
-    
     }
     
     

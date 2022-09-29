@@ -13,39 +13,49 @@ MonoBehaviour:
   m_Name: TestData
   m_EditorClassIdentifier: 
   dialogLists:
-  - audioFileName: one
-    playAudio: 1
-    currentDialogLine: 1
-    dialogLines:
-    - timeStamp: 0
-      textToShow: One [0][1][2][3]
-      showText: 1
-      _hiddenWordIndex: 0100000002000000
   - audioFileName: why
     playAudio: 1
     currentDialogLine: 2
     dialogLines:
-    - timeStamp: 0
-      textToShow: Why are we still here? [remove brackets]
-      showText: 1
-      _hiddenWordIndex: 
-    - timeStamp: 3.5
-      textToShow: Just to suffer. [mind ass][ass]
+    - textToShow: Why are we still [here]
       showText: 1
       _hiddenWordIndex: 00000000
-  - audioFileName: two
+    - textToShow: Just to [suffer]
+      showText: 1
+      _hiddenWordIndex: 00000000
+    timeStamps:
+    - timeStamp: 0
+      command: 0
+    - timeStamp: 1.1
+      command: 2
+    - timeStamp: 1.61
+      command: 3
+    - timeStamp: 1.7
+      command: 1
+    - timeStamp: 3.7
+      command: 0
+    - timeStamp: 3.94
+      command: 2
+  - audioFileName: why
     playAudio: 1
-    currentDialogLine: 1
+    currentDialogLine: 2
     dialogLines:
-    - timeStamp: 0
-      textToShow: two(){}[]
+    - textToShow: Why are we still [here]
       showText: 1
       _hiddenWordIndex: 00000000
-  - audioFileName: three
-    playAudio: 1
-    currentDialogLine: 1
-    dialogLines:
-    - timeStamp: 0
-      textToShow: 3? [77]
+    - textToShow: Just to [suffer]
       showText: 1
       _hiddenWordIndex: 00000000
+    timeStamps:
+    - timeStamp: 0
+      command: 0
+    - timeStamp: 1.1
+      command: 2
+    - timeStamp: 1.61
+      command: 3
+    - timeStamp: 1.7
+      command: 1
+    - timeStamp: 3.7
+      command: 0
+    - timeStamp: 3.94
+      command: 2
