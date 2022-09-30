@@ -72,75 +72,112 @@ public class DialogueTrigger : MonoBehaviour
             //the time from the start of foreach loop
 
             float elapsedTime = 0f;
-            int i = 0;
-           
-            dialogToShow = dialog.GetNextLineToShow();
+            int timestampIndex = 0;
 
+           // dialogToShow = dialog.GetNextLineToShow();
 
-            // While the audio clip is still playing
             while (elapsedTime < audioFileLength / 1000)
             {
                 elapsedTime += Time.deltaTime;
-                //Debug.Log(elapsedTime); 
-                try
+
+                bool hasExecutedCommand = true;
+
+                while(hasExecutedCommand == true)
                 {
-                    if (elapsedTime > dialog.timeStamps[i].timeStamp && i < dialog.timeStamps.Count)
+                    hasExecutedCommand = false;
+
+                    if (timestampIndex < dialog.timeStamps.Count && elapsedTime > dialog.timeStamps[timestampIndex].timeStamp)
                     {
-                        switch (dialog.timeStamps[i].command)
+                        switch (dialog.timeStamps[timestampIndex].command)
                         {
-                            case TimeStamps.commands.ShowText:
-
+                            case TimeStamps.Commands.ShowText:
                                 ShowText(dialog);
-                                //Debug.Log("show"+i);
-                                i++;
-
                                 break;
-                            case TimeStamps.commands.NextDialogLine:
-
-                                NextDialogLine(dialog);
-                                //Debug.Log("next"+i);
-                                i++;
-
+                            case TimeStamps.Commands.NextDialogLine:
+                                NextDialogLine(dialog.timeStamps[timestampIndex].dialogLine);
                                 break;
-                            case TimeStamps.commands.Mute:
-
+                            case TimeStamps.Commands.Mute:
                                 Mute();
-                                //Debug.Log("muted"+i);
-                                i++;
-
                                 break;
-                            case TimeStamps.commands.Unmute:
-
+                            case TimeStamps.Commands.Unmute:
                                 Unmute();
-                                //Debug.Log("unmuted"+i);
-                                i++;
-
                                 break;
-                            default:
+                        }
 
-                                Debug.Log("command not found" + i);
-                                //yield return null;
-                                i++;
-
-                                break;
-                        }//end switch case
-                    }//end if time
-                    else if (i >= dialog.timeStamps.Count)
-                    {
-                        Debug.Log("break");
-                        continue;
+                        timestampIndex++;
+                        hasExecutedCommand = true;
                     }
                 }
-                catch
-                {
-                    //Debug.Log("here");
-                    //continue;
-                }
+                
                 yield return null;
-            }// end while
-            yield return null;
+            }
         }
     }
+
+        //     // While the audio clip is still playing
+        //     while (elapsedTime < audioFileLength / 1000)
+        //     {
+        //         elapsedTime += Time.deltaTime;
+        //         //Debug.Log(elapsedTime); 
+        //         try
+        //         {
+        //             if (elapsedTime > dialog.timeStamps[i].timeStamp && i < dialog.timeStamps.Count)
+        //             {
+        //                 switch (dialog.timeStamps[i].command)
+        //                 {
+        //                     case TimeStamps.Commands.ShowText:
+
+        //                         ShowText(dialog);
+        //                         //Debug.Log("show"+i);
+        //                         i++;
+
+        //                         break;
+        //                     case TimeStamps.Commands.NextDialogLine:
+
+        //                         NextDialogLine(dialog);
+        //                         //Debug.Log("next"+i);
+        //                         i++;
+
+        //                         break;
+        //                     case TimeStamps.Commands.Mute:
+
+        //                         Mute();
+        //                         //Debug.Log("muted"+i);
+        //                         i++;
+
+        //                         break;
+        //                     case TimeStamps.Commands.Unmute:
+
+        //                         Unmute();
+        //                         //Debug.Log("unmuted"+i);
+        //                         i++;
+
+        //                         break;
+        //                     default:
+
+        //                         Debug.Log("command not found" + i);
+        //                         //yield return null;
+        //                         i++;
+
+        //                         break;
+        //                 }//end switch case
+        //             }//end if time
+        //             else if (i >= dialog.timeStamps.Count)
+        //             {
+        //                 Debug.Log("break");
+        //                 continue;
+        //             }
+        //         }
+        //         catch
+        //         {
+        //             //Debug.Log("here");
+        //             //continue;
+        //         }
+        //         yield return null;
+        //     }// end while
+        //     yield return null;
+        // }
+    
     //command
     #region  Commands
     private void ShowText(DialogList dialog)
@@ -165,9 +202,9 @@ public class DialogueTrigger : MonoBehaviour
 
         }
     }
-    private void NextDialogLine(DialogList dialog)
+    private void NextDialogLine(DialogLine dialog)
     {
-        dialogToShow = dialog.GetNextLineToShow();
+        dialogToShow = dialog;
     }
     private void Mute()
     {
