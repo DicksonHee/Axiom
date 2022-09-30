@@ -17,6 +17,7 @@ public class DialogList
 {
     public bool playAudio;
     public string audioFileName;
+    public int currentDialogLine;
     public List<TimeStamps> timestamps;
 }
 

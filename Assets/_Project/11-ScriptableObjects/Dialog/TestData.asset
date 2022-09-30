@@ -13,31 +13,29 @@ MonoBehaviour:
   m_Name: TestData
   m_EditorClassIdentifier: 
   dialogLists:
-  - audioFileName: why
-    playAudio: 1
+  - playAudio: 1
+    audioFileName: why
     currentDialogLine: 0
-    dialogLines:
-    - textToShow: Why are we still [here]
-      showText: 1
-      _hiddenWordIndex: 00000000
-    - textToShow: Just to [suffer]
-      showText: 1
-      _hiddenWordIndex: 00000000
-    timeStamps:
+    timestamps:
     - timeStamp: 0
       command: 0
-  - audioFileName: why
-    playAudio: 1
-    currentDialogLine: 0
-    dialogLines:
-    - textToShow: Why are we still [here]
-      showText: 1
-      _hiddenWordIndex: 00000000
-    - textToShow: Just to [suffer]
-      showText: 1
-      _hiddenWordIndex: 00000000
-    timeStamps:
-    - timeStamp: 0
-      command: 0
+      dialogLine:
+        textToShow: Why are we still [here]
+        showText: 1
+        _hiddenWordIndex: 
     - timeStamp: 1.6
-      command: 1
+      command: 0
+      dialogLine:
+        textToShow: Just to [suffer]
+        showText: 0
+        _hiddenWordIndex: 
+  - playAudio: 1
+    audioFileName: why
+    currentDialogLine: 0
+    timestamps:
+    - timeStamp: 0
+      command: 0
+      dialogLine:
+        textToShow: Next [line]
+        showText: 0
+        _hiddenWordIndex: 

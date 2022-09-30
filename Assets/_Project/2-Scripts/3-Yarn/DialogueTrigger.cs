@@ -86,15 +86,15 @@ public class DialogueTrigger : MonoBehaviour
                 {
                     hasExecutedCommand = false;
 
-                    if (timestampIndex < dialog.timeStamps.Count && elapsedTime > dialog.timeStamps[timestampIndex].timeStamp)
+                    if (timestampIndex < dialog.timestamps.Count && elapsedTime > dialog.timestamps[timestampIndex].timeStamp)
                     {
-                        switch (dialog.timeStamps[timestampIndex].command)
+                        switch (dialog.timestamps[timestampIndex].command)
                         {
                             case TimeStamps.Commands.ShowText:
-                                ShowText(dialog);
+                                ShowText(dialog.);
                                 break;
                             case TimeStamps.Commands.NextDialogLine:
-                                NextDialogLine(dialog.timeStamps[timestampIndex].dialogLine);
+                                NextDialogLine(dialog.timestamps[timestampIndex].dialogLine);
                                 break;
                             case TimeStamps.Commands.Mute:
                                 Mute();
@@ -180,7 +180,7 @@ public class DialogueTrigger : MonoBehaviour
     
     //command
     #region  Commands
-    private void ShowText(DialogList dialog)
+    private void ShowText(DialogLine dialogToShow)
     {
         if (dialogToShow.showText)
         {
