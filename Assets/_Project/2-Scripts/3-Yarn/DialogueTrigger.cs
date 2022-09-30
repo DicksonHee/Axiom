@@ -58,29 +58,18 @@ public class DialogueTrigger : MonoBehaviour
     {
         foreach (DialogList dialog in dialogListData.dialogLists) // Loop over each dialog in dialog list
         {
-            // Get the start time and play the audio file
-            if (dialog.playAudio)
-            {
-                fmodScript.PlayDialog(dialog.audioFileName, dialogueVolume);
-            }
-            else
-            {
-                //if not audio is hidden set volume = 0
-                fmodScript.PlayDialog(dialog.audioFileName, 0);
-            }
-            float audioFileLength = fmodScript.dialogueLength;
-            //the time from the start of foreach loop
+            // Play the audio file and set the appropriate volume
+            fmodScript.PlayDialog(dialog.audioFileName, dialog.playAudio ? dialogueVolume : 0);
+            
+            float audioFileLength = fmodScript.dialogueLength; // Get the length of the currently playing audio file
+            float elapsedTime = 0f;                            // Reset the elapsed time of each new dialog list entry
+            int timestampIndex = 0;                            // Reset the timestamp index
 
-            float elapsedTime = 0f;
-            int timestampIndex = 0;
-
-           // dialogToShow = dialog.GetNextLineToShow();
-
+            // While loop for the duration of the audio file length
             while (elapsedTime < audioFileLength / 1000)
             {
-                elapsedTime += Time.deltaTime;
-
                 bool hasExecutedCommand = true;
+                elapsedTime += Time.deltaTime;
 
                 while(hasExecutedCommand == true)
                 {
@@ -91,7 +80,7 @@ public class DialogueTrigger : MonoBehaviour
                         switch (dialog.timestamps[timestampIndex].command)
                         {
                             case TimeStamps.Commands.ShowText:
-                                ShowText(dialog.);
+                                ShowText(dialog.timestamps[timestampIndex].dialogLine);
                                 break;
                             case TimeStamps.Commands.NextDialogLine:
                                 NextDialogLine(dialog.timestamps[timestampIndex].dialogLine);
@@ -114,78 +103,12 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
-        //     // While the audio clip is still playing
-        //     while (elapsedTime < audioFileLength / 1000)
-        //     {
-        //         elapsedTime += Time.deltaTime;
-        //         //Debug.Log(elapsedTime); 
-        //         try
-        //         {
-        //             if (elapsedTime > dialog.timeStamps[i].timeStamp && i < dialog.timeStamps.Count)
-        //             {
-        //                 switch (dialog.timeStamps[i].command)
-        //                 {
-        //                     case TimeStamps.Commands.ShowText:
-
-        //                         ShowText(dialog);
-        //                         //Debug.Log("show"+i);
-        //                         i++;
-
-        //                         break;
-        //                     case TimeStamps.Commands.NextDialogLine:
-
-        //                         NextDialogLine(dialog);
-        //                         //Debug.Log("next"+i);
-        //                         i++;
-
-        //                         break;
-        //                     case TimeStamps.Commands.Mute:
-
-        //                         Mute();
-        //                         //Debug.Log("muted"+i);
-        //                         i++;
-
-        //                         break;
-        //                     case TimeStamps.Commands.Unmute:
-
-        //                         Unmute();
-        //                         //Debug.Log("unmuted"+i);
-        //                         i++;
-
-        //                         break;
-        //                     default:
-
-        //                         Debug.Log("command not found" + i);
-        //                         //yield return null;
-        //                         i++;
-
-        //                         break;
-        //                 }//end switch case
-        //             }//end if time
-        //             else if (i >= dialog.timeStamps.Count)
-        //             {
-        //                 Debug.Log("break");
-        //                 continue;
-        //             }
-        //         }
-        //         catch
-        //         {
-        //             //Debug.Log("here");
-        //             //continue;
-        //         }
-        //         yield return null;
-        //     }// end while
-        //     yield return null;
-        // }
-    
-    //command
     #region  Commands
     private void ShowText(DialogLine dialogToShow)
     {
         if (dialogToShow.showText)
         {
-            if (DialogUI.current != null)
-                DialogUI.current.UpdateText(dialogToShow.textToShow);
+            if (DialogUI.current != null) DialogUI.current.UpdateText(dialogToShow.textToShow);
 
             try
             {

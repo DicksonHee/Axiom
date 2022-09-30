@@ -27,7 +27,7 @@ public class DialogLine
     [Header("Text")]
     public string textToShow;
     public bool showText = true;
-    [Header("start from 0")]
+    [Header("Start from 0")]
     public List<int> _hiddenWordIndex;
     
     public string RedactDialog()
@@ -69,7 +69,6 @@ public class DialogLine
 
             return ModdedText;
         }
-
         else
         {
             //if no redacted words and no array of words need to be hidden
