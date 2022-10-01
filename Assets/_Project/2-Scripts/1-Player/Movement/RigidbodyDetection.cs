@@ -148,6 +148,8 @@ namespace Axiom.Player.Movement
             {
                 //ValidGroundDetection();
                 OnPlayerLanded?.Invoke();
+                if (groundHit.collider.TryGetComponent(out IPlayerLand playerLand))
+                    playerLand.OnPlayerLand();
             }
         }
         #endregion
