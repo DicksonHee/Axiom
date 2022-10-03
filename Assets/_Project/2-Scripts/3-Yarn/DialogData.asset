@@ -14,20 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogLists:
   - audioFileName: one
-    dialogLines:
+    playAudio: 0
+    currentDialogLine: 0
+    timestamps:
     - timeStamp: 0
-      textToShow: 
+      command: 0
+      dialogLine:
+        textToShow: 
+        showText: 0
+        hiddenWords: []
   - audioFileName: two
-    dialogLines:
-    - timeStamp: 0
-      textToShow: 
+    playAudio: 0
+    currentDialogLine: 0
+    timestamps: []
   - audioFileName: three
-    dialogLines:
-    - timeStamp: 0
-      textToShow: 
+    playAudio: 0
+    currentDialogLine: 0
+    timestamps: []
   - audioFileName: why
-    dialogLines:
-    - timeStamp: 0
-      textToShow: why are we still here
-    - timeStamp: 2
-      textToShow: just to suffer
+    playAudio: 0
+    currentDialogLine: 0
+    timestamps: []

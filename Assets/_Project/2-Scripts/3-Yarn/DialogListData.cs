@@ -2,9 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using FMODUnity;
 using System.Text.RegularExpressions;
-using System.Linq;
+using Axiom.Core;
 
 [CreateAssetMenu(menuName = "Dialog/Data", fileName = "DialogData")]
 public class DialogListData : ScriptableObject
@@ -15,28 +14,46 @@ public class DialogListData : ScriptableObject
 [Serializable]
 public class DialogList
 {
-    public bool playAudio;
     public string audioFileName;
+    //public bool playAudio;
     public int currentDialogLine;
     public List<TimeStamps> timestamps;
 }
+
+[Serializable]
+public class TimeStamps
+{
+    public float timeStamp;
+    public Commands command;
+    public DialogLine dialogLine;
+    public enum Commands
+    {
+        ShowText,
+        NextDialogLine,
+        Mute,
+        Unmute,
+    }
+    public string muteFlag;
+}
+
 
 [Serializable]
 public class DialogLine
 {
     [Header("Text")]
     public string textToShow;
-    public bool showText = true;
-    [Header("Start from 0")]
-    public List<int> _hiddenWordIndex;
-    
-    public string RedactDialog()
+    //public bool showText = true;
+    //[Header("Start from 0")]
+
+    //public List<int> _hiddenWordIndex;
+    public HiddenWord[] hiddenWords;
+    public string RedactDialog(string _flag = null)
     {
         //init modded text
         string ModdedText = new string(textToShow);
 
         //sort list to accending order, because in for loop requires it
-        _hiddenWordIndex.Sort();
+        //_hiddenWordIndex.Sort();
 
         //regex
         string pattern = @"\[(\S*?\s*?){0,10}?\]";
@@ -50,20 +67,36 @@ public class DialogLine
 
         if(matches!=null)
         {
-            for(int x = 0; x < matches.Count;)
+            //if hidden Word Index contains one of the number in x for loop, add that match to string to redact
+            //need to use dictionary
+            /* for(int x = 0; x < matches.Count;)
             {
                 if(_hiddenWordIndex.Contains(x))
                 {
                     stringToRedact.Add(matches[x].Value);
                 }
                 x++;
+            }*/
+            foreach(HiddenWord h in hiddenWords)
+            {
+                try
+                {   
+                    //check flag b4 redacting
+                    if(FlagSystem.GetBoolValue(h.flagToCheck))
+                    stringToRedact.Add(matches[h.index].Value);
+                }
+                catch(Exception)
+                {
+                    continue;
+                }
             }
-
+            //redact happens here
             foreach(string s in stringToRedact)
             {
               ModdedText = ModdedText.Replace(s,"▇▇▇▇");
             }
             
+            //remove additional brackets if they are not hidden
             ModdedText = ModdedText.Replace("[","");
             ModdedText = ModdedText.Replace("]","");
 
@@ -81,17 +114,8 @@ public class DialogLine
     
 }
 [Serializable]
-public class TimeStamps
+public class HiddenWord
 {
-    public float timeStamp;
-    public Commands command;
-    public DialogLine dialogLine;
-
-    public enum Commands
-    {
-        ShowText,
-        NextDialogLine,
-        Mute,
-        Unmute,
-    }
+    public string flagToCheck;
+    public int index;
 }

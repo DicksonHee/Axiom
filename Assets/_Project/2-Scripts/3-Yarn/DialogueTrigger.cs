@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Yarn.Unity;
 using Axiom.Dialogue;
+using Axiom.Core;
 
 public class DialogueTrigger : MonoBehaviour
 {
@@ -13,18 +14,13 @@ public class DialogueTrigger : MonoBehaviour
     public float dialogueVolume;
     DialogLine dialogToShow;
     Coroutine dialogCoroutine;
-    /////////////////////////////////////
-
-
-    // private DialogueRunner dr;
-    // public string yarnNodeToStartFrom;
-    // Start is called before the first frame update
     void Start()
     {
         //  dr = FindObjectOfType<DialogueRunner>();
-    }
 
-    // Update is called once per frame
+        //for testing
+        FlagSystem.SetBoolValue("Flag1", true);
+    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && dialogCoroutine == null) //for testing
@@ -59,7 +55,8 @@ public class DialogueTrigger : MonoBehaviour
         foreach (DialogList dialog in dialogListData.dialogLists) // Loop over each dialog in dialog list
         {
             // Play the audio file and set the appropriate volume
-            fmodScript.PlayDialog(dialog.audioFileName, dialog.playAudio ? dialogueVolume : 0);
+            //fmodScript.PlayDialog(dialog.audioFileName, dialog.playAudio ? dialogueVolume : 0);
+            fmodScript.PlayDialog(dialog.audioFileName, dialogueVolume);
             
             float audioFileLength = fmodScript.dialogueLength; // Get the length of the currently playing audio file
             float elapsedTime = 0f;                            // Reset the elapsed time of each new dialog list entry
@@ -81,15 +78,19 @@ public class DialogueTrigger : MonoBehaviour
                         {
                             case TimeStamps.Commands.ShowText:
                                 ShowText(dialog.timestamps[timestampIndex].dialogLine);
+                                //Debug.Log("show");
                                 break;
                             case TimeStamps.Commands.NextDialogLine:
                                 NextDialogLine(dialog.timestamps[timestampIndex].dialogLine);
+                                //Debug.Log("next");
                                 break;
                             case TimeStamps.Commands.Mute:
-                                Mute();
+                                Mute(dialog.timestamps[timestampIndex].muteFlag);
+                                //Debug.Log("mute");
                                 break;
                             case TimeStamps.Commands.Unmute:
                                 Unmute();
+                                //Debug.Log("unmute");
                                 break;
                         }
 
@@ -106,8 +107,8 @@ public class DialogueTrigger : MonoBehaviour
     #region  Commands
     private void ShowText(DialogLine dialogToShow)
     {
-        if (dialogToShow.showText)
-        {
+        //if (dialogToShow.showText)
+        //{
             if (DialogUI.current != null) DialogUI.current.UpdateText(dialogToShow.textToShow);
 
             try
@@ -118,20 +119,24 @@ public class DialogueTrigger : MonoBehaviour
             {
                 Debug.Log(e);
             }
-        }
-        else //if dialogue line is hidden
-        {
-            Debug.Log("text hidden");
+        //}
+        //else //if dialogue line is hidden
+        //{
+            //Debug.Log("text hidden");
 
-        }
+        //}
     }
     private void NextDialogLine(DialogLine dialog)
     {
         dialogToShow = dialog;
     }
-    private void Mute()
+    private void Mute(string flagToCheck = null)
     {
-        fmodScript.dialogueInstance.setVolume(0);
+        if(FlagSystem.GetBoolValue(flagToCheck))
+        {
+            fmodScript.dialogueInstance.setVolume(0);
+        }
+            
     }
     private void Unmute()
     {
