@@ -33,6 +33,7 @@ public class BezierFollow : MonoBehaviour
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(BezierFollow))]
 public class BezierFollowEditor : Editor
 {
@@ -48,3 +49,4 @@ public class BezierFollowEditor : Editor
         }
     }
 }
+#endif

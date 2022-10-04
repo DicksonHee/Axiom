@@ -85,7 +85,7 @@ namespace Axiom.Player.Movement.StateMachine.States
 			MovementSystem.EnableMovement();
 			MovementSystem.ExitWallRunState();
 			MovementSystem.SetAnimatorBool("WallRunning", false);
-			
+
 			base.ExitState();
 		}
 

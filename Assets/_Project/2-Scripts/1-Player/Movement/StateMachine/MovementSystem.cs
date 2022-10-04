@@ -202,7 +202,7 @@ namespace Axiom.Player.Movement.StateMachine
         private void CheckSlopeMovementDirection()
         {
             if (!rbInfo.IsOnSlope()) return;
-            MoveDirection = Vector3.ProjectOnPlane(ForwardDirection, rbInfo.GetSlopeHit().normal);
+            MoveDirection = Vector3.ProjectOnPlane(MoveDirection, rbInfo.GetSlopeHit().normal);
         }
 
         // Check if player is on ground and decrements jump counter if not on ground
@@ -319,7 +319,9 @@ namespace Axiom.Player.Movement.StateMachine
         // Applies upwards force to the character
         private void Jump()
         {
-            Rb.AddForce(UpDirection * upJumpForce, ForceMode.Impulse);
+            float forwardForce = 0f;
+            if (GetCurrentSpeed() > 16f) forwardForce = (GetCurrentSpeed() - 16f);
+            Rb.AddForce(UpDirection * (upJumpForce + forwardForce) + MoveDirection * forwardForce, ForceMode.Impulse);
 
             if (rbInfo.IsLeftWallDetected() && inputDetection.movementInput.x < 0)
             {

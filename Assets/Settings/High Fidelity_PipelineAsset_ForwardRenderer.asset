@@ -39,6 +39,24 @@ MonoBehaviour:
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
+--- !u!114 &-4872831751300503888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f58c0e0fb1b4c7549b2b50948300b0e5, type: 3}
+  m_Name: '[SCPE] FogRenderer'
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    injectionPoint: 550
+    alwaysEnable: 0
+    cameraTypes: 5
+    skipTransparents: 0
 --- !u!114 &-3379530977680460427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,6 +119,7 @@ MonoBehaviour:
   - {fileID: 5508336567317884978}
   - {fileID: 5451222027534167733}
   - {fileID: 6988361938291739496}
+  - {fileID: -4872831751300503888}
   m_RendererFeatureMap: 37fbde176b84e9b2e203f6e210f67f51
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}

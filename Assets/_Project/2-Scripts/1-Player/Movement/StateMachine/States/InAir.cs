@@ -28,7 +28,7 @@ namespace Axiom.Player.Movement.StateMachine.States
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            
+
             if (MovementSystem.rbInfo.IsGrounded()) MovementSystem.ChangeState(MovementSystem.IdleState);
             else if (MovementSystem.rbInfo.CanClimbLedge() && !MovementSystem.IsExitingLedgeGrab)
             {

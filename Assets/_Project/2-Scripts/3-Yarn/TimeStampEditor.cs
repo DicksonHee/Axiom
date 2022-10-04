@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.UIElements;
-using UnityEngine.UIElements;
 
+#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(TimeStamps))]
 public class TimeStampsEditor : PropertyDrawer
 {
@@ -189,3 +188,4 @@ public class HiddenEditor : PropertyDrawer
         return hidden.CountInProperty();
     } 
 }
+#endif
