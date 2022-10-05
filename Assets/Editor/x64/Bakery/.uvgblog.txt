@@ -1685,3 +1685,521 @@ Symbol file LoadedFromMemory doesn't match image H:\Game Dev\Game Projects\SAE G
 Symbol file LoadedFromMemory doesn't match image H:\Game Dev\Game Projects\SAE Games\Axiom v0.2\Axiom\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
 Symbol file LoadedFromMemory doesn't match image H:\Game Dev\Game Projects\SAE Games\Axiom v0.2\Axiom\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
 Symbol file LoadedFromMemory doesn't match image H:\Game Dev\Game Projects\SAE Games\Axiom v0.2\Axiom\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+2022-10-5
+Rendering UV GBuffer for Rhys_TestScene_LM0 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA1 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Done
+Done
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LM0.lz4" 2 0 0 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA1.lz4" 2 0 1 0
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_0" 4 0 0 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_0" 4 0 0 lights1.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_0" 4 0 0 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0" 4 0 0 comp_0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_1" 4 0 1 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_1" 4 0 1 lights1.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_1" 4 0 1 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1" 4 0 1 comp_1.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0_diffuse" 4 16 0 "gi_Rhys_TestScene_LM00.bin" "Rhys_TestScene_LM0_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1_diffuse" 4 16 1 "gi_Rhys_TestScene_LMA10.bin" "Rhys_TestScene_LMA1_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0_diffuse" 4 16 0 "gi_Rhys_TestScene_LM01.bin" "Rhys_TestScene_LM0_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1_diffuse" 4 16 1 "gi_Rhys_TestScene_LMA11.bin" "Rhys_TestScene_LMA1_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0_final" 4 16 0 "gi_Rhys_TestScene_LM02.bin" "Rhys_TestScene_LM0_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1_final" 4 16 1 "gi_Rhys_TestScene_LMA12.bin" "Rhys_TestScene_LMA1_lights_HDR.lz4" vbTraceTex.bin
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LM0_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LM0_final_HDR.lz4" 1024 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "0" "Rhys_TestScene_LM0_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA1_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA1_final_HDR.lz4" 512 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "1" "Rhys_TestScene_LMA1_final_HDR.lz4"
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LM0_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LM0_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA1_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA1_final.hdr" 1024
+Loaded vertex shader: quad.vso
+Loaded pixel shader: skyOutput.pso
+Loaded pixel shader: cookieOutput.pso
+initShaders done
+initScene done
+Done
+Rendering UV GBuffer for Rhys_TestScene_LM0 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA1 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA2 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Done
+Done
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LM0.lz4" 2 0 0 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA2.lz4" 2 0 2 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA1.lz4" 2 0 1 0
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_0" 4 0 0 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_0" 4 0 0 lights1.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_0" 4 0 0 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0" 4 0 0 comp_0.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA2" 4 0 2 comp_2.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_1" 4 0 1 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_1" 4 0 1 lights1.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_1" 4 0 1 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1" 4 0 1 comp_1.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0_diffuse" 4 16 0 "gi_Rhys_TestScene_LM00.bin" "Rhys_TestScene_LM0_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA2_diffuse" 4 16 2 "gi_Rhys_TestScene_LMA20.bin" "Rhys_TestScene_LMA2_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1_diffuse" 4 16 1 "gi_Rhys_TestScene_LMA10.bin" "Rhys_TestScene_LMA1_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0_diffuse" 4 16 0 "gi_Rhys_TestScene_LM01.bin" "Rhys_TestScene_LM0_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA2_diffuse" 4 16 2 "gi_Rhys_TestScene_LMA21.bin" "Rhys_TestScene_LMA2_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1_diffuse" 4 16 1 "gi_Rhys_TestScene_LMA11.bin" "Rhys_TestScene_LMA1_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0_final" 4 16 0 "gi_Rhys_TestScene_LM02.bin" "Rhys_TestScene_LM0_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA2_final" 4 16 2 "gi_Rhys_TestScene_LMA22.bin" "Rhys_TestScene_LMA2_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1_final" 4 16 1 "gi_Rhys_TestScene_LMA12.bin" "Rhys_TestScene_LMA1_lights_HDR.lz4" vbTraceTex.bin
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LM0_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LM0_final_HDR.lz4" 1024 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "0" "Rhys_TestScene_LM0_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA2_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA2_final_HDR.lz4" 256 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "2" "Rhys_TestScene_LMA2_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA1_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA1_final_HDR.lz4" 512 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "1" "Rhys_TestScene_LMA1_final_HDR.lz4"
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LM0_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LM0_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA2_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA2_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA1_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA1_final.hdr" 1024
+Loaded vertex shader: quad.vso
+Loaded pixel shader: skyOutput.pso
+Loaded pixel shader: cookieOutput.pso
+initShaders done
+initScene done
+Done
+Rendering UV GBuffer for Rhys_TestScene_LM0 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA1 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA2 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for probes 256
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Done
+Done
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LM0.lz4" 2 0 0 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA1.lz4" 2 0 1 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA2.lz4" 2 0 2 0
+Running ftraceRTX arealightprobesh "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_3" 1924 0 3 lights0.bin
+Running ftraceRTX arealightprobesh "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_3" 1924 0 3 lights1.bin
+Running ftraceRTX arealightprobesh "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_3" 1924 0 3 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "probes" 4 0 3 comp_3.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_0" 4 0 0 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_0" 4 0 0 lights1.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_0" 4 0 0 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0" 4 0 0 comp_0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_1" 4 0 1 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_1" 4 0 1 lights1.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_1" 4 0 1 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1" 4 0 1 comp_1.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA2" 4 0 2 comp_2.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0_diffuse" 4 16 0 "gi_Rhys_TestScene_LM00.bin" "Rhys_TestScene_LM0_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1_diffuse" 4 16 1 "gi_Rhys_TestScene_LMA10.bin" "Rhys_TestScene_LMA1_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA2_diffuse" 4 16 2 "gi_Rhys_TestScene_LMA20.bin" "Rhys_TestScene_LMA2_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0_diffuse" 4 16 0 "gi_Rhys_TestScene_LM01.bin" "Rhys_TestScene_LM0_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1_diffuse" 4 16 1 "gi_Rhys_TestScene_LMA11.bin" "Rhys_TestScene_LMA1_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA2_diffuse" 4 16 2 "gi_Rhys_TestScene_LMA21.bin" "Rhys_TestScene_LMA2_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgiprobesh "C:\Users\1022076\AppData\Local\Temp\frender" "probes_final" 1924 16 3 "gi_probes2.bin" "probes_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0_final" 4 16 0 "gi_Rhys_TestScene_LM02.bin" "Rhys_TestScene_LM0_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1_final" 4 16 1 "gi_Rhys_TestScene_LMA12.bin" "Rhys_TestScene_LMA1_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA2_final" 4 16 2 "gi_Rhys_TestScene_LMA22.bin" "Rhys_TestScene_LMA2_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX addsh "C:\Users\1022076\AppData\Local\Temp\frender" "probes_final_" 4 0 3 shcomp_3.bin
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LM0_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LM0_final_HDR.lz4" 1024 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "0" "Rhys_TestScene_LM0_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA1_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA1_final_HDR.lz4" 512 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "1" "Rhys_TestScene_LMA1_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA2_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA2_final_HDR.lz4" 256 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "2" "Rhys_TestScene_LMA2_final_HDR.lz4"
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LM0_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LM0_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA1_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA1_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA2_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA2_final.hdr" 1024
+Done
+Done
+Done
+Done
+Loaded vertex shader: quad.vso
+Loaded pixel shader: skyOutput.pso
+Loaded pixel shader: cookieOutput.pso
+initShaders done
+initScene done
+Done
+Rendering UV GBuffer for Rhys_TestScene_LMA10 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA19 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA18 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA17 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA16 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA15 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA14 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA13 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA12 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA11 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA20 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA21 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA8 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA7 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA6 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA5 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA4 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA3 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA2 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA1 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LM0 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Rhys_TestScene_LMA9 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for probes 256
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Done
+Done
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA13.lz4" 2 0 7 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA15.lz4" 2 0 5 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA7.lz4" 2 0 13 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA4.lz4" 2 0 16 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA6.lz4" 2 0 14 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA1.lz4" 2 0 19 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA9.lz4" 2 0 21 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA12.lz4" 2 0 8 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA11.lz4" 2 0 9 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA10.lz4" 2 0 0 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA18.lz4" 2 0 2 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA5.lz4" 2 0 15 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA17.lz4" 2 0 3 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA8.lz4" 2 0 12 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA14.lz4" 2 0 6 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA21.lz4" 2 0 11 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA2.lz4" 2 0 18 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LM0.lz4" 2 0 20 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA20.lz4" 2 0 10 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA19.lz4" 2 0 1 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA3.lz4" 2 0 17 0
+Running ftraceRTX fixpos12 "C:\Users\1022076\AppData\Local\Temp\frender" "uvpos_Rhys_TestScene_LMA16.lz4" 2 0 4 0
+Running ftraceRTX arealightprobesh "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_22" 1924 0 22 lights0.bin
+Running ftraceRTX arealightprobesh "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_22" 1924 0 22 lights1.bin
+Running ftraceRTX arealightprobesh "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_22" 1924 0 22 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "probes" 4 0 22 comp_22.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA13" 4 0 7 comp_7.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_5" 4 0 5 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_5" 4 0 5 lights1.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA15" 4 0 5 comp_5.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA7" 4 0 13 comp_13.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_16" 4 0 16 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_16" 4 0 16 lights1.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_16" 4 0 16 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA4" 4 0 16 comp_16.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_14" 4 0 14 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_14" 4 0 14 lights1.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_14" 4 0 14 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA6" 4 0 14 comp_14.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_19" 4 0 19 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_19" 4 0 19 lights1.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_19" 4 0 19 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1" 4 0 19 comp_19.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_21" 4 0 21 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_21" 4 0 21 lights1.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_21" 4 0 21 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA9" 4 0 21 comp_21.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA12" 4 0 8 comp_8.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_9" 4 0 9 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_9" 4 0 9 lights1.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_9" 4 0 9 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA11" 4 0 9 comp_9.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA10" 4 0 0 comp_0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_2" 4 0 2 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_2" 4 0 2 lights1.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA18" 4 0 2 comp_2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA5" 4 0 15 comp_15.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_3" 4 0 3 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_3" 4 0 3 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA17" 4 0 3 comp_3.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA8" 4 0 12 comp_12.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA14" 4 0 6 comp_6.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA21" 4 0 11 comp_11.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_18" 4 0 18 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_18" 4 0 18 lights1.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_18" 4 0 18 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA2" 4 0 18 comp_18.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0" 4 0 20 comp_20.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA20" 4 0 10 comp_10.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA19" 4 0 1 comp_1.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1437014544_17" 4 0 17 lights0.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_1558176427_17" 4 0 17 lights1.bin
+Running ftraceRTX arealight "C:\Users\1022076\AppData\Local\Temp\frender" "light_-875266584_17" 4 0 17 lights2.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA3" 4 0 17 comp_17.bin
+Running ftraceRTX addmul "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA16" 4 0 4 comp_4.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA13_diffuse" 4 16 7 "gi_Rhys_TestScene_LMA130.bin" "Rhys_TestScene_LMA13_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA15_diffuse" 4 16 5 "gi_Rhys_TestScene_LMA150.bin" "Rhys_TestScene_LMA15_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA7_diffuse" 4 16 13 "gi_Rhys_TestScene_LMA70.bin" "Rhys_TestScene_LMA7_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA4_diffuse" 4 16 16 "gi_Rhys_TestScene_LMA40.bin" "Rhys_TestScene_LMA4_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA6_diffuse" 4 16 14 "gi_Rhys_TestScene_LMA60.bin" "Rhys_TestScene_LMA6_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1_diffuse" 4 16 19 "gi_Rhys_TestScene_LMA10.bin" "Rhys_TestScene_LMA1_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA9_diffuse" 4 16 21 "gi_Rhys_TestScene_LMA90.bin" "Rhys_TestScene_LMA9_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA12_diffuse" 4 16 8 "gi_Rhys_TestScene_LMA120.bin" "Rhys_TestScene_LMA12_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA11_diffuse" 4 16 9 "gi_Rhys_TestScene_LMA110.bin" "Rhys_TestScene_LMA11_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA10_diffuse" 4 16 0 "gi_Rhys_TestScene_LMA100.bin" "Rhys_TestScene_LMA10_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA18_diffuse" 4 16 2 "gi_Rhys_TestScene_LMA180.bin" "Rhys_TestScene_LMA18_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA5_diffuse" 4 16 15 "gi_Rhys_TestScene_LMA50.bin" "Rhys_TestScene_LMA5_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA17_diffuse" 4 16 3 "gi_Rhys_TestScene_LMA170.bin" "Rhys_TestScene_LMA17_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA8_diffuse" 4 16 12 "gi_Rhys_TestScene_LMA80.bin" "Rhys_TestScene_LMA8_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA14_diffuse" 4 16 6 "gi_Rhys_TestScene_LMA140.bin" "Rhys_TestScene_LMA14_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA21_diffuse" 4 16 11 "gi_Rhys_TestScene_LMA210.bin" "Rhys_TestScene_LMA21_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA2_diffuse" 4 16 18 "gi_Rhys_TestScene_LMA20.bin" "Rhys_TestScene_LMA2_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0_diffuse" 4 16 20 "gi_Rhys_TestScene_LM00.bin" "Rhys_TestScene_LM0_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA20_diffuse" 4 16 10 "gi_Rhys_TestScene_LMA200.bin" "Rhys_TestScene_LMA20_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA19_diffuse" 4 16 1 "gi_Rhys_TestScene_LMA190.bin" "Rhys_TestScene_LMA19_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA3_diffuse" 4 16 17 "gi_Rhys_TestScene_LMA30.bin" "Rhys_TestScene_LMA3_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA16_diffuse" 4 16 4 "gi_Rhys_TestScene_LMA160.bin" "Rhys_TestScene_LMA16_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA13_diffuse" 4 16 7 "gi_Rhys_TestScene_LMA131.bin" "Rhys_TestScene_LMA13_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA15_diffuse" 4 16 5 "gi_Rhys_TestScene_LMA151.bin" "Rhys_TestScene_LMA15_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA7_diffuse" 4 16 13 "gi_Rhys_TestScene_LMA71.bin" "Rhys_TestScene_LMA7_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA4_diffuse" 4 16 16 "gi_Rhys_TestScene_LMA41.bin" "Rhys_TestScene_LMA4_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA6_diffuse" 4 16 14 "gi_Rhys_TestScene_LMA61.bin" "Rhys_TestScene_LMA6_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1_diffuse" 4 16 19 "gi_Rhys_TestScene_LMA11.bin" "Rhys_TestScene_LMA1_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA9_diffuse" 4 16 21 "gi_Rhys_TestScene_LMA91.bin" "Rhys_TestScene_LMA9_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA12_diffuse" 4 16 8 "gi_Rhys_TestScene_LMA121.bin" "Rhys_TestScene_LMA12_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA11_diffuse" 4 16 9 "gi_Rhys_TestScene_LMA111.bin" "Rhys_TestScene_LMA11_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA10_diffuse" 4 16 0 "gi_Rhys_TestScene_LMA101.bin" "Rhys_TestScene_LMA10_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA18_diffuse" 4 16 2 "gi_Rhys_TestScene_LMA181.bin" "Rhys_TestScene_LMA18_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA5_diffuse" 4 16 15 "gi_Rhys_TestScene_LMA51.bin" "Rhys_TestScene_LMA5_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA17_diffuse" 4 16 3 "gi_Rhys_TestScene_LMA171.bin" "Rhys_TestScene_LMA17_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA8_diffuse" 4 16 12 "gi_Rhys_TestScene_LMA81.bin" "Rhys_TestScene_LMA8_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA14_diffuse" 4 16 6 "gi_Rhys_TestScene_LMA141.bin" "Rhys_TestScene_LMA14_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA21_diffuse" 4 16 11 "gi_Rhys_TestScene_LMA211.bin" "Rhys_TestScene_LMA21_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA2_diffuse" 4 16 18 "gi_Rhys_TestScene_LMA21.bin" "Rhys_TestScene_LMA2_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0_diffuse" 4 16 20 "gi_Rhys_TestScene_LM01.bin" "Rhys_TestScene_LM0_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA20_diffuse" 4 16 10 "gi_Rhys_TestScene_LMA201.bin" "Rhys_TestScene_LMA20_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA19_diffuse" 4 16 1 "gi_Rhys_TestScene_LMA191.bin" "Rhys_TestScene_LMA19_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA3_diffuse" 4 16 17 "gi_Rhys_TestScene_LMA31.bin" "Rhys_TestScene_LMA3_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA16_diffuse" 4 16 4 "gi_Rhys_TestScene_LMA161.bin" "Rhys_TestScene_LMA16_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgiprobesh "C:\Users\1022076\AppData\Local\Temp\frender" "probes_final" 1924 16 22 "gi_probes2.bin" "probes_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA13_final" 4 16 7 "gi_Rhys_TestScene_LMA132.bin" "Rhys_TestScene_LMA13_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA15_final" 4 16 5 "gi_Rhys_TestScene_LMA152.bin" "Rhys_TestScene_LMA15_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA7_final" 4 16 13 "gi_Rhys_TestScene_LMA72.bin" "Rhys_TestScene_LMA7_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA4_final" 4 16 16 "gi_Rhys_TestScene_LMA42.bin" "Rhys_TestScene_LMA4_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA6_final" 4 16 14 "gi_Rhys_TestScene_LMA62.bin" "Rhys_TestScene_LMA6_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA1_final" 4 16 19 "gi_Rhys_TestScene_LMA12.bin" "Rhys_TestScene_LMA1_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA9_final" 4 16 21 "gi_Rhys_TestScene_LMA92.bin" "Rhys_TestScene_LMA9_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA12_final" 4 16 8 "gi_Rhys_TestScene_LMA122.bin" "Rhys_TestScene_LMA12_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA11_final" 4 16 9 "gi_Rhys_TestScene_LMA112.bin" "Rhys_TestScene_LMA11_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA10_final" 4 16 0 "gi_Rhys_TestScene_LMA102.bin" "Rhys_TestScene_LMA10_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA18_final" 4 16 2 "gi_Rhys_TestScene_LMA182.bin" "Rhys_TestScene_LMA18_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA5_final" 4 16 15 "gi_Rhys_TestScene_LMA52.bin" "Rhys_TestScene_LMA5_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA17_final" 4 16 3 "gi_Rhys_TestScene_LMA172.bin" "Rhys_TestScene_LMA17_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA8_final" 4 16 12 "gi_Rhys_TestScene_LMA82.bin" "Rhys_TestScene_LMA8_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA14_final" 4 16 6 "gi_Rhys_TestScene_LMA142.bin" "Rhys_TestScene_LMA14_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA21_final" 4 16 11 "gi_Rhys_TestScene_LMA212.bin" "Rhys_TestScene_LMA21_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA2_final" 4 16 18 "gi_Rhys_TestScene_LMA22.bin" "Rhys_TestScene_LMA2_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LM0_final" 4 16 20 "gi_Rhys_TestScene_LM02.bin" "Rhys_TestScene_LM0_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA20_final" 4 16 10 "gi_Rhys_TestScene_LMA202.bin" "Rhys_TestScene_LMA20_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA19_final" 4 16 1 "gi_Rhys_TestScene_LMA192.bin" "Rhys_TestScene_LMA19_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA3_final" 4 16 17 "gi_Rhys_TestScene_LMA32.bin" "Rhys_TestScene_LMA3_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\1022076\AppData\Local\Temp\frender" "Rhys_TestScene_LMA16_final" 4 16 4 "gi_Rhys_TestScene_LMA162.bin" "Rhys_TestScene_LMA16_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX addsh "C:\Users\1022076\AppData\Local\Temp\frender" "probes_final_" 4 0 22 shcomp_22.bin
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA13_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA13_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "7" "Rhys_TestScene_LMA13_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA15_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA15_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "5" "Rhys_TestScene_LMA15_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA7_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA7_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "13" "Rhys_TestScene_LMA7_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA4_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA4_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "16" "Rhys_TestScene_LMA4_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA6_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA6_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "14" "Rhys_TestScene_LMA6_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA1_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA1_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "19" "Rhys_TestScene_LMA1_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA9_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA9_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "21" "Rhys_TestScene_LMA9_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA12_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA12_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "8" "Rhys_TestScene_LMA12_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA11_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA11_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "9" "Rhys_TestScene_LMA11_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA10_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA10_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "0" "Rhys_TestScene_LMA10_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA18_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA18_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "2" "Rhys_TestScene_LMA18_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA5_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA5_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "15" "Rhys_TestScene_LMA5_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA17_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA17_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "3" "Rhys_TestScene_LMA17_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA8_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA8_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "12" "Rhys_TestScene_LMA8_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA14_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA14_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "6" "Rhys_TestScene_LMA14_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA21_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA21_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "11" "Rhys_TestScene_LMA21_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA2_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA2_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "18" "Rhys_TestScene_LMA2_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LM0_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LM0_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "20" "Rhys_TestScene_LM0_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA20_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA20_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "10" "Rhys_TestScene_LMA20_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA19_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA19_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "1" "Rhys_TestScene_LMA19_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA3_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA3_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "17" "Rhys_TestScene_LMA3_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA16_final_HDR.lz4" "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA16_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\1022076\AppData\Local\Temp\frender" "4" "Rhys_TestScene_LMA16_final_HDR.lz4"
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA13_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA13_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA15_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA15_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA7_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA7_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA4_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA4_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA6_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA6_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA1_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA1_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA9_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA9_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA12_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA12_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA11_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA11_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA10_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA10_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA18_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA18_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA5_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA5_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA17_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA17_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA8_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA8_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA14_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA14_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA21_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA21_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA2_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA2_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LM0_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LM0_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA20_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA20_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA19_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA19_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA3_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA3_final.hdr" 1024
+Running halffloat2hdr "C:\Users\1022076\AppData\Local\Temp\frender/Rhys_TestScene_LMA16_final_HDR.lz4" "C:/Users/1022076/Documents/Unity Projects/Axiom/Assets/BakeryLightmaps/Rhys_TestScene_LMA16_final.hdr" 1024
+Symbol file LoadedFromMemory doesn't match image C:\Users\1022076\Documents\Unity Projects\Axiom\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Symbol file LoadedFromMemory doesn't match image C:\Users\1022076\Documents\Unity Projects\Axiom\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Done
+Done
+Done
+Done
