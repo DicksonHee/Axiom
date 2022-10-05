@@ -38,11 +38,13 @@ public class Footstep : MonoBehaviour
 
     private void Awake()
     {
+        //if parameter reference is null, look up
         if (string.IsNullOrEmpty(parameterDescription.name))
         {
             Lookup();
         }
-        //set string once
+
+        // get the label name once in awake to set string once //
         try
         {
             RuntimeManager.StudioSystem.getParameterLabelByID(parameterDescription.id, (int)currentValuef, out labelName);
@@ -54,13 +56,16 @@ public class Footstep : MonoBehaviour
     }
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha0))
+        if(Input.GetKeyDown(KeyCode.Alpha0)) //press 0 to play// testing
         {
            eventEmmitter.Play();
         }
+        //get current value
         currentValue  = RuntimeManager.StudioSystem.getParameterByID(parameterDescription.id, out currentValuef);
         RuntimeManager.StudioSystem.getParameterLabelByID(parameterDescription.id, (int)currentValuef, out labelName);
 
+
+        //set parameter from changing value
         if(currentValuef == Value) return;
         FMOD.RESULT result = RuntimeManager.StudioSystem.setParameterByID(parameterDescription.id, Value);
        

@@ -4,6 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Yarn.Unity;
+using FMODUnity;
+using FMOD.Studio;
+using UnityEngine.Serialization;
 using Axiom.Dialogue;
 using Axiom.Core;
 
@@ -12,8 +15,30 @@ public class DialogueTrigger : MonoBehaviour
     public DialogListData dialogListData;
     [SerializeField] private ProgrammerSounds fmodScript;
     public float dialogueVolume;
+
+    [ParamRef]
+    [FormerlySerializedAs("parameter")]
+    public string DialogToStatic;
+
+     [SerializeField]
+    private PARAMETER_DESCRIPTION parameterDescription;
+    public PARAMETER_DESCRIPTION ParameterDesctription { get { return parameterDescription; } }
+
+    [SerializeField]
+    float currentValuef;
+
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////
     DialogLine dialogToShow;
     Coroutine dialogCoroutine;
+    void Awake()
+    {
+        //if parameter reference is null, look up
+        if (string.IsNullOrEmpty(parameterDescription.name))
+        {
+            Lookup();
+        }
+    }
     void Start()
     {
         //  dr = FindObjectOfType<DialogueRunner>();
@@ -23,6 +48,9 @@ public class DialogueTrigger : MonoBehaviour
     }
     void Update()
     {
+        //get dialog to static value
+        RuntimeManager.StudioSystem.getParameterByID(parameterDescription.id, out currentValuef);
+
         if (Input.GetKeyDown(KeyCode.Space) && dialogCoroutine == null) //for testing
         {
             //dr.StartDialogue(yarnNodeToStartFrom);
@@ -134,14 +162,23 @@ public class DialogueTrigger : MonoBehaviour
     {
         if(FlagSystem.GetBoolValue(flagToCheck))
         {
-            fmodScript.dialogueInstance.setVolume(0);
+                
+            FMOD.RESULT result = RuntimeManager.StudioSystem.setParameterByID(parameterDescription.id, 1);//1 is full static
+            //fmodScript.dialogueInstance.setVolume(0);
+             
         }
             
     }
     private void Unmute()
     {
-        fmodScript.dialogueInstance.setVolume(dialogueVolume);
+        //fmodScript.dialogueInstance.setVolume(dialogueVolume);
+        FMOD.RESULT result = RuntimeManager.StudioSystem.setParameterByID(parameterDescription.id, 0); //0 is no static
     }
     #endregion
+    private FMOD.RESULT Lookup()
+    {
+        FMOD.RESULT result = RuntimeManager.StudioSystem.getParameterDescriptionByName(DialogToStatic, out parameterDescription);
+        return result;
+    }
 }
 

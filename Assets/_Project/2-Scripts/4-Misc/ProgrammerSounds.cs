@@ -103,7 +103,24 @@ class ProgrammerSounds : MonoBehaviour
     {
         dialogueInstance.release();
     }
-    
+    //for stopping static or dialog
+    public void StopDialog(bool fadeOut)
+    {
+        if(!fadeOut)
+        {
+            dialogueInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            dialogueInstance.release();
+        }
+        else
+        {
+            dialogueInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            dialogueInstance.release();
+        }
+    }
+    public void SetPauseState(bool pause)
+    {
+        dialogueInstance.setPaused(pause);
+    }
     
 
     [AOT.MonoPInvokeCallback(typeof(EVENT_CALLBACK))]
