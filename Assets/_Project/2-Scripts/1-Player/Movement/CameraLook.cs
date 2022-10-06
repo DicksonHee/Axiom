@@ -103,7 +103,7 @@ namespace Axiom.Player.Movement
 
         public void StartSlideCamera()
         {
-            ChangeFov(wallRunFov);
+            //ChangeFov(wallRunFov);
             ApplyCameraXAxisMultiplier(0.3f);
             ApplyCameraYAxisMultiplier(0.5f);
         }
