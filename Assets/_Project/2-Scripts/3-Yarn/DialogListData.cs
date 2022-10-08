@@ -8,20 +8,23 @@ using Axiom.Core;
 [CreateAssetMenu(menuName = "Dialog/Data", fileName = "DialogData")]
 public class DialogListData : ScriptableObject
 {
-    public List<DialogList> dialogLists;
+    public string name;
+    public List<Dialog> dialogLists;
 }
 
 [Serializable]
-public class DialogList
+public class Dialog
 {
     public string audioFileName;
     //public bool playAudio;
     public int currentDialogLine;
-    public List<TimeStamps> timestamps;
+    public List<TimeStamp> timestamps;
+
+    //public void AddTimeStamps()
 }
 
 [Serializable]
-public class TimeStamps
+public class TimeStamp
 {
     public float timeStamp;
     public Commands command;
@@ -46,7 +49,7 @@ public class DialogLine
     //[Header("Start from 0")]
 
     //public List<int> _hiddenWordIndex;
-    public HiddenWord[] hiddenWords;
+    public List<HiddenWord> hiddenWords;
     public string RedactDialog(string _flag = null)
     {
         //init modded text

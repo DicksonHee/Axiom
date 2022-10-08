@@ -80,7 +80,7 @@ public class DialogueTrigger : MonoBehaviour
 
     private IEnumerator DialogueToShow()
     {
-        foreach (DialogList dialog in dialogListData.dialogLists) // Loop over each dialog in dialog list
+        foreach (Dialog dialog in dialogListData.dialogLists) // Loop over each dialog in dialog list
         {
             // Play the audio file and set the appropriate volume
             //fmodScript.PlayDialog(dialog.audioFileName, dialog.playAudio ? dialogueVolume : 0);
@@ -104,19 +104,19 @@ public class DialogueTrigger : MonoBehaviour
                     {
                         switch (dialog.timestamps[timestampIndex].command)
                         {
-                            case TimeStamps.Commands.ShowText:
+                            case TimeStamp.Commands.ShowText:
                                 ShowText(dialog.timestamps[timestampIndex].dialogLine);
                                 //Debug.Log("show");
                                 break;
-                            case TimeStamps.Commands.NextDialogLine:
+                            case TimeStamp.Commands.NextDialogLine:
                                 NextDialogLine(dialog.timestamps[timestampIndex].dialogLine);
                                 //Debug.Log("next");
                                 break;
-                            case TimeStamps.Commands.Mute:
+                            case TimeStamp.Commands.Mute:
                                 Mute(dialog.timestamps[timestampIndex].muteFlag);
                                 //Debug.Log("mute");
                                 break;
-                            case TimeStamps.Commands.Unmute:
+                            case TimeStamp.Commands.Unmute:
                                 Unmute();
                                 //Debug.Log("unmute");
                                 break;

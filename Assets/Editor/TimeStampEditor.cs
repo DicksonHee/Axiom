@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 #if UNITY_EDITOR
-[CustomPropertyDrawer(typeof(TimeStamps))]
+[CustomPropertyDrawer(typeof(TimeStamp))]
 public class TimeStampsEditor : PropertyDrawer
 {
     SerializedProperty timeStamp;
