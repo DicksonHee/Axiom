@@ -12,7 +12,7 @@ public class CSVtoSO
     ////////////
     private static string DialogListCSVPath = "/Editor/CSVs/DialogListCSV.csv";
 
-    [MenuItem("Utilities/Generate Dialog List")]
+    [MenuItem("Utilities/Generate Dialog Lists")]
     public static void GenerateDialogList()
     {
         string[] allLines = File.ReadAllLines(Application.dataPath + DialogListCSVPath);
@@ -48,65 +48,48 @@ public class CSVtoSO
             
             DialogLine dlInstance = new DialogLine(); //new dialog line in each row
             dlInstance.hiddenWords = new List<HiddenWord>();
-            TimeStamp ts = new TimeStamp(); //start create new timestamp
-            //List<HiddenWord> tempWords = new List<HiddenWord>();
+                                 
 
-            //if(PrevFileName != splitData[1])
-            
-            //
-            for(int x = 1; x < 4; x++) // x = 1, ignore first collum
-            {                                         
-                //if(PrevFileName != splitData[1])
-
-                if(x==1 && PrevFileName != splitData[1])//start create dialog
+                if(PrevFileName != splitData[1])//&& x==1  )//start create dialog
                 {
                     dialog = new Dialog();
+                    dialog.timestamps = new List<TimeStamp>();
 
                     dialog.audioFileName = splitData[1]; //file name
                     PrevFileName = splitData[1];
 
                     dialogListInstance.dialogLists.Add(dialog);
-                    //AssetDatabase.Refresh();
-                    //AssetDatabase.SaveAssets();
+                    Debug.Log("PrecFileName is different");
                 }
-                if(x==2)
-                {
-                    //TimeStamp ts = new TimeStamp(); //start create new timestamp
+                
+                    TimeStamp ts = new TimeStamp(); //start create new timestamp
                     ts.timeStamp = float.Parse(splitData[2]); // decide timestamp time
 
                     switch(splitData[3]) // decide timestamp command
                     {
                         case "Show":
-                        {
-                            ts.command = TimeStamp.Commands.ShowText;
-                            dlInstance.textToShow = splitData[4]; //only change this if show text
-                            
-                            int TotalCount = (splitData.Length-6)/2;
-
-                            for(int i = 1; i < TotalCount; i++)
-                            {
-                                //create new hiddenword once every second time
-                                HiddenWord hw = new HiddenWord();
-                                Debug.Log(y +"//"+splitData[(i*2)-1+6]+"//"+ splitData[1]);
-                                try
-                                {
-                                    hw.index = int.Parse(splitData[(i*2)-1+6]);//add hidden word indexes
-                                }
-                                catch
-                                {
-                                    Debug.Log("skip, no index found");
-                                    continue;
-                                }
-                                hw.flagToCheck = splitData[(i*2)+6]; //set text flag to check 
-                                dlInstance.hiddenWords.Add(hw);
-                                foreach(HiddenWord h in dlInstance.hiddenWords)
-                                {
-                                    Debug.Log(h.index +"//dude");
-                                }
-                            }
-                            
-                        }
+                        ts.command = TimeStamp.Commands.ShowText;
+                        dlInstance.textToShow = splitData[4]; //only change this if show text
                         
+                        
+                        int TotalCount = (splitData.Length-6)/2;
+                        for(int i = 1; i < TotalCount; i++) // for how many hiddenword needed to be added
+                        {
+                            //create new hiddenword once every second time
+                            HiddenWord hw = new HiddenWord();
+                            Debug.Log("row"+ y +"//index "+ splitData[(i*2)+5] +"//"+ splitData[(i*2)+4]+"//"+splitData[3]);
+                            try
+                            {
+                                hw.index = int.Parse(splitData[(i*2)+5]);//add hidden word indexes
+                            }
+                            catch
+                            {
+                                Debug.Log("skip, no index found");
+                                continue;
+                            }
+                            hw.flagToCheck = splitData[(i*2)+4]; //set text flag to check 
+                            dlInstance.hiddenWords.Add(hw);
+                        }
                         break;
 
                         case "Next":
@@ -124,15 +107,15 @@ public class CSVtoSO
                     }
                     if(dialog == null)
                     Debug.Log("dialog is null");
-
-                    dialog.timestamps = new List<TimeStamp>();
+                    
+                    if(dialog.timestamps == null)
+                    {
+                        dialog.timestamps = new List<TimeStamp>();
+                        Debug.Log("created new list, dialog.timestamps was null");
+                    }
+                    
+                    ts.dialogLine = dlInstance;//set dialogline
                     dialog.timestamps.Add(ts);//add ts to list
-                    //AssetDatabase.SaveAssets();
-                }
-                
-                    //AssetDatabase.SaveAssets();
-                   
-            }//end collum loop
                 try
                 {
                     if(PreSceneName!= splitData[0])
@@ -146,11 +129,6 @@ public class CSVtoSO
         }//end row loop
        AssetDatabase.SaveAssets();
     }   
-}
-public class DataContainer
-{
-    public string[,] matrix;
-
 }
 //number of dialogList is the number of containers in A collum
 //dialog in dialogList is the number of collums(ignoring first collum) in the row
