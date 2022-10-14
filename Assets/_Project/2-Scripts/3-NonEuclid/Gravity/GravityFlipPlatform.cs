@@ -8,31 +8,44 @@ namespace Axiom.NonEuclidean
     {
         public float degrees;
         public float rotateSpeed;
+        public FlippyTrigger[] landingTriggers;
+
+        private FlippyTrigger activeTrigger;
 
         private Quaternion initRot;
 
         private bool rotating = false;
         private bool atBaseRotation = true;
 
-        private bool playerOnPlatform = false;
+        private bool playerOnPlatform => activeTrigger != null;
         private bool playerHasLeft = true;
 
         private void Awake()
         {
             initRot = transform.rotation;
+
+            foreach (FlippyTrigger trigger in landingTriggers)
+            {
+                trigger.OnEnter += OnTriggerEnter;
+                trigger.OnExit += OnTriggerExit;
+            }
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Player"))
-                playerOnPlatform = true;
-        }
-
-        private void OnTriggerExit(Collider other)
+        private void OnTriggerEnter(Collider other, FlippyTrigger trigger)
         {
             if (other.CompareTag("Player"))
             {
-                playerOnPlatform = false;
+                activeTrigger = trigger;
+                //playerOnPlatform = true;
+            }
+        }
+
+        private void OnTriggerExit(Collider other, FlippyTrigger trigger)
+        {
+            if (other.CompareTag("Player"))
+            {
+                //playerOnPlatform = false;
+                activeTrigger = null;
                 playerHasLeft = true;
             }
         }
@@ -71,13 +84,13 @@ namespace Axiom.NonEuclidean
 
                 transform.rotation = currentRot;
                 if(playerOnPlatform)
-                    Physics.gravity = transform.up * -1;
+                    Physics.gravity = activeTrigger.transform.up * -1;
 
                 yield return null;
             }
 
             transform.rotation = initRot * Quaternion.AngleAxis(degTo, Vector3.right);
-            Physics.gravity = transform.up * -1;
+            Physics.gravity = activeTrigger.transform.up * -1;
             atBaseRotation = !atBaseRotation;
 
             rotating = false;
