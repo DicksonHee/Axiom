@@ -68,14 +68,14 @@ public class DialogueTrigger : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.K) && dialogCoroutine != null)
-        {
-            fmodScript.dialogueInstance.setVolume(0); //mute
-        }
-        if (Input.GetKeyUp(KeyCode.K) && dialogCoroutine != null)
-        {
-            fmodScript.dialogueInstance.setVolume(dialogueVolume); //unmute
-        }
+        // if (Input.GetKeyDown(KeyCode.K) && dialogCoroutine != null)
+        // {
+        //     fmodScript.dialogueInstance.setVolume(0); //mute
+        // }
+        // if (Input.GetKeyUp(KeyCode.K) && dialogCoroutine != null)
+        // {
+        //     fmodScript.dialogueInstance.setVolume(dialogueVolume); //unmute
+        // }
     }
 
     private IEnumerator DialogueToShow()
@@ -119,6 +119,10 @@ public class DialogueTrigger : MonoBehaviour
                             case TimeStamp.Commands.Unmute:
                                 Unmute();
                                 //Debug.Log("unmute");
+                                break;
+                            case TimeStamp.Commands.Stop:
+                                Stop();
+                                //Debug.Log("stop");
                                 break;
                         }
 
@@ -173,6 +177,10 @@ public class DialogueTrigger : MonoBehaviour
     {
         //fmodScript.dialogueInstance.setVolume(dialogueVolume);
         FMOD.RESULT result = RuntimeManager.StudioSystem.setParameterByID(parameterDescription.id, 0); //0 is no static
+    }
+    private void Stop()
+    {
+        fmodScript.StopDialog(false);
     }
     #endregion
     private FMOD.RESULT Lookup()
