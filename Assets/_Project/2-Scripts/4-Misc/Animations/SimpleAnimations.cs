@@ -28,13 +28,13 @@ public class SimpleAnimations : MonoBehaviour
                 if (Random.Range(0, 2) == 0)
                 {
                     gameObject.transform
-                        .DOLocalRotate(new Vector3(0, 360f, 0), Random.Range(8f, 12f), RotateMode.FastBeyond360)
+                        .DOLocalRotate(new Vector3(Random.Range(0,360), Random.Range(0,360), Random.Range(0,360)), Random.Range(40f, 50f), RotateMode.FastBeyond360)
                         .SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
                 }
                 else
                 {
                     gameObject.transform
-                        .DOLocalRotate(new Vector3(0, -360f, 0), Random.Range(8f, 12f), RotateMode.FastBeyond360)
+                        .DOLocalRotate(new Vector3(Random.Range(0,360), Random.Range(0,360), Random.Range(0,360)) * -1, Random.Range(40f, 50f), RotateMode.FastBeyond360)
                         .SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
                 }
             }
