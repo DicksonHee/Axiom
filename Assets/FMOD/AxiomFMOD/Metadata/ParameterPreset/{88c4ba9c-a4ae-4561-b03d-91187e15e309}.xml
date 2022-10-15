@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{88c4ba9c-a4ae-4561-b03d-91187e15e309}">
+		<property name="name">
+			<value>Dialogue Dip</value>
+		</property>
+		<relationship name="folder">
+			<destination>{962a04c5-b773-4070-ba5c-ae2b03a81ffb}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{ea3733ea-89e4-4907-9cca-653b6e19c49c}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{ea3733ea-89e4-4907-9cca-653b6e19c49c}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="seekSpeed">
+			<value>1.3999999761581421</value>
+		</property>
+		<property name="seekSpeedDescending">
+			<value>1.3999999761581421</value>
+		</property>
+		<property name="seekSpeedAsymmetric">
+			<value>true</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{7e369185-10a8-41ea-9674-ea8517b33932}</destination>
+			<destination>{77f9ad4c-daaf-4af5-ac2c-21ad2614c8eb}</destination>
+		</relationship>
+	</object>
+	<object class="ADSRModulator" id="{7e369185-10a8-41ea-9674-ea8517b33932}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>cursorPosition</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{77f9ad4c-daaf-4af5-ac2c-21ad2614c8eb}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>cursorPosition</value>
+		</property>
+	</object>
+</objects>
