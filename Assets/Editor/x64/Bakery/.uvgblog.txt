@@ -10761,3 +10761,233 @@ Done
 Done
 Done
 Done
+2022-10-15
+Rendering UV GBuffer for Dickson_TestScene_LM0 50
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Dickson_TestScene_LMA1 50
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Dickson_TestScene_LMA2 50
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Done
+Done
+Running ftraceRTX fixpos12 "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "uvpos_Dickson_TestScene_LM0.lz4" 2 0 0 0
+Running ftraceRTX fixpos12 "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "uvpos_Dickson_TestScene_LMA2.lz4" 2 0 2 0
+Running ftraceRTX fixpos12 "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "uvpos_Dickson_TestScene_LMA1.lz4" 2 0 1 0
+Running ftraceRTX sky "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "light_1377841925_0" 4 0 0 sky0.bin
+Running ftraceRTX addmul "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LM0" 4 0 0 comp_0.bin
+Running ftraceRTX sky "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "light_1377841925_2" 4 0 2 sky0.bin
+Running ftraceRTX addmul "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA2" 4 0 2 comp_2.bin
+Running ftraceRTX sky "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "light_1377841925_1" 4 0 1 sky0.bin
+Running ftraceRTX addmul "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA1" 4 0 1 comp_1.bin
+Running ftraceRTX texgi "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LM0_diffuse" 4 16 0 "gi_Dickson_TestScene_LM00.bin" "Dickson_TestScene_LM0_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA2_diffuse" 4 16 2 "gi_Dickson_TestScene_LMA20.bin" "Dickson_TestScene_LMA2_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA1_diffuse" 4 16 1 "gi_Dickson_TestScene_LMA10.bin" "Dickson_TestScene_LMA1_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LM0_final" 4 16 0 "gi_Dickson_TestScene_LM01.bin" "Dickson_TestScene_LM0_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA2_final" 4 16 2 "gi_Dickson_TestScene_LMA21.bin" "Dickson_TestScene_LMA2_lights_HDR.lz4" vbTraceTex.bin
+Running ftraceRTX texgi "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA1_final" 4 16 1 "gi_Dickson_TestScene_LMA11.bin" "Dickson_TestScene_LMA1_lights_HDR.lz4" vbTraceTex.bin
+Running denoiserOIDN c "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_HDR.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "0" "Dickson_TestScene_LM0_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_HDR.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_HDR.lz4" 512 0
+Running seamfixer "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "2" "Dickson_TestScene_LMA2_final_HDR.lz4"
+Running denoiserOIDN c "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_HDR.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_HDR.lz4" 1024 0
+Running seamfixer "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "1" "Dickson_TestScene_LMA1_final_HDR.lz4"
+Running halffloat2hdr "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_HDR.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LM0_final.hdr" 1024
+Running halffloat2hdr "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_HDR.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LMA2_final.hdr" 1024
+Running halffloat2hdr "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_HDR.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LMA1_final.hdr" 1024
+Symbol file LoadedFromMemory doesn't match image H:\Game Dev\Game Projects\SAE Games\Axiom v0.2\Axiom\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Symbol file LoadedFromMemory doesn't match image H:\Game Dev\Game Projects\SAE Games\Axiom v0.2\Axiom\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image H:\Game Dev\Game Projects\SAE Games\Axiom v0.2\Axiom\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Symbol file LoadedFromMemory doesn't match image H:\Game Dev\Game Projects\SAE Games\Axiom v0.2\Axiom\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image H:\Game Dev\Game Projects\SAE Games\Axiom v0.2\Axiom\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Symbol file LoadedFromMemory doesn't match image H:\Game Dev\Game Projects\SAE Games\Axiom v0.2\Axiom\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Running ftraceRTX.exe /sun hwtestdata light 4 0 0 direct0.bin
+Running ftrace.exe /sun hwtestdata light 4 0 0 direct0.bin
+Running denoiserLegacy c hwtestdata/image.lz4 hwtestdata/image.lz4 16 0
+Running denoiser c hwtestdata/image.lz4 hwtestdata/image.lz4 16 0
+Running denoiser72 c hwtestdata/image.lz4 hwtestdata/image.lz4 16 0
+Running denoiserOIDN c hwtestdata/image.lz4 hwtestdata/image.lz4 16 0
+Loaded vertex shader: quad.vso
+Loaded pixel shader: skyOutput.pso
+Loaded pixel shader: cookieOutput.pso
+initShaders done
+initScene done
+Done
+Rendering UV GBuffer for Dickson_TestScene_LM0 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Dickson_TestScene_LMA1 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Dickson_TestScene_LMA2 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Done
+Done
+Running ftrace fixpos12 "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "uvpos_Dickson_TestScene_LM0.lz4" 2 0 0 0
+Running ftrace fixpos12 "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "uvpos_Dickson_TestScene_LMA1.lz4" 2 0 1 0
+Running ftrace fixpos12 "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "uvpos_Dickson_TestScene_LMA2.lz4" 2 0 2 0
+Running ftrace addmul "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LM0" 4 0 0 comp_0.bin
+Running ftrace diradd "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LM0_lights_Dir.lz4" 64 0 0 dircomp_0.bin
+Running ftrace addmul "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA1" 4 0 1 comp_1.bin
+Running ftrace diradd "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA1_lights_Dir.lz4" 64 0 1 dircomp_1.bin
+Running ftrace addmul "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA2" 4 0 2 comp_2.bin
+Running ftrace diradd "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA2_lights_Dir.lz4" 64 0 2 dircomp_2.bin
+Running ftrace texgi "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LM0_diffuse" 4 16 0 "gi_Dickson_TestScene_LM00.bin" "Dickson_TestScene_LM0_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftrace texgi "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA1_diffuse" 4 16 1 "gi_Dickson_TestScene_LMA10.bin" "Dickson_TestScene_LMA1_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftrace texgi "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA2_diffuse" 4 16 2 "gi_Dickson_TestScene_LMA20.bin" "Dickson_TestScene_LMA2_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftrace texgidir "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LM0_final" 68 16 0 "gi_Dickson_TestScene_LM01.bin" "Dickson_TestScene_LM0_lights_HDR.lz4" vbTraceTex.bin
+Running ftrace texgidir "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA1_final" 68 16 1 "gi_Dickson_TestScene_LMA11.bin" "Dickson_TestScene_LMA1_lights_HDR.lz4" vbTraceTex.bin
+Running ftrace texgidir "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA2_final" 68 16 2 "gi_Dickson_TestScene_LMA21.bin" "Dickson_TestScene_LMA2_lights_HDR.lz4" vbTraceTex.bin
+Running denoiserOIDN D "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_Dir.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_Dir.lz4" 2048 0
+Running denoiserOIDN c "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_HDR.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "0" "Dickson_TestScene_LM0_final_HDR.lz4" "Dickson_TestScene_LM0_final_Dir.lz4
+Running denoiserOIDN D "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_Dir.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_Dir.lz4" 1024 0
+Running denoiserOIDN c "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_HDR.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_HDR.lz4" 1024 0
+Running seamfixer "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "1" "Dickson_TestScene_LMA1_final_HDR.lz4" "Dickson_TestScene_LMA1_final_Dir.lz4
+Running denoiserOIDN D "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_Dir.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_Dir.lz4" 512 0
+Running denoiserOIDN c "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_HDR.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_HDR.lz4" 512 0
+Running seamfixer "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "2" "Dickson_TestScene_LMA2_final_HDR.lz4" "Dickson_TestScene_LMA2_final_Dir.lz4
+Running halffloat2hdr "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_HDR.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LM0_final.hdr" 1024
+Running rgba2tga "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_Dir.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LM0_dir.tga" 
+Running halffloat2hdr "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_HDR.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LMA1_final.hdr" 1024
+Running rgba2tga "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_Dir.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LMA1_dir.tga" 
+Running halffloat2hdr "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_HDR.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LMA2_final.hdr" 1024
+Running rgba2tga "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_Dir.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LMA2_dir.tga" 
+Loaded vertex shader: quad.vso
+Loaded pixel shader: skyOutput.pso
+Loaded pixel shader: cookieOutput.pso
+initShaders done
+initScene done
+Done
+Rendering UV GBuffer for Dickson_TestScene_LM0 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Dickson_TestScene_LMA1 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Dickson_TestScene_LMA2 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Done
+Done
+Running ftrace fixpos12 "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "uvpos_Dickson_TestScene_LM0.lz4" 2 0 0 0
+Running ftrace fixpos12 "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "uvpos_Dickson_TestScene_LMA1.lz4" 2 0 1 0
+Running ftrace fixpos12 "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "uvpos_Dickson_TestScene_LMA2.lz4" 2 0 2 0
+Running ftrace skydir "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "light_1377841925_0" 68 0 0 sky0.bin
+Running ftrace addmul "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LM0" 4 0 0 comp_0.bin
+Running ftrace diradd "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LM0_lights_Dir.lz4" 64 0 0 dircomp_0.bin
+Running ftrace skydir "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "light_1377841925_1" 68 0 1 sky0.bin
+Running ftrace addmul "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA1" 4 0 1 comp_1.bin
+Running ftrace diradd "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA1_lights_Dir.lz4" 64 0 1 dircomp_1.bin
+Running ftrace skydir "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "light_1377841925_2" 68 0 2 sky0.bin
+Running ftrace addmul "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA2" 4 0 2 comp_2.bin
+Running ftrace diradd "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA2_lights_Dir.lz4" 64 0 2 dircomp_2.bin
+Running ftrace texgi "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LM0_diffuse" 4 16 0 "gi_Dickson_TestScene_LM00.bin" "Dickson_TestScene_LM0_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftrace texgi "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA1_diffuse" 4 16 1 "gi_Dickson_TestScene_LMA10.bin" "Dickson_TestScene_LMA1_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftrace texgi "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA2_diffuse" 4 16 2 "gi_Dickson_TestScene_LMA20.bin" "Dickson_TestScene_LMA2_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftrace texgidir "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LM0_final" 68 16 0 "gi_Dickson_TestScene_LM01.bin" "Dickson_TestScene_LM0_lights_HDR.lz4" vbTraceTex.bin
+Running ftrace texgidir "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA1_final" 68 16 1 "gi_Dickson_TestScene_LMA11.bin" "Dickson_TestScene_LMA1_lights_HDR.lz4" vbTraceTex.bin
+Running ftrace texgidir "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA2_final" 68 16 2 "gi_Dickson_TestScene_LMA21.bin" "Dickson_TestScene_LMA2_lights_HDR.lz4" vbTraceTex.bin
+Running denoiserOIDN D "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_Dir.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_Dir.lz4" 2048 0
+Running denoiserOIDN c "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_HDR.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "0" "Dickson_TestScene_LM0_final_HDR.lz4" "Dickson_TestScene_LM0_final_Dir.lz4
+Running denoiserOIDN D "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_Dir.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_Dir.lz4" 1024 0
+Running denoiserOIDN c "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_HDR.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_HDR.lz4" 1024 0
+Running seamfixer "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "1" "Dickson_TestScene_LMA1_final_HDR.lz4" "Dickson_TestScene_LMA1_final_Dir.lz4
+Running denoiserOIDN D "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_Dir.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_Dir.lz4" 512 0
+Running denoiserOIDN c "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_HDR.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_HDR.lz4" 512 0
+Running seamfixer "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "2" "Dickson_TestScene_LMA2_final_HDR.lz4" "Dickson_TestScene_LMA2_final_Dir.lz4
+Running halffloat2hdr "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_HDR.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LM0_final.hdr" 1024
+Running rgba2tga "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_Dir.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LM0_dir.tga" 
+Running halffloat2hdr "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_HDR.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LMA1_final.hdr" 1024
+Running rgba2tga "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_Dir.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LMA1_dir.tga" 
+Running halffloat2hdr "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_HDR.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LMA2_final.hdr" 1024
+Running rgba2tga "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_Dir.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LMA2_dir.tga" 
+Loaded vertex shader: quad.vso
+Loaded pixel shader: skyOutput.pso
+Loaded pixel shader: cookieOutput.pso
+initShaders done
+initScene done
+Done
+Rendering UV GBuffer for Dickson_TestScene_LM0 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Dickson_TestScene_LMA1 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Rendering UV GBuffer for Dickson_TestScene_LMA2 51
+RGBA32F...RGBA8...RGBA8_SRGB...RGBA16F...states...
+Rendering UV normal...
+Rendering faceted UV normal...
+Rendering UV pos...
+Rendering smooth UV pos...
+Done
+Done
+Running ftrace fixpos12 "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "uvpos_Dickson_TestScene_LM0.lz4" 2 0 0 0
+Running ftrace fixpos12 "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "uvpos_Dickson_TestScene_LMA1.lz4" 2 0 1 0
+Running ftrace fixpos12 "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "uvpos_Dickson_TestScene_LMA2.lz4" 2 0 2 0
+Running ftrace skydir "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "light_1377841925_0" 68 0 0 sky0.bin
+Running ftrace addmul "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LM0" 4 0 0 comp_0.bin
+Running ftrace diradd "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LM0_lights_Dir.lz4" 64 0 0 dircomp_0.bin
+Running ftrace skydir "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "light_1377841925_1" 68 0 1 sky0.bin
+Running ftrace addmul "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA1" 4 0 1 comp_1.bin
+Running ftrace diradd "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA1_lights_Dir.lz4" 64 0 1 dircomp_1.bin
+Running ftrace skydir "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "light_1377841925_2" 68 0 2 sky0.bin
+Running ftrace addmul "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA2" 4 0 2 comp_2.bin
+Running ftrace diradd "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA2_lights_Dir.lz4" 64 0 2 dircomp_2.bin
+Running ftrace texgi "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LM0_diffuse" 4 16 0 "gi_Dickson_TestScene_LM00.bin" "Dickson_TestScene_LM0_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftrace texgi "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA1_diffuse" 4 16 1 "gi_Dickson_TestScene_LMA10.bin" "Dickson_TestScene_LMA1_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftrace texgi "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA2_diffuse" 4 16 2 "gi_Dickson_TestScene_LMA20.bin" "Dickson_TestScene_LMA2_diffuse0_HDR.lz4" vbTraceTex.bin
+Running ftrace texgidir "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LM0_final" 68 16 0 "gi_Dickson_TestScene_LM01.bin" "Dickson_TestScene_LM0_lights_HDR.lz4" vbTraceTex.bin
+Running ftrace texgidir "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA1_final" 68 16 1 "gi_Dickson_TestScene_LMA11.bin" "Dickson_TestScene_LMA1_lights_HDR.lz4" vbTraceTex.bin
+Running ftrace texgidir "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "Dickson_TestScene_LMA2_final" 68 16 2 "gi_Dickson_TestScene_LMA21.bin" "Dickson_TestScene_LMA2_lights_HDR.lz4" vbTraceTex.bin
+Running denoiserOIDN D "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_Dir.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_Dir.lz4" 2048 0
+Running denoiserOIDN c "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_HDR.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_HDR.lz4" 2048 0
+Running seamfixer "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "0" "Dickson_TestScene_LM0_final_HDR.lz4" "Dickson_TestScene_LM0_final_Dir.lz4
+Running denoiserOIDN D "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_Dir.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_Dir.lz4" 1024 0
+Running denoiserOIDN c "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_HDR.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_HDR.lz4" 1024 0
+Running seamfixer "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "1" "Dickson_TestScene_LMA1_final_HDR.lz4" "Dickson_TestScene_LMA1_final_Dir.lz4
+Running denoiserOIDN D "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_Dir.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_Dir.lz4" 512 0
+Running denoiserOIDN c "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_HDR.lz4" "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_HDR.lz4" 512 0
+Running seamfixer "C:\Users\DICKSO~1\AppData\Local\Temp\frender" "2" "Dickson_TestScene_LMA2_final_HDR.lz4" "Dickson_TestScene_LMA2_final_Dir.lz4
+Running halffloat2hdr "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_HDR.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LM0_final.hdr" 1024
+Running rgba2tga "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LM0_final_Dir.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LM0_dir.tga" 
+Running halffloat2hdr "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_HDR.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LMA1_final.hdr" 1024
+Running rgba2tga "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA1_final_Dir.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LMA1_dir.tga" 
+Running halffloat2hdr "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_HDR.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LMA2_final.hdr" 1024
+Running rgba2tga "C:\Users\DICKSO~1\AppData\Local\Temp\frender/Dickson_TestScene_LMA2_final_Dir.lz4" "H:/Game Dev/Game Projects/SAE Games/Axiom v0.2/Axiom/Assets/BakeryLightmaps/Dickson_TestScene_LMA2_dir.tga" 
+Symbol file LoadedFromMemory doesn't match image H:\Game Dev\Game Projects\SAE Games\Axiom v0.2\Axiom\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Symbol file LoadedFromMemory doesn't match image H:\Game Dev\Game Projects\SAE Games\Axiom v0.2\Axiom\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
