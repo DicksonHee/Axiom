@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Axiom.Player.Movement
 {
@@ -9,7 +10,8 @@ namespace Axiom.Player.Movement
         public Transform orientation;
         public Transform leftHandClimbPositionTarget;
         public Transform rightHandClimbPositionTarget;
-
+        public SkinnedMeshRenderer playerMesh;
+        
         private bool isRotationEnabled = true;
 
         private Animator _playerAnimator;
@@ -100,5 +102,7 @@ namespace Axiom.Player.Movement
 
         public void SetFloatParam(string param, float val) => _playerAnimator.SetFloat(param, val);
 
+        public void HideModel() => playerMesh.shadowCastingMode = ShadowCastingMode.ShadowsOnly;
+        public void ShowModel() => playerMesh.shadowCastingMode = ShadowCastingMode.On;
     }
 }

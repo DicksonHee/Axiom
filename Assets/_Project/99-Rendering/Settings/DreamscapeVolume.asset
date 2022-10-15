@@ -28,6 +28,37 @@ MonoBehaviour:
   rounded:
     m_OverrideState: 1
     m_Value: 1
+--- !u!114 &-4243070513170728806
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3ffd454053aaa249a62a461f9c8db22, type: 3}
+  m_Name: Overlay
+  m_EditorClassIdentifier: 
+  active: 1
+  overlayTex:
+    m_OverrideState: 1
+    m_Value: {fileID: 2800000, guid: 07d028a3c7eb59a4096db36b25b60ab4, type: 3}
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0
+  luminanceThreshold:
+    m_OverrideState: 1
+    m_Value: 0.5
+  autoAspect:
+    m_OverrideState: 1
+    m_Value: 1
+  blendMode:
+    m_OverrideState: 1
+    m_Value: 1
+  tiling:
+    m_OverrideState: 1
+    m_Value: 0
 --- !u!114 &-3004122014090364168
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -80,7 +111,7 @@ MonoBehaviour:
     m_Value: 1.25
   intensity:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   scatter:
     m_OverrideState: 1
     m_Value: 0.5
@@ -121,6 +152,8 @@ MonoBehaviour:
   - {fileID: 2784022921959815584}
   - {fileID: 4591238669900929902}
   - {fileID: -3004122014090364168}
+  - {fileID: 3404709802056044385}
+  - {fileID: -4243070513170728806}
 --- !u!114 &2784022921959815584
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -133,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74483714bbf784b45b0c9c7c76035dd8, type: 3}
   m_Name: Fog
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   useSceneSettings:
     m_OverrideState: 1
     m_Value: 0
@@ -239,6 +272,31 @@ MonoBehaviour:
   scatterSoftKnee:
     m_OverrideState: 1
     m_Value: 0.5
+--- !u!114 &3404709802056044385
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6be0f3e2e9c92846ae26c4e591cb156, type: 3}
+  m_Name: RadialBlur
+  m_EditorClassIdentifier: 
+  active: 1
+  amount:
+    m_OverrideState: 1
+    m_Value: 0
+  center:
+    m_OverrideState: 1
+    m_Value: {x: 0.5, y: 0.5}
+  angle:
+    m_OverrideState: 1
+    m_Value: 0
+  iterations:
+    m_OverrideState: 1
+    m_Value: 6
 --- !u!114 &4591238669900929902
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -279,7 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8ca37f13bb89c144a71832585b7a6ac, type: 3}
   m_Name: EdgeDetection
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   debug:
     m_OverrideState: 1
     m_Value: 0
