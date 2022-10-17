@@ -22,6 +22,9 @@ namespace Axiom.UI.MainMenu
         {
             perspectiveSwitcher = GetComponent<PerspectiveSwitcher>();
             axiomAnimator = GetComponent<AxiomAnimator>();
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
 
         public void StartGame(string sceneToLoad)
