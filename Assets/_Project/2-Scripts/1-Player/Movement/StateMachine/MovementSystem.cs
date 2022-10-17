@@ -2,6 +2,7 @@ using System;
 using Axiom.Player.Movement.StateMachine.States;
 using Axiom.Core;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Vector3 = UnityEngine.Vector3;
 
 namespace Axiom.Player.Movement.StateMachine
@@ -180,6 +181,8 @@ namespace Axiom.Player.Movement.StateMachine
             rbInfo.SetCurrentVelocity(GetCurrentSpeed());
 
             CurrentState.LogicUpdate();
+
+            if (Input.GetKeyDown(KeyCode.Escape)) SceneManager.LoadScene("MainMenu");
         }
 
         private void FixedUpdate()
