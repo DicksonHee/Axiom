@@ -411,10 +411,19 @@ namespace Axiom.Player.Movement.StateMachine
         }
 
         public void SetAnimatorBool(string param, bool val) => playerAnimation.SetBool(param, val);
-		#endregion
+        #endregion
 
-		#region Teleport Functions
-        
+        #region Teleport Functions
+
+        public void TeleportPlayer(Vector3 teleportPosition)
+        {
+            DisableCounterMovement();
+
+            transform.position = teleportPosition;
+
+            Invoke(nameof(EnableCounterMovement), 0.1f);
+        }
+
         // Force rotation
         public void TeleportPlayerRotateTo(Vector3 teleportPosition, Quaternion? forwardRotation, Vector3? gravityDirection)
         {
