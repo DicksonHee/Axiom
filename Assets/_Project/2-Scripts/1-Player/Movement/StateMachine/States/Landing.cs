@@ -39,7 +39,7 @@ namespace Axiom.Player.Movement.StateMachine.States
 				if (rollSuccess)
 				{
 					MovementSystem.playerAnimation.DisableRotation();
-					MovementSystem.playerAnimation.HideModel();
+					//MovementSystem.playerAnimation.HideModel();
 					MovementSystem.cameraLook.StartRollCamera();
 				}
 				else

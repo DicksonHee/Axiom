@@ -25,6 +25,7 @@ public class RespawnArea : MonoBehaviour
 
 	public void RespawnPlayer(GameObject playerGO)
 	{
+		Debug.Log(gravityDirection);
 		playerGO.GetComponent<MovementSystem>().TeleportPlayerRotateTo(spawnPosition.position, forwardLookDirection, gravityDirection);
 	}
 	
