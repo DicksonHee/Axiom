@@ -349,6 +349,8 @@ GameObject:
   - component: {fileID: 201247669}
   - component: {fileID: 201247668}
   - component: {fileID: 201247671}
+  - component: {fileID: 201247673}
+  - component: {fileID: 201247672}
   m_Layer: 0
   m_Name: Dialogue trigger
   m_TagString: Untagged
@@ -368,10 +370,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b0302141a8eb64a8e9c00b39a14978, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogListData: {fileID: 11400000, guid: 60e54ac6fc4c42940854546d2b5f01f8, type: 2}
   fmodScript: {fileID: 605236826}
   dialogueVolume: 10
   DialogToStatic: Dialog to Static
+  currentValuef: 0
+  onPlayerTriggerEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 201247668}
+        m_TargetAssemblyTypeName: DialogueTrigger, Assembly-CSharp
+        m_MethodName: Z_StartDialog
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 60e54ac6fc4c42940854546d2b5f01f8,
+            type: 2}
+          m_ObjectArgumentAssemblyTypeName: DialogListData, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onViewEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &201247669
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -393,7 +414,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 201247667}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.289, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -416,6 +437,56 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!33 &201247672
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201247667}
+  m_Mesh: {fileID: 5763248792092893397, guid: eb7736d6a21ac2c4faff76519b402361, type: 3}
+--- !u!23 &201247673
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201247667}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: abba8ce27d9814e4cab5830fab50a089, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &216522508
 GameObject:
   m_ObjectHideFlags: 0
@@ -2631,9 +2702,9 @@ GameObject:
   - component: {fileID: 1202950839}
   - component: {fileID: 1202950838}
   - component: {fileID: 1202950837}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Sphere
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2709,7 +2780,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1202950836}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.97, y: 1.96, z: 12.52}
+  m_LocalPosition: {x: -4.97, y: -0.49, z: -0.86}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []

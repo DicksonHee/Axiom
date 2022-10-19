@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,10 +8,11 @@ using FMOD.Studio;
 using UnityEngine.Serialization;
 using Axiom.Dialogue;
 using Axiom.Core;
+using UnityEngine.Events;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    public DialogListData dialogListData;
+    //public DialogListData dialogListData;
     [SerializeField] private ProgrammerSounds fmodScript;
     public float dialogueVolume;
 
@@ -26,11 +26,12 @@ public class DialogueTrigger : MonoBehaviour
 
     [SerializeField]
     float currentValuef;
-
-    
-    ///////////////////////////////////////////////////////////////////////////////////////////
     DialogLine dialogToShow;
     Coroutine dialogCoroutine;
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    public UnityEvent onPlayerTriggerEvent;
+    public UnityEvent onViewEvent;
+   
     void Awake()
     {
         //if parameter reference is null, look up
@@ -41,8 +42,10 @@ public class DialogueTrigger : MonoBehaviour
     }
     void Start()
     {
-        //  dr = FindObjectOfType<DialogueRunner>();
-
+        // for (int x = 0; x < dialogListData.dialogLists.Count; x++)
+        // {
+        //     dialogListData.dialogLists[x].currentDialogLine = 0; //make sure the dialoglist starts at the beginning
+        // }
         //for testing
         FlagSystem.SetBoolValue("Flag1", true);
     }
@@ -51,34 +54,56 @@ public class DialogueTrigger : MonoBehaviour
         //get dialog to static value
         RuntimeManager.StudioSystem.getParameterByID(parameterDescription.id, out currentValuef);
 
-        if (Input.GetKeyDown(KeyCode.Space) && dialogCoroutine == null) //for testing
-        {
-            //dr.StartDialogue(yarnNodeToStartFrom);
-
-            bool start = false;
-            //reset dialogue to show after running
-            for (int x = 0; x < dialogListData.dialogLists.Count; x++)
-            {
-                dialogListData.dialogLists[x].currentDialogLine = 0;
-                start = true;
-            }
-            if (start)
-            {
-                dialogCoroutine = StartCoroutine(DialogueToShow());
-            }
-        }
-
-        // if (Input.GetKeyDown(KeyCode.K) && dialogCoroutine != null)
+        // if (Input.GetKeyDown(KeyCode.Space))
         // {
-        //     fmodScript.dialogueInstance.setVolume(0); //mute
+        //     fmodScript.StopDialog(true);
+
+        //     if(dialogCoroutine==null) 
+        //     Debug.Log("null");
+        //     else
+        //     Debug.Log("not null");
         // }
-        // if (Input.GetKeyUp(KeyCode.K) && dialogCoroutine != null)
+        
+        // if (Input.GetKeyDown(KeyCode.Space) && dialogCoroutine == null) //for testing
         // {
-        //     fmodScript.dialogueInstance.setVolume(dialogueVolume); //unmute
+        //     bool start = false;
+
+        //     //reset dialogue to show after running
+        //     for (int x = 0; x < dialogListData.dialogLists.Count; x++)
+        //     {
+        //         dialogListData.dialogLists[x].currentDialogLine = 0;
+        //         start = true;
+        //     }
+        //     if (start)
+        //     {
+        //         dialogCoroutine = StartCoroutine(DialogToShow());
+        //     }
         // }
+
+    }
+    void FixedUpdate()
+    {
+        
+    }
+    public void Z_StartDialog(DialogListData _data)
+    {
+        dialogCoroutine = StartCoroutine(DialogToShow(_data));
+    }
+    private void InView()
+    {
+        //if player looked at this trigger
     }
 
-    private IEnumerator DialogueToShow()
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Player" && dialogCoroutine == null)
+        {
+            onPlayerTriggerEvent.Invoke();
+            Debug.Log("trigger enter");
+        }
+    }
+
+    private IEnumerator DialogToShow(DialogListData dialogListData)
     {
         foreach (Dialog dialog in dialogListData.dialogLists) // Loop over each dialog in dialog list
         {
@@ -89,6 +114,8 @@ public class DialogueTrigger : MonoBehaviour
             float audioFileLength = fmodScript.dialogueLength; // Get the length of the currently playing audio file
             float elapsedTime = 0f;                            // Reset the elapsed time of each new dialog list entry
             int timestampIndex = 0;                            // Reset the timestamp index
+
+            dialog.currentDialogLine = 0;
 
             // While loop for the duration of the audio file length
             while (elapsedTime < audioFileLength / 1000)
@@ -151,12 +178,6 @@ public class DialogueTrigger : MonoBehaviour
             {
                 Debug.Log(e);
             }
-        //}
-        //else //if dialogue line is hidden
-        //{
-            //Debug.Log("text hidden");
-
-        //}
     }
     private void NextDialogLine(DialogLine dialog)
     {
@@ -181,6 +202,7 @@ public class DialogueTrigger : MonoBehaviour
     private void Stop()
     {
         fmodScript.StopDialog(false);
+        dialogCoroutine = null;
     }
     #endregion
     private FMOD.RESULT Lookup()

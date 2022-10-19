@@ -96,8 +96,8 @@ class ProgrammerSounds : MonoBehaviour
 
         dialogueInstance.start();
         //UnityEngine.Debug.Log("playD");
-        Invoke(nameof(RealseInstance), delay);
-        
+        //Invoke(nameof(RealseInstance), delay);
+        dialogueInstance.release();
     }
     void RealseInstance()
     {
@@ -110,6 +110,7 @@ class ProgrammerSounds : MonoBehaviour
         {
             dialogueInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             dialogueInstance.release();
+            
         }
         else
         {
