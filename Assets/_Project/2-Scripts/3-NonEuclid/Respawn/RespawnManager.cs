@@ -9,6 +9,7 @@ public static class RespawnManager
 	private static RespawnArea currentRespawnArea;
 
 	public static void SetCurrentRespawnArea(RespawnArea newArea) => currentRespawnArea = newArea;
+	public static RespawnArea GetCurrentRespawnArea() => currentRespawnArea;
 
 	public static void RequestRespawnPlayer()
 	{

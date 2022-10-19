@@ -18,6 +18,11 @@ public class RespawnArea : MonoBehaviour
 		gravityDirection = -spawnPosition.up.normalized * Physics.gravity.magnitude;
 	}
 
+	private void Update()
+	{
+		if(Input.GetKeyDown(KeyCode.R) && RespawnManager.GetCurrentRespawnArea() == this) RespawnManager.RequestRespawnPlayer();
+	}
+
 	public void RespawnPlayer(GameObject playerGO)
 	{
 		playerGO.GetComponent<MovementSystem>().TeleportPlayerRotateTo(spawnPosition.position, forwardLookDirection, gravityDirection);
