@@ -28,6 +28,8 @@ public class DialogueTrigger : MonoBehaviour
     float currentValuef;
     DialogLine dialogToShow;
     Coroutine dialogCoroutine;
+    Camera playerSight;
+    public LayerMask wallMask;
     ///////////////////////////////////////////////////////////////////////////////////////////
     public UnityEvent onPlayerTriggerEvent;
     public UnityEvent onViewEvent;
@@ -39,6 +41,7 @@ public class DialogueTrigger : MonoBehaviour
         {
             Lookup();
         }
+        playerSight = Camera.main;
     }
     void Start()
     {
@@ -46,6 +49,7 @@ public class DialogueTrigger : MonoBehaviour
         // {
         //     dialogListData.dialogLists[x].currentDialogLine = 0; //make sure the dialoglist starts at the beginning
         // }
+
         //for testing
         FlagSystem.SetBoolValue("Flag1", true);
     }
@@ -83,15 +87,25 @@ public class DialogueTrigger : MonoBehaviour
     }
     void FixedUpdate()
     {
-        
+        //maybe give another condition like range
+        InView();
     }
     public void Z_StartDialog(DialogListData _data)
     {
         dialogCoroutine = StartCoroutine(DialogToShow(_data));
     }
-    private void InView()
+    private bool InView()
     {
-        //if player looked at this trigger
+        //needed for calculating fov
+        Vector3 displacement = transform.position - playerSight.transform.position;
+        float LookAngleThreshold = 50;
+
+        //make sure has los
+        RaycastHit hit;
+        Physics.Linecast(playerSight.transform.position, transform.position, out hit, wallMask, QueryTriggerInteraction.Ignore);
+
+        //if player has focused on the poi, and has los
+        return (Vector3.Angle(displacement, playerSight.transform.forward) <= LookAngleThreshold && hit.collider.gameObject == this.gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
