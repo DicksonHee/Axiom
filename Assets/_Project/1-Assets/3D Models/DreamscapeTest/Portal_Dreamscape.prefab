@@ -33,6 +33,7 @@ Transform:
   - {fileID: 6167549446905028030}
   - {fileID: 7278918728174955612}
   - {fileID: 5834218317334739206}
+  - {fileID: 2910579574388073337}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -47,7 +48,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 7.6, y: 7.6, z: 2.75}
+  m_Size: {x: 15.163284, y: 14.8394985, z: 2.75}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6167549446711849647
 MonoBehaviour:
@@ -63,8 +64,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   otherPortal: {fileID: 0}
   screen: {fileID: 7954885604799512202}
-  changeTest: 1
   isTeleportToBlue: 0
+  changeGravity: 0
+  gravityDirection: {fileID: 2910579574388073337}
   canTeleport: 1
 --- !u!1 &6167549446905028031
 GameObject:
@@ -202,7 +204,7 @@ Transform:
   m_GameObject: {fileID: 6649375466623166696}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 8, y: 8, z: 7}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6167549446711849640}
@@ -258,6 +260,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7856817871929991843
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2910579574388073337}
+  m_Layer: 0
+  m_Name: GravityDir
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &2910579574388073337
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7856817871929991843}
+  m_LocalRotation: {x: -0, y: -0.00000017881393, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6167549446711849640}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6304467575311769325
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -339,6 +372,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Portal2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 79870ff3a5f1f29408c1cac8b4137865,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79870ff3a5f1f29408c1cac8b4137865, type: 3}

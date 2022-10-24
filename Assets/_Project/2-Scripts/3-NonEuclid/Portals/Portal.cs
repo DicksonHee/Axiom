@@ -13,13 +13,17 @@ namespace Axiom.NonEuclidean
     {
         public Portal otherPortal;
         public MeshRenderer screen;
-
+        public bool isTeleportToBlue;
+        
+        [Header("Gravity")]
+        public bool changeGravity;
+        public Transform gravityDirection;
+        [HideInInspector] public bool canTeleport = true;
+        
         private Camera playerCam, portalCam;
         private RenderTexture viewTexture;
         private List<TrackedTransform> tracked = new List<TrackedTransform>();
         private Vector3 screenStartLocalPosition;
-
-        public bool changeTest = true;
         
         private void Awake()
         {
@@ -81,7 +85,7 @@ namespace Axiom.NonEuclidean
         {
             //print($"({gameObject.name}) {tracked.Count}");
             //foreach (TrackedTransform t in tracked)
-                //print($"{Time.time}, {t.transform.name} ({transform.name})");
+            //print($"{Time.time}, {t.transform.name} ({transform.name})");
             CheckTrackedTransforms();
         }
 
@@ -103,10 +107,7 @@ namespace Axiom.NonEuclidean
                 }
             }
         }
-
-        public bool isTeleportToBlue;
-        public bool canTeleport = true;
-
+        
         private void Teleport(TrackedTransform t)
         {
             //print($"Teleporting from {gameObject.name}");
@@ -115,8 +116,10 @@ namespace Axiom.NonEuclidean
             {
                 StartCoroutine(DelayTeleport());
                 Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
-
-                controller.TeleportPlayerRotateBy(m.GetPosition(),GetTeleportDirection(), null);
+                
+                if(otherPortal.changeGravity) controller.TeleportPlayerRotateBy(m.GetPosition(),GetTeleportDirection(), otherPortal.gravityDirection.forward);
+                else controller.TeleportPlayerRotateBy(m.GetPosition(),GetTeleportDirection(), null);
+                
                 t.transform.gameObject.GetComponentInParent<MoveCamera>().ForceUpdate();
                 //print($"teleporting from {controller.transform.position - transform.position} to {m.GetPosition() - otherPortal.transform.position}");
             }
@@ -219,6 +222,11 @@ namespace Axiom.NonEuclidean
 
                 DrawArrow.ForGizmo(transform.position, transform.forward, Color.blue);
                 DrawArrow.ForGizmo(transform.position, -transform.forward, Color.red);
+            }
+
+            if (changeGravity)
+            {
+                DrawArrow.ForGizmo(gravityDirection.position, gravityDirection.forward, Color.green);
             }
         }
         #endif
