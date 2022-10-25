@@ -29,7 +29,8 @@ namespace Axiom.NonEuclidean
         {
             playerCam = Camera.main;
             portalCam = GetComponentInChildren<Camera>();
-            portalCam.hideFlags = HideFlags.DontSave;
+            portalCam.depthTextureMode = DepthTextureMode.Depth;
+            portalCam.hideFlags = HideFlags.HideAndDontSave;
             portalCam.enabled = false;
             screenStartLocalPosition = screen.transform.localPosition;
             ProtectScreenFromClipping();
@@ -42,6 +43,7 @@ namespace Axiom.NonEuclidean
                 if (viewTexture != null)
                     viewTexture.Release();
                 viewTexture = new RenderTexture(Screen.width, Screen.height, 0);
+                viewTexture.depth = 16;
 
                 portalCam.targetTexture = viewTexture;
 
@@ -119,7 +121,7 @@ namespace Axiom.NonEuclidean
                 
                 if(otherPortal.changeGravity) controller.TeleportPlayerRotateBy(m.GetPosition(),GetTeleportDirection(), otherPortal.gravityDirection.forward);
                 else controller.TeleportPlayerRotateBy(m.GetPosition(),GetTeleportDirection(), null);
-                
+
                 t.transform.gameObject.GetComponentInParent<MoveCamera>().ForceUpdate();
                 //print($"teleporting from {controller.transform.position - transform.position} to {m.GetPosition() - otherPortal.transform.position}");
             }
@@ -136,7 +138,7 @@ namespace Axiom.NonEuclidean
         {
             Vector3 thisForward = GetPortalForwardDirection();
             Vector3 otherForward = otherPortal.GetPortalTeleportDirection();
-        
+
             Quaternion rot = Quaternion.FromToRotation(thisForward, otherForward);
             return rot;
         }
