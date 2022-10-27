@@ -8,10 +8,36 @@ public class RespawnTrigger : MonoBehaviour
 {
 	public bool triggerOnEnter;
 	public bool triggerOnExit;
+	public GameObject thisAreaPortal;
+	
+	[HideInInspector]public bool isEnabled { get; set; }
+	[HideInInspector]public bool isPlayerInDoor { get; set; }
 
+	private void Start()
+	{
+		InvokeRepeating(nameof(CheckCurrentActiveArea), 1f, 1f);
+	}
+
+	private void CheckCurrentActiveArea()
+	{
+		if (isPlayerInDoor) return;
+		
+		if (this == RespawnManager.currentRespawnTrigger)
+		{
+			isEnabled = true;
+			if(thisAreaPortal != null) thisAreaPortal.SetActive(true);
+		}
+		else
+		{
+			isEnabled = false;
+			if(thisAreaPortal != null) thisAreaPortal.SetActive(false);
+		}
+	}
+	
 	private void OnTriggerEnter(Collider other)
 	{
-		if (triggerOnExit) return;
+		RespawnManager.currentRespawnTrigger = this;
+		if (triggerOnExit || !isEnabled) return;
 		
 		if (other.CompareTag("Player"))
 		{
@@ -22,7 +48,7 @@ public class RespawnTrigger : MonoBehaviour
 	
 	private void OnTriggerExit(Collider other)
 	{
-		if (triggerOnEnter) return;
+		if (triggerOnEnter  || !isEnabled) return;
 		
 		if (other.CompareTag("Player"))
 		{
@@ -39,11 +65,5 @@ public class RespawnTrigger : MonoBehaviour
 	private void RespawnPlayer()
 	{
 		RespawnManager.RequestRespawnPlayer();
-	}
-	
-	private void OnDrawGizmos()
-	{
-		Gizmos.color = Color.red;
-		Gizmos.DrawWireCube(transform.position + GetComponent<BoxCollider>().center, GetComponent<BoxCollider>().size);
 	}
 }

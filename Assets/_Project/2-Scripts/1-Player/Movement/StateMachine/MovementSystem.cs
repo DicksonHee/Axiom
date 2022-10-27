@@ -443,22 +443,21 @@ namespace Axiom.Player.Movement.StateMachine
             DisableCounterMovement();
 			Vector3 currentVel = Rb.velocity;
 
-			if (rotationDiff != null)
+            if (gravityDirection != null)
+            {
+                Physics.gravity = gravityDirection.Value;
+            }
+            
+            if (rotationDiff != null)
             {
                 transform.position = teleportPosition;
                 cameraLook.TransformForwardRotateBy(rotationDiff.Value);
-				playerAnimation.ForceRotate();
-			}
+            }
 
-			if (gravityDirection != null)
-			{
-				Physics.gravity = gravityDirection.Value;
-			}
-
-			TransformTargetVelocity(currentVel);
+            TransformTargetVelocity(currentVel);
 			Invoke(nameof(EnableCounterMovement), 0.1f);
 		}
-        
+
         private void TransformTargetVelocity(Vector3 vel)
         {
             Vector3 newMoveDir = orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;

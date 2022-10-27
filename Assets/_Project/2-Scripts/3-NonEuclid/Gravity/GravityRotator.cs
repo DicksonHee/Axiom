@@ -1,10 +1,24 @@
+using System;
 using UnityEngine;
 
 namespace Axiom.NonEuclidean
 {
     public class GravityRotator : MonoBehaviour
     {
+        public static GravityRotator current;
+
+        private void Awake()
+        {
+            if (current != null && current != this) Destroy(this);
+            else current = this;
+        }
+
         void Update()
+        {
+            UpdateGravity();
+        }
+
+        public void UpdateGravity()
         {
             Vector3 from = -transform.up;
             Vector3 to = Physics.gravity;
@@ -14,6 +28,11 @@ namespace Axiom.NonEuclidean
             float angle = Vector3.SignedAngle(from, to, cross);
 
             transform.Rotate(cross, angle, Space.World);
+        }
+
+        private void OnDestroy()
+        {
+            Physics.gravity = new Vector3(0f, -9.81f, 0f);
         }
     }
 }

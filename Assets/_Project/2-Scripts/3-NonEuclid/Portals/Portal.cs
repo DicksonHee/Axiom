@@ -19,6 +19,8 @@ namespace Axiom.NonEuclidean
         public bool changeGravity;
         public Transform gravityDirection;
         [HideInInspector] public bool canTeleport = true;
+        public bool teleportEnabled = true;
+        public bool shouldRenderScreen = true;
         
         private Camera playerCam, portalCam;
         private RenderTexture viewTexture;
@@ -38,17 +40,14 @@ namespace Axiom.NonEuclidean
 
         private void CreateViewTexture()
         {
-            if (viewTexture == null || viewTexture.width != Screen.width || viewTexture.height != Screen.height)
-            {
-                if (viewTexture != null)
-                    viewTexture.Release();
-                viewTexture = new RenderTexture(Screen.width, Screen.height, 0);
-                viewTexture.depth = 16;
+            if (viewTexture != null && viewTexture.width == Screen.width && viewTexture.height == Screen.height) return;
+            if (viewTexture != null) viewTexture.Release();
+            viewTexture = new RenderTexture(Screen.width, Screen.height, 0);
+            viewTexture.depth = 16;
 
-                portalCam.targetTexture = viewTexture;
+            portalCam.targetTexture = viewTexture;
 
-                otherPortal.screen.material.SetTexture("_MainTex", viewTexture);
-            }
+            otherPortal.screen.material.SetTexture("_MainTex", viewTexture);
         }
 
         private static bool VisibleFromCamera(Renderer renderer, Camera camera)
@@ -60,7 +59,7 @@ namespace Axiom.NonEuclidean
         //called just before player camera is rendered
         public void Render(ScriptableRenderContext ctx)
         {
-            if (!VisibleFromCamera(otherPortal.screen, playerCam)) return;
+            if (!VisibleFromCamera(otherPortal.screen, playerCam) || !shouldRenderScreen) return;
 
             screen.enabled = false;
             CreateViewTexture();
@@ -114,9 +113,10 @@ namespace Axiom.NonEuclidean
         {
             //print($"Teleporting from {gameObject.name}");
 
-            if (t.transform.parent.parent.TryGetComponent(out MovementSystem controller) && canTeleport)
+            if (t.transform.parent.parent.TryGetComponent(out MovementSystem controller) && canTeleport && teleportEnabled)
             {
-                StartCoroutine(DelayTeleport());
+                otherPortal.DisablePortal();
+
                 Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
                 
                 if(otherPortal.changeGravity) controller.TeleportPlayerRotateBy(m.GetPosition(),GetTeleportDirection(), otherPortal.gravityDirection.forward);
@@ -134,20 +134,29 @@ namespace Axiom.NonEuclidean
         public Vector3 GetPortalTeleportDirection() => isTeleportToBlue ? transform.forward : -transform.forward;
         public Vector3 GetPortalForwardDirection() => isTeleportToBlue ? -transform.forward : transform.forward;
 
+        public void DisablePortal()
+        {
+            StartCoroutine(DelayTeleport());
+        }
+        
         public Quaternion GetTeleportDirection()
         {
             Vector3 thisForward = GetPortalForwardDirection();
+            Debug.Log(thisForward);
             Vector3 otherForward = otherPortal.GetPortalTeleportDirection();
+            Debug.Log(otherForward);
+            //Quaternion rot = Quaternion.FromToRotation(thisForward, otherForward);
 
-            Quaternion rot = Quaternion.FromToRotation(thisForward, otherForward);
+            Quaternion rot = Quaternion.Euler(0, Vector3.SignedAngle(thisForward, otherForward, transform.up), 0);
+            Debug.Log(rot.eulerAngles);
             return rot;
         }
 
         private IEnumerator DelayTeleport()
         {
-            otherPortal.canTeleport = false;
-            yield return new WaitForSeconds(0.1f);
-            otherPortal.canTeleport = true;
+            canTeleport = false;
+            yield return new WaitForSeconds(0.05f);
+            canTeleport = true;
         }
 
         private void SetNearClipPlane()
