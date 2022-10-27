@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f80b65550e1c2349af5e5abbf32dc03, type: 3}
   m_Name: TestData
   m_EditorClassIdentifier: 
+  name: 
   dialogLists:
   - audioFileName: why
     currentDialogLine: 0
@@ -63,6 +64,12 @@ MonoBehaviour:
     timestamps:
     - timeStamp: 0
       command: 0
+      dialogLine:
+        textToShow: One
+        hiddenWords: []
+      muteFlag: 
+    - timeStamp: 0.25
+      command: 4
       dialogLine:
         textToShow: One
         hiddenWords: []

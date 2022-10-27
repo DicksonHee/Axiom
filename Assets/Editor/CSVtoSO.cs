@@ -53,7 +53,7 @@ public class CSVtoSO
                     PrevFileName = splitData[1];
 
                     dialogListInstance.dialogLists.Add(dialog);
-                    Debug.Log("PrecFileName is different");
+                    Debug.Log("PrevFileName is different");
                 }
                 
                     TimeStamp ts = new TimeStamp(); //start create new timestamp

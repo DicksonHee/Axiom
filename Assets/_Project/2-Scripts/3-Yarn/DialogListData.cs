@@ -19,8 +19,6 @@ public class Dialog
     //public bool playAudio;
     public int currentDialogLine;
     public List<TimeStamp> timestamps;
-
-    //public void AddTimeStamps()
 }
 
 [Serializable]
