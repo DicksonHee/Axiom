@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,15 +24,27 @@ namespace Axiom.NonEuclidean
         private void Awake()
         {
             initRot = transform.rotation;
+        }
 
+        private void OnEnable()
+        {
             foreach (FlippyTrigger trigger in landingTriggers)
             {
-                trigger.OnEnter += OnTriggerEnter;
-                trigger.OnExit += OnTriggerExit;
+                trigger.OnEnter += PlayerEnterTrigger;
+                trigger.OnExit += PlayerExitTrigger;
             }
         }
 
-        private void OnTriggerEnter(Collider other, FlippyTrigger trigger)
+        private void OnDisable()
+        {
+            foreach (FlippyTrigger trigger in landingTriggers)
+            {
+                trigger.OnEnter -= PlayerEnterTrigger;
+                trigger.OnExit -= PlayerExitTrigger;
+            }
+        }
+
+        private void PlayerEnterTrigger(Collider other, FlippyTrigger trigger)
         {
             if (other.CompareTag("Player"))
             {
@@ -40,7 +53,7 @@ namespace Axiom.NonEuclidean
             }
         }
 
-        private void OnTriggerExit(Collider other, FlippyTrigger trigger)
+        private void PlayerExitTrigger(Collider other, FlippyTrigger trigger)
         {
             if (other.CompareTag("Player"))
             {

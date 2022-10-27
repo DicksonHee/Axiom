@@ -1,16 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RespawnAreaDoors : MonoBehaviour
 {
-	public RespawnArea respawnArea;
-    public bool isEntranceDoor;
+	public RespawnTrigger thisAreaTrigger;
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.CompareTag("Player"))
-		{
-		}
+		thisAreaTrigger.isPlayerInDoor = true;
+		thisAreaTrigger.isEnabled = false;
+	}
+
+	private void OnTriggerExit(Collider other)
+	{
+		thisAreaTrigger.isPlayerInDoor = false;
 	}
 }

@@ -13,19 +13,26 @@ namespace Axiom.NonEuclidean
     {
         public Portal otherPortal;
         public MeshRenderer screen;
-
+        public bool isTeleportToBlue;
+        
+        [Header("Gravity")]
+        public bool changeGravity;
+        public Transform gravityDirection;
+        [HideInInspector] public bool canTeleport = true;
+        public bool teleportEnabled = true;
+        public bool shouldRenderScreen = true;
+        
         private Camera playerCam, portalCam;
         private RenderTexture viewTexture;
         private List<TrackedTransform> tracked = new List<TrackedTransform>();
         private Vector3 screenStartLocalPosition;
-
-        public bool changeTest = true;
         
         private void Awake()
         {
             playerCam = Camera.main;
             portalCam = GetComponentInChildren<Camera>();
-            portalCam.hideFlags = HideFlags.DontSave;
+            portalCam.depthTextureMode = DepthTextureMode.Depth;
+            portalCam.hideFlags = HideFlags.HideAndDontSave;
             portalCam.enabled = false;
             screenStartLocalPosition = screen.transform.localPosition;
             ProtectScreenFromClipping();
@@ -33,16 +40,14 @@ namespace Axiom.NonEuclidean
 
         private void CreateViewTexture()
         {
-            if (viewTexture == null || viewTexture.width != Screen.width || viewTexture.height != Screen.height)
-            {
-                if (viewTexture != null)
-                    viewTexture.Release();
-                viewTexture = new RenderTexture(Screen.width, Screen.height, 0);
+            if (viewTexture != null && viewTexture.width == Screen.width && viewTexture.height == Screen.height) return;
+            if (viewTexture != null) viewTexture.Release();
+            viewTexture = new RenderTexture(Screen.width, Screen.height, 0);
+            viewTexture.depth = 16;
 
-                portalCam.targetTexture = viewTexture;
+            portalCam.targetTexture = viewTexture;
 
-                otherPortal.screen.material.SetTexture("_MainTex", viewTexture);
-            }
+            otherPortal.screen.material.SetTexture("_MainTex", viewTexture);
         }
 
         private static bool VisibleFromCamera(Renderer renderer, Camera camera)
@@ -54,7 +59,7 @@ namespace Axiom.NonEuclidean
         //called just before player camera is rendered
         public void Render(ScriptableRenderContext ctx)
         {
-            if (!VisibleFromCamera(otherPortal.screen, playerCam)) return;
+            if (!VisibleFromCamera(otherPortal.screen, playerCam) || !shouldRenderScreen) return;
 
             screen.enabled = false;
             CreateViewTexture();
@@ -81,7 +86,7 @@ namespace Axiom.NonEuclidean
         {
             //print($"({gameObject.name}) {tracked.Count}");
             //foreach (TrackedTransform t in tracked)
-                //print($"{Time.time}, {t.transform.name} ({transform.name})");
+            //print($"{Time.time}, {t.transform.name} ({transform.name})");
             CheckTrackedTransforms();
         }
 
@@ -103,20 +108,20 @@ namespace Axiom.NonEuclidean
                 }
             }
         }
-
-        public bool isTeleportToBlue;
-        public bool canTeleport = true;
-
+        
         private void Teleport(TrackedTransform t)
         {
             //print($"Teleporting from {gameObject.name}");
 
-            if (t.transform.parent.parent.TryGetComponent(out MovementSystem controller) && canTeleport)
+            if (t.transform.parent.parent.TryGetComponent(out MovementSystem controller) && canTeleport && teleportEnabled)
             {
-                StartCoroutine(DelayTeleport());
-                Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
+                otherPortal.DisablePortal();
 
-                controller.TeleportPlayerRotateBy(m.GetPosition(),GetTeleportDirection(), null);
+                Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
+                
+                if(otherPortal.changeGravity) controller.TeleportPlayerRotateBy(m.GetPosition(),GetTeleportDirection(), otherPortal.gravityDirection.forward);
+                else controller.TeleportPlayerRotateBy(m.GetPosition(),GetTeleportDirection(), null);
+
                 t.transform.gameObject.GetComponentInParent<MoveCamera>().ForceUpdate();
                 //print($"teleporting from {controller.transform.position - transform.position} to {m.GetPosition() - otherPortal.transform.position}");
             }
@@ -129,20 +134,29 @@ namespace Axiom.NonEuclidean
         public Vector3 GetPortalTeleportDirection() => isTeleportToBlue ? transform.forward : -transform.forward;
         public Vector3 GetPortalForwardDirection() => isTeleportToBlue ? -transform.forward : transform.forward;
 
+        public void DisablePortal()
+        {
+            StartCoroutine(DelayTeleport());
+        }
+        
         public Quaternion GetTeleportDirection()
         {
             Vector3 thisForward = GetPortalForwardDirection();
+            Debug.Log(thisForward);
             Vector3 otherForward = otherPortal.GetPortalTeleportDirection();
-        
-            Quaternion rot = Quaternion.FromToRotation(thisForward, otherForward);
+            Debug.Log(otherForward);
+            //Quaternion rot = Quaternion.FromToRotation(thisForward, otherForward);
+
+            Quaternion rot = Quaternion.Euler(0, Vector3.SignedAngle(thisForward, otherForward, transform.up), 0);
+            Debug.Log(rot.eulerAngles);
             return rot;
         }
 
         private IEnumerator DelayTeleport()
         {
-            otherPortal.canTeleport = false;
-            yield return new WaitForSeconds(0.1f);
-            otherPortal.canTeleport = true;
+            canTeleport = false;
+            yield return new WaitForSeconds(0.05f);
+            canTeleport = true;
         }
 
         private void SetNearClipPlane()
@@ -219,6 +233,11 @@ namespace Axiom.NonEuclidean
 
                 DrawArrow.ForGizmo(transform.position, transform.forward, Color.blue);
                 DrawArrow.ForGizmo(transform.position, -transform.forward, Color.red);
+            }
+
+            if (changeGravity)
+            {
+                DrawArrow.ForGizmo(gravityDirection.position, gravityDirection.forward, Color.green);
             }
         }
         #endif
