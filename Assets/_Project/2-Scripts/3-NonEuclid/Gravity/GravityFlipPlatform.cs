@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Axiom.Player.Movement.StateMachine;
+using Axiom.Player.Movement;
 
 namespace Axiom.NonEuclidean
 {
@@ -20,6 +22,7 @@ namespace Axiom.NonEuclidean
 
         private bool playerOnPlatform => activeTrigger != null;
         private bool playerHasLeft = true;
+        private MovementSystem player;
 
         private void Awake()
         {
@@ -30,12 +33,12 @@ namespace Axiom.NonEuclidean
         {
             foreach (FlippyTrigger trigger in landingTriggers)
             {
-                trigger.OnEnter += PlayerEnterTrigger;
-                trigger.OnExit += PlayerExitTrigger;
+                trigger.OnEnter += OnFlippyTriggerEnter;
+                trigger.OnExit += OnFlippyTriggerExit;
             }
         }
 
-        private void OnDisable()
+        private void OnFlippyTriggerEnter(Collider other, FlippyTrigger trigger)
         {
             foreach (FlippyTrigger trigger in landingTriggers)
             {
@@ -48,12 +51,15 @@ namespace Axiom.NonEuclidean
         {
             if (other.CompareTag("Player"))
             {
+                if (player == null)
+                    player = other.GetComponent<MovementSystem>();
+
                 activeTrigger = trigger;
                 //playerOnPlatform = true;
             }
         }
 
-        private void PlayerExitTrigger(Collider other, FlippyTrigger trigger)
+        private void OnFlippyTriggerExit(Collider other, FlippyTrigger trigger)
         {
             if (other.CompareTag("Player"))
             {
@@ -93,17 +99,27 @@ namespace Axiom.NonEuclidean
 
                 float currentDeg = Mathf.Lerp(degFrom, degTo, t);
                 Quaternion currentRot = initRot * Quaternion.AngleAxis(currentDeg, Vector3.right);
-                print(currentRot);
 
                 transform.rotation = currentRot;
-                if(playerOnPlatform)
+                if (playerOnPlatform)
+                {
+                    Quaternion rotDelta = Quaternion.AngleAxis(Time.deltaTime / time * degrees, transform.right);
+                    Vector3 relativePlayerPos = player.transform.position - transform.position;
+                    Vector3 newPlayerPos = rotDelta * relativePlayerPos + transform.position;
+
+                    player.TeleportPlayer(newPlayerPos);
+
                     Physics.gravity = activeTrigger.transform.up * -1;
+                }
 
                 yield return null;
             }
 
             transform.rotation = initRot * Quaternion.AngleAxis(degTo, Vector3.right);
-            Physics.gravity = activeTrigger.transform.up * -1;
+
+            if(playerOnPlatform)
+                Physics.gravity = activeTrigger.transform.up * -1;
+
             atBaseRotation = !atBaseRotation;
 
             rotating = false;
