@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerReturn" id="{a9b87b53-9437-4b49-a066-0ba270f8eafe}">
+		<property name="name">
+			<value>Tornado Verb</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{3aa904f3-4c33-4a6a-be51-48c166bb3dd0}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{76295f61-9cd6-4ba8-ac32-68030456fb99}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{062584ae-025b-4e03-9305-972c7299ded9}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{3aa904f3-4c33-4a6a-be51-48c166bb3dd0}">
+		<relationship name="effects">
+			<destination>{08fe104c-a8ee-4387-8579-a6d957ed7db6}</destination>
+			<destination>{bb99b125-6d36-478e-a64e-a4cd9cc30801}</destination>
+			<destination>{3e6dca03-2a96-47f8-b151-1b3f481ad4a7}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{76295f61-9cd6-4ba8-ac32-68030456fb99}" />
+	<object class="SFXReverbEffect" id="{08fe104c-a8ee-4387-8579-a6d957ed7db6}">
+		<property name="decayTime">
+			<value>3800</value>
+		</property>
+		<property name="HFDecayRatio">
+			<value>10</value>
+		</property>
+		<property name="highCut">
+			<value>160</value>
+		</property>
+		<property name="earlyLateMix">
+			<value>100</value>
+		</property>
+		<property name="dryLevel">
+			<value>-80</value>
+		</property>
+	</object>
+	<object class="MultibandEqEffect" id="{bb99b125-6d36-478e-a64e-a4cd9cc30801}">
+		<property name="filterTypeB">
+			<value>9</value>
+		</property>
+		<property name="frequencyA">
+			<value>21999.9902</value>
+		</property>
+		<property name="frequencyB">
+			<value>113.993225</value>
+		</property>
+		<property name="qualityA">
+			<value>0.100000001</value>
+		</property>
+		<property name="gainB">
+			<value>2.06896663</value>
+		</property>
+	</object>
+	<object class="MixerBusFader" id="{3e6dca03-2a96-47f8-b151-1b3f481ad4a7}" />
+</objects>

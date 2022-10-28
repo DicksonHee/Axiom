@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{763769e8-0ce0-4c6b-8034-ef12756d9e1f}">
+		<property name="name">
+			<value>Reverb 2</value>
+		</property>
+		<relationship name="folder">
+			<destination>{c2ef0402-8c90-428b-a94f-3c4a5ca6c50e}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{b8428880-0e96-4db9-be43-f862ee3ad640}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{b8428880-0e96-4db9-be43-f862ee3ad640}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>4</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>No Reverb</value>
+			<value>Core Room</value>
+			<value>Giant Hallway</value>
+			<value>Green Screen Room</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="seekSpeed">
+			<value>10</value>
+		</property>
+	</object>
+</objects>
