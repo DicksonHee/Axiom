@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Axiom.Player.Movement.StateMachine;
+using Axiom.Player.Movement;
 
 namespace Axiom.NonEuclidean
 {
@@ -8,31 +11,60 @@ namespace Axiom.NonEuclidean
     {
         public float degrees;
         public float rotateSpeed;
+        public FlippyTrigger[] landingTriggers;
+
+        private FlippyTrigger activeTrigger;
 
         private Quaternion initRot;
 
         private bool rotating = false;
         private bool atBaseRotation = true;
 
-        private bool playerOnPlatform = false;
+        private bool playerOnPlatform => activeTrigger != null;
         private bool playerHasLeft = true;
+        private MovementSystem player;
 
         private void Awake()
         {
             initRot = transform.rotation;
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnEnable()
         {
-            if (other.CompareTag("Player"))
-                playerOnPlatform = true;
+            foreach (FlippyTrigger trigger in landingTriggers)
+            {
+                trigger.OnEnter += OnFlippyTriggerEnter;
+                trigger.OnExit += OnFlippyTriggerExit;
+            }
         }
 
-        private void OnTriggerExit(Collider other)
+        private void OnFlippyTriggerEnter(Collider other, FlippyTrigger trigger)
+        {
+            foreach (FlippyTrigger trigger in landingTriggers)
+            {
+                trigger.OnEnter -= PlayerEnterTrigger;
+                trigger.OnExit -= PlayerExitTrigger;
+            }
+        }
+
+        private void PlayerEnterTrigger(Collider other, FlippyTrigger trigger)
         {
             if (other.CompareTag("Player"))
             {
-                playerOnPlatform = false;
+                if (player == null)
+                    player = other.GetComponent<MovementSystem>();
+
+                activeTrigger = trigger;
+                //playerOnPlatform = true;
+            }
+        }
+
+        private void OnFlippyTriggerExit(Collider other, FlippyTrigger trigger)
+        {
+            if (other.CompareTag("Player"))
+            {
+                //playerOnPlatform = false;
+                activeTrigger = null;
                 playerHasLeft = true;
             }
         }
@@ -67,17 +99,27 @@ namespace Axiom.NonEuclidean
 
                 float currentDeg = Mathf.Lerp(degFrom, degTo, t);
                 Quaternion currentRot = initRot * Quaternion.AngleAxis(currentDeg, Vector3.right);
-                print(currentRot);
 
                 transform.rotation = currentRot;
-                if(playerOnPlatform)
-                    Physics.gravity = transform.up * -1;
+                if (playerOnPlatform)
+                {
+                    Quaternion rotDelta = Quaternion.AngleAxis(Time.deltaTime / time * degrees, transform.right);
+                    Vector3 relativePlayerPos = player.transform.position - transform.position;
+                    Vector3 newPlayerPos = rotDelta * relativePlayerPos + transform.position;
+
+                    player.TeleportPlayer(newPlayerPos);
+
+                    Physics.gravity = activeTrigger.transform.up * -1;
+                }
 
                 yield return null;
             }
 
             transform.rotation = initRot * Quaternion.AngleAxis(degTo, Vector3.right);
-            Physics.gravity = transform.up * -1;
+
+            if(playerOnPlatform)
+                Physics.gravity = activeTrigger.transform.up * -1;
+
             atBaseRotation = !atBaseRotation;
 
             rotating = false;

@@ -7,8 +7,10 @@ public static class RespawnManager
 {
 	private static GameObject playerGO;
 	private static RespawnArea currentRespawnArea;
+	public static RespawnTrigger currentRespawnTrigger { get; set; }
 
 	public static void SetCurrentRespawnArea(RespawnArea newArea) => currentRespawnArea = newArea;
+	public static RespawnArea GetCurrentRespawnArea() => currentRespawnArea;
 
 	public static void RequestRespawnPlayer()
 	{

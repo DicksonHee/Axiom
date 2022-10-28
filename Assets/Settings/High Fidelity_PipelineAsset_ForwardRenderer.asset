@@ -161,6 +161,23 @@ MonoBehaviour:
     cameraTypes: 5
     reconstructDepthNormals: 1
     skipTransparents: 0
+--- !u!114 &-2675084417598449812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a22e2c48a7d06a340a43c592c748aae0, type: 3}
+  m_Name: '[SCPE] OverlayRenderer'
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    injectionPoint: 550
+    alwaysEnable: 0
+    cameraTypes: 5
 --- !u!114 &-1823302147033135304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +231,7 @@ MonoBehaviour:
   - {fileID: -6270884382634679455}
   - {fileID: -1823302147033135304}
   - {fileID: -7979665547997528507}
+  - {fileID: -2675084417598449812}
   m_RendererFeatureMap: 37fbde176b84e9b2e203f6e210f67f51
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}

@@ -38,10 +38,13 @@ public class Boid : MonoBehaviour
         while (duration < spawner.fadeDuration)
         {
             duration += Time.deltaTime;
-            meshRenderer.material.SetFloat("_DissolveAmount", Mathf.Lerp(1, 0, duration / spawner.fadeDuration));
+            meshRenderer.material.SetFloat("_DissolveAmount", Mathf.Lerp(-5, 10, duration / spawner.fadeDuration));
             vfx.SetInt("BurstAmount", (int) Mathf.Lerp(spawner.particleSpawnAmount, 0, (duration / spawner.fadeDuration) * 0.8f));
             yield return null;
         }
+
+        meshRenderer.material.SetFloat("_DissolveAmount", 10);
+        vfx.SetInt("BurstAmount", 0);
     }
 
     private IEnumerator FadeOut_CO()
@@ -51,11 +54,13 @@ public class Boid : MonoBehaviour
         while (duration < spawner.fadeDuration)
         {
             duration += Time.deltaTime;
-            meshRenderer.material.SetFloat("_DissolveAmount", Mathf.Lerp(0, 1, duration / spawner.fadeDuration));
+            meshRenderer.material.SetFloat("_DissolveAmount", Mathf.Lerp(10, -5, duration / spawner.fadeDuration));
             vfx.SetInt("BurstAmount", (int)Mathf.Lerp(spawner.particleSpawnAmount, 0, (duration / spawner.fadeDuration) * 0.8f));
             yield return null;
         }
 
+        meshRenderer.material.SetFloat("_DissolveAmount", -5);
+        vfx.SetInt("BurstAmount", 0);
         yield return new WaitForSeconds(0.5f);
         gameObject.SetActive(false);
     }

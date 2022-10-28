@@ -28,7 +28,6 @@ namespace Axiom.NonEuclidean
         private void Update()
         {
             if (!target) return;
-
             t = Vector3.Dot(target.position - start, end - start) / sqrLength;
             t = Mathf.Clamp01(t);
 

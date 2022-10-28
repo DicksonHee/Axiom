@@ -2,6 +2,7 @@ using System;
 using Axiom.Player.Movement.StateMachine.States;
 using Axiom.Core;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Vector3 = UnityEngine.Vector3;
 
 namespace Axiom.Player.Movement.StateMachine
@@ -180,6 +181,8 @@ namespace Axiom.Player.Movement.StateMachine
             rbInfo.SetCurrentVelocity(GetCurrentSpeed());
 
             CurrentState.LogicUpdate();
+
+            if (Input.GetKeyDown(KeyCode.Escape)) SceneManager.LoadScene("MainMenu");
         }
 
         private void FixedUpdate()
@@ -408,10 +411,19 @@ namespace Axiom.Player.Movement.StateMachine
         }
 
         public void SetAnimatorBool(string param, bool val) => playerAnimation.SetBool(param, val);
-		#endregion
+        #endregion
 
-		#region Teleport Functions
-        
+        #region Teleport Functions
+
+        public void TeleportPlayer(Vector3 teleportPosition)
+        {
+            DisableCounterMovement();
+
+            transform.position = teleportPosition;
+
+            Invoke(nameof(EnableCounterMovement), 0.1f);
+        }
+
         // Force rotation
         public void TeleportPlayerRotateTo(Vector3 teleportPosition, Quaternion? forwardRotation, Vector3? gravityDirection)
         {
@@ -440,22 +452,21 @@ namespace Axiom.Player.Movement.StateMachine
             DisableCounterMovement();
 			Vector3 currentVel = Rb.velocity;
 
-			if (rotationDiff != null)
+            if (gravityDirection != null)
+            {
+                Physics.gravity = gravityDirection.Value;
+            }
+            
+            if (rotationDiff != null)
             {
                 transform.position = teleportPosition;
                 cameraLook.TransformForwardRotateBy(rotationDiff.Value);
-				playerAnimation.ForceRotate();
-			}
+            }
 
-			if (gravityDirection != null)
-			{
-				Physics.gravity = gravityDirection.Value;
-			}
-
-			TransformTargetVelocity(currentVel);
+            TransformTargetVelocity(currentVel);
 			Invoke(nameof(EnableCounterMovement), 0.1f);
 		}
-        
+
         private void TransformTargetVelocity(Vector3 vel)
         {
             Vector3 newMoveDir = orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;

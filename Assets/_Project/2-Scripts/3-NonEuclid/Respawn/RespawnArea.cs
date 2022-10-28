@@ -20,11 +20,12 @@ public class RespawnArea : MonoBehaviour
 
 	private void Update()
 	{
-		if(Input.GetKeyDown(KeyCode.R)) RespawnManager.RequestRespawnPlayer();
+		if(Input.GetKeyDown(KeyCode.R) && RespawnManager.GetCurrentRespawnArea() == this) RespawnManager.RequestRespawnPlayer();
 	}
 
 	public void RespawnPlayer(GameObject playerGO)
 	{
+		Debug.Log(gravityDirection);
 		playerGO.GetComponent<MovementSystem>().TeleportPlayerRotateTo(spawnPosition.position, forwardLookDirection, gravityDirection);
 	}
 	

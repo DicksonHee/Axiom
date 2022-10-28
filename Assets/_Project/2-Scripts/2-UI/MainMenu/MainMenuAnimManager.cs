@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 namespace Axiom.UI.MainMenu
 {
@@ -15,20 +16,23 @@ namespace Axiom.UI.MainMenu
         
         private PerspectiveSwitcher perspectiveSwitcher;
         private AxiomAnimator axiomAnimator;
-
+        private AsyncOperation sceneAsync;
 
         private void Awake()
         {
             perspectiveSwitcher = GetComponent<PerspectiveSwitcher>();
             axiomAnimator = GetComponent<AxiomAnimator>();
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
 
-        public void StartGame()
+        public void StartGame(string sceneToLoad)
         {
-            StartCoroutine(GameStart_CO());
+            StartCoroutine(GameStart_CO(sceneToLoad));
         }
-        
-        private IEnumerator GameStart_CO()
+
+        private IEnumerator GameStart_CO(string sceneToLoad)
         {
             OnStartEvent?.Invoke();
             axiomAnimator.StopAnim();
@@ -45,6 +49,14 @@ namespace Axiom.UI.MainMenu
             yield return new WaitForSeconds(2f);
         
             transform.DORotate(new Vector3(0, 0, 360f), 60f, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Incremental);
+
+            yield return new WaitForSeconds(1f);
+            
+            NextScene();
+
+            yield return new WaitForSeconds(1f);
+
+            SceneManager.LoadScene(sceneToLoad);
         }
 
         private void NextScene()
@@ -52,6 +64,11 @@ namespace Axiom.UI.MainMenu
             transform.DOKill();
             transform.DORotate(new Vector3(0, 0, 90f), 2f, RotateMode.FastBeyond360).SetEase(Ease.InOutQuad);
             transform.DOMoveZ(10, 2f);
+        }
+
+        public void QuitGame()
+        {
+            Application.Quit();
         }
     }
 }

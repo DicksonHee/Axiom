@@ -6,10 +6,6 @@ using System.Collections.Generic;
 
 public class CSVtoSO
 {
-    //private 
-    /////////////
-    
-    ////////////
     private static string DialogListCSVPath = "/Editor/CSVs/DialogListCSV.csv";
 
     [MenuItem("Utilities/Generate Dialog Lists")]
@@ -20,7 +16,7 @@ public class CSVtoSO
         DialogListData dialogListInstance = null;
         string PrevFileName = null;
         Dialog dialog = null;
-        //bool canCreate = false;
+        
         //assigning
         for(int y = 1; y < allLines.Length; y++)//x = 1, ignore first row as it is names
         {                                       // for each row
@@ -42,8 +38,6 @@ public class CSVtoSO
 
                 //Assign collum A as dialoglist name
                 dialogListInstance.name = splitData[0];
-                //AssetDatabase.Refresh();
-                //AssetDatabase.SaveAssets();
             }
             
             DialogLine dlInstance = new DialogLine(); //new dialog line in each row
@@ -59,7 +53,7 @@ public class CSVtoSO
                     PrevFileName = splitData[1];
 
                     dialogListInstance.dialogLists.Add(dialog);
-                    Debug.Log("PrecFileName is different");
+                    Debug.Log("PrevFileName is different");
                 }
                 
                     TimeStamp ts = new TimeStamp(); //start create new timestamp
@@ -103,6 +97,10 @@ public class CSVtoSO
 
                         case "Unmute":
                         ts.command = TimeStamp.Commands.Unmute;
+                        break;
+
+                        case "Stop":
+                        ts.command = TimeStamp.Commands.Stop;
                         break;
                     }
                     if(dialog == null)

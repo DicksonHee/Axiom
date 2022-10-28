@@ -10,6 +10,7 @@ namespace Axiom.Player.Movement
         [SerializeField] private Transform camHolder;
         [SerializeField] private Transform orientation;
         [SerializeField] private Camera cam;
+        [SerializeField] private PlayerAnimation playerAnimation;
 
         [Header("Mouse Variables")]
         [SerializeField] private float sensX;
@@ -59,6 +60,8 @@ namespace Axiom.Player.Movement
 
         private void GetInput()
         {
+            if (multiplier == 0f) return;
+            
             mouseX = Input.GetAxis("Mouse X"); 
             mouseY = Input.GetAxis("Mouse Y");
             
@@ -115,19 +118,46 @@ namespace Axiom.Player.Movement
             cam.transform.DOLocalRotate(new Vector3(0, 0, rTiltAmount), 0.25f);
         }
 
-        public void StartHardLandingCamera(float downAngle)
+        public void StartHardLandingCamera()
         {
             LockCamera();
-            cam.DOFieldOfView(110f, 0.25f);
-            cam.transform.DOLocalRotate(new Vector3(downAngle, 0, 0), 0.25f);
+            camHolder.DOLocalRotate(new Vector3(70f, yRotation, 0), 0.15f);
+            
+            Invoke(nameof(EndHardLandingCamera), 1.5f);
         }
 
+        public void EndHardLandingCamera()
+        {
+            xRotation = 0f;
+            camHolder.DOLocalRotate(new Vector3(0f, yRotation, 0), 0.25f);
+            Invoke(nameof(ResetCamera), 0.25f);
+        }
+        
         public void StartRollCamera()
         {
             LockCamera();
-            cam.transform.DOLocalRotate(new Vector3(360, 0, 0), 0.75f, RotateMode.FastBeyond360).SetEase(Ease.Flash);
+            StartCoroutine(RotateCam_CO(new Vector3(360f, 0, 0), 0.4f));
+            //cam.transform.DOLocalRotate(new Vector3(360f, 0, 0), 0.6f, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.Linear);
+            Invoke(nameof(ShowModel), 0.4f);
         }
 
+        private void ShowModel() => playerAnimation.ShowModel();
+
+        private IEnumerator RotateCam_CO(Vector3 rotateAmount, float duration)
+        {
+            Vector3 initialRot = cam.transform.localRotation.eulerAngles;
+            float counter = 0f;
+
+            while (counter < duration)
+            {
+                counter += Time.deltaTime;
+                cam.transform.localRotation = Quaternion.Euler(Vector3.Lerp(initialRot, rotateAmount, counter/duration));
+                yield return null;
+            }
+            
+            cam.transform.localRotation = Quaternion.Euler(rotateAmount);
+        }
+        
         public void StartClimbCamera()
         {
             cam.transform.DOLocalRotate(new Vector3(wallRunXRotLimits.y, 0, 0), 0.25f);
@@ -153,9 +183,13 @@ namespace Axiom.Player.Movement
 
         public void TransformForwardRotateBy(Quaternion transformation)
         {
-            camHolder.localRotation = transformation * Quaternion.Euler(xRotation, yRotation, 0);
-            orientation.localRotation = transformation * Quaternion.Euler(0, yRotation, 0);
+            Vector3 targetTrans = transformation.eulerAngles;
+            targetTrans.z = 0;
             
+            camHolder.localRotation = Quaternion.Euler(targetTrans + new Vector3(xRotation, yRotation, 0));
+            orientation.localRotation = Quaternion.Euler(targetTrans + new Vector3(0, yRotation, 0));
+            Debug.Log(targetTrans + new Vector3(0, yRotation, 0));
+            playerAnimation.ForceRotate();
         }
     }
 }

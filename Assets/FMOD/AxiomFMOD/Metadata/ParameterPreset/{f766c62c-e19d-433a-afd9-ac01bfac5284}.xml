@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{f766c62c-e19d-433a-afd9-ac01bfac5284}">
+		<property name="name">
+			<value>Type</value>
+		</property>
+		<relationship name="folder">
+			<destination>{c2ef0402-8c90-428b-a94f-3c4a5ca6c50e}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{715c1d58-c858-4225-a4cd-4410dfd91988}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{715c1d58-c858-4225-a4cd-4410dfd91988}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>10</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>Carpet</value>
+			<value>Tiles Ground</value>
+			<value>Tiles Railings</value>
+			<value>Tiles Roll</value>
+			<value>Boxes (running)</value>
+			<value>Boxes (Sliding)</value>
+			<value>Boxes Landing</value>
+			<value>Metal Pipe (Walking)</value>
+			<value>Metal Pipe (Running)</value>
+			<value>Electric Protection</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

@@ -7,6 +7,7 @@ namespace Axiom.Player.Movement.StateMachine.States
     public class Landing : State
     {
 		private float delayTime;
+		private bool rollSuccess;
 		
 		public Landing(MovementSystem movementSystem) : base(movementSystem)
         {
@@ -32,19 +33,20 @@ namespace Axiom.Player.Movement.StateMachine.States
 			}
 			else if (MovementSystem.TotalAirTime >= 1.5f)
 			{ 
-				bool rollSuccess = Mathf.Abs(stateStartTime - MovementSystem.inputDetection.crouchPressedTime) < 1f;
+				rollSuccess = Mathf.Abs(stateStartTime - MovementSystem.inputDetection.crouchPressedTime) < 1f;
 				delayTime = rollSuccess ? 0.3f : 1.5f;
 
 				if (rollSuccess)
 				{
 					MovementSystem.playerAnimation.DisableRotation();
+					//MovementSystem.playerAnimation.HideModel();
 					MovementSystem.cameraLook.StartRollCamera();
 				}
 				else
 				{
 					MovementSystem.playerAnimation.DisableRotation();
 					MovementSystem.DisableMovement();
-					MovementSystem.cameraLook.StartHardLandingCamera(30f);
+					MovementSystem.cameraLook.StartHardLandingCamera();
 					MovementSystem.Rb.velocity = Vector3.zero;
 				}
 				MovementSystem.playerAnimation.SetFloatParam("LandIntensity", 2);
@@ -77,10 +79,17 @@ namespace Axiom.Player.Movement.StateMachine.States
 			base.ExitState();
 
 			MovementSystem.SetTotalAirTime(0f);
-			MovementSystem.EnableMovement();
-			MovementSystem.playerAnimation.EnableRotation();
-			MovementSystem.cameraLook.ResetCamera();
 			MovementSystem.SetAnimatorBool("Landing", false);
+			MovementSystem.playerAnimation.EnableRotation();
+			
+			if (rollSuccess)
+			{
+				MovementSystem.cameraLook.ResetCamera();
+			}
+			else
+			{
+				MovementSystem.EnableMovement();
+			}
 		}
 	}
 }
