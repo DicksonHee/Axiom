@@ -29,23 +29,23 @@ namespace Axiom.NonEuclidean
             initRot = transform.rotation;
         }
 
-        private void OnEnable()
-        {
-            foreach (FlippyTrigger trigger in landingTriggers)
-            {
-                trigger.OnEnter += OnFlippyTriggerEnter;
-                trigger.OnExit += OnFlippyTriggerExit;
-            }
-        }
+        //private void OnEnable()
+        //{
+        //    foreach (FlippyTrigger trigger in landingTriggers)
+        //    {
+        //        trigger.OnEnter += OnFlippyTriggerEnter;
+        //        trigger.OnExit += OnFlippyTriggerExit;
+        //    }
+        //}
 
-        private void OnFlippyTriggerEnter(Collider other, FlippyTrigger trigger)
-        {
-            foreach (FlippyTrigger trigger in landingTriggers)
-            {
-                trigger.OnEnter -= PlayerEnterTrigger;
-                trigger.OnExit -= PlayerExitTrigger;
-            }
-        }
+        //private void OnFlippyTriggerEnter(Collider other, FlippyTrigger trigger)
+        //{
+        //    foreach (FlippyTrigger trigger in landingTriggers)
+        //    {
+        //        trigger.OnEnter -= PlayerEnterTrigger;
+        //        trigger.OnExit -= PlayerExitTrigger;
+        //    }
+        //}
 
         private void PlayerEnterTrigger(Collider other, FlippyTrigger trigger)
         {
