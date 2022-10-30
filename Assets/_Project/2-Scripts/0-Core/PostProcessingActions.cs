@@ -27,14 +27,27 @@ namespace Axiom.Core
             ppVolume.profile.TryGet(out vignette);
             ppVolume.profile.TryGet(out radialBlur);
             ppVolume.profile.TryGet(out overlay);
-
+            
             radialBlur.amount.overrideState = true;
             overlay.intensity.overrideState = true;
-
+            
             radialBlur.amount.value = 0f;
             overlay.intensity.value = 0f;
         }
 
+        public void VolumeUpdated()
+        {
+            ppVolume.profile.TryGet(out vignette);
+            ppVolume.profile.TryGet(out radialBlur);
+            ppVolume.profile.TryGet(out overlay);
+            
+            radialBlur.amount.overrideState = true;
+            overlay.intensity.overrideState = true;
+            
+            radialBlur.amount.value = 0f;
+            overlay.intensity.value = 0f;
+        }
+        
         public void SetVignetteIntensity(float intensity)
         {
             if (respawnCoroutine != null) return;
