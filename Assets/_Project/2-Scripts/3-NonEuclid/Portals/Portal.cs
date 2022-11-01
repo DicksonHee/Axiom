@@ -79,7 +79,18 @@ namespace Axiom.NonEuclidean
         protected void AddTrackedTransform(TrackedTransform t)
         {
             if (tracked.FindIndex(x => x.transform == t.transform) < 0)
-                tracked.Add(t); ProtectScreenFromClipping(); 
+            {
+                tracked.Add(t);
+                print($"{transform.name} | Started Tracking");
+            }
+            ProtectScreenFromClipping(); 
+        }
+
+        private void RemoveTrackedTransform(TrackedTransform t)
+        {
+            if(tracked.Remove(t))
+            print($"{transform.name} | Stopped Tracking");
+            ProtectScreenFromClipping();
         }
 
         private void LateUpdate()
@@ -94,6 +105,7 @@ namespace Axiom.NonEuclidean
         {
             for (int i = 0; i < tracked.Count; i++)
             {
+                print($"{transform.name} | {tracked[i].transform.name}");
                 //print(Camera.main.transform.position - tracked[i].transform.position);
                 int dot = (int)Mathf.Sign(Vector3.Dot(transform.forward, transform.position - tracked[i].transform.position));
                 int last = tracked[i].lastDotSign;
@@ -101,32 +113,29 @@ namespace Axiom.NonEuclidean
                 //print($"({gameObject.name}) dot: {dot}, last: {last}, position: {tracked[i].transform.position - transform.position}");
 
                 if (last < 0 && dot > 0 || last > 0 && dot < 0)
-                {
                     Teleport(tracked[i]);
-                    tracked.RemoveAt(i);
-                    ProtectScreenFromClipping();
-                }
             }
         }
         
         private void Teleport(TrackedTransform t)
         {
-            //print($"Teleporting from {gameObject.name}");
+            if (!t.transform.parent.parent.TryGetComponent(out MovementSystem controller) || !canTeleport || !teleportEnabled)
+                return;
 
-            if (t.transform.parent.parent.TryGetComponent(out MovementSystem controller) && canTeleport && teleportEnabled)
-            {
-                otherPortal.DisablePortal();
+            print($"Teleporting from {gameObject.name}");
 
-                Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
-                
-                if(otherPortal.changeGravity) controller.TeleportPlayerRotateBy(m.GetPosition(),GetTeleportDirection(), otherPortal.gravityDirection.forward);
-                else controller.TeleportPlayerRotateBy(m.GetPosition(),GetTeleportDirection(), null);
+            otherPortal.DisablePortal();
 
-                t.transform.gameObject.GetComponentInParent<MoveCamera>().ForceUpdate();
-                //print($"teleporting from {controller.transform.position - transform.position} to {m.GetPosition() - otherPortal.transform.position}");
-            }
+            Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
+
+            controller.TeleportPlayerRotateBy(m.GetPosition(), 
+                m.rotation, otherPortal.changeGravity ? otherPortal.gravityDirection.forward : null);
+
+            t.transform.gameObject.GetComponentInParent<MoveCamera>().ForceUpdate();
+            //print($"teleporting from {controller.transform.position - transform.position} to {m.GetPosition() - otherPortal.transform.position}");
             //else t.transform.SetPositionAndRotation(m.GetPosition(), m.rotation);
 
+            RemoveTrackedTransform(t);
             t.lastDotSign = 0;
             otherPortal.AddTrackedTransform(t);
         }
@@ -196,7 +205,10 @@ namespace Axiom.NonEuclidean
                 otherT = playerCam.transform;
 
             if (tracked.FindIndex(x => x.transform == otherT) < 0)
+            {
                 tracked.Add(new TrackedTransform(otherT, 0));
+                print($"{transform.name} | Started Tracking");
+            }
         }
 
         private void OnTriggerExit(Collider other)
@@ -208,7 +220,10 @@ namespace Axiom.NonEuclidean
             //print($"{transform.name}, {other.transform.name}");
             int index = tracked.FindIndex(x => x.transform == otherT);
             if (index >= 0)
+            {
                 tracked.RemoveAt(index);
+                print($"{transform.name} | Stopped Tracking");
+            }
         }
 
         protected class TrackedTransform
