@@ -29,6 +29,16 @@ namespace Axiom.NonEuclidean
             initRot = transform.rotation;
         }
 
+        private void ResetRotation()
+        {
+            StopAllCoroutines();
+            transform.rotation = initRot;
+            atBaseRotation = true;
+            activeTrigger = null;
+            playerHasLeft = true;
+            rotating = false;
+        }
+
         private void OnEnable()
         {
             foreach (FlippyTrigger trigger in landingTriggers)
@@ -36,18 +46,20 @@ namespace Axiom.NonEuclidean
                 trigger.OnEnter += OnFlippyTriggerEnter;
                 trigger.OnExit += OnFlippyTriggerExit;
             }
+            RespawnManager.OnRespawn += ResetRotation;
         }
 
-        private void OnFlippyTriggerEnter(Collider other, FlippyTrigger trigger)
+        private void OnDisable()
         {
             foreach (FlippyTrigger trigger in landingTriggers)
             {
-                trigger.OnEnter -= PlayerEnterTrigger;
-                trigger.OnExit -= PlayerExitTrigger;
+                trigger.OnEnter -= OnFlippyTriggerEnter;
+                trigger.OnExit -= OnFlippyTriggerExit;
             }
+            RespawnManager.OnRespawn -= ResetRotation;
         }
 
-        private void PlayerEnterTrigger(Collider other, FlippyTrigger trigger)
+        private void OnFlippyTriggerEnter(Collider other, FlippyTrigger trigger)
         {
             if (other.CompareTag("Player"))
             {
@@ -103,7 +115,7 @@ namespace Axiom.NonEuclidean
                 transform.rotation = currentRot;
                 if (playerOnPlatform)
                 {
-                    Quaternion rotDelta = Quaternion.AngleAxis(Time.deltaTime / time * degrees, transform.right);
+                    Quaternion rotDelta = Quaternion.AngleAxis(Time.deltaTime / time * (degTo - degFrom), transform.right);
                     Vector3 relativePlayerPos = player.transform.position - transform.position;
                     Vector3 newPlayerPos = rotDelta * relativePlayerPos + transform.position;
 

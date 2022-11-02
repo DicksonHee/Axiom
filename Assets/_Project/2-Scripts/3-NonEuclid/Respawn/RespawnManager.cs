@@ -9,6 +9,9 @@ public static class RespawnManager
 	private static RespawnArea currentRespawnArea;
 	public static RespawnTrigger currentRespawnTrigger { get; set; }
 
+	public delegate void RespawnEvent();
+	public static event RespawnEvent OnRespawn;
+
 	public static void SetCurrentRespawnArea(RespawnArea newArea) => currentRespawnArea = newArea;
 	public static RespawnArea GetCurrentRespawnArea() => currentRespawnArea;
 
@@ -17,5 +20,6 @@ public static class RespawnManager
 		if (playerGO == null) playerGO = GameObject.FindGameObjectWithTag("Player");
 		
 		currentRespawnArea.RespawnPlayer(playerGO);
+		OnRespawn?.Invoke();
 	}
 }
