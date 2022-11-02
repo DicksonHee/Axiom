@@ -41,17 +41,19 @@ public class RespawnTrigger : MonoBehaviour
 		
 		if (other.CompareTag("Player"))
 		{
-			PostProcessingActions.current.RespawnAnimation(1f);
+            Debug.Log("Enter");
+            PostProcessingActions.current.RespawnAnimation(1f);
 			Invoke(nameof(RespawnPlayer), 0.5f);
 		}
 	}
 	
 	private void OnTriggerExit(Collider other)
 	{
-		if (triggerOnEnter  || !isEnabled) return;
+		if (triggerOnEnter || !isEnabled) return;
 		
 		if (other.CompareTag("Player"))
 		{
+			Debug.Log("Exit");
 			PostProcessingActions.current.RespawnAnimation(1f);
 			Invoke(nameof(RespawnPlayer), 0.5f);
 		}

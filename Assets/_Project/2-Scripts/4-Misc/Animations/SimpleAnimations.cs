@@ -40,4 +40,17 @@ public class SimpleAnimations : MonoBehaviour
             }
         }
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P)) StopTweens();
+    }
+
+    public void StopTweens()
+    {
+        foreach(GameObject go in objectsToRotate)
+        {
+            go.transform.DOKill();
+        }
+    }
 }
