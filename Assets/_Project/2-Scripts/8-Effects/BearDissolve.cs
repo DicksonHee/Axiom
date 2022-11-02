@@ -39,10 +39,10 @@ public class BearDissolve : MonoBehaviour
         foreach (GameObject go in activateObjects) go.SetActive(true);
         foreach (GameObject go in deactivateObjects) go.SetActive(false);
         DissolveController.current.StartDissolve("WhiteBear", 1f, 7f);
-        while (counter < 1f)
+        while (counter < 3f)
         {
             counter += Time.deltaTime;
-            hologramMaterial.SetFloat("_Transparency", Mathf.Lerp(7.5f, 200f, counter * 2));
+            hologramMaterial.SetFloat("_Transparency", Mathf.Lerp(15f, 200f, counter/3f));
             yield return null;
         }
     }

@@ -59,7 +59,7 @@ namespace Axiom.NonEuclidean
         //called just before player camera is rendered
         public void Render(ScriptableRenderContext ctx)
         {
-            if (!VisibleFromCamera(otherPortal.screen, playerCam) || !shouldRenderScreen) return;
+            if (otherPortal == null || !VisibleFromCamera(otherPortal.screen, playerCam) || !shouldRenderScreen) return;
 
             screen.enabled = false;
             CreateViewTexture();
