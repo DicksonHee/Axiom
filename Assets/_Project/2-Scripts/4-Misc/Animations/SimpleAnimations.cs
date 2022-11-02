@@ -9,6 +9,7 @@ public class SimpleAnimations : MonoBehaviour
 {
     public List<GameObject> objectsToRotate;
     public List<Vector3> directionToRotate;
+    public List<SpinDirection> spinDirections;
     public List<float> duration;
 
     private void Start()
@@ -21,6 +22,15 @@ public class SimpleAnimations : MonoBehaviour
             {
                 gameObject.transform
                     .DOLocalRotate(directionToRotate[ii], duration[ii], RotateMode.FastBeyond360)
+                    .SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
+            }
+            else if(ii < spinDirections.Count && spinDirections[ii] != null)
+            {
+                Vector3 rotateVec = new Vector3(spinDirections[ii].x ? 360f : 0f, spinDirections[ii].y ? 360f : 0f, spinDirections[ii].z ? 360f : 0f);
+                rotateVec *= Random.Range(0,2) == 0 ? -1f : 1f;
+                float rotateDuration = duration[ii] * Random.Range(1f, 2f);
+                gameObject.transform
+                    .DOLocalRotate(rotateVec, rotateDuration, RotateMode.FastBeyond360)
                     .SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
             }
             else
@@ -52,5 +62,13 @@ public class SimpleAnimations : MonoBehaviour
         {
             go.transform.DOKill();
         }
+    }
+
+    [Serializable]
+    public class SpinDirection
+    {
+        public bool x;
+        public bool y;
+        public bool z;
     }
 }

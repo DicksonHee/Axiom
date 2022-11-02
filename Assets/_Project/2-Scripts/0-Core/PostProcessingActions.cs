@@ -10,6 +10,7 @@ namespace Axiom.Core
     public class PostProcessingActions : MonoBehaviour
     {
         public static PostProcessingActions current;
+        public PPVolumeManager volumeManager;
 
         private Volume ppVolume;
         private Vignette vignette;
@@ -24,16 +25,11 @@ namespace Axiom.Core
             current = this;
 
             ppVolume = GetComponent<Volume>();
-            ppVolume.profile.TryGet(out vignette);
-            ppVolume.profile.TryGet(out radialBlur);
-            ppVolume.profile.TryGet(out overlay);
-            
-            radialBlur.amount.overrideState = true;
-            overlay.intensity.overrideState = true;
-            
-            radialBlur.amount.value = 0f;
-            overlay.intensity.value = 0f;
+            VolumeUpdated();
         }
+
+        #region ChangeVolume
+        public void ChangeVolume(AreaName areaName) => volumeManager.ChangeVolume(areaName);
 
         public void VolumeUpdated()
         {
@@ -47,7 +43,9 @@ namespace Axiom.Core
             radialBlur.amount.value = 0f;
             overlay.intensity.value = 0f;
         }
-        
+        #endregion
+
+        #region Vignette
         public void SetVignetteIntensity(float intensity)
         {
             if (respawnCoroutine != null) return;
@@ -68,7 +66,9 @@ namespace Axiom.Core
 
             vignette.intensity.value = targetIntensity;
         }
+        #endregion
 
+        #region Respawn
         public void RespawnAnimation(float duration)
         {
             if(respawnCoroutine != null) StopCoroutine(respawnCoroutine);
@@ -98,6 +98,6 @@ namespace Axiom.Core
             radialBlur.amount.value = 0f;
             overlay.intensity.value = 0f;
         }
+        #endregion
     }
 }
-
