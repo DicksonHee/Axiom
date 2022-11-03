@@ -442,7 +442,7 @@ namespace Axiom.Player.Movement.StateMachine
                 Physics.gravity = gravityDirection.Value;
             }
             
-            TransformTargetVelocity(currentVel);
+            //TransformTargetVelocity(currentVel);
             Invoke(nameof(EnableCounterMovement), 0.1f);
         }
 
@@ -461,18 +461,20 @@ namespace Axiom.Player.Movement.StateMachine
             {
                 transform.position = teleportPosition;
                 cameraLook.TransformForwardRotateBy(rotationDiff.Value);
+                TransformTargetVelocity(currentVel, rotationDiff.Value);
             }
 
-            TransformTargetVelocity(currentVel);
-			Invoke(nameof(EnableCounterMovement), 0.1f);
+            Invoke(nameof(EnableCounterMovement), 0.1f);
 		}
 
-        private void TransformTargetVelocity(Vector3 vel)
+        private void TransformTargetVelocity(Vector3 vel, Quaternion rotationDiff)
         {
-            Vector3 newMoveDir = orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;
+            Vector3 newMoveDir = rotationDiff * vel;
+            Rb.velocity = newMoveDir;
+            //Vector3 newMoveDir = orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;
 
-            //Rb.velocity = (vel + newMoveDir).normalized * vel.magnitude;
-            Rb.velocity = newMoveDir.normalized * vel.magnitude;
+            ////Rb.velocity = (vel + newMoveDir).normalized * vel.magnitude;
+            //Rb.velocity = newMoveDir.normalized * vel.magnitude;
         }
 		#endregion
 

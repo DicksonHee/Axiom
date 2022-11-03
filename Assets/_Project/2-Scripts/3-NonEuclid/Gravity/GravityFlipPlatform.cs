@@ -29,22 +29,34 @@ namespace Axiom.NonEuclidean
             initRot = transform.rotation;
         }
 
+        private void ResetRotation()
+        {
+            StopAllCoroutines();
+            transform.rotation = initRot;
+            atBaseRotation = true;
+            activeTrigger = null;
+            playerHasLeft = true;
+            rotating = false;
+        }
+
         private void OnEnable()
         {
-           foreach (FlippyTrigger trigger in landingTriggers)
-           {
-               trigger.OnEnter += OnFlippyTriggerEnter;
-               trigger.OnExit += OnFlippyTriggerExit;
-           }
+            foreach (FlippyTrigger trigger in landingTriggers)
+            {
+                trigger.OnEnter += OnFlippyTriggerEnter;
+                trigger.OnExit += OnFlippyTriggerExit;
+            }
+            RespawnManager.OnRespawn += ResetRotation;
         }
 
         private void OnDisable()
         {
-           foreach (FlippyTrigger trigger in landingTriggers)
-           {
-               trigger.OnEnter -= OnFlippyTriggerEnter;
-               trigger.OnExit -= OnFlippyTriggerExit;
-           }
+            foreach (FlippyTrigger trigger in landingTriggers)
+            {
+                trigger.OnEnter -= OnFlippyTriggerEnter;
+                trigger.OnExit -= OnFlippyTriggerExit;
+            }
+            RespawnManager.OnRespawn -= ResetRotation;
         }
 
         private void OnFlippyTriggerEnter(Collider other, FlippyTrigger trigger)
