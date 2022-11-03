@@ -128,7 +128,7 @@ namespace Axiom.NonEuclidean
 
             Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
 
-            controller.TeleportPlayerRotateBy(m.GetPosition(), 
+            controller.TeleportPlayerRotateBy(m.GetPosition() + (controller.transform.position - t.transform.position), 
                 m.rotation, otherPortal.changeGravity ? otherPortal.gravityDirection.forward : null);
 
             t.transform.gameObject.GetComponentInParent<MoveCamera>().ForceUpdate();
@@ -137,7 +137,7 @@ namespace Axiom.NonEuclidean
 
             RemoveTrackedTransform(t);
             t.lastDotSign = 0;
-            otherPortal.AddTrackedTransform(t);
+            //otherPortal.AddTrackedTransform(t);
         }
 
         public Vector3 GetPortalTeleportDirection() => isTeleportToBlue ? transform.forward : -transform.forward;
@@ -253,6 +253,15 @@ namespace Axiom.NonEuclidean
             if (changeGravity)
             {
                 DrawArrow.ForGizmo(gravityDirection.position, gravityDirection.forward, Color.green);
+            }
+
+            foreach (TrackedTransform t in tracked)
+            {
+                if (!t.transform.parent.parent.TryGetComponent(out MovementSystem controller) || !canTeleport || !teleportEnabled)
+                    return;
+
+                Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
+                DrawArrow.ForGizmo((Vector3)m.GetColumn(3) + (controller.transform.position - t.transform.position), m.rotation * Vector3.down, Color.blue);
             }
         }
         #endif
