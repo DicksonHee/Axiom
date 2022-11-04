@@ -183,6 +183,8 @@ namespace Axiom.Player.Movement.StateMachine
             CurrentState.LogicUpdate();
 
             if (Input.GetKeyDown(KeyCode.Escape)) SceneManager.LoadScene("MainMenu");
+
+            print($"gravity: {Physics.gravity}");
         }
 
         private void FixedUpdate()
@@ -455,6 +457,7 @@ namespace Axiom.Player.Movement.StateMachine
             if (gravityDirection != null)
             {
                 Physics.gravity = gravityDirection.Value;
+                print(gravityDirection.Value);
             }
             
             if (rotationDiff != null)

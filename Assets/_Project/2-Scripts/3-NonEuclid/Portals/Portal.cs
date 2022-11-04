@@ -81,7 +81,7 @@ namespace Axiom.NonEuclidean
             if (tracked.FindIndex(x => x.transform == t.transform) < 0)
             {
                 tracked.Add(t);
-                print($"{transform.name} | Started Tracking");
+                //print($"{transform.name} | Started Tracking");
             }
             ProtectScreenFromClipping(); 
         }
@@ -89,7 +89,7 @@ namespace Axiom.NonEuclidean
         private void RemoveTrackedTransform(TrackedTransform t)
         {
             if(tracked.Remove(t))
-            print($"{transform.name} | Stopped Tracking");
+            //print($"{transform.name} | Stopped Tracking");
             ProtectScreenFromClipping();
         }
 
@@ -106,7 +106,7 @@ namespace Axiom.NonEuclidean
         {
             for (int i = 0; i < tracked.Count; i++)
             {
-                print($"{transform.name} | {tracked[i].transform.name}");
+                //print($"{transform.name} | {tracked[i].transform.name}");
                 //print(Camera.main.transform.position - tracked[i].transform.position);
                 int dot = (int)Mathf.Sign(Vector3.Dot(transform.forward, screen.transform.position - tracked[i].transform.position));
                 int last = tracked[i].lastDotSign;
@@ -208,7 +208,7 @@ namespace Axiom.NonEuclidean
             if (tracked.FindIndex(x => x.transform == otherT) < 0)
             {
                 tracked.Add(new TrackedTransform(otherT, 0));
-                print($"{transform.name} | Started Tracking");
+                //print($"{transform.name} | Started Tracking");
             }
         }
 
@@ -223,7 +223,7 @@ namespace Axiom.NonEuclidean
             if (index >= 0)
             {
                 tracked.RemoveAt(index);
-                print($"{transform.name} | Stopped Tracking");
+                //print($"{transform.name} | Stopped Tracking");
             }
         }
 
