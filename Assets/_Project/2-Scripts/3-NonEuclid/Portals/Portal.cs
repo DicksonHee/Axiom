@@ -120,53 +120,21 @@ namespace Axiom.NonEuclidean
         
         private void Teleport(TrackedTransform t)
         {
-            if (!t.transform.parent.parent.TryGetComponent(out MovementSystem controller) || !canTeleport || !teleportEnabled)
+            if (!teleportEnabled || !t.transform.parent.parent.TryGetComponent(out MovementSystem controller))
                 return;
 
-            print($"Teleporting from {gameObject.name}");
-
-            otherPortal.DisablePortal();
-
             Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
+            Matrix4x4 portalM = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix;
 
-            controller.TeleportPlayerRotateBy(m.GetPosition() + (controller.transform.position - t.transform.position), 
-                m.rotation, otherPortal.changeGravity ? otherPortal.gravityDirection.forward : null);
+            controller.TeleportButForRealYo(m.GetPosition(), m.rotation, portalM.rotation);
+
+            if (changeGravity)
+                Physics.gravity = otherPortal.gravityDirection.forward;
 
             t.transform.gameObject.GetComponentInParent<MoveCamera>().ForceUpdate();
-            //print($"teleporting from {controller.transform.position - transform.position} to {m.GetPosition() - otherPortal.transform.position}");
-            //else t.transform.SetPositionAndRotation(m.GetPosition(), m.rotation);
 
             RemoveTrackedTransform(t);
             t.lastDotSign = 0;
-            //otherPortal.AddTrackedTransform(t);
-        }
-
-        public Vector3 GetPortalTeleportDirection() => isTeleportToBlue ? transform.forward : -transform.forward;
-        public Vector3 GetPortalForwardDirection() => isTeleportToBlue ? -transform.forward : transform.forward;
-
-        public void DisablePortal()
-        {
-            StartCoroutine(DelayTeleport());
-        }
-        
-        public Quaternion GetTeleportDirection()
-        {
-            Vector3 thisForward = GetPortalForwardDirection();
-            Debug.Log(thisForward);
-            Vector3 otherForward = otherPortal.GetPortalTeleportDirection();
-            Debug.Log(otherForward);
-            //Quaternion rot = Quaternion.FromToRotation(thisForward, otherForward);
-
-            Quaternion rot = Quaternion.Euler(0, Vector3.SignedAngle(thisForward, otherForward, transform.up), 0);
-            Debug.Log(rot.eulerAngles);
-            return rot;
-        }
-
-        private IEnumerator DelayTeleport()
-        {
-            canTeleport = false;
-            yield return new WaitForSeconds(0.05f);
-            canTeleport = true;
         }
 
         private void SetNearClipPlane()

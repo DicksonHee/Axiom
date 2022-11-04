@@ -183,8 +183,6 @@ namespace Axiom.Player.Movement.StateMachine
             CurrentState.LogicUpdate();
 
             if (Input.GetKeyDown(KeyCode.Escape)) SceneManager.LoadScene("MainMenu");
-
-            print($"gravity: {Physics.gravity}");
         }
 
         private void FixedUpdate()
@@ -463,12 +461,24 @@ namespace Axiom.Player.Movement.StateMachine
             if (rotationDiff != null)
             {
                 transform.position = teleportPosition;
-                cameraLook.TransformForwardRotateBy(rotationDiff.Value);
+                //cameraLook.TransformForwardRotateBy(rotationDiff.Value);
+                print($"before: {transform.rotation.eulerAngles}");
+                transform.rotation = transform.rotation * rotationDiff.Value;
+                print($"after: {transform.rotation.eulerAngles}");
+
+                playerAnimation.ForceRotate();
                 TransformTargetVelocity(currentVel, rotationDiff.Value);
             }
 
             Invoke(nameof(EnableCounterMovement), 0.1f);
 		}
+
+        public void TeleportButForRealYo(Vector3 position, Quaternion rotation, Quaternion rotationDifference)
+        {
+            transform.position = position;
+            transform.rotation = rotation;
+            Rb.velocity = rotationDifference * Rb.velocity;
+        }
 
         private void TransformTargetVelocity(Vector3 vel, Quaternion rotationDiff)
         {

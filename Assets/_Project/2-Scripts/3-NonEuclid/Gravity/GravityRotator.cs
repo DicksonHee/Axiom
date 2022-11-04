@@ -6,6 +6,7 @@ namespace Axiom.NonEuclidean
     public class GravityRotator : MonoBehaviour
     {
         public static GravityRotator current;
+        public float rotateSpeed;
 
         private void Awake()
         {
@@ -26,6 +27,7 @@ namespace Axiom.NonEuclidean
         
             Vector3 cross = Vector3.Cross(from, to);
             float angle = Vector3.SignedAngle(from, to, cross);
+            angle = Mathf.Min(angle, rotateSpeed * Time.deltaTime);
 
             transform.Rotate(cross, angle, Space.World);
         }
