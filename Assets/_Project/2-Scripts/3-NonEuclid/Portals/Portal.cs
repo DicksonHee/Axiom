@@ -107,7 +107,7 @@ namespace Axiom.NonEuclidean
             {
                 print($"{transform.name} | {tracked[i].transform.name}");
                 //print(Camera.main.transform.position - tracked[i].transform.position);
-                int dot = (int)Mathf.Sign(Vector3.Dot(transform.forward, transform.position - tracked[i].transform.position));
+                int dot = (int)Mathf.Sign(Vector3.Dot(transform.forward, screen.transform.position - tracked[i].transform.position));
                 int last = tracked[i].lastDotSign;
                 tracked[i].lastDotSign = dot;
                 //print($"({gameObject.name}) dot: {dot}, last: {last}, position: {tracked[i].transform.position - transform.position}");
