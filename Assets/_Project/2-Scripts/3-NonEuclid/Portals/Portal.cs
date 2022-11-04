@@ -87,6 +87,7 @@ namespace Axiom.NonEuclidean
             //print($"({gameObject.name}) {tracked.Count}");
             //foreach (TrackedTransform t in tracked)
             //print($"{Time.time}, {t.transform.name} ({transform.name})");
+            if (tracked.Count > 0) Debug.Log(this);
             CheckTrackedTransforms();
         }
 
