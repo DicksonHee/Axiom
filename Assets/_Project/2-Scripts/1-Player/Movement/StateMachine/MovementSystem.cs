@@ -257,7 +257,7 @@ namespace Axiom.Player.Movement.StateMachine
         // Applies counter movement to reduce slippery movement
         private void ApplyCounterMovement()
         {
-            if (!counterMovementEnabled) return;
+            if (CurrentState == InAirState || !counterMovementEnabled) return;
             
             Vector3 currentVel = Rb.velocity;
             Vector3 rightVel = Vector3.Cross(UpDirection, ForwardDirection) * Vector3.Dot(currentVel, RightDirection);
@@ -271,7 +271,7 @@ namespace Axiom.Player.Movement.StateMachine
         private void ApplyGravity()
         {
             if (rbInfo.IsGrounded()) return;
-            Rb.AddForce(-UpDirection * currentTargetGravity, ForceMode.Force);
+            Rb.AddForce(/*-UpDirection*/Physics.gravity * currentTargetGravity, ForceMode.Force);
         }
         #endregion
         

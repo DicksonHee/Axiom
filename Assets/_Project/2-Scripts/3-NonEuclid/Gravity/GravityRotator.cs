@@ -31,10 +31,5 @@ namespace Axiom.NonEuclidean
 
             transform.Rotate(cross, angle, Space.World);
         }
-
-        private void OnDestroy()
-        {
-            Physics.gravity = new Vector3(0f, -9.81f, 0f);
-        }
     }
 }
