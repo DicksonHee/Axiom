@@ -31,8 +31,10 @@ public class DialogueTrigger : MonoBehaviour
     Camera playerSight;
     public LayerMask wallMask;
     ///////////////////////////////////////////////////////////////////////////////////////////
-    public UnityEvent onPlayerTriggerEvent;
-    public UnityEvent onViewEvent;
+    public UnityEvent onPlayerTriggerEvent; // When player enter's the trigger
+    public UnityEvent onViewEvent; //if player looked at the poi the dialog event triggers
+
+    
    
     void Awake()
     {
@@ -41,6 +43,8 @@ public class DialogueTrigger : MonoBehaviour
         {
             Lookup();
         }
+
+        //get player's camera
         playerSight = Camera.main;
     }
     void Start()
@@ -50,7 +54,7 @@ public class DialogueTrigger : MonoBehaviour
         //     dialogListData.dialogLists[x].currentDialogLine = 0; //make sure the dialoglist starts at the beginning
         // }
 
-        //for testing
+        //for testing need to be removed
         FlagSystem.SetBoolValue("Flag1", true);
     }
     void Update()
@@ -88,7 +92,11 @@ public class DialogueTrigger : MonoBehaviour
     void FixedUpdate()
     {
         //maybe give another condition like range
-        InView();
+        if(InView())
+        {
+            //Invoke when in player's view
+            onViewEvent.Invoke();
+        }
     }
     public void Z_StartDialog(DialogListData _data)
     {
@@ -112,6 +120,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         if(other.tag == "Player" && dialogCoroutine == null)
         {
+            //trigger dialog event
             onPlayerTriggerEvent.Invoke();
             Debug.Log("trigger enter");
         }

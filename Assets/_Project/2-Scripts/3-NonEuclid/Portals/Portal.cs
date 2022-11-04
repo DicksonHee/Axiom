@@ -59,7 +59,7 @@ namespace Axiom.NonEuclidean
         //called just before player camera is rendered
         public void Render(ScriptableRenderContext ctx)
         {
-            if (!VisibleFromCamera(otherPortal.screen, playerCam) || !shouldRenderScreen) return;
+            if (otherPortal == null || !VisibleFromCamera(otherPortal.screen, playerCam) || !shouldRenderScreen) return;
 
             screen.enabled = false;
             CreateViewTexture();
@@ -98,6 +98,7 @@ namespace Axiom.NonEuclidean
             //print($"({gameObject.name}) {tracked.Count}");
             //foreach (TrackedTransform t in tracked)
             //print($"{Time.time}, {t.transform.name} ({transform.name})");
+            if (tracked.Count > 0) Debug.Log(this);
             CheckTrackedTransforms();
         }
 
@@ -107,7 +108,7 @@ namespace Axiom.NonEuclidean
             {
                 print($"{transform.name} | {tracked[i].transform.name}");
                 //print(Camera.main.transform.position - tracked[i].transform.position);
-                int dot = (int)Mathf.Sign(Vector3.Dot(transform.forward, transform.position - tracked[i].transform.position));
+                int dot = (int)Mathf.Sign(Vector3.Dot(transform.forward, screen.transform.position - tracked[i].transform.position));
                 int last = tracked[i].lastDotSign;
                 tracked[i].lastDotSign = dot;
                 //print($"({gameObject.name}) dot: {dot}, last: {last}, position: {tracked[i].transform.position - transform.position}");
