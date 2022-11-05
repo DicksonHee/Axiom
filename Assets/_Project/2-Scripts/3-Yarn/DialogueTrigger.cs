@@ -14,7 +14,7 @@ public class DialogueTrigger : MonoBehaviour
 {
     //public DialogListData dialogListData;
     [SerializeField] private ProgrammerSounds fmodScript;
-    public float dialogueVolume;
+    public float dialogueVolume = 1;
 
     [ParamRef]
     [FormerlySerializedAs("parameter")]
@@ -29,12 +29,16 @@ public class DialogueTrigger : MonoBehaviour
     DialogLine dialogToShow;
     Coroutine dialogCoroutine;
     Camera playerSight;
-    public LayerMask wallMask;
+
+    [Header("Used in view check")]
+    public LayerMask PoiAndGroundMask;
     ///////////////////////////////////////////////////////////////////////////////////////////
+    [Header("Events")]
     public UnityEvent onPlayerTriggerEvent; // When player enter's the trigger
     public UnityEvent onViewEvent; //if player looked at the poi the dialog event triggers
 
-    
+    private bool viewOnce = false;
+    private bool enterOnce = false;
    
     void Awake()
     {
@@ -43,9 +47,11 @@ public class DialogueTrigger : MonoBehaviour
         {
             Lookup();
         }
-
         //get player's camera
         playerSight = Camera.main;
+
+        if(fmodScript == null)
+        fmodScript = FindObjectOfType<ProgrammerSounds>();
     }
     void Start()
     {
@@ -89,13 +95,23 @@ public class DialogueTrigger : MonoBehaviour
         // }
 
     }
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         //maybe give another condition like range
-        if(InView())
+        if(InView() && dialogCoroutine == null && !viewOnce)
         {
             //Invoke when in player's view
             onViewEvent.Invoke();
+            viewOnce = true;
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Player" && dialogCoroutine == null && !enterOnce)
+        {
+            //trigger dialog event
+            onPlayerTriggerEvent.Invoke();
+            enterOnce = true;
         }
     }
     public void Z_StartDialog(DialogListData _data)
@@ -110,21 +126,18 @@ public class DialogueTrigger : MonoBehaviour
 
         //make sure has los
         RaycastHit hit;
-        Physics.Linecast(playerSight.transform.position, transform.position, out hit, wallMask, QueryTriggerInteraction.Ignore);
+        Physics.Linecast(playerSight.transform.position, transform.position, out hit, PoiAndGroundMask, QueryTriggerInteraction.Ignore);
 
         //if player has focused on the poi, and has los
+        if(hit.collider!=null)
         return (Vector3.Angle(displacement, playerSight.transform.forward) <= LookAngleThreshold && hit.collider.gameObject == this.gameObject);
+        else
+        return false;
+
+        //return false;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Player" && dialogCoroutine == null)
-        {
-            //trigger dialog event
-            onPlayerTriggerEvent.Invoke();
-            Debug.Log("trigger enter");
-        }
-    }
+    
 
     private IEnumerator DialogToShow(DialogListData dialogListData)
     {
