@@ -184,11 +184,19 @@ namespace Axiom.Player.Movement
         public void TransformForwardRotateBy(Quaternion transformation)
         {
             Vector3 targetTrans = transformation.eulerAngles;
-            targetTrans.z = 0;
-            
-            camHolder.localRotation = Quaternion.Euler(targetTrans + new Vector3(xRotation, yRotation, 0));
-            orientation.localRotation = Quaternion.Euler(targetTrans + new Vector3(0, yRotation, 0));
+
+            print($"before: {camHolder.localRotation.eulerAngles}");
+            camHolder.localRotation = Quaternion.Euler(targetTrans) * camHolder.localRotation;
+            print($"after: {camHolder.localRotation.eulerAngles}");
+            //targetTrans.z = 0;
+            yRotation = camHolder.localRotation.eulerAngles.y;
+            //xRotation = (camHolder.localRotation.eulerAngles.x - 180);
+            xRotation -= targetTrans.x;
+            //targetTrans.x = 0;
+            orientation.localRotation = Quaternion.Euler(targetTrans) * orientation.localRotation;
+
             Debug.Log(targetTrans + new Vector3(0, yRotation, 0));
+
             playerAnimation.ForceRotate();
         }
     }

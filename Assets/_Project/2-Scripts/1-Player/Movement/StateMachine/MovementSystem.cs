@@ -257,7 +257,7 @@ namespace Axiom.Player.Movement.StateMachine
         // Applies counter movement to reduce slippery movement
         private void ApplyCounterMovement()
         {
-            if (!counterMovementEnabled) return;
+            if (CurrentState == InAirState || !counterMovementEnabled) return;
             
             Vector3 currentVel = Rb.velocity;
             Vector3 rightVel = Vector3.Cross(UpDirection, ForwardDirection) * Vector3.Dot(currentVel, RightDirection);
@@ -271,7 +271,7 @@ namespace Axiom.Player.Movement.StateMachine
         private void ApplyGravity()
         {
             if (rbInfo.IsGrounded()) return;
-            Rb.AddForce(-UpDirection * currentTargetGravity, ForceMode.Force);
+            Rb.AddForce(/*-UpDirection*/Physics.gravity * currentTargetGravity, ForceMode.Force);
         }
         #endregion
         
@@ -442,7 +442,7 @@ namespace Axiom.Player.Movement.StateMachine
                 Physics.gravity = gravityDirection.Value;
             }
             
-            TransformTargetVelocity(currentVel);
+            //TransformTargetVelocity(currentVel);
             Invoke(nameof(EnableCounterMovement), 0.1f);
         }
 
@@ -455,24 +455,39 @@ namespace Axiom.Player.Movement.StateMachine
             if (gravityDirection != null)
             {
                 Physics.gravity = gravityDirection.Value;
+                print(gravityDirection.Value);
             }
             
             if (rotationDiff != null)
             {
                 transform.position = teleportPosition;
-                cameraLook.TransformForwardRotateBy(rotationDiff.Value);
+                //cameraLook.TransformForwardRotateBy(rotationDiff.Value);
+                print($"before: {transform.rotation.eulerAngles}");
+                transform.rotation = transform.rotation * rotationDiff.Value;
+                print($"after: {transform.rotation.eulerAngles}");
+
+                playerAnimation.ForceRotate();
+                TransformTargetVelocity(currentVel, rotationDiff.Value);
             }
 
-            TransformTargetVelocity(currentVel);
-			Invoke(nameof(EnableCounterMovement), 0.1f);
+            Invoke(nameof(EnableCounterMovement), 0.1f);
 		}
 
-        private void TransformTargetVelocity(Vector3 vel)
+        public void TeleportButForRealYo(Vector3 position, Quaternion rotation, Quaternion rotationDifference)
         {
-            Vector3 newMoveDir = orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;
+            transform.position = position;
+            transform.rotation = rotation;
+            Rb.velocity = rotationDifference * Rb.velocity;
+        }
 
-            //Rb.velocity = (vel + newMoveDir).normalized * vel.magnitude;
-            Rb.velocity = newMoveDir.normalized * vel.magnitude;
+        private void TransformTargetVelocity(Vector3 vel, Quaternion rotationDiff)
+        {
+            Vector3 newMoveDir = rotationDiff * vel;
+            Rb.velocity = newMoveDir;
+            //Vector3 newMoveDir = orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;
+
+            ////Rb.velocity = (vel + newMoveDir).normalized * vel.magnitude;
+            //Rb.velocity = newMoveDir.normalized * vel.magnitude;
         }
 		#endregion
 
