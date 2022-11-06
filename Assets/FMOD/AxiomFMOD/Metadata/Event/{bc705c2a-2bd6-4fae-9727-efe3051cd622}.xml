@@ -205,7 +205,14 @@
 	</object>
 	<object class="MixerBusPanner" id="{32451131-af22-4e34-97dd-8c95434857ac}" />
 	<object class="MixerBusFader" id="{a0e52798-0dff-40be-8cae-158b2a697d26}" />
-	<object class="SpatialiserEffect" id="{c45dfa33-0cff-4b61-9b7b-ab173cb1eb83}" />
+	<object class="SpatialiserEffect" id="{c45dfa33-0cff-4b61-9b7b-ab173cb1eb83}">
+		<property name="overrideRange">
+			<value>true</value>
+		</property>
+		<property name="panBlend">
+			<value>0</value>
+		</property>
+	</object>
 	<object class="AutomationPoint" id="{38b3beaa-489f-42f8-8930-a9c60876181f}">
 		<property name="position">
 			<value>0</value>

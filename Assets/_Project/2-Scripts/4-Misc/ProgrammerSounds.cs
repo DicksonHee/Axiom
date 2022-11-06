@@ -45,7 +45,6 @@ class ProgrammerSounds : MonoBehaviour
     [SerializeField]
     static FMOD.Sound dialogueSound;
     public uint dialogueLength;
-
 #if UNITY_EDITOR
     void Reset()
     {
@@ -61,11 +60,21 @@ class ProgrammerSounds : MonoBehaviour
     }
 
     [YarnCommand("play")]
-    public void PlayDialog(string key, float volume = 1f)
+    public void PlayDialog(string key,  float volume = 1f, Transform audiopos = null)
     {
         dialogueInstance = RuntimeManager.CreateInstance(eventName);
         //possible fix to error
-        dialogueInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject.transform)); 
+        dialogueInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject.transform));
+
+        if(audiopos == null)
+        {
+            FMODUnity.RuntimeManager.AttachInstanceToGameObject(dialogueInstance, gameObject.transform); 
+        }
+        else
+        {
+             FMODUnity.RuntimeManager.AttachInstanceToGameObject(dialogueInstance, audiopos);
+        }
+        
 
         dialogueInstance.setVolume(volume);
         

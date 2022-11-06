@@ -1,11 +1,10 @@
-Command list
-_______________
+Command list (updated 6/11/2022)
+________________________________
 
 Show = update dialog text on screen
-Next = ready to show next dialog line (won't update text on screen)
 Mute = mute audio (it fades out, so start around 0.1s - 0.15s earlier) //may have to tweak a bit
 Unmute = unmutes audio (instantaneous, no fade)
-Stop = Good to have this at the end of a scene, because it might not play next scene, if there is still a dialog event still playing event if the volume is 0.
+Stop = (probably don't ever need this)in case of there is still a dialog event still playing event if the volume is 0.
 
 Tips
 ____
@@ -77,3 +76,8 @@ Generate Scriptable Objects in Unity with the spread sheet
 __________________________________________________________
 
 In Unity Editor, at the top banner , in the menu items, find Utilities --> Generate Dialog Lists
+
+Other...
+________
+The default position where the dialog's audio will play in the 3D space for spatialization is the player's head. (miles talking / earpiece). 
+You can override this in Unity, under dialog list scriptable object, dialog, audiopos.

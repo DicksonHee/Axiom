@@ -105,9 +105,10 @@ public class DialogueTrigger : MonoBehaviour
             viewOnce = true;
         }
     }
+    
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player" && dialogCoroutine == null && !enterOnce)
+        if(other.tag == "Player" && dialogCoroutine == null)// && !enterOnce)
         {
             //trigger dialog event
             onPlayerTriggerEvent.Invoke();
@@ -171,10 +172,10 @@ public class DialogueTrigger : MonoBehaviour
                                 ShowText(dialog.timestamps[timestampIndex].dialogLine);
                                 //Debug.Log("show");
                                 break;
-                            case TimeStamp.Commands.NextDialogLine:
-                                NextDialogLine(dialog.timestamps[timestampIndex].dialogLine);
-                                //Debug.Log("next");
-                                break;
+                            // case TimeStamp.Commands.NextDialogLine:
+                            //     NextDialogLine(dialog.timestamps[timestampIndex].dialogLine);
+                            //     //Debug.Log("next");
+                            //     break;
                             case TimeStamp.Commands.Mute:
                                 Mute(dialog.timestamps[timestampIndex].muteFlag);
                                 //Debug.Log("mute");
@@ -200,25 +201,25 @@ public class DialogueTrigger : MonoBehaviour
     }
 
     #region  Commands
-    private void ShowText(DialogLine dialogToShow)
+    private void ShowText(DialogLine _dialogToShow)
     {
         //if (dialogToShow.showText)
         //{
-            if (DialogUI.current != null) DialogUI.current.UpdateText(dialogToShow.textToShow);
+            if (DialogUI.current != null) DialogUI.current.UpdateText(_dialogToShow.textToShow);
 
             try
             {
-                Debug.Log(dialogToShow.RedactDialog());
+                Debug.Log(_dialogToShow.RedactDialog());
             }
             catch (ArgumentOutOfRangeException e)
             {
                 Debug.Log(e);
             }
     }
-    private void NextDialogLine(DialogLine dialog)
-    {
-        dialogToShow = dialog;
-    }
+    // private void NextDialogLine(DialogLine dialog)
+    // {
+    //     dialogToShow = dialog;
+    // }
     private void Mute(string flagToCheck = null)
     {
         if(FlagSystem.GetBoolValue(flagToCheck))

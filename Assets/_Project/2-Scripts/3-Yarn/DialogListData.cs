@@ -17,8 +17,11 @@ public class Dialog
 {
     public string audioFileName;
     //public bool playAudio;
+    [Header("Override Original Pos")] 
+    public Transform audioPos;
     public int currentDialogLine;
     public List<TimeStamp> timestamps;
+    
 }
 
 [Serializable]
@@ -30,7 +33,7 @@ public class TimeStamp
     public enum Commands
     {
         ShowText,
-        NextDialogLine,
+        //NextDialogLine,
         Mute,
         Unmute,
         Stop,
