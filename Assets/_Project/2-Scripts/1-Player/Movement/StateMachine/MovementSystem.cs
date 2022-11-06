@@ -257,7 +257,7 @@ namespace Axiom.Player.Movement.StateMachine
         // Applies counter movement to reduce slippery movement
         private void ApplyCounterMovement()
         {
-            if (CurrentState == InAirState || !counterMovementEnabled) return;
+            if (!counterMovementEnabled) return;
             
             Vector3 currentVel = Rb.velocity;
             Vector3 rightVel = Vector3.Cross(UpDirection, ForwardDirection) * Vector3.Dot(currentVel, RightDirection);

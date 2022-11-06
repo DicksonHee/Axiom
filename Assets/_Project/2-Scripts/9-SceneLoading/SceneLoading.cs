@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Antlr4.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,33 +22,47 @@ public class SceneLoading : MonoBehaviour
 
     private void Init()
     {
-        foreach (ScenePair pair in scenePairs)
-        {
-            if (pair.sceneName != defaultScene) pair.gameObject.SetActive(false);
-            else pair.gameObject.SetActive(true);
-        }
+        ChangeScene(defaultScene);
     }
 
-    public void DisableScene(string sceneName)
-    {
-        foreach(ScenePair pair in scenePairs)
-        {
-            if (pair.sceneName == sceneName) pair.gameObject.SetActive(false);
-        }
-    }
-
-    public void EnableScene(string sceneName)
+    public void ChangeScene(string sceneToLoad)
     {
         foreach (ScenePair pair in scenePairs)
         {
-            if (pair.sceneName == sceneName) pair.gameObject.SetActive(true);
+            bool shouldLoadScene = false;
+            foreach (string name in pair.sceneName)
+            {
+                if (name == sceneToLoad)
+                {
+                    shouldLoadScene = true;
+                    break;
+                }
+            }
+
+            pair.gameObject.SetActive(shouldLoadScene);
         }
     }
+
+    // public void DisableScene(string sceneName)
+    // {
+    //     foreach(ScenePair pair in scenePairs)
+    //     {
+    //         if (pair.sceneName == sceneName) pair.gameObject.SetActive(false);
+    //     }
+    // }
+    //
+    // public void EnableScene(string sceneName)
+    // {
+    //     foreach (ScenePair pair in scenePairs)
+    //     {
+    //         if (pair.sceneName == sceneName) pair.gameObject.SetActive(true);
+    //     }
+    // }
 }
 
 [Serializable]
 public class ScenePair
 {
-    public string sceneName;
     public GameObject gameObject;
+    public List<string> sceneName;
 }
