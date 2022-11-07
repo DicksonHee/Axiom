@@ -1213,7 +1213,7 @@ GameObject:
   - component: {fileID: 638122420}
   - component: {fileID: 638122422}
   - component: {fileID: 638122421}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sparkles_Black
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7293,7 +7293,7 @@ GameObject:
   - component: {fileID: 1244876662}
   - component: {fileID: 1244876664}
   - component: {fileID: 1244876663}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sparkles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18321,6 +18321,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2804138160578138195}
   - component: {fileID: 2804138160578138196}
+  - component: {fileID: 545734476}
+  - component: {fileID: 545734477}
   m_Layer: 6
   m_Name: Volume
   m_TagString: Untagged
@@ -18360,6 +18362,39 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 05bb63a78bc1aa04a8fc8b8df220883a, type: 2}
+--- !u!114 &545734476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2804138160578138198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67ff4cd5d4e24a7418ce75b4c6ab6e7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentVolume: {fileID: 2804138160578138196}
+  areaVolumes:
+  - areaName: 0
+    volumeProfile: {fileID: 11400000, guid: 05bb63a78bc1aa04a8fc8b8df220883a, type: 2}
+    sparkles: {fileID: 1244876661}
+  - areaName: 1
+    volumeProfile: {fileID: 11400000, guid: 40a63557ea8d00243acfa1f166247fee, type: 2}
+    sparkles: {fileID: 638122419}
+--- !u!114 &545734477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2804138160578138198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a39ebb88849ca2b48bfebe8c0b744d4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeManager: {fileID: 545734476}
 --- !u!1 &2804138160591387153
 GameObject:
   m_ObjectHideFlags: 0
@@ -19495,7 +19530,7 @@ GameObject:
   - component: {fileID: 2804138160996020230}
   - component: {fileID: 2804138160996020231}
   - component: {fileID: 2804138160996020280}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: NoPostCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21589,7 +21624,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9027862587186345421}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 66.17, y: 0.6010742, z: 73.14}
+  m_LocalPosition: {x: 65.63846, y: 0.5999987, z: 68.735695}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -21816,6 +21851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e3868da00979fa4894c5ba3eecfac1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotateSpeed: 175
 --- !u!114 &2960797515723180271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22043,6 +22079,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 9027862586861330605}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &4224190786481914607 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5176393074398667330, guid: 53a9bb75b5abf2340ab92ec7121e5e00,
+    type: 3}
+  m_PrefabInstance: {fileID: 9027862586861330605}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4897042669060013513 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4520667811460685156, guid: 53a9bb75b5abf2340ab92ec7121e5e00,
+    type: 3}
+  m_PrefabInstance: {fileID: 9027862586861330605}
+  m_PrefabAsset: {fileID: 0}
 --- !u!137 &5235134085660301948 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: -5336898023048152367, guid: 53a9bb75b5abf2340ab92ec7121e5e00,
@@ -22128,6 +22176,83 @@ MonoBehaviour:
   leftHandClimbPositionTarget: {fileID: 2804138161301248301}
   rightHandClimbPositionTarget: {fileID: 2804138161002322467}
   playerMesh: {fileID: 5235134085660301948}
+--- !u!114 &1605332258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8180789689736076796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &1605332259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8180789689736076796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 110786b4a6725c14485e3d37f3d5f726, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventEmmitter: {fileID: 1605332258}
+  footstepEvent:
+    Guid:
+      Data1: -1930976040
+      Data2: 1198996912
+      Data3: 1868262585
+      Data4: 1028609325
+    Path: event:/GlobalFootsteps
+  globalSurface: GlobalSurface
+  Value: 0
+  labelName: 
+  movementSystem: {fileID: 9027862587186345416}
+  footstepDataSO: {fileID: 11400000, guid: 8753852a5bfe33c46a09f3bd57608869, type: 2}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!114 &1605332267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8180789689736076796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89a7bc7aa7e34ca429f9288d20ec3085, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footsteps: {fileID: 1605332259}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  groundType_SO: {fileID: 11400000, guid: bb1552b348979ea44910d6b8c80d4d00, type: 2}
+  leftFootPosition: {fileID: 4897042669060013513}
+  rightFootPosition: {fileID: 4224190786481914607}
 --- !u!4 &8846143124705494854 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 53a9bb75b5abf2340ab92ec7121e5e00,

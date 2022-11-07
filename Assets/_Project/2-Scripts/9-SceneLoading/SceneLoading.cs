@@ -42,22 +42,6 @@ public class SceneLoading : MonoBehaviour
             pair.gameObject.SetActive(shouldLoadScene);
         }
     }
-
-    // public void DisableScene(string sceneName)
-    // {
-    //     foreach(ScenePair pair in scenePairs)
-    //     {
-    //         if (pair.sceneName == sceneName) pair.gameObject.SetActive(false);
-    //     }
-    // }
-    //
-    // public void EnableScene(string sceneName)
-    // {
-    //     foreach (ScenePair pair in scenePairs)
-    //     {
-    //         if (pair.sceneName == sceneName) pair.gameObject.SetActive(true);
-    //     }
-    // }
 }
 
 [Serializable]

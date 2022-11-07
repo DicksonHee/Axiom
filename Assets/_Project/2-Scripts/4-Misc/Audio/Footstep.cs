@@ -4,7 +4,7 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.Serialization;
-
+using Axiom.Player.Movement.StateMachine;
 
 public class Footstep : MonoBehaviour
 {
@@ -29,7 +29,13 @@ public class Footstep : MonoBehaviour
     [SerializeField]
     private string labelName;
 
-   
+    [Header("Footstep Audio")]
+    public MovementSystem movementSystem;
+    public FootstepData_SO footstepDataSO;
+    public LayerMask groundLayer;
+    private FootstepData currentFootstepData;
+    private Dictionary<string, FootstepData> footstepData;
+
     private FMOD.RESULT Lookup()
     {
         FMOD.RESULT result = RuntimeManager.StudioSystem.getParameterDescriptionByName(globalSurface, out parameterDescription);
@@ -53,25 +59,46 @@ public class Footstep : MonoBehaviour
         {
             Debug.Log(ex);
         }
+
+        eventEmmitter.EventReference = footstepEvent;
+        footstepData = footstepDataSO.GenerateDict();
     }
-    void Update()
+
+    private void OnEnable()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha0)) //press 0 to play// testing
-        {
-           eventEmmitter.Play();
-        }
-        //get current value
-        currentValue  = RuntimeManager.StudioSystem.getParameterByID(parameterDescription.id, out currentValuef);
-        RuntimeManager.StudioSystem.getParameterLabelByID(parameterDescription.id, (int)currentValuef, out labelName);
+        movementSystem.OnStateChanged += StateChanged;
+    }
 
+    private void OnDisable()
+    {
+        movementSystem.OnStateChanged -= StateChanged;
+    }
 
-        //set parameter from changing value
-        if(currentValuef == Value) return;
-        FMOD.RESULT result = RuntimeManager.StudioSystem.setParameterByID(parameterDescription.id, Value);
-       
-        if (result != FMOD.RESULT.OK)
+    private void StateChanged(string newState)
+    {
+        if(footstepData.TryGetValue(newState, out FootstepData data))
         {
-            RuntimeUtils.DebugLogError(string.Format(("[FMOD] StudioGlobalParameterTrigger failed to set parameter {0} : result = {1}"), globalSurface, result));
+            currentFootstepData = data;
+            eventEmmitter.EventInstance.setVolume(data.footstepVolume);
         }
     }
+
+    public void PlayFootstep(int value)
+    {
+        Value = value;
+        RuntimeManager.StudioSystem.setParameterByID(parameterDescription.id, Value);
+        eventEmmitter.Play();
+    }
+}
+
+public enum FootstepTypeValue
+{
+    Default = 0,
+    Dirt = 1,
+    CarpetJ = 2,
+    CarpetH = 3,
+    Water = 4,
+    WoodJ = 5,
+    WoodH = 6,
+    Metal = 7
 }

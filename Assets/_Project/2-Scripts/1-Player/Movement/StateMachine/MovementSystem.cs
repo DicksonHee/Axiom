@@ -124,6 +124,10 @@ namespace Axiom.Player.Movement.StateMachine
         public Landing LandingState { get; private set; }
         #endregion
 
+        #region Events
+        public event Action<string> OnStateChanged;
+        #endregion
+
         private void Awake()
         {
             IdleState = new Idle(this);
@@ -149,6 +153,13 @@ namespace Axiom.Player.Movement.StateMachine
             PlayerMovementDetails.cameraLookEnabled = enableCameraOnAwake;
             
             InitializeState(IdleState);
+        }
+
+        public override void ChangeState(State state)
+        {
+            base.ChangeState(state);
+
+            OnStateChanged?.Invoke(state.stateName.ToString());
         }
 
         private void OnEnable()

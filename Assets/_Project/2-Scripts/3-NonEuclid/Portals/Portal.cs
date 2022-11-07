@@ -50,6 +50,16 @@ namespace Axiom.NonEuclidean
             otherPortal.screen.material.SetTexture("_MainTex", viewTexture);
         }
 
+        public void ForceCreateViewTexture()
+        {
+            viewTexture = new RenderTexture(Screen.width, Screen.height, 0);
+            viewTexture.depth = 16;
+
+            portalCam.targetTexture = viewTexture;
+
+            otherPortal.screen.material.SetTexture("_MainTex", viewTexture);
+        }
+
         private static bool VisibleFromCamera(Renderer renderer, Camera camera)
         {
             Plane[] frustumPlanes = GeometryUtility.CalculateFrustumPlanes(camera);
