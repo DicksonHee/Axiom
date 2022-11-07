@@ -59,7 +59,7 @@ namespace Axiom.NonEuclidean
         //called just before player camera is rendered
         public void Render(ScriptableRenderContext ctx)
         {
-            if (!VisibleFromCamera(otherPortal.screen, playerCam) || !shouldRenderScreen) return;
+            if (otherPortal == null || !VisibleFromCamera(otherPortal.screen, playerCam) || !shouldRenderScreen) return;
 
             screen.enabled = false;
             CreateViewTexture();
@@ -79,7 +79,18 @@ namespace Axiom.NonEuclidean
         protected void AddTrackedTransform(TrackedTransform t)
         {
             if (tracked.FindIndex(x => x.transform == t.transform) < 0)
-                tracked.Add(t); ProtectScreenFromClipping(); 
+            {
+                tracked.Add(t);
+                //print($"{transform.name} | Started Tracking");
+            }
+            ProtectScreenFromClipping(); 
+        }
+
+        private void RemoveTrackedTransform(TrackedTransform t)
+        {
+            if(tracked.Remove(t))
+            //print($"{transform.name} | Stopped Tracking");
+            ProtectScreenFromClipping();
         }
 
         private void LateUpdate()
@@ -87,6 +98,7 @@ namespace Axiom.NonEuclidean
             //print($"({gameObject.name}) {tracked.Count}");
             //foreach (TrackedTransform t in tracked)
             //print($"{Time.time}, {t.transform.name} ({transform.name})");
+            if (tracked.Count > 0) Debug.Log(this);
             CheckTrackedTransforms();
         }
 
@@ -94,6 +106,7 @@ namespace Axiom.NonEuclidean
         {
             for (int i = 0; i < tracked.Count; i++)
             {
+                //print($"{transform.name} | {tracked[i].transform.name}");
                 //print(Camera.main.transform.position - tracked[i].transform.position);
                 int dot = (int)Mathf.Sign(Vector3.Dot(transform.forward, screen.transform.position - tracked[i].transform.position));
                 int last = tracked[i].lastDotSign;
@@ -101,62 +114,27 @@ namespace Axiom.NonEuclidean
                 //print($"({gameObject.name}) dot: {dot}, last: {last}, position: {tracked[i].transform.position - transform.position}");
 
                 if (last < 0 && dot > 0 || last > 0 && dot < 0)
-                {
                     Teleport(tracked[i]);
-                    tracked.RemoveAt(i);
-                    ProtectScreenFromClipping();
-                }
             }
         }
         
         private void Teleport(TrackedTransform t)
         {
-            //print($"Teleporting from {gameObject.name}");
+            if (!teleportEnabled || !t.transform.parent.parent.TryGetComponent(out MovementSystem controller))
+                return;
 
-            if (t.transform.parent.parent.TryGetComponent(out MovementSystem controller) && canTeleport && teleportEnabled)
-            {
-                otherPortal.DisablePortal();
+            Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
+            Matrix4x4 portalM = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix;
 
-                Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
-                
-                if(otherPortal.changeGravity) controller.TeleportPlayerRotateBy(m.GetPosition(),GetTeleportDirection(), otherPortal.gravityDirection.forward);
-                else controller.TeleportPlayerRotateBy(m.GetPosition(),GetTeleportDirection(), null);
+            controller.TeleportButForRealYo(m.GetPosition(), m.rotation, portalM.rotation);
 
-                t.transform.gameObject.GetComponentInParent<MoveCamera>().ForceUpdate();
-                //print($"teleporting from {controller.transform.position - transform.position} to {m.GetPosition() - otherPortal.transform.position}");
-            }
-            //else t.transform.SetPositionAndRotation(m.GetPosition(), m.rotation);
+            if (changeGravity)
+                Physics.gravity = otherPortal.gravityDirection.forward;
 
+            t.transform.gameObject.GetComponentInParent<MoveCamera>().ForceUpdate();
+
+            RemoveTrackedTransform(t);
             t.lastDotSign = 0;
-            otherPortal.AddTrackedTransform(t);
-        }
-
-        public Vector3 GetPortalTeleportDirection() => isTeleportToBlue ? transform.forward : -transform.forward;
-        public Vector3 GetPortalForwardDirection() => isTeleportToBlue ? -transform.forward : transform.forward;
-
-        public void DisablePortal()
-        {
-            StartCoroutine(DelayTeleport());
-        }
-        
-        public Quaternion GetTeleportDirection()
-        {
-            Vector3 thisForward = GetPortalForwardDirection();
-            Debug.Log(thisForward);
-            Vector3 otherForward = otherPortal.GetPortalTeleportDirection();
-            Debug.Log(otherForward);
-            //Quaternion rot = Quaternion.FromToRotation(thisForward, otherForward);
-
-            Quaternion rot = Quaternion.Euler(0, Vector3.SignedAngle(thisForward, otherForward, transform.up), 0);
-            Debug.Log(rot.eulerAngles);
-            return rot;
-        }
-
-        private IEnumerator DelayTeleport()
-        {
-            canTeleport = false;
-            yield return new WaitForSeconds(0.05f);
-            canTeleport = true;
         }
 
         private void SetNearClipPlane()
@@ -196,7 +174,10 @@ namespace Axiom.NonEuclidean
                 otherT = playerCam.transform;
 
             if (tracked.FindIndex(x => x.transform == otherT) < 0)
+            {
                 tracked.Add(new TrackedTransform(otherT, 0));
+                //print($"{transform.name} | Started Tracking");
+            }
         }
 
         private void OnTriggerExit(Collider other)
@@ -208,7 +189,10 @@ namespace Axiom.NonEuclidean
             //print($"{transform.name}, {other.transform.name}");
             int index = tracked.FindIndex(x => x.transform == otherT);
             if (index >= 0)
+            {
                 tracked.RemoveAt(index);
+                //print($"{transform.name} | Stopped Tracking");
+            }
         }
 
         protected class TrackedTransform
@@ -238,6 +222,15 @@ namespace Axiom.NonEuclidean
             if (changeGravity)
             {
                 DrawArrow.ForGizmo(gravityDirection.position, gravityDirection.forward, Color.green);
+            }
+
+            foreach (TrackedTransform t in tracked)
+            {
+                if (!t.transform.parent.parent.TryGetComponent(out MovementSystem controller) || !canTeleport || !teleportEnabled)
+                    return;
+
+                Matrix4x4 m = otherPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * controller.transform.localToWorldMatrix;
+                DrawArrow.ForGizmo((Vector3)m.GetColumn(3) + (controller.transform.position - t.transform.position), m.rotation * Vector3.down, Color.blue);
             }
         }
         #endif
