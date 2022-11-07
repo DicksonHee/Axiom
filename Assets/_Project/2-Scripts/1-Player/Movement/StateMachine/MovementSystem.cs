@@ -271,7 +271,7 @@ namespace Axiom.Player.Movement.StateMachine
         private void ApplyGravity()
         {
             if (rbInfo.IsGrounded()) return;
-            Rb.AddForce(-UpDirection * currentTargetGravity, ForceMode.Force);
+            Rb.AddForce(/*-UpDirection*/Physics.gravity * currentTargetGravity, ForceMode.Force);
         }
         #endregion
         
@@ -455,17 +455,30 @@ namespace Axiom.Player.Movement.StateMachine
             if (gravityDirection != null)
             {
                 Physics.gravity = gravityDirection.Value;
+                print(gravityDirection.Value);
             }
             
             if (rotationDiff != null)
             {
                 transform.position = teleportPosition;
-                cameraLook.TransformForwardRotateBy(rotationDiff.Value);
+                //cameraLook.TransformForwardRotateBy(rotationDiff.Value);
+                print($"before: {transform.rotation.eulerAngles}");
+                transform.rotation = transform.rotation * rotationDiff.Value;
+                print($"after: {transform.rotation.eulerAngles}");
+
+                playerAnimation.ForceRotate();
                 TransformTargetVelocity(currentVel, rotationDiff.Value);
             }
 
             Invoke(nameof(EnableCounterMovement), 0.1f);
 		}
+
+        public void TeleportButForRealYo(Vector3 position, Quaternion rotation, Quaternion rotationDifference)
+        {
+            transform.position = position;
+            transform.rotation = rotation;
+            Rb.velocity = rotationDifference * Rb.velocity;
+        }
 
         private void TransformTargetVelocity(Vector3 vel, Quaternion rotationDiff)
         {

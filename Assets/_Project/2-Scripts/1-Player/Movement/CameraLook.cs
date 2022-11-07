@@ -72,7 +72,6 @@ namespace Axiom.Player.Movement
             //Rotate, and also make sure we dont over- or under-rotate.
             xRotation -= mouseY * sensY * Time.fixedDeltaTime * multiplier;
             xRotation = Mathf.Clamp(xRotation, xRotLimits.x, xRotLimits.y);
-            print(xRotation);
 
             //Perform the rotations
             camHolder.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
@@ -189,14 +188,15 @@ namespace Axiom.Player.Movement
             print($"before: {camHolder.localRotation.eulerAngles}");
             camHolder.localRotation = Quaternion.Euler(targetTrans) * camHolder.localRotation;
             print($"after: {camHolder.localRotation.eulerAngles}");
-            targetTrans.z = 0;
+            //targetTrans.z = 0;
             yRotation = camHolder.localRotation.eulerAngles.y;
             //xRotation = (camHolder.localRotation.eulerAngles.x - 180);
             xRotation -= targetTrans.x;
-            targetTrans.x = 0;
+            //targetTrans.x = 0;
             orientation.localRotation = Quaternion.Euler(targetTrans) * orientation.localRotation;
 
             Debug.Log(targetTrans + new Vector3(0, yRotation, 0));
+
             playerAnimation.ForceRotate();
         }
     }
