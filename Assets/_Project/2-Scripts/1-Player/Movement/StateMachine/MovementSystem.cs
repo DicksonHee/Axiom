@@ -53,6 +53,7 @@ namespace Axiom.Player.Movement.StateMachine
         [Header("Jump")]
         public float upJumpForce = 10f;
         public float inAirCoyoteTime = 0.15f;
+        public float maxJumpBufferTime = 0.2f;
 
         [Header("WallRun")]
         public float wallRunJumpUpForce = 10f;
@@ -90,7 +91,8 @@ namespace Axiom.Player.Movement.StateMachine
         #endregion
 
         #region Jump Variables
-        private float jumpCounter;
+        private float coyoteTimeCounter;
+        private float jumpBufferCounter;
         #endregion
         
         #region Wall Run/Climb Variables
@@ -181,7 +183,8 @@ namespace Axiom.Player.Movement.StateMachine
             RightDirection = orientation.right;
             
             CheckChangeToAirState();
-            CheckGroundedTimers();
+            CheckCoyoteTimer();
+            CheckJumpBufferTimer();
             CheckWallRunTimers();
             CheckLedgeGrabTimers();
             
@@ -200,6 +203,8 @@ namespace Axiom.Player.Movement.StateMachine
         {
             ApplyGravity();
             ApplyMovement();
+
+            CheckIfShouldJump();
 
             CurrentState.PhysicsUpdate();
         }
@@ -220,12 +225,17 @@ namespace Axiom.Player.Movement.StateMachine
         }
 
         // Check if player is on ground and decrements jump counter if not on ground
-        private void CheckGroundedTimers()
+        private void CheckCoyoteTimer()
         {
             float timeDelta = rbInfo.IsGrounded() || CurrentState == WallRunningState ? Time.deltaTime : -Time.deltaTime;
-            jumpCounter = Mathf.Clamp(jumpCounter + timeDelta,0,inAirCoyoteTime);
+            coyoteTimeCounter = Mathf.Clamp(coyoteTimeCounter + timeDelta, 0, inAirCoyoteTime);
         }
         
+        private void CheckJumpBufferTimer()
+        {
+            jumpBufferCounter = Mathf.Clamp(jumpBufferCounter - Time.deltaTime, 0, maxJumpBufferTime);
+        }
+
         // Decrements wall run timers
         private void CheckWallRunTimers()
         {
@@ -244,6 +254,7 @@ namespace Axiom.Player.Movement.StateMachine
         private void CheckChangeToAirState()
         {
             if(!rbInfo.IsGrounded() && 
+               coyoteTimeCounter <= 0 &&
                CurrentState != InAirState && 
                CurrentState != WallRunningState &&
                CurrentState != LedgeGrabbingState &&
@@ -252,10 +263,21 @@ namespace Axiom.Player.Movement.StateMachine
                CurrentState != CrouchingState &&
                CurrentState != SlidingState) ChangeState(InAirState);
         }
+
+        private void CheckIfShouldJump()
+        {
+            if (CurrentState != LandingState && CurrentState != InAirState && 
+                jumpBufferCounter > 0f)
+            {
+                coyoteTimeCounter = -1f;
+                jumpBufferCounter = -1f;
+                Jump();
+            }
+        }
         #endregion
-        
+
         #region FixedUpdate Functions
-        
+
         // Apply movement to the player using AddForce(Acceleration)
         private void ApplyMovement()
         {
@@ -307,6 +329,7 @@ namespace Axiom.Player.Movement.StateMachine
         
         #region Get Functions
         public Transform GetPreviousWall() => previousWall;
+        public bool GetIsOnRightWall() => isExitingRightWall;
         #endregion
         
         #region Jump Functions
@@ -314,14 +337,11 @@ namespace Axiom.Player.Movement.StateMachine
         // Determines which jump to use
         private void DelegateJump()
         {
-            if (CurrentState != LandingState && jumpCounter > 0f)
+            jumpBufferCounter = maxJumpBufferTime;
+
+            if (CurrentState == WallRunningState)
             {
-                jumpCounter = -1f;
-                Jump();
-            }
-            else if (CurrentState == WallRunningState)
-            {
-                jumpCounter = -1f;
+                coyoteTimeCounter = -1f;
                 WallRunJump();
             }
             else if (rbInfo.CanVaultOn() || rbInfo.CanVaultOver())
