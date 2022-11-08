@@ -86,9 +86,9 @@ public class CSVtoSO
                         }
                         break;
 
-                        case "Next":
-                        ts.command = TimeStamp.Commands.NextDialogLine;
-                        break;
+                        // case "Next":
+                        // ts.command = TimeStamp.Commands.NextDialogLine;
+                        // break;
 
                         case "Mute":
                         ts.command = TimeStamp.Commands.Mute;

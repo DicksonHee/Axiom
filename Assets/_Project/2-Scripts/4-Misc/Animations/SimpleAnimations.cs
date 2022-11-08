@@ -12,8 +12,13 @@ public class SimpleAnimations : MonoBehaviour
     public List<SpinDirection> spinDirections;
     public List<float> duration;
 
+    public List<GameObject> objectsToScale;
+    public List<GameObject> objectsToTransform;
+
     private void Start()
     {
+        Scale();
+
         for (int ii = 0; ii < objectsToRotate.Count; ii++)
         {
             GameObject gameObject = objectsToRotate[ii];
@@ -48,6 +53,14 @@ public class SimpleAnimations : MonoBehaviour
                         .SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
                 }
             }
+        }
+    }
+
+    public void Scale()
+    {
+        foreach(GameObject go in objectsToTransform)
+        {
+            go.transform.DOLocalMove(new Vector3(Random.Range(0f, 0.01f), Random.Range(0f, 0.01f), Random.Range(0f, 0.01f)), Random.Range(1f, 5f)).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutElastic);
         }
     }
 
