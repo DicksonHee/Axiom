@@ -53,6 +53,7 @@ namespace Axiom.Player.Movement.StateMachine
         [Header("Jump")]
         public float upJumpForce = 10f;
         public float inAirCoyoteTime = 0.15f;
+        public float maxJumpBufferTime = 0.2f;
 
         [Header("WallRun")]
         public float wallRunJumpUpForce = 10f;
@@ -90,7 +91,8 @@ namespace Axiom.Player.Movement.StateMachine
         #endregion
 
         #region Jump Variables
-        private float jumpCounter;
+        private float coyoteTimeCounter;
+        private float jumpBufferCounter;
         #endregion
         
         #region Wall Run/Climb Variables
@@ -124,6 +126,10 @@ namespace Axiom.Player.Movement.StateMachine
         public Landing LandingState { get; private set; }
         #endregion
 
+        #region Events
+        public event Action<string> OnStateChanged;
+        #endregion
+
         private void Awake()
         {
             IdleState = new Idle(this);
@@ -151,6 +157,13 @@ namespace Axiom.Player.Movement.StateMachine
             InitializeState(IdleState);
         }
 
+        public override void ChangeState(State state)
+        {
+            base.ChangeState(state);
+
+            OnStateChanged?.Invoke(state.stateName.ToString());
+        }
+
         private void OnEnable()
         {
             inputDetection.OnJumpPressed += DelegateJump;
@@ -170,7 +183,8 @@ namespace Axiom.Player.Movement.StateMachine
             RightDirection = orientation.right;
             
             CheckChangeToAirState();
-            CheckGroundedTimers();
+            CheckCoyoteTimer();
+            CheckJumpBufferTimer();
             CheckWallRunTimers();
             CheckLedgeGrabTimers();
             
@@ -189,6 +203,8 @@ namespace Axiom.Player.Movement.StateMachine
         {
             ApplyGravity();
             ApplyMovement();
+
+            CheckIfShouldJump();
 
             CurrentState.PhysicsUpdate();
         }
@@ -209,12 +225,17 @@ namespace Axiom.Player.Movement.StateMachine
         }
 
         // Check if player is on ground and decrements jump counter if not on ground
-        private void CheckGroundedTimers()
+        private void CheckCoyoteTimer()
         {
             float timeDelta = rbInfo.IsGrounded() || CurrentState == WallRunningState ? Time.deltaTime : -Time.deltaTime;
-            jumpCounter = Mathf.Clamp(jumpCounter + timeDelta,0,inAirCoyoteTime);
+            coyoteTimeCounter = Mathf.Clamp(coyoteTimeCounter + timeDelta, 0, inAirCoyoteTime);
         }
         
+        private void CheckJumpBufferTimer()
+        {
+            jumpBufferCounter = Mathf.Clamp(jumpBufferCounter - Time.deltaTime, 0, maxJumpBufferTime);
+        }
+
         // Decrements wall run timers
         private void CheckWallRunTimers()
         {
@@ -233,6 +254,7 @@ namespace Axiom.Player.Movement.StateMachine
         private void CheckChangeToAirState()
         {
             if(!rbInfo.IsGrounded() && 
+               coyoteTimeCounter <= 0 &&
                CurrentState != InAirState && 
                CurrentState != WallRunningState &&
                CurrentState != LedgeGrabbingState &&
@@ -241,10 +263,21 @@ namespace Axiom.Player.Movement.StateMachine
                CurrentState != CrouchingState &&
                CurrentState != SlidingState) ChangeState(InAirState);
         }
+
+        private void CheckIfShouldJump()
+        {
+            if (CurrentState != LandingState && CurrentState != InAirState && 
+                jumpBufferCounter > 0f)
+            {
+                coyoteTimeCounter = -1f;
+                jumpBufferCounter = -1f;
+                Jump();
+            }
+        }
         #endregion
-        
+
         #region FixedUpdate Functions
-        
+
         // Apply movement to the player using AddForce(Acceleration)
         private void ApplyMovement()
         {
@@ -271,7 +304,7 @@ namespace Axiom.Player.Movement.StateMachine
         private void ApplyGravity()
         {
             if (rbInfo.IsGrounded()) return;
-            Rb.AddForce(-UpDirection * currentTargetGravity, ForceMode.Force);
+            Rb.AddForce(/*-UpDirection*/Physics.gravity * currentTargetGravity, ForceMode.Force);
         }
         #endregion
         
@@ -296,6 +329,7 @@ namespace Axiom.Player.Movement.StateMachine
         
         #region Get Functions
         public Transform GetPreviousWall() => previousWall;
+        public bool GetIsOnRightWall() => isExitingRightWall;
         #endregion
         
         #region Jump Functions
@@ -303,14 +337,11 @@ namespace Axiom.Player.Movement.StateMachine
         // Determines which jump to use
         private void DelegateJump()
         {
-            if (CurrentState != LandingState && jumpCounter > 0f)
+            jumpBufferCounter = maxJumpBufferTime;
+
+            if (CurrentState == WallRunningState)
             {
-                jumpCounter = -1f;
-                Jump();
-            }
-            else if (CurrentState == WallRunningState)
-            {
-                jumpCounter = -1f;
+                coyoteTimeCounter = -1f;
                 WallRunJump();
             }
             else if (rbInfo.CanVaultOn() || rbInfo.CanVaultOver())
@@ -442,7 +473,7 @@ namespace Axiom.Player.Movement.StateMachine
                 Physics.gravity = gravityDirection.Value;
             }
             
-            TransformTargetVelocity(currentVel);
+            //TransformTargetVelocity(currentVel);
             Invoke(nameof(EnableCounterMovement), 0.1f);
         }
 
@@ -455,24 +486,39 @@ namespace Axiom.Player.Movement.StateMachine
             if (gravityDirection != null)
             {
                 Physics.gravity = gravityDirection.Value;
+                print(gravityDirection.Value);
             }
             
             if (rotationDiff != null)
             {
                 transform.position = teleportPosition;
-                cameraLook.TransformForwardRotateBy(rotationDiff.Value);
+                //cameraLook.TransformForwardRotateBy(rotationDiff.Value);
+                print($"before: {transform.rotation.eulerAngles}");
+                transform.rotation = transform.rotation * rotationDiff.Value;
+                print($"after: {transform.rotation.eulerAngles}");
+
+                playerAnimation.ForceRotate();
+                TransformTargetVelocity(currentVel, rotationDiff.Value);
             }
 
-            TransformTargetVelocity(currentVel);
-			Invoke(nameof(EnableCounterMovement), 0.1f);
+            Invoke(nameof(EnableCounterMovement), 0.1f);
 		}
 
-        private void TransformTargetVelocity(Vector3 vel)
+        public void TeleportButForRealYo(Vector3 position, Quaternion rotation, Quaternion rotationDifference)
         {
-            Vector3 newMoveDir = orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;
+            transform.position = position;
+            transform.rotation = rotation;
+            Rb.velocity = rotationDifference * Rb.velocity;
+        }
 
-            //Rb.velocity = (vel + newMoveDir).normalized * vel.magnitude;
-            Rb.velocity = newMoveDir.normalized * vel.magnitude;
+        private void TransformTargetVelocity(Vector3 vel, Quaternion rotationDiff)
+        {
+            Vector3 newMoveDir = rotationDiff * vel;
+            Rb.velocity = newMoveDir;
+            //Vector3 newMoveDir = orientation.forward * inputDetection.movementInput.z + orientation.right * inputDetection.movementInput.x;
+
+            ////Rb.velocity = (vel + newMoveDir).normalized * vel.magnitude;
+            //Rb.velocity = newMoveDir.normalized * vel.magnitude;
         }
 		#endregion
 

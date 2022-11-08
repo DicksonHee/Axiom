@@ -23,24 +23,25 @@ public class DissolveController : MonoBehaviour
         }    
     }
 
-    public void StartDissolve(string materialName, float duration, float startValue = -1)
+    public void StartDissolve(string materialName, float duration, float startValue = -1, float endValue = -1)
     {
-        StartCoroutine(StartDissolve_CO(materialDict[materialName], duration, startValue));
+        StartCoroutine(StartDissolve_CO(materialDict[materialName], duration, startValue, endValue));
     }
 
     public void ResetDissolve(string materialName, float duration)
     {
         StartCoroutine(ResetDissolve_CO(materialDict[materialName], duration));
     }
-    private IEnumerator StartDissolve_CO(MaterialEntry materialEntry, float duration, float startValue)
+    private IEnumerator StartDissolve_CO(MaterialEntry materialEntry, float duration, float startValue, float endValue)
     {
         float counter = 0f;
         float startVal = startValue == -1 ? materialEntry.defaultValue : startValue;
+        float endVal = endValue == -1 ? -5f : endValue;
 
         while (counter < duration)
         {
             counter += Time.deltaTime;
-            materialEntry.material.SetFloat(materialEntry.floatRef, Mathf.Lerp(startVal, -5f, counter / duration));
+            materialEntry.material.SetFloat(materialEntry.floatRef, Mathf.Lerp(startVal, endVal, counter / duration));
             yield return null;
         }
     }

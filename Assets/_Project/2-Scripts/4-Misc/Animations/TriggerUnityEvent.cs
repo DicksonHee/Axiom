@@ -13,6 +13,7 @@ public class TriggerUnityEvent : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             triggerEvent.Invoke();
+            Destroy(this);
         }
     }
 }

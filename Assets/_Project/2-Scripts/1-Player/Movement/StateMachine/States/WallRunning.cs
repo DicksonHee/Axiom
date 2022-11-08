@@ -91,8 +91,8 @@ namespace Axiom.Player.Movement.StateMachine.States
 
 		private void WallRunningMovement()
 		{
-			float lerpMultiplier = 2f;
-			if(initialVertVel < 0) lerpMultiplier = 3f;
+			float lerpMultiplier = 1.5f;
+			if(initialVertVel < 0) lerpMultiplier = 2.5f;
 			
 			float verticalVel = Mathf.Lerp(initialVertVel, 0f, (Time.time - stateStartTime) * lerpMultiplier);
 			float horizontalVel = Mathf.Lerp(initialHoriVel, MovementSystem.wallRunSpeed, (Time.time - stateStartTime) * lerpMultiplier);

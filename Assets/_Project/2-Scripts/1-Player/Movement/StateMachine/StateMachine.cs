@@ -14,7 +14,7 @@ namespace Axiom.Player.Movement.StateMachine
             CurrentState.EnterState();
         }
         
-        public void ChangeState(State state)
+        public virtual void ChangeState(State state)
         {
             PreviousState = CurrentState;
             CurrentState.ExitState();
