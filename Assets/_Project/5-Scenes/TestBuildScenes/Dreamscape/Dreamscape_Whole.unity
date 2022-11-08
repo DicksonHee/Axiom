@@ -10953,7 +10953,7 @@ MonoBehaviour:
           m_ColorArrayArgument: []
           m_QuaternionArrayArgument: []
         m_CallState: 2
-        m_Target: {fileID: 1055086285}
+        m_Target: {fileID: 0}
         m_MethodName: StartDissolve
         m_Modes: 0d0000000b0000000b0000000b000000
 --- !u!65 &294888480
@@ -38441,7 +38441,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1055086284}
-  - component: {fileID: 1055086285}
   m_Layer: 0
   m_Name: Memory_2
   m_TagString: Untagged
@@ -38468,35 +38467,6 @@ Transform:
   m_Father: {fileID: 700676708}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1055086285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1055086283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67963b1430002d842bab8566df456802, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  materialEntries:
-  - name: WhiteBear
-    floatRef: _Height
-    material: {fileID: 2100000, guid: 4e812fac454006042aef7f0e8880fb42, type: 2}
-    defaultValue: 10
-  - name: YoungAlex
-    floatRef: _Height
-    material: {fileID: 2100000, guid: 4e812fac454006042aef7f0e8880fb42, type: 2}
-    defaultValue: 10
-  - name: Wall
-    floatRef: _Height
-    material: {fileID: 2100000, guid: a6ee1c44790293740a009fe623164cb4, type: 2}
-    defaultValue: 15
-  - name: Stairs
-    floatRef: _Height
-    material: {fileID: 2100000, guid: a2290482404e4a44a8c69feec4406e19, type: 2}
-    defaultValue: 15
 --- !u!4 &1055206020 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7052476746796399537, guid: f34640eee80b78a4bb97436eed11a557,
@@ -39617,7 +39587,7 @@ MonoBehaviour:
           m_ColorArrayArgument: []
           m_QuaternionArrayArgument: []
         m_CallState: 2
-        m_Target: {fileID: 1055086285}
+        m_Target: {fileID: 0}
         m_MethodName: StartDissolve
         m_Modes: 0d0000000b0000000b0000000b000000
 --- !u!65 &1086177709
@@ -50487,7 +50457,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 16c49e7a1eb97484eb28a70ce5581754,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 4
+      value: 4.888
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 16c49e7a1eb97484eb28a70ce5581754,
         type: 3}
@@ -50497,12 +50467,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 16c49e7a1eb97484eb28a70ce5581754,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5.6810875
+      value: -5.681087
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 16c49e7a1eb97484eb28a70ce5581754,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -42.916733
+      value: -38.9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 16c49e7a1eb97484eb28a70ce5581754,
         type: 3}
@@ -50512,7 +50482,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 16c49e7a1eb97484eb28a70ce5581754,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -197.41156
+      value: -254.23
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 16c49e7a1eb97484eb28a70ce5581754,
         type: 3}
@@ -60521,7 +60491,12 @@ PrefabInstance:
     - target: {fileID: 9027862586307691933, guid: a036587da736c3043a79123ba44da572,
         type: 3}
       propertyPath: m_WarningMessage
-      value: 
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'lowerarm_l'\n\tTransform 'hand_l'\n\tTransform
+        'upperarm_r'\n\tTransform 'upperarm_l'\n\tTransform 'lowerarm_r'\n\tTransform
+        'hand_r'\n\tTransform 'lowerarm_l'\n\tTransform 'hand_l'\n\tTransform 'upperarm_r'\n\tTransform
+        'upperarm_l'\n\tand more ..."
       objectReference: {fileID: 0}
     - target: {fileID: 9027862587186345416, guid: a036587da736c3043a79123ba44da572,
         type: 3}
@@ -82330,7 +82305,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 2dfcc7b5841e93449b443e53217ec806,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 6
+      value: 3.2712
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2dfcc7b5841e93449b443e53217ec806,
         type: 3}
@@ -82340,7 +82315,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 2dfcc7b5841e93449b443e53217ec806,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.934685
+      value: 17.60942
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2dfcc7b5841e93449b443e53217ec806,
         type: 3}
@@ -82350,7 +82325,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 2dfcc7b5841e93449b443e53217ec806,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -34.137115
+      value: -37.058212
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2dfcc7b5841e93449b443e53217ec806,
         type: 3}
