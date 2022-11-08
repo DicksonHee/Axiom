@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerReturn" id="{ba458fd9-f08b-4dd0-a5a0-816fd1495c8d}">
+		<property name="overridingInputFormat">
+			<value>2</value>
+		</property>
+		<property name="name">
+			<value>GreenScreenRoom</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{d71ce4b6-b6c2-4525-99e9-5e8562573546}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{2429655c-facc-4bf0-8e5a-b93930ccf4a4}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{e4ed5345-abc2-461f-a172-b3054ce850a2}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{d71ce4b6-b6c2-4525-99e9-5e8562573546}">
+		<relationship name="effects">
+			<destination>{2a482ce6-9d15-49e0-889f-2679adfa4c4c}</destination>
+			<destination>{d419928f-9aa1-4c2b-b2af-915e220f58c8}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{2429655c-facc-4bf0-8e5a-b93930ccf4a4}" />
+	<object class="SFXReverbEffect" id="{2a482ce6-9d15-49e0-889f-2679adfa4c4c}">
+		<property name="decayTime">
+			<value>1400</value>
+		</property>
+		<property name="lateDelay">
+			<value>28.5</value>
+		</property>
+		<property name="earlyLateMix">
+			<value>46</value>
+		</property>
+		<property name="dryLevel">
+			<value>-80</value>
+		</property>
+	</object>
+	<object class="MixerBusFader" id="{d419928f-9aa1-4c2b-b2af-915e220f58c8}" />
+</objects>

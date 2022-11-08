@@ -5,7 +5,7 @@
 			<value>2</value>
 		</property>
 		<property name="name">
-			<value>Reverb</value>
+			<value>Core Room</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{6e856679-c898-42bf-8a07-9935a4b50197}</destination>
@@ -14,23 +14,43 @@
 			<destination>{92dc6d14-c29d-4ceb-9117-80dc0447efc0}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{d4387882-759e-4cde-9866-2dcb078bb54e}</destination>
+			<destination>{e4ed5345-abc2-461f-a172-b3054ce850a2}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{6e856679-c898-42bf-8a07-9935a4b50197}">
 		<relationship name="effects">
-			<destination>{da259ecb-5eef-4d8e-8d97-a366ab2cc884}</destination>
+			<destination>{ff56a63e-3124-44d0-b718-0d14f3afc12c}</destination>
 			<destination>{2f641d42-6152-46e6-8336-2df5193393bb}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{92dc6d14-c29d-4ceb-9117-80dc0447efc0}" />
-	<object class="SFXReverbEffect" id="{da259ecb-5eef-4d8e-8d97-a366ab2cc884}">
-		<property name="wetLevel">
-			<value>0</value>
+	<object class="SFXReverbEffect" id="{ff56a63e-3124-44d0-b718-0d14f3afc12c}">
+		<property name="decayTime">
+			<value>2600</value>
 		</property>
 		<property name="dryLevel">
 			<value>-80</value>
 		</property>
+		<relationship name="automators">
+			<destination>{52a495f4-e5ed-484e-bccc-5e3edc530a13}</destination>
+			<destination>{4a3e04d0-4ddb-488f-8e94-2ef91df70296}</destination>
+			<destination>{61e94a49-54be-4a98-b438-2d61ef382bc9}</destination>
+		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{2f641d42-6152-46e6-8336-2df5193393bb}" />
+	<object class="Automator" id="{52a495f4-e5ed-484e-bccc-5e3edc530a13}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>decayTime</value>
+		</property>
+	</object>
+	<object class="Automator" id="{4a3e04d0-4ddb-488f-8e94-2ef91df70296}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>wetLevel</value>
+		</property>
+	</object>
+	<object class="Automator" id="{61e94a49-54be-4a98-b438-2d61ef382bc9}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>earlyLateMix</value>
+		</property>
+	</object>
 </objects>

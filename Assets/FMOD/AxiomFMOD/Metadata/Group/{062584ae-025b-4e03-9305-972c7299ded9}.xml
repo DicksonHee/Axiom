@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerGroup" id="{062584ae-025b-4e03-9305-972c7299ded9}">
+		<property name="name">
+			<value>Dreamscape</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{1a8a1ba7-2301-4789-8b70-57f255d979da}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{3f200fb0-fff8-4dd5-82a9-f476cd7add84}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{56a0b856-9dcb-4e65-bcc4-2bcdd7bb850b}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{1a8a1ba7-2301-4789-8b70-57f255d979da}">
+		<relationship name="effects">
+			<destination>{b53cde92-d21d-4478-a83f-e8f8ce272afd}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{3f200fb0-fff8-4dd5-82a9-f476cd7add84}" />
+	<object class="MixerBusFader" id="{b53cde92-d21d-4478-a83f-e8f8ce272afd}" />
+</objects>
