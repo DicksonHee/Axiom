@@ -266,7 +266,7 @@ namespace Axiom.Player.Movement.StateMachine
 
         private void CheckIfShouldJump()
         {
-            if (CurrentState != LandingState && CurrentState != InAirState && 
+            if (CurrentState != LandingState && CurrentState != InAirState && rbInfo.CanUncrouch() && 
                 jumpBufferCounter > 0f)
             {
                 coyoteTimeCounter = -1f;
