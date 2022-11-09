@@ -88,7 +88,7 @@ public class Footstep : MonoBehaviour
         Value = value;
         RuntimeManager.StudioSystem.setParameterByID(parameterDescription.id, Value);
         eventEmmitter.Play();
-        eventEmmitter.EventInstance.setVolume(currentFootstepData.footstepVolume);
+        eventEmmitter.EventInstance.setVolume(currentFootstepData.footstepVolume * VolumeManager.current.sfxVolumeMultiplier);
     }
 }
 

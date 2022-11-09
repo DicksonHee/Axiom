@@ -147,7 +147,8 @@ public class DialogueTrigger : MonoBehaviour
             // Play the audio file and set the appropriate volume
             //fmodScript.PlayDialog(dialog.audioFileName, dialog.playAudio ? dialogueVolume : 0);
             fmodScript.PlayDialog(dialog.audioFileName, dialogueVolume);
-            
+            VolumeManager.current.SetInDialogMultipliers();
+
             float audioFileLength = fmodScript.dialogueLength; // Get the length of the currently playing audio file
             float elapsedTime = 0f;                            // Reset the elapsed time of each new dialog list entry
             int timestampIndex = 0;                            // Reset the timestamp index
@@ -197,6 +198,8 @@ public class DialogueTrigger : MonoBehaviour
                 
                 yield return null;
             }
+
+            VolumeManager.current.SetDefaultMultipliers();
         }
     }
 
