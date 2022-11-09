@@ -34,6 +34,7 @@ using Yarn.Unity;
 using FMODUnity;
 using FMOD.Studio;
 using FMOD;
+using Axiom.Core;
 
 namespace Axiom.Dialogue{
 class ProgrammerSounds : MonoBehaviour
@@ -45,12 +46,13 @@ class ProgrammerSounds : MonoBehaviour
     [SerializeField]
     static FMOD.Sound dialogueSound;
     public uint dialogueLength;
-#if UNITY_EDITOR
+
+    #if UNITY_EDITOR
     void Reset()
     {
         eventName = FMODUnity.EventReference.Find("event:/Character/Radio/Command");
     }
-#endif
+    #endif
 
     void Start()
     {
@@ -74,7 +76,6 @@ class ProgrammerSounds : MonoBehaviour
         {
              FMODUnity.RuntimeManager.AttachInstanceToGameObject(dialogueInstance, audiopos);
         }
-        
 
         dialogueInstance.setVolume(volume);
         

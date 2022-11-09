@@ -53,8 +53,8 @@ namespace Axiom.Core
 
         public void SetInDialogMultipliers()
         {
-            sfxVolumeMultiplier = 0.5f;
-            bgmVolumeMultiplier = 0.6f;
+            sfxVolumeMultiplier = 0.3f;
+            bgmVolumeMultiplier = 0.5f;
             dialogVolumeMultiplier = 1f;
 
             bgmEmitter.EventInstance.setVolume(SettingsData.bgmVolume / 100f * bgmVolumeMultiplier);

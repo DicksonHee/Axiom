@@ -40,12 +40,14 @@ public class SettingsUI : MonoBehaviour
         mouseSensSlider.onValueChanged.AddListener(SetMouseSensitivity);
         bgmVolSlider.onValueChanged.AddListener(SetBGMVol);
         sfxVolSlider.onValueChanged.AddListener(SetSFXVol);
+        dialogVolumeSlider.onValueChanged.AddListener(SetDialogVol);
         textSizeSlider.onValueChanged.AddListener(SetTextSize);
         textBackgroundOpacitySlider.onValueChanged.AddListener(SetTextBackgroundOpacity);
 
         SetMouseSensitivity(mouseSensSlider.value);
         SetBGMVol(bgmVolSlider.value);
         SetSFXVol(sfxVolSlider.value);
+        SetDialogVol(dialogVolumeSlider.value);
         SetTextSize(textSizeSlider.value);
         SetTextBackgroundOpacity(textBackgroundOpacitySlider.value);
     }

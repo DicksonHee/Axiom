@@ -146,7 +146,7 @@ public class DialogueTrigger : MonoBehaviour
         {
             // Play the audio file and set the appropriate volume
             //fmodScript.PlayDialog(dialog.audioFileName, dialog.playAudio ? dialogueVolume : 0);
-            fmodScript.PlayDialog(dialog.audioFileName, dialogueVolume);
+            fmodScript.PlayDialog(dialog.audioFileName, dialogueVolume * (SettingsData.dialogVolume / 100f) * VolumeManager.current.dialogVolumeMultiplier);
             VolumeManager.current.SetInDialogMultipliers();
 
             float audioFileLength = fmodScript.dialogueLength; // Get the length of the currently playing audio file
