@@ -178,6 +178,8 @@ namespace Axiom.Player.Movement.StateMachine
 
         private void Update()
         {
+
+
             UpDirection = orientation.up;
             ForwardDirection = orientation.forward;
             RightDirection = orientation.right;
@@ -195,8 +197,6 @@ namespace Axiom.Player.Movement.StateMachine
             rbInfo.SetCurrentVelocity(GetCurrentSpeed());
 
             CurrentState.LogicUpdate();
-
-            if (Input.GetKeyDown(KeyCode.Escape)) SceneManager.LoadScene("MainMenu");
         }
 
         private void FixedUpdate()

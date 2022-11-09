@@ -52,13 +52,7 @@ public class SettingsUI : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-
-        if(Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isMenuActive) SetCanvasInactive();
             else SetCanvasActive();
@@ -67,6 +61,11 @@ public class SettingsUI : MonoBehaviour
 
     private void SetCanvasActive()
     {
+        PlayerMovementDetails.DisableAllMovementInput();
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         isMenuActive = true;
         canvasGroup.alpha = 1f;
         canvasGroup.interactable = true;
@@ -75,6 +74,11 @@ public class SettingsUI : MonoBehaviour
 
     private void SetCanvasInactive()
     {
+        PlayerMovementDetails.EnableAllMovementInput();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         isMenuActive = false;
         canvasGroup.alpha = 0f;
         canvasGroup.interactable = false;

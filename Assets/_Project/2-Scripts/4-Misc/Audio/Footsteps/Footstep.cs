@@ -4,6 +4,7 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.Serialization;
+using Axiom.Core;
 using Axiom.Player.Movement.StateMachine;
 
 public class Footstep : MonoBehaviour

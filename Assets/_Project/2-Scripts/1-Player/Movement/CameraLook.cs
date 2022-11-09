@@ -1,4 +1,5 @@
 using System.Collections;
+using Axiom.Core;
 using DG.Tweening;
 using UnityEngine;
 
@@ -55,6 +56,8 @@ namespace Axiom.Player.Movement
 
         private void Update()
         {
+            if (!PlayerMovementDetails.cameraLookEnabled) return;
+
             GetInput();
         }
 
