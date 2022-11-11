@@ -34,9 +34,6 @@
 		<relationship name="timeline">
 			<destination>{d129283d-86bc-450d-8edb-ba3ef10c042c}</destination>
 		</relationship>
-		<relationship name="parameters">
-			<destination>{a2e5204a-91a6-4425-b5b2-27f761c614fd}</destination>
-		</relationship>
 		<relationship name="banks">
 			<destination>{b052d416-e726-47ca-a058-5be49488724d}</destination>
 		</relationship>
@@ -132,11 +129,6 @@
 		<relationship name="markers">
 			<destination>{bb56d663-38aa-46a8-8163-b88700ce0eaa}</destination>
 			<destination>{c1e59282-2526-46ee-9473-da588dae92bb}</destination>
-		</relationship>
-	</object>
-	<object class="ParameterProxy" id="{a2e5204a-91a6-4425-b5b2-27f761c614fd}">
-		<relationship name="preset">
-			<destination>{7a2c4d88-5664-416b-a177-cebdb65871ef}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{2765f920-033f-4b77-bb0c-1acdaa46d7fb}">
@@ -440,8 +432,9 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{7399906b-61b8-42e8-adb9-fdcc38e72113}">
 		<relationship name="effects">
-			<destination>{e85bebde-6e9c-4a9d-8a25-64ebfb7bd584}</destination>
+			<destination>{4fc4116c-f57a-4ca6-b752-b4706845f287}</destination>
 			<destination>{7fe9a798-a92b-4b70-9d4c-179653d7bd67}</destination>
+			<destination>{e85bebde-6e9c-4a9d-8a25-64ebfb7bd584}</destination>
 			<destination>{cc76970e-4baf-4b66-b2a7-2470b0856956}</destination>
 			<destination>{90b5c906-86f1-4126-908a-27b9ce241d0a}</destination>
 			<destination>{6a5c97a5-7a19-4566-aa16-dc705bc5b818}</destination>
@@ -623,10 +616,29 @@
 			<destination>{81533777-b6bc-49b0-9d93-072380c8165c}</destination>
 		</relationship>
 	</object>
-	<object class="SFXReverbEffect" id="{e85bebde-6e9c-4a9d-8a25-64ebfb7bd584}">
-		<property name="bypass">
-			<value>true</value>
+	<object class="GainEffect" id="{4fc4116c-f57a-4ca6-b752-b4706845f287}">
+		<property name="gain">
+			<value>3</value>
 		</property>
+	</object>
+	<object class="MultibandEqEffect" id="{7fe9a798-a92b-4b70-9d4c-179653d7bd67}">
+		<property name="filterTypeB">
+			<value>4</value>
+		</property>
+		<property name="frequencyA">
+			<value>54.0684319</value>
+		</property>
+		<property name="frequencyB">
+			<value>59.9701004</value>
+		</property>
+		<property name="qualityA">
+			<value>0.612957776</value>
+		</property>
+		<property name="qualityB">
+			<value>1.31357527</value>
+		</property>
+	</object>
+	<object class="SFXReverbEffect" id="{e85bebde-6e9c-4a9d-8a25-64ebfb7bd584}">
 		<property name="decayTime">
 			<value>3800</value>
 		</property>
@@ -639,22 +651,11 @@
 		<property name="earlyLateMix">
 			<value>100</value>
 		</property>
-	</object>
-	<object class="MultibandEqEffect" id="{7fe9a798-a92b-4b70-9d4c-179653d7bd67}">
-		<property name="filterTypeB">
-			<value>4</value>
+		<property name="wetLevel">
+			<value>-18.5</value>
 		</property>
-		<property name="frequencyA">
-			<value>187.428619</value>
-		</property>
-		<property name="frequencyB">
-			<value>56.355999</value>
-		</property>
-		<property name="qualityA">
-			<value>0.623275876</value>
-		</property>
-		<property name="qualityB">
-			<value>1.15286207</value>
+		<property name="dryLevel">
+			<value>-5.5</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{cc76970e-4baf-4b66-b2a7-2470b0856956}" />
