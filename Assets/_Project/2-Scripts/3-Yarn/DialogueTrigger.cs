@@ -138,7 +138,14 @@ public class DialogueTrigger : MonoBehaviour
         //return false;
     }
 
-    
+    //New Show Dialog stuff
+    //Event emmiter.play, set volume
+    //Get event length
+
+    //while playing get elapsed time
+    //if elapsed time = timestamp
+    //do timestamp command
+    //timestamp index ++
 
     private IEnumerator DialogToShow(DialogListData dialogListData)
     {
@@ -152,7 +159,7 @@ public class DialogueTrigger : MonoBehaviour
             float elapsedTime = 0f;                            // Reset the elapsed time of each new dialog list entry
             int timestampIndex = 0;                            // Reset the timestamp index
 
-            dialog.currentDialogLine = 0;
+            //dialog.currentDialogLine = 0;
 
             // While loop for the duration of the audio file length
             while (elapsedTime < audioFileLength / 1000)
