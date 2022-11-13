@@ -18,12 +18,6 @@ public class BearDissolve : MonoBehaviour
         dissolveMaterial.SetFloat("_Height", 5f);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.O)) PlayAnim();
-        if (Input.GetKeyDown(KeyCode.P)) DissolveController.current.ResetDissolve("WhiteBear", 1f);
-    }
-
     public void PlayAnim()
     {
         if (hasActivated) return;

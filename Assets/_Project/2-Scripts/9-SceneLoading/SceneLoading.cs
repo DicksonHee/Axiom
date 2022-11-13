@@ -10,13 +10,21 @@ public class SceneLoading : MonoBehaviour
     public static SceneLoading current;
 
     public List<ScenePair> scenePairs;
+    public List<SceneGroup> sceneGroups;
     public string defaultScene;
+
+    private Dictionary<string, GameObject> pairDict = new();
 
     private void Start()
     {
         if (current != null && current != this) Destroy(this);
         else current = this;
 
+        foreach (ScenePair scenePair in scenePairs)
+        {
+            pairDict.Add(scenePair.sceneName, scenePair.gameObject);
+        }
+        
         Invoke(nameof(Init), 2f);
     }
 
@@ -27,19 +35,31 @@ public class SceneLoading : MonoBehaviour
 
     public void ChangeScene(string sceneToLoad)
     {
-        foreach (ScenePair pair in scenePairs)
+        // foreach (ScenePair pair in scenePairs)
+        // {
+        //     bool shouldLoadScene = false;
+        //     foreach (string name in pair.sceneName)
+        //     {
+        //         if (name == sceneToLoad)
+        //         {
+        //             shouldLoadScene = true;
+        //             break;
+        //         }
+        //     }
+        //
+        //     pair.gameObject.SetActive(shouldLoadScene);
+        // }
+
+        foreach (SceneGroup group in sceneGroups)
         {
-            bool shouldLoadScene = false;
-            foreach (string name in pair.sceneName)
+            if (group.thisScene == sceneToLoad)
             {
-                if (name == sceneToLoad)
+                foreach (KeyValuePair<string, GameObject> entry in pairDict)
                 {
-                    shouldLoadScene = true;
-                    break;
+                    if (group.sceneNames.Contains(entry.Key)) entry.Value.SetActive(true);
+                    else entry.Value.SetActive(false);
                 }
             }
-
-            pair.gameObject.SetActive(shouldLoadScene);
         }
     }
 }
@@ -48,5 +68,12 @@ public class SceneLoading : MonoBehaviour
 public class ScenePair
 {
     public GameObject gameObject;
-    public List<string> sceneName;
+    public string sceneName;
+}
+
+[Serializable]
+public class SceneGroup
+{
+    public string thisScene;
+    public List<string> sceneNames;
 }

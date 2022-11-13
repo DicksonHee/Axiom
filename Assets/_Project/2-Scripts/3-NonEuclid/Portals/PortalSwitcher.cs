@@ -8,7 +8,8 @@ namespace Axiom.NonEuclidean
     {
         public void ChangePortal(Portal currentEntry, Portal currentExit, Portal newExit)
         {
-            currentExit.otherPortal = null;
+            currentEntry.otherPortal.otherPortal = null;
+            //currentExit.otherPortal = null;
             currentEntry.otherPortal = newExit;
             newExit.otherPortal = currentEntry;
 

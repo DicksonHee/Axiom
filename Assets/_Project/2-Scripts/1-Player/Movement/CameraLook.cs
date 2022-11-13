@@ -1,7 +1,11 @@
 using System.Collections;
+using System.Numerics;
 using Axiom.Core;
 using DG.Tweening;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Axiom.Player.Movement
 {
@@ -11,22 +15,22 @@ namespace Axiom.Player.Movement
         [SerializeField] private Transform camHolder;
         [SerializeField] private Transform orientation;
         [SerializeField] private Camera cam;
+        [SerializeField] private Camera noPostCam;
         [SerializeField] private PlayerAnimation playerAnimation;
 
-        [Header("Mouse Variables")]
-        [SerializeField] private float sensX;
+        [Header("Mouse Variables")] [SerializeField]
+        private float sensX;
+
         [SerializeField] private float sensY;
         [SerializeField] private Vector2 xRotLimits;
         [SerializeField] private float multiplier = 2f;
-        
 
-        [Header("WallRun")] 
-        [SerializeField] private float lTiltAmount;
+
+        [Header("WallRun")] [SerializeField] private float lTiltAmount;
         [SerializeField] private float rTiltAmount;
         [SerializeField] private float wallRunFov;
 
-        [Header("WallCLimb")] 
-        [SerializeField] private Vector2 wallRunXRotLimits;
+        [Header("WallCLimb")] [SerializeField] private Vector2 wallRunXRotLimits;
 
         private bool isAffectedByAnimator;
         private float initialFov;
@@ -46,7 +50,7 @@ namespace Axiom.Player.Movement
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            
+
             initialFov = cam.fieldOfView;
             initialMultiplier = multiplier;
             initialSensX = sensX;
@@ -64,14 +68,14 @@ namespace Axiom.Player.Movement
         private void GetInput()
         {
             if (multiplier == 0f) return;
-            
-            mouseX = Input.GetAxis("Mouse X"); 
+
+            mouseX = Input.GetAxis("Mouse X");
             mouseY = Input.GetAxis("Mouse Y");
-            
+
             //Find current look rotation
             Vector3 rot = camHolder.transform.localRotation.eulerAngles;
             yRotation = rot.y + mouseX * sensX * Time.fixedDeltaTime * multiplier;
-            
+
             //Rotate, and also make sure we dont over- or under-rotate.
             xRotation -= mouseY * sensY * Time.fixedDeltaTime * multiplier;
             xRotation = Mathf.Clamp(xRotation, xRotLimits.x, xRotLimits.y);
@@ -82,9 +86,25 @@ namespace Axiom.Player.Movement
         }
 
         public void ResetFov() => ChangeFov(initialFov);
-        public void ResetTilt() => cam.transform.DOLocalRotate(Vector3.zero, 0.25f);
-        public void ChangeFov(float targetFov) => cam.DOFieldOfView(targetFov, 0.25f);
-        public void ChangeTilt(float zTilt) => cam.transform.DOLocalRotate(new Vector3(0,0, zTilt), 0.25f);
+
+        public void ResetTilt()
+        {
+            cam.transform.DOLocalRotate(Vector3.zero, 0.25f);
+            noPostCam.transform.DOLocalRotate(Vector3.zero, 0.25f);
+        }
+
+        public void ChangeFov(float targetFov)
+        {
+            cam.DOFieldOfView(targetFov, 0.25f);
+            noPostCam.DOFieldOfView(targetFov, 0.25f);
+        }
+
+        public void ChangeTilt(float zTilt)
+        {
+            cam.transform.DOLocalRotate(new Vector3(0, 0, zTilt), 0.25f);
+            noPostCam.transform.DOLocalRotate(new Vector3(0, 0, zTilt), 0.25f);
+        }
+
         public void LockCamera() => multiplier = 0;
         public void LockCameraXAxis() => sensX = 0;
         public void ApplyCameraXAxisMultiplier(float val) => sensX *= val;
@@ -97,14 +117,14 @@ namespace Axiom.Player.Movement
 
         public void StartLeftWallRunCamera()
         {
-            cam.DOFieldOfView(wallRunFov, 0.25f);
-            cam.transform.DOLocalRotate(new Vector3(0,0, lTiltAmount), 0.25f);
+            ChangeFov(wallRunFov);
+            ChangeTilt(lTiltAmount);
         }
         
         public void StartRightWallRunCamera()
         {
-            cam.DOFieldOfView(wallRunFov, 0.25f);
-            cam.transform.DOLocalRotate(new Vector3(0,0, rTiltAmount), 0.25f);
+            ChangeFov(wallRunFov);
+            ChangeTilt(rTiltAmount);
         }
 
         public void StartSlideCamera()
@@ -118,7 +138,7 @@ namespace Axiom.Player.Movement
         {
             ApplyCameraXAxisMultiplier(0f);
             ApplyCameraYAxisMultiplier(0f);
-            cam.transform.DOLocalRotate(new Vector3(0, 0, rTiltAmount), 0.25f);
+            ChangeTilt(rTiltAmount);
         }
 
         public void StartHardLandingCamera()
@@ -155,15 +175,18 @@ namespace Axiom.Player.Movement
             {
                 counter += Time.deltaTime;
                 cam.transform.localRotation = Quaternion.Euler(Vector3.Lerp(initialRot, rotateAmount, counter/duration));
+                noPostCam.transform.localRotation = Quaternion.Euler(Vector3.Lerp(initialRot, rotateAmount, counter/duration));
                 yield return null;
             }
             
             cam.transform.localRotation = Quaternion.Euler(rotateAmount);
+            noPostCam.transform.localRotation = Quaternion.Euler(rotateAmount);
         }
         
         public void StartClimbCamera()
         {
             cam.transform.DOLocalRotate(new Vector3(wallRunXRotLimits.y, 0, 0), 0.25f);
+            noPostCam.transform.DOLocalRotate(new Vector3(wallRunXRotLimits.y, 0, 0), 0.25f);
             xRotLimits = wallRunXRotLimits;
         }
         

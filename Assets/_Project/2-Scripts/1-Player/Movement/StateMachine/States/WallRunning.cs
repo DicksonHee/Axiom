@@ -52,7 +52,7 @@ namespace Axiom.Player.Movement.StateMachine.States
 			
 			if((isRightWallEnter && !MovementSystem.rbInfo.WallRunningRightDetected()) ||
 			   (!isRightWallEnter && !MovementSystem.rbInfo.WallRunningLeftDetected()) ||
-			   Vector3.Dot(MovementSystem.ForwardDirection, wallNormal) >= 0.9f ||
+			   Vector3.Dot(MovementSystem.ForwardDirection, wallNormal) >= 0.96f ||
 			   Vector3.Dot(wallForward, MovementSystem.ForwardDirection) <= -0.25f ||
 			   Time.time - stateStartTime > MovementSystem.wallRunMaxDuration)
 			{
