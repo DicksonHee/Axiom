@@ -37,12 +37,13 @@ public class DialogueTrigger : MonoBehaviour
     public UnityEvent onPlayerTriggerEvent; // When player enter's the trigger
     public UnityEvent onViewEvent; //if player looked at the poi the dialog event triggers
 
+    private StudioEventEmitter bgm;
     private bool viewOnce = false;
     private bool enterOnce = false;
    
     void Awake()
     {
-        //if parameter reference is null, look up
+        //if parameter reference is null, look up, dialog to static
         if (string.IsNullOrEmpty(parameterDescription.name))
         {
             Lookup();
@@ -52,6 +53,8 @@ public class DialogueTrigger : MonoBehaviour
 
         if(fmodScript == null)
         fmodScript = FindObjectOfType<ProgrammerSounds>();
+
+        bgm = Camera.main.GetComponent<StudioEventEmitter>();
     }
     void Start()
     {
