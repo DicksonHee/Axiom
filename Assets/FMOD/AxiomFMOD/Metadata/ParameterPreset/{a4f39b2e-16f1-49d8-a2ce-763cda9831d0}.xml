@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{a4f39b2e-16f1-49d8-a2ce-763cda9831d0}">
+		<property name="name">
+			<value>DreamVerb</value>
+		</property>
+		<relationship name="folder">
+			<destination>{3fec776c-ad47-4dbd-9245-df729f3ee005}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{66f9497a-45d9-4694-bac6-e2177b98dfd5}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{66f9497a-45d9-4694-bac6-e2177b98dfd5}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>3</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>No Reverb</value>
+			<value>Close Reverb</value>
+			<value>Far Reverb</value>
+		</property>
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+	</object>
+</objects>
