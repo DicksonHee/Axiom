@@ -50,6 +50,8 @@ public class SettingsUI : MonoBehaviour
         SetDialogVol(dialogVolumeSlider.value);
         SetTextSize(textSizeSlider.value);
         SetTextBackgroundOpacity(textBackgroundOpacitySlider.value);
+        
+        SetCanvasInactive();
     }
 
     private void Update()

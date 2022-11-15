@@ -34,14 +34,18 @@ namespace Axiom.Core
         public void VolumeUpdated()
         {
             ppVolume.profile.TryGet(out vignette);
-            ppVolume.profile.TryGet(out radialBlur);
-            ppVolume.profile.TryGet(out overlay);
             
-            radialBlur.amount.overrideState = true;
-            overlay.intensity.overrideState = true;
-            
-            radialBlur.amount.value = 0f;
-            overlay.intensity.value = 0f;
+            if (ppVolume.profile.TryGet(out radialBlur))
+            {
+                radialBlur.amount.overrideState = true;
+                radialBlur.amount.value = 0f;
+            }
+
+            if (ppVolume.profile.TryGet(out overlay))
+            {
+                overlay.intensity.overrideState = true;
+                overlay.intensity.value = 0f;
+            }
         }
         #endregion
 

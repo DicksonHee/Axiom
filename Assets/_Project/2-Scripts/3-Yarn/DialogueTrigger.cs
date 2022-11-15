@@ -129,8 +129,9 @@ public class DialogueTrigger : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player" && dialogCoroutine == null)// && !enterOnce)
+        if(other.CompareTag("Player") && dialogCoroutine == null)// && !enterOnce)
         {
+            Debug.Log("ASD");
             //trigger dialog event
             onPlayerTriggerEvent.Invoke();
             enterOnce = true;
@@ -234,8 +235,6 @@ public class DialogueTrigger : MonoBehaviour
                 
                 yield return null;
             }
-
-            VolumeManager.current.SetDefaultMultipliers();
         }
     }
 
