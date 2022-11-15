@@ -127,13 +127,13 @@ public class SettingsUI : MonoBehaviour
         switch (SettingsData.textSize)
         {
             case 0:
-                textSizeText.text = "Small";
+                textSizeText.text = "S";
                 break;
             case 1:
-                textSizeText.text = "Medium";
+                textSizeText.text = "M";
                 break;
             case 2:
-                textSizeText.text = "Large";
+                textSizeText.text = "L";
                 break;
         }
 
