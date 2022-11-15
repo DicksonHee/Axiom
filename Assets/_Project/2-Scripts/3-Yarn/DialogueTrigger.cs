@@ -16,42 +16,62 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private ProgrammerSounds fmodScript;
     public float dialogueVolume = 1;
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     [ParamRef]
     [FormerlySerializedAs("parameter")]
     public string DialogToStatic;
 
-     [SerializeField]
-    private PARAMETER_DESCRIPTION parameterDescription;
-    public PARAMETER_DESCRIPTION ParameterDesctription { get { return parameterDescription; } }
+    [SerializeField] //dialog to static
+    private PARAMETER_DESCRIPTION DialogToStaticDescription;
+    public PARAMETER_DESCRIPTION DialogToStaticDesctription { get { return DialogToStaticDescription; } }
 
-    [SerializeField]
+    [SerializeField]//dialog to static
     float currentValuef;
+
+    [ParamRef]
+    [FormerlySerializedAs("parameter")]
+    public string DialogDip;
+    private PARAMETER_DESCRIPTION DialogDipDescription;
+    public PARAMETER_DESCRIPTION DialogDipDesctription { get { return DialogDipDescription; } }
+    [SerializeField]
+    float currentValuedd;
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     DialogLine dialogToShow;
     Coroutine dialogCoroutine;
     Camera playerSight;
 
     [Header("Used in view check")]
     public LayerMask PoiAndGroundMask;
+    public float detectionRange;
     ///////////////////////////////////////////////////////////////////////////////////////////
     [Header("Events")]
     public UnityEvent onPlayerTriggerEvent; // When player enter's the trigger
     public UnityEvent onViewEvent; //if player looked at the poi the dialog event triggers
 
+    private StudioEventEmitter bgm;
     private bool viewOnce = false;
     private bool enterOnce = false;
    
     void Awake()
     {
-        //if parameter reference is null, look up
-        if (string.IsNullOrEmpty(parameterDescription.name))
+        //if parameter reference is null, look up, dialog to static
+        if (string.IsNullOrEmpty(DialogToStaticDescription.name))
         {
-            Lookup();
+            LookupDialogToStatic();
         }
+        if(string.IsNullOrEmpty(DialogDipDesctription.name))
+        {
+            LookupDialogDip();
+        }
+
         //get player's camera
         playerSight = Camera.main;
 
         if(fmodScript == null)
         fmodScript = FindObjectOfType<ProgrammerSounds>();
+
+        bgm = Camera.main.GetComponent<StudioEventEmitter>();
     }
     void Start()
     {
@@ -66,7 +86,8 @@ public class DialogueTrigger : MonoBehaviour
     void Update()
     {
         //get dialog to static value
-        RuntimeManager.StudioSystem.getParameterByID(parameterDescription.id, out currentValuef);
+        RuntimeManager.StudioSystem.getParameterByID(DialogToStaticDescription.id, out currentValuef);
+        RuntimeManager.StudioSystem.getParameterByID(DialogDipDescription.id, out currentValuedd);
 
         // if (Input.GetKeyDown(KeyCode.Space))
         // {
@@ -130,7 +151,7 @@ public class DialogueTrigger : MonoBehaviour
         Physics.Linecast(playerSight.transform.position, transform.position, out hit, PoiAndGroundMask, QueryTriggerInteraction.Ignore);
 
         //if player has focused on the poi, and has los
-        if(hit.collider!=null)
+        if(hit.collider!=null && displacement.magnitude <= detectionRange)
         return (Vector3.Angle(displacement, playerSight.transform.forward) <= LookAngleThreshold && hit.collider.gameObject == this.gameObject);
         else
         return false;
@@ -138,22 +159,33 @@ public class DialogueTrigger : MonoBehaviour
         //return false;
     }
 
-    
+    //New Show Dialog stuff
+    //Event emmiter.play, set volume
+    //Get event length
+
+    //while playing get elapsed time
+    //if elapsed time = timestamp
+    //do timestamp command
+    //timestamp index ++
 
     private IEnumerator DialogToShow(DialogListData dialogListData)
     {
+        //get the last dialog
+        Dialog last = dialogListData.dialogLists.Last();
+
         foreach (Dialog dialog in dialogListData.dialogLists) // Loop over each dialog in dialog list
         {
             // Play the audio file and set the appropriate volume
             //fmodScript.PlayDialog(dialog.audioFileName, dialog.playAudio ? dialogueVolume : 0);
-            fmodScript.PlayDialog(dialog.audioFileName, dialogueVolume * (SettingsData.dialogVolume / 100f) * VolumeManager.current.dialogVolumeMultiplier);
-            VolumeManager.current.SetInDialogMultipliers();
-
+            fmodScript.PlayDialog(dialog.audioFileName, dialogueVolume);
+            //dip volume
+            RuntimeManager.StudioSystem.setParameterByID(DialogDipDesctription.id, 1);
+            
             float audioFileLength = fmodScript.dialogueLength; // Get the length of the currently playing audio file
             float elapsedTime = 0f;                            // Reset the elapsed time of each new dialog list entry
             int timestampIndex = 0;                            // Reset the timestamp index
 
-            dialog.currentDialogLine = 0;
+            //dialog.currentDialogLine = 0;
 
             // While loop for the duration of the audio file length
             while (elapsedTime < audioFileLength / 1000)
@@ -195,6 +227,10 @@ public class DialogueTrigger : MonoBehaviour
                         hasExecutedCommand = true;
                     }
                 }
+                if(elapsedTime >= audioFileLength/1000 && dialog==last)
+                {
+                    RuntimeManager.StudioSystem.setParameterByID(DialogDipDesctription.id, 0);
+                }
                 
                 yield return null;
             }
@@ -228,7 +264,7 @@ public class DialogueTrigger : MonoBehaviour
         if(FlagSystem.GetBoolValue(flagToCheck))
         {
                 
-            FMOD.RESULT result = RuntimeManager.StudioSystem.setParameterByID(parameterDescription.id, 1);//1 is full static
+            FMOD.RESULT result = RuntimeManager.StudioSystem.setParameterByID(DialogToStaticDescription.id, 1);//1 is full static
             //fmodScript.dialogueInstance.setVolume(0);
              
         }
@@ -236,7 +272,7 @@ public class DialogueTrigger : MonoBehaviour
     private void Unmute()
     {
         //fmodScript.dialogueInstance.setVolume(dialogueVolume);
-        FMOD.RESULT result = RuntimeManager.StudioSystem.setParameterByID(parameterDescription.id, 0); //0 is no static
+        FMOD.RESULT result = RuntimeManager.StudioSystem.setParameterByID(DialogToStaticDescription.id, 0); //0 is no static
     }
     private void Stop()
     {
@@ -244,9 +280,14 @@ public class DialogueTrigger : MonoBehaviour
         dialogCoroutine = null;
     }
     #endregion
-    private FMOD.RESULT Lookup()
+    private FMOD.RESULT LookupDialogToStatic()
     {
-        FMOD.RESULT result = RuntimeManager.StudioSystem.getParameterDescriptionByName(DialogToStatic, out parameterDescription);
+        FMOD.RESULT result = RuntimeManager.StudioSystem.getParameterDescriptionByName(DialogToStatic, out DialogToStaticDescription);
+        return result;
+    }
+    private FMOD.RESULT LookupDialogDip()
+    {
+        FMOD.RESULT result = RuntimeManager.StudioSystem.getParameterDescriptionByName(DialogDip, out DialogDipDescription);
         return result;
     }
 }
