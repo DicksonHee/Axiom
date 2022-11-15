@@ -1,17 +1,23 @@
+using System;
 using Axiom.Player.Movement.StateMachine;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Axiom.Core;
+using Random = UnityEngine.Random;
 
 public class FallingPillars : MonoBehaviour
 {
-    public LayerMask groundLayer;
     public MovementSystem movementSystem;
     public GameObject prefab;
     public float spawnDistance;
-    public Vector2 spawnBounds;
+    public Vector2 spawnTime;
 
+    public Transform startPos;
+    public Transform endPos;
+
+    private int currentIncrement = 0;
     private BoxCollider boxCollider;
     private bool isPlayerDetected;
 
@@ -19,22 +25,39 @@ public class FallingPillars : MonoBehaviour
     {
         boxCollider = GetComponent<BoxCollider>();
     }
-
-    public void SpawnPillar(Vector3 targetPosition)
+    
+    private void SpawnPillar(Vector3 targetPosition)
     {
         Vector3 spawnPos = targetPosition + new Vector3(0f, 100f, 0f);
         GameObject pillar = Instantiate(prefab, spawnPos, Quaternion.identity);
         pillar.transform.DOMove(targetPosition, 0.5f).SetEase(Ease.Flash);
     }
 
+    private IEnumerator SpawnPillarDelay_CO(Vector3 targetPosition, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        
+        SpawnPillar(targetPosition);
+    }
+
     private void CheckFloor()
     {
-        if (boxCollider.bounds.Contains(movementSystem.transform.position + movementSystem.ForwardDirection * spawnDistance))
+        if (F.InverseLerpV3(startPos.position, endPos.position, movementSystem.transform.position) >
+            (float)currentIncrement / 10)
         {
-            SpawnPillar(movementSystem.transform.position + movementSystem.ForwardDirection * spawnDistance);
+            currentIncrement++;
+            spawnTime *= 0.9f;
         }
 
-        Invoke(nameof(CheckFloor), Random.Range(spawnBounds.x, spawnBounds.y));
+        Vector3 checkPos = movementSystem.transform.position + movementSystem.MoveDirection.normalized * spawnDistance;
+        
+        if (boxCollider.bounds.Contains(checkPos))
+        {
+            SpawnPillar(checkPos);
+            if (currentIncrement > 5) StartCoroutine(SpawnPillarDelay_CO(checkPos, 0.2f));
+        }
+
+        Invoke(nameof(CheckFloor), Random.Range(spawnTime.x, spawnTime.y));
     }
 
     private void OnTriggerEnter(Collider other)
@@ -42,7 +65,7 @@ public class FallingPillars : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerDetected = true;
-            Invoke(nameof(CheckFloor), Random.Range(spawnBounds.x, spawnBounds.y));
+            Invoke(nameof(CheckFloor), Random.Range(spawnTime.x, spawnTime.y));
         }
     }
 
@@ -52,6 +75,7 @@ public class FallingPillars : MonoBehaviour
         {
             isPlayerDetected = false;
             CancelInvoke(nameof(CheckFloor));
+            StopAllCoroutines();
         }
     }
 }

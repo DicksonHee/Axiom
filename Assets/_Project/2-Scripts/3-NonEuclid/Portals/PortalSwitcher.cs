@@ -6,7 +6,7 @@ namespace Axiom.NonEuclidean
 {
     public class PortalSwitcher : MonoBehaviour
     {
-        public void ChangePortal(Portal currentEntry, Portal currentExit, Portal newExit)
+        public void ChangePortal(Portal currentEntry, Portal newExit)
         {
             currentEntry.otherPortal.otherPortal = null;
             //currentExit.otherPortal = null;
