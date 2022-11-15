@@ -89,31 +89,10 @@ public class DialogueTrigger : MonoBehaviour
         RuntimeManager.StudioSystem.getParameterByID(DialogToStaticDescription.id, out currentValuef);
         RuntimeManager.StudioSystem.getParameterByID(DialogDipDescription.id, out currentValuedd);
 
-        // if (Input.GetKeyDown(KeyCode.Space))
-        // {
-        //     fmodScript.StopDialog(true);
-
-        //     if(dialogCoroutine==null) 
-        //     Debug.Log("null");
-        //     else
-        //     Debug.Log("not null");
-        // }
-        
-        // if (Input.GetKeyDown(KeyCode.Space) && dialogCoroutine == null) //for testing
-        // {
-        //     bool start = false;
-
-        //     //reset dialogue to show after running
-        //     for (int x = 0; x < dialogListData.dialogLists.Count; x++)
-        //     {
-        //         dialogListData.dialogLists[x].currentDialogLine = 0;
-        //         start = true;
-        //     }
-        //     if (start)
-        //     {
-        //         dialogCoroutine = StartCoroutine(DialogToShow());
-        //     }
-        // }
+    //    if(Input.GetKeyDown(KeyCode.Alpha0))
+    //    {
+    //     RuntimeManager.StudioSystem.setParameterByID(DialogToStaticDescription.id, 1);
+    //    }
 
     }
     private void FixedUpdate()

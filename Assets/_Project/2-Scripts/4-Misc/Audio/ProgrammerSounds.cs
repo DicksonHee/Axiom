@@ -70,7 +70,7 @@ class ProgrammerSounds : MonoBehaviour
 
         if(audiopos == null)
         {
-            FMODUnity.RuntimeManager.AttachInstanceToGameObject(dialogueInstance, gameObject.transform); 
+            FMODUnity.RuntimeManager.AttachInstanceToGameObject(dialogueInstance, Camera.main.transform); 
         }
         else
         {
