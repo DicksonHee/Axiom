@@ -11,9 +11,12 @@ public class PPVolumeManager : MonoBehaviour
     public List<EffectsVolume> areaVolumes;
 
     private GameObject currentSparkles;
-
+    private AreaName currentAreaName;
+    
     public void ChangeVolume(AreaName areaName)
     {
+        if (areaName == currentAreaName) return;
+        
         foreach (EffectsVolume vol in areaVolumes)
         {
             if (vol.areaName == areaName)
@@ -22,6 +25,7 @@ public class PPVolumeManager : MonoBehaviour
                 vol.sparkles.SetActive(true); 
                 if(currentSparkles != null) currentSparkles.SetActive(false);
                 currentSparkles = vol.sparkles;
+                currentAreaName = areaName;
                 break;
             }
         }
