@@ -21,15 +21,19 @@ public class Destructible : MonoBehaviour
     [SerializeField]
     private AudioClip DestructionClip;
     [SerializeField]
-    private float ExplosiveForce = 500;
+    private float ExplosiveForceMin = 10;
+    [SerializeField]
+    private float ExplosiveForceMax = 50;
     [SerializeField]
     private float ExplosiveRadius = 2;
+    //[SerializeField]
+    //private float PieceFadeSpeed = 0.25f;
+    //[SerializeField]
+    //private float PieceDestroyDelay = 5f;
+    //[SerializeField]
+    //private float PieceSleepCheckDelay = 0.1f;
     [SerializeField]
-    private float PieceFadeSpeed = 0.25f;
-    [SerializeField]
-    private float PieceDestroyDelay = 5f;
-    [SerializeField]
-    private float PieceSleepCheckDelay = 0.1f;
+    private float shardScaleFactor = 0.01f;
 
     private void Awake()
     {
@@ -49,6 +53,7 @@ public class Destructible : MonoBehaviour
         Destroy(Rigidbody);
         GetComponent<Collider>().enabled = false;
         GetComponent<Renderer>().enabled = false;
+        var instanceScale = gameObject.transform.localScale;
 
         if (DestructionClip != null)
         {
@@ -56,6 +61,7 @@ public class Destructible : MonoBehaviour
         }
 
         GameObject brokenInstance = Instantiate(BrokenPrefab, transform.position, transform.rotation);
+        brokenInstance.transform.localScale = instanceScale;
 
         Rigidbody[] rigidbodies = brokenInstance.GetComponentsInChildren<Rigidbody>();
 
@@ -66,63 +72,85 @@ public class Destructible : MonoBehaviour
                 // inherit velocities
                 body.velocity = Rigidbody.velocity;
             }
-            body.AddExplosionForce(ExplosiveForce, transform.position, ExplosiveRadius);
+            body.AddExplosionForce((UnityEngine.Random.Range(ExplosiveForceMin, ExplosiveForceMax)), transform.position, ExplosiveRadius);
         }
 
-        StartCoroutine(FadeOutRigidBodies(rigidbodies));
+        //StartCoroutine(FadeOutRigidBodies(rigidbodies));
+        
+        foreach (Transform t in brokenInstance.GetComponentsInChildren<Transform>())
+        {
+            StartCoroutine(Shrink(t, 5));
+        }
+        
+        Destroy(brokenInstance, 15);
     }
 
-    private IEnumerator FadeOutRigidBodies(Rigidbody[] Rigidbodies)
+    private IEnumerator Shrink(Transform t, float delay)
     {
-        WaitForSeconds Wait = new WaitForSeconds(PieceSleepCheckDelay);
-        float activeRigidbodies = Rigidbodies.Length;
+        yield return new WaitForSeconds(delay);
 
-        while (activeRigidbodies > 0)
+        Vector3 newScale = t.localScale;
+
+        while (newScale.x >= 0.05f)
         {
-            yield return Wait;
+            newScale -= new Vector3(shardScaleFactor, shardScaleFactor, shardScaleFactor);
 
-            foreach (Rigidbody rigidbody in Rigidbodies)
-            {
-                if (rigidbody.IsSleeping())
-                {
-                    activeRigidbodies--;
-                }
-            }
+            t.localScale = newScale;
+            yield return new WaitForSeconds(0.05f);
         }
-
-
-        yield return new WaitForSeconds(PieceDestroyDelay);
-
-        float time = 0;
-        Renderer[] renderers = Array.ConvertAll(Rigidbodies, GetRendererFromRigidbody);
-
-        foreach (Rigidbody body in Rigidbodies)
-        {
-            Destroy(body.GetComponent<Collider>());
-            Destroy(body);
-        }
-
-        while (time < 1)
-        {
-            float step = Time.deltaTime * PieceFadeSpeed;
-            foreach (Renderer renderer in renderers)
-            {
-                renderer.transform.Translate(Vector3.down * (step / renderer.bounds.size.y), Space.World);
-            }
-
-            time += step;
-            yield return null;
-        }
-
-        foreach (Renderer renderer in renderers)
-        {
-            Destroy(renderer.gameObject);
-        }
-        Destroy(gameObject);
     }
 
-    private Renderer GetRendererFromRigidbody(Rigidbody Rigidbody)
-    {
-        return Rigidbody.GetComponent<Renderer>();
-    }
+    //private IEnumerator FadeOutRigidBodies(Rigidbody[] Rigidbodies)
+    //{
+    //    WaitForSeconds Wait = new WaitForSeconds(PieceSleepCheckDelay);
+    //    float activeRigidbodies = Rigidbodies.Length;
+
+    //    while (activeRigidbodies > 0)
+    //    {
+    //        yield return Wait;
+
+    //        foreach (Rigidbody rigidbody in Rigidbodies)
+    //        {
+    //            if (rigidbody.IsSleeping())
+    //            {
+    //                activeRigidbodies--;
+    //            }
+    //        }
+    //    }
+
+
+    //    yield return new WaitForSeconds(PieceDestroyDelay);
+
+    //    float time = 0;
+    //    Renderer[] renderers = Array.ConvertAll(Rigidbodies, GetRendererFromRigidbody);
+
+    //    foreach (Rigidbody body in Rigidbodies)
+    //    {
+    //        Destroy(body.GetComponent<Collider>());
+    //        Destroy(body);
+    //    }
+
+    //    while (time < 1)
+    //    {
+    //        float step = Time.deltaTime * PieceFadeSpeed;
+    //        foreach (Renderer renderer in renderers)
+    //        {
+    //            renderer.transform.Translate(Vector3.down * (step / renderer.bounds.size.y), Space.World);
+    //        }
+
+    //        time += step;
+    //        yield return null;
+    //    }
+
+    //    foreach (Renderer renderer in renderers)
+    //    {
+    //        Destroy(renderer.gameObject);
+    //    }
+    //    Destroy(gameObject);
+    //}
+
+    //private Renderer GetRendererFromRigidbody(Rigidbody Rigidbody)
+    //{
+    //    return Rigidbody.GetComponent<Renderer>();
+    //}
 }

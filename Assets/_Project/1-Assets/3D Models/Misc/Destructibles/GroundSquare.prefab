@@ -114,11 +114,10 @@ MonoBehaviour:
   BrokenPrefab: {fileID: 1631293187120154292, guid: cf70777f9549edf4d9eb15a3e0214dde,
     type: 3}
   DestructionClip: {fileID: 0}
-  ExplosiveForce: 50
+  ExplosiveForceMin: 10
+  ExplosiveForceMax: 50
   ExplosiveRadius: 10
-  PieceFadeSpeed: 0.25
-  PieceDestroyDelay: 5
-  PieceSleepCheckDelay: 0.1
+  shardScaleFactor: 0.05
 --- !u!54 &-871865299449845691
 Rigidbody:
   m_ObjectHideFlags: 0
