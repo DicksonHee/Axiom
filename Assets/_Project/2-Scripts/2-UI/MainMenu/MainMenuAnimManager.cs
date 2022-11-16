@@ -53,10 +53,17 @@ namespace Axiom.UI.MainMenu
             yield return new WaitForSeconds(1f);
             
             NextScene();
-
-            yield return new WaitForSeconds(1f);
-
-            SceneManager.LoadScene(sceneToLoad);
+            if (!SceneManager.GetSceneByName("Load_Scene").isLoaded) SceneManager.LoadSceneAsync("Load_Scene", LoadSceneMode.Additive);
+            while(!SceneManager.GetSceneByName("Load_Scene").isLoaded)
+            {
+                yield return null;
+            }
+            
+            LoadScreen.current.SetWhite();
+            yield return new WaitForSeconds(2f);
+            
+            SceneLoad_Manager.LoadSpecificScene(sceneToLoad);
+            //SceneManager.LoadScene(sceneToLoad);
         }
 
         private void NextScene()
