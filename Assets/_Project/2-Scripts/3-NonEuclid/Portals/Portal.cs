@@ -33,6 +33,7 @@ namespace Axiom.NonEuclidean
             portalCam = GetComponentInChildren<Camera>();
             portalCam.depthTextureMode = DepthTextureMode.Depth;
             portalCam.hideFlags = HideFlags.HideAndDontSave;
+            portalCam.fieldOfView = playerCam.fieldOfView;
             portalCam.enabled = false;
             screenStartLocalPosition = screen.transform.localPosition;
             ProtectScreenFromClipping();
