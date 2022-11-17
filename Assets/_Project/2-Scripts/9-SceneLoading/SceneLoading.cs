@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Antlr4.Runtime.Misc;
+using Axiom.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -35,29 +36,14 @@ public class SceneLoading : MonoBehaviour
 
     public void ChangeScene(string sceneToLoad)
     {
-        // foreach (ScenePair pair in scenePairs)
-        // {
-        //     bool shouldLoadScene = false;
-        //     foreach (string name in pair.sceneName)
-        //     {
-        //         if (name == sceneToLoad)
-        //         {
-        //             shouldLoadScene = true;
-        //             break;
-        //         }
-        //     }
-        //
-        //     pair.gameObject.SetActive(shouldLoadScene);
-        // }
-
         foreach (SceneGroup group in sceneGroups)
         {
             if (group.thisScene == sceneToLoad)
             {
+                PostProcessingActions.current.ChangeVolume(group.areaName);
                 foreach (KeyValuePair<string, GameObject> entry in pairDict)
                 {
-                    if (group.sceneNames.Contains(entry.Key)) entry.Value.SetActive(true);
-                    else entry.Value.SetActive(false);
+                    entry.Value.SetActive(group.sceneNames.Contains(entry.Key));
                 }
             }
         }
@@ -75,5 +61,6 @@ public class ScenePair
 public class SceneGroup
 {
     public string thisScene;
+    public AreaName areaName;
     public List<string> sceneNames;
 }
