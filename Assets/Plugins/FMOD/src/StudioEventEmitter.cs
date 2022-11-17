@@ -369,5 +369,13 @@ namespace FMODUnity
             }
             return false;
         }
+        
+        public void ChangeEvent(string newEvent)
+        {
+            EventReference = RuntimeManager.PathToEventReference(newEvent);
+            instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            instance.release();
+            Lookup();
+        }
     }
 }

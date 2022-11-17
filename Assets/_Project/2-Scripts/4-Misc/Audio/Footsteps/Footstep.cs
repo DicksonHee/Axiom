@@ -80,7 +80,6 @@ public class Footstep : MonoBehaviour
         if(footstepData.TryGetValue(newState, out FootstepData data))
         {
             currentFootstepData = data;
-            eventEmmitter.EventInstance.setVolume(data.footstepVolume);
         }
     }
 

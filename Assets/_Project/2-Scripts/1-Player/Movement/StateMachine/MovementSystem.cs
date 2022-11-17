@@ -178,8 +178,6 @@ namespace Axiom.Player.Movement.StateMachine
 
         private void Update()
         {
-
-
             UpDirection = orientation.up;
             ForwardDirection = orientation.forward;
             RightDirection = orientation.right;
@@ -545,6 +543,23 @@ namespace Axiom.Player.Movement.StateMachine
         private void SetVignetteIntensity(float intensity) => PostProcessingActions.current.SetVignetteIntensity(intensity);
         #endregion
 
+        #region Cutscene Functions
+
+        public void SetInCutsceneMode()
+        {
+            Rb.isKinematic = true;
+            PlayerMovementDetails.cameraLookEnabled = false;
+            PlayerMovementDetails.movementInputEnabled = false;
+        }
+        
+        public void SetNormalMode()
+        {
+            Rb.isKinematic = false;
+            PlayerMovementDetails.cameraLookEnabled = true;
+            PlayerMovementDetails.movementInputEnabled = true;
+        }
+        #endregion
+        
         #region Debug Functions
         private void DrawLine()
         {

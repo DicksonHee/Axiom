@@ -115,6 +115,23 @@ namespace Axiom.Player.Movement
         public float GetVaultHeight() => vaultAnimHeight;
         public bool CanUncrouch() => canUncrouch;
         public RaycastHit GetSlopeHit() => slopeHit;
+
+        public string GetCurrentFloorMaterial()
+        {
+            string retString = "";
+            if (isGrounded)
+            {
+                if (!groundHit.collider.TryGetComponent(out MeshRenderer floorRenderer)) return "";
+                retString = floorRenderer.material.name.Replace("(Instance)", "").Replace(" ", "");
+            }
+            else if(isOnWall)
+            {
+                if (!cameraHitObject.TryGetComponent(out MeshRenderer wallRenderer)) return "";
+                retString = wallRenderer.material.name.Replace("(Instance)", "").Replace(" ", "");
+            }
+
+            return retString;
+        }
 		#endregion
 
 		private void Awake()
@@ -221,10 +238,6 @@ namespace Axiom.Player.Movement
             if (Physics.SphereCast(cam.ScreenPointToRay(screenMiddle), 0.1f, out cameraHit, 10f, groundLayer))
             {
                 cameraHitObject = cameraHit.collider.gameObject;
-            }
-            else
-            {
-                cameraHitObject = null;
             }
         }
 

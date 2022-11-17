@@ -13,8 +13,7 @@ using UnityEngine.Events;
 public class DialogueTrigger : MonoBehaviour
 {
     //public DialogListData dialogListData;
-    [SerializeField] private ProgrammerSounds fmodScript;
-    public float dialogueVolume = 1;
+    public float dialogueVolume = 0.8f;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     [ParamRef]
@@ -67,10 +66,6 @@ public class DialogueTrigger : MonoBehaviour
 
         //get player's camera
         playerSight = Camera.main;
-
-        if(fmodScript == null)
-        fmodScript = FindObjectOfType<ProgrammerSounds>();
-
         bgm = Camera.main.GetComponent<StudioEventEmitter>();
     }
     void Start()
@@ -156,12 +151,12 @@ public class DialogueTrigger : MonoBehaviour
         foreach (Dialog dialog in dialogListData.dialogLists) // Loop over each dialog in dialog list
         {
             // Play the audio file and set the appropriate volume
-            //fmodScript.PlayDialog(dialog.audioFileName, dialog.playAudio ? dialogueVolume : 0);
-            fmodScript.PlayDialog(dialog.audioFileName, dialogueVolume);
+            //ProgrammerSounds.current.PlayDialog(dialog.audioFileName, dialog.playAudio ? dialogueVolume : 0);
+            ProgrammerSounds.current.PlayDialog(dialog.audioFileName, SettingsData.dialogVolume / 100f);
             //dip volume
             RuntimeManager.StudioSystem.setParameterByID(DialogDipDesctription.id, 1);
             
-            float audioFileLength = fmodScript.dialogueLength; // Get the length of the currently playing audio file
+            float audioFileLength = ProgrammerSounds.current.dialogueLength; // Get the length of the currently playing audio file
             float elapsedTime = 0f;                            // Reset the elapsed time of each new dialog list entry
             int timestampIndex = 0;                            // Reset the timestamp index
 
@@ -243,18 +238,18 @@ public class DialogueTrigger : MonoBehaviour
         {
                 
             FMOD.RESULT result = RuntimeManager.StudioSystem.setParameterByID(DialogToStaticDescription.id, 1);//1 is full static
-            //fmodScript.dialogueInstance.setVolume(0);
+            //ProgrammerSounds.current.dialogueInstance.setVolume(0);
              
         }
     }
     private void Unmute()
     {
-        //fmodScript.dialogueInstance.setVolume(dialogueVolume);
+        //ProgrammerSounds.current.dialogueInstance.setVolume(dialogueVolume);
         FMOD.RESULT result = RuntimeManager.StudioSystem.setParameterByID(DialogToStaticDescription.id, 0); //0 is no static
     }
     private void Stop()
     {
-        fmodScript.StopDialog(false);
+        ProgrammerSounds.current.StopDialog(false);
         dialogCoroutine = null;
     }
     #endregion
