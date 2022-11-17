@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3524669303757164726}
   - component: {fileID: 1424853737159118225}
   - component: {fileID: -2451316889501662447}
+  - component: {fileID: 6170139943457957831}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Destructible
@@ -64,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: afbbbfcc9fafd114fba8d60110b94307, type: 3}
+  - {fileID: 2100000, guid: cdbbfea0795383140ab072c6c0ac3d39, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -130,7 +131,19 @@ MonoBehaviour:
   BrokenPrefab: {fileID: 880863078907891067, guid: b977073d7c4c0724496248c5e505421b,
     type: 3}
   DestructionClip: {fileID: 0}
-  ExplosiveForceMin: 10
-  ExplosiveForceMax: 50
-  ExplosiveRadius: 10
-  shardScaleFactor: 0.05
+  ExplosiveForceMin: 50
+  ExplosiveForceMax: 100
+  ExplosiveRadius: 5
+  shardScaleFactor: 0.01
+--- !u!114 &6170139943457957831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8165073187968777541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08763d612d4db91419185f3feb5c0b80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

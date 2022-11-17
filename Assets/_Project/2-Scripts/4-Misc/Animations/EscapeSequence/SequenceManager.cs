@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class SequenceManager : MonoBehaviour
 {
-    public TriggerUnityEvent triggerUnityEvent;
+    public List<Spawner> spawners;
+
+    private void OnEnable()
+    {
+        RespawnManager.OnRespawn += ResetSequence;
+    }
+
+    private void OnDisable()
+    {
+        RespawnManager.OnRespawn -= ResetSequence;
+    }
 
     public void ResetSequence()
     {
-
+        foreach(Spawner spawner in spawners)
+        {
+            spawner.Reset();
+        }
     }
 
-    public void TriggerEvent(int index)
+    public void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Alpha0)) ResetSequence();
     }
 }
