@@ -126,10 +126,8 @@ public class DialogueTrigger : MonoBehaviour
         Physics.Linecast(playerSight.transform.position, transform.position, out hit, PoiAndGroundMask, QueryTriggerInteraction.Ignore);
 
         //if player has focused on the poi, and has los
-        if(hit.collider!=null && displacement.magnitude <= detectionRange)
-        return (Vector3.Angle(displacement, playerSight.transform.forward) <= LookAngleThreshold && hit.collider.gameObject == this.gameObject);
-        else
-        return false;
+        if(hit.collider!=null && displacement.magnitude <= detectionRange) return (Vector3.Angle(displacement, playerSight.transform.forward) <= LookAngleThreshold && hit.collider.gameObject == this.gameObject);
+        else return false;
 
         //return false;
     }
