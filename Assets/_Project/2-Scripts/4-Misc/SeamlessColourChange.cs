@@ -7,14 +7,9 @@ using UnityEngine;
 public class SeamlessColourChange : MonoBehaviour
 {
     public Material material;
-    public Color currentColor;
+    public Color currentColor = Color.white;
 
     public List<ColorPair> colorPairs;
-
-    private void Awake()
-    {
-        currentColor = material.GetColor("Color");
-    }
 
     private void OnEnable()
     {
@@ -46,7 +41,7 @@ public class SeamlessColourChange : MonoBehaviour
         while(counter < 1f)
         {
             counter += Time.deltaTime;
-            material.SetColor("Color", Color.Lerp(currentColor, newColor, counter));
+            material.SetColor("_Color", Color.Lerp(currentColor, newColor, counter));
             yield return null;
         }
 

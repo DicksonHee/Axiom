@@ -129,17 +129,17 @@ namespace Axiom.Player.Movement
                 if (!cameraHitObject.TryGetComponent(out MeshRenderer wallRenderer)) return "";
                 retString = wallRenderer.material.name.Replace("(Instance)", "").Replace(" ", "");
             }
+            else if (canWallClimb)
+            {
+                if (!wallClimbHit.collider.TryGetComponent(out MeshRenderer frontWallRenderer)) return "";
+                retString = frontWallRenderer.material.name.Replace("(Instance)", "").Replace(" ", "");
+            }
 
             return retString;
         }
 		#endregion
 
-		private void Awake()
-		{
-            //InvokeRepeating(nameof(ValidGroundDetection), 0, 0.5f);
-        }
-
-		private void Update()
+        private void Update()
         {
             upDirection = orientation.up;
             rightDirection = orientation.right;
@@ -290,13 +290,15 @@ namespace Axiom.Player.Movement
         }
 		#endregion
 
-		#region WallClimb Functions
+        private RaycastHit wallClimbHit;
+
+        #region WallClimb Functions
 		private void WallClimbCheck()
         {
             var position = wallDetectorTransform.position;
 
-            bool rightDetected = Physics.Raycast(position, (Quaternion.AngleAxis(20f, upDirection) * forwardDirection).normalized, wallClimbDetectionDistance, wallLayer);
-            bool leftDetected = Physics.Raycast(position, (Quaternion.AngleAxis(-20f, upDirection) * forwardDirection).normalized, wallClimbDetectionDistance, wallLayer);   
+            bool rightDetected = Physics.Raycast(position, (Quaternion.AngleAxis(20f, upDirection) * forwardDirection).normalized, out wallClimbHit, wallClimbDetectionDistance, wallLayer);
+            bool leftDetected = Physics.Raycast(position, (Quaternion.AngleAxis(-20f, upDirection) * forwardDirection).normalized, wallClimbDetectionDistance, wallLayer);
 
             if (rightDetected && leftDetected) canWallClimb = true;
             else canWallClimb = false;

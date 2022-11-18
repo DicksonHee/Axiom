@@ -15,8 +15,8 @@ namespace Axiom.Core
 
         private Volume ppVolume;
         private Vignette vignette;
-        private SCPE.RadialBlur radialBlur;
-        private SCPE.Overlay overlay;
+        private RadialBlur radialBlur;
+        private Overlay overlay;
 
         private Coroutine vignetteCoroutine;
         private Coroutine respawnCoroutine;

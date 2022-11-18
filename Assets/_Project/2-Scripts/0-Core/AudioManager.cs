@@ -7,7 +7,6 @@ using System.IO;
 using FMOD.Studio;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace Axiom.Core
 {
@@ -67,6 +66,16 @@ namespace Axiom.Core
             StartCoroutine(SetNewBGM_CO(newEventReference, duration));
         }
 
+        public void PlaySFX2D(EventReference eventReference)
+        {
+            RuntimeManager.PlayOneShot(eventReference);
+        }
+
+        public void PlaySFX3D(EventReference eventReference, Transform targetTransform)
+        {
+            RuntimeManager.PlayOneShot(eventReference, targetTransform.position);
+        }
+        
         private IEnumerator SetNewBGM_CO(EventReference newEventReference, float duration)
         {
             float counter = 0f;

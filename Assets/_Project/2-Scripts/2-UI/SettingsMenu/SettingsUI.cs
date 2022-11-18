@@ -94,9 +94,12 @@ public class SettingsUI : MonoBehaviour
     {
         PlayerMovementDetails.EnableAllMovementInput();
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
+        if (SceneManager.GetActiveScene().name != "MainMenu")
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        
         isMenuActive = false;
         canvasGroup.alpha = 0f;
         canvasGroup.interactable = false;

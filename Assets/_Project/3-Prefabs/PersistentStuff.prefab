@@ -1,5 +1,57 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &79060139
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 79060140}
+  - component: {fileID: 79060141}
+  m_Layer: 0
+  m_Name: ProgrammerSounds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &79060140
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79060139}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 428641496}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &79060141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79060139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2e2bf6092db3734d95a20f85674c06c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName:
+    Guid:
+      Data1: -110818173
+      Data2: 1084191621
+      Data3: -1884162891
+      Data4: 486350821
+    Path: event:/DialogToStatic
+  dialogueLength: 0
 --- !u!1 &428641495
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,6 +81,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1312474523}
+  - {fileID: 79060140}
   m_Father: {fileID: 2473867693228744105}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -79,13 +132,13 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -351558081
-      Data2: 1326759203
-      Data3: -57783394
-      Data4: 700384567
-    Path: event:/SOUNDTRACK/Main Menu
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   Event: 
-  PlayEvent: 1
+  PlayEvent: 0
   StopEvent: 0
   AllowFadeout: 1
   TriggerOnce: 0
@@ -225,6 +278,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgmEmitter: {fileID: 1312474524}
+  sceneBgms:
+  - sceneName: MainMenu
+    bgmEventReference:
+      Guid:
+        Data1: -351558081
+        Data2: 1326759203
+        Data3: -57783394
+        Data4: 700384567
+      Path: event:/SOUNDTRACK/Main Menu
+  - sceneName: Rhys_RealWorld
+    bgmEventReference:
+      Guid:
+        Data1: 1068095597
+        Data2: 1117571872
+        Data3: 377531780
+        Data4: -88192287
+      Path: event:/SOUNDTRACK/Maintenance (UPDATED)
+  - sceneName: Dreamscape_Whole
+    bgmEventReference:
+      Guid:
+        Data1: 1220085171
+        Data2: 1226726467
+        Data3: -1826720084
+        Data4: -978690751
+      Path: event:/SOUNDTRACK/DreamscapeNightmareScape
 --- !u!1 &2473867693228744104
 GameObject:
   m_ObjectHideFlags: 0

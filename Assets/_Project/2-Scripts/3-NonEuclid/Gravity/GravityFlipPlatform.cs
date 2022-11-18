@@ -93,8 +93,8 @@ namespace Axiom.NonEuclidean
         private void OnDrawGizmos()
         {
             Quaternion target = transform.rotation * Quaternion.AngleAxis(degrees, Vector3.right);
-            Debug.DrawRay(transform.position, transform.up * -5f, Color.blue);
-            Debug.DrawRay(transform.position, target * Vector3.up * -5f, Color.red);
+            Debug.DrawRay(transform.position, transform.up * -10f, Color.blue);
+            Debug.DrawRay(transform.position, target * Vector3.up * -10f, Color.red);
         }
 
         IEnumerator Rotate()

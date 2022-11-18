@@ -265,15 +265,15 @@ MonoBehaviour:
     HasValue: 0
   displaySortOrder: 0
   childIdentifiers:
+  - 2fea114e74ecf3c4f920e1d5cc1c4c40
+  - c88d16e5272a4e241b0ef0ac2e53b73d
+  - e7a046c753c3c3d4aacc91f6597f310d
+  - fd7c55dab0fce234b8c25f6ffca523c1
+  - 52eb9df5db46521439908db3a29a1bbb
   - b7716510a1f36934c87976f3a81dbf3d
   - 2c5177b11d81d824dbb064f9ac8527da
-  - e7a046c753c3c3d4aacc91f6597f310d
-  - 52eb9df5db46521439908db3a29a1bbb
-  - fd7c55dab0fce234b8c25f6ffca523c1
-  - c88d16e5272a4e241b0ef0ac2e53b73d
-  - 2fea114e74ecf3c4f920e1d5cc1c4c40
-  - 0f8eb3f400726694eb47beb1a9f94ce8
   - 46fbfdf3fc43db0458918377fd40293e
+  - 0f8eb3f400726694eb47beb1a9f94ce8
   codecChannels:
     Value: []
     HasValue: 0
@@ -292,8 +292,8 @@ MonoBehaviour:
   SwitchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: 
-  sourceBankPath: 
+  sourceProjectPath: Assets/FMOD/AxiomFMOD/AxiomFMOD.fspro
+  sourceBankPath: Assets/FMOD/AxiomFMOD/Build
   SourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1
@@ -315,8 +315,14 @@ MonoBehaviour:
   VirtualChannelSettings: []
   RealChannelSettings: []
   Plugins: []
-  MasterBanks: []
-  Banks: []
+  MasterBanks:
+  - Master
+  Banks:
+  - DialogBank
+  - Footsteps
+  - SFX
+  - Soundtrack
+  - TestBank
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0
@@ -332,16 +338,16 @@ MonoBehaviour:
   LastEventReferenceScanVersion: 131591
   Platforms:
   - {fileID: -6940363490830243758}
+  - {fileID: -2904117915277254799}
+  - {fileID: -1236518582289148514}
   - {fileID: -934973292222815475}
+  - {fileID: 121019971189616504}
+  - {fileID: 971288999404195272}
+  - {fileID: 2364765096702971841}
   - {fileID: 3509352611869159731}
   - {fileID: 4276648126001237226}
-  - {fileID: 121019971189616504}
-  - {fileID: 2364765096702971841}
-  - {fileID: 971288999404195272}
-  - {fileID: -1236518582289148514}
-  - {fileID: -2904117915277254799}
-  - {fileID: 7214026642487661325}
   - {fileID: 7094415343569385941}
+  - {fileID: 7214026642487661325}
   MigratedPlatforms: 150000000b0000000c00000006000000050000000900000012000000080000000a0000000200000001000000
 --- !u!114 &121019971189616504
 MonoBehaviour:
