@@ -1,3 +1,4 @@
+using System.Dynamic;
 using UnityEngine;
 
 namespace Axiom.Player.Movement.StateMachine.States
@@ -10,7 +11,7 @@ namespace Axiom.Player.Movement.StateMachine.States
         {
             stateName = StateName.Crouching;
         }
-
+        
         public override void EnterState()
         {
             base.EnterState();

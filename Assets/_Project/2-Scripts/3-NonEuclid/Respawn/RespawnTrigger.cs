@@ -41,6 +41,7 @@ public class RespawnTrigger : MonoBehaviour
 		
 		if (other.CompareTag("Player"))
 		{
+			RespawnManager.InvokeOnPlayRespawnSound();
 			PostProcessingActions.current.RespawnAnimation(1f);
 			Invoke(nameof(RespawnPlayer), 0.5f);
 		}
@@ -52,6 +53,7 @@ public class RespawnTrigger : MonoBehaviour
 		
 		if (other.CompareTag("Player"))
 		{
+			RespawnManager.InvokeOnPlayRespawnSound();
 			PostProcessingActions.current.RespawnAnimation(1f);
 			Invoke(nameof(RespawnPlayer), 0.5f);
 		}
@@ -61,6 +63,7 @@ public class RespawnTrigger : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.R))
 		{
+			RespawnManager.InvokeOnPlayRespawnSound();
 			PostProcessingActions.current.RespawnAnimation(1f);
 			Invoke(nameof(RespawnPlayer), 0.5f);
 			//RespawnPlayer();

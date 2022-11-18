@@ -85,6 +85,8 @@ public class Footstep : MonoBehaviour
 
     public void PlayFootstep(int value)
     {
+        if (currentFootstepData == null) return;
+        
         Value = value;
         RuntimeManager.StudioSystem.setParameterByID(parameterDescription.id, Value);
         eventEmmitter.Play();

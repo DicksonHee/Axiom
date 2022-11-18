@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18625292, g: 0.0066775996, b: 0.04258223, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -16017,7 +16017,7 @@ MonoBehaviour:
       Data2: 1305521431
       Data3: 1187022510
       Data4: 1631935499
-    Path: event:/Dreamscape Noise
+    Path: event:/TESTS/Dreamscape Noise
   Event: 
   PlayEvent: 1
   StopEvent: 0
@@ -29674,6 +29674,8 @@ MonoBehaviour:
   orientation: {fileID: 1345743933}
   enableMovementOnAwake: 1
   enableCameraOnAwake: 1
+  crouchOnAwake: 0
+  forceCrouch: 0
   movementVFX: {fileID: 1799227202}
   standingCollider: {fileID: 1799227201}
   crouchingCollider: {fileID: 1799227200}

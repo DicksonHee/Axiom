@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18625292, g: 0.0066775996, b: 0.04258223, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -59614,6 +59614,8 @@ MonoBehaviour:
   orientation: {fileID: 3959925312187003493}
   enableMovementOnAwake: 0
   enableCameraOnAwake: 0
+  crouchOnAwake: 0
+  forceCrouch: 0
   movementVFX: {fileID: 7110004589052105386}
   standingCollider: {fileID: 3959925313077833600}
   crouchingCollider: {fileID: 3959925313077833602}
@@ -59679,6 +59681,7 @@ MonoBehaviour:
   decelerationSpeed: 40
   upJumpForce: 13
   inAirCoyoteTime: 0.15
+  maxJumpBufferTime: 0.2
   wallRunJumpUpForce: 13
   wallRunJumpSideForce: 15
   wallRunExitTime: 0.2
@@ -59701,6 +59704,7 @@ MonoBehaviour:
   camHolder: {fileID: 3959925311693284561}
   orientation: {fileID: 3959925312187003493}
   cam: {fileID: 3959925311897787041}
+  noPostCam: {fileID: 0}
   playerAnimation: {fileID: 3959925312166027227}
   sensX: 200
   sensY: 200
@@ -68959,7 +68963,7 @@ MonoBehaviour:
       Data2: 1305521431
       Data3: 1187022510
       Data4: 1631935499
-    Path: event:/Dreamscape Noise
+    Path: event:/TESTS/Dreamscape Noise
   Event: 
   PlayEvent: 1
   StopEvent: 0
@@ -73840,7 +73844,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tmpText: {fileID: 7878870437956773700}
   backgroundImage: {fileID: 7878870436997397898}
-  alphaValue: 0.7
   dialogSize: 0
 --- !u!224 &7878870437987297660
 RectTransform:
@@ -74268,7 +74271,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tmpText: {fileID: 7878870436564615345}
   backgroundImage: {fileID: 7878870437713207370}
-  alphaValue: 1
   dialogSize: 2
 --- !u!1 &7878870438143134857
 GameObject:

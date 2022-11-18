@@ -130,6 +130,9 @@ namespace Axiom.Player.Movement.StateMachine
 
         #region Events
         public event Action<string> OnStateChanged;
+        public static event Action OnJump;
+        public static event Action OnLand;
+        public static event Action OnSprint;
         #endregion
 
         private void Awake()
@@ -156,10 +159,21 @@ namespace Axiom.Player.Movement.StateMachine
             PlayerMovementDetails.movementInputEnabled = enableMovementOnAwake;
             PlayerMovementDetails.cameraLookEnabled = enableCameraOnAwake;
             
-            InitializeState(IdleState);
-            if(crouchOnAwake) ChangeState(CrouchingState);
+            
+            if (crouchOnAwake)
+            {
+                forceCrouch = true;
+                InitializeState(CrouchingState);
+                Invoke(nameof(UnforceCrouch), 1f);
+            }
+            else
+            {
+                InitializeState(IdleState);
+            }
         }
 
+        public void UnforceCrouch() => forceCrouch = false;
+        
         public override void ChangeState(State state)
         {
             base.ChangeState(state);
@@ -251,18 +265,28 @@ namespace Axiom.Player.Movement.StateMachine
             IsExitingLedgeGrab = ledgeGrabExitCounter >= 0;
         }
 
+        private float ungroundedCounter;
         // Check if should change to in air state
         private void CheckChangeToAirState()
         {
-            if(!rbInfo.IsGrounded() && 
-               coyoteTimeCounter <= 0 &&
-               CurrentState != InAirState && 
-               CurrentState != WallRunningState &&
-               CurrentState != LedgeGrabbingState &&
-               CurrentState != LedgeClimbingState &&
-               CurrentState != ClimbingState &&
-               CurrentState != CrouchingState &&
-               CurrentState != SlidingState) ChangeState(InAirState);
+            if (!rbInfo.IsGrounded())
+            {
+                ungroundedCounter += Time.deltaTime;
+                
+                if(ungroundedCounter > 0.2f &&
+                   coyoteTimeCounter <= 0 &&
+                   CurrentState != InAirState && 
+                   CurrentState != WallRunningState &&
+                   CurrentState != LedgeGrabbingState &&
+                   CurrentState != LedgeClimbingState &&
+                   CurrentState != ClimbingState &&
+                   CurrentState != CrouchingState &&
+                   CurrentState != SlidingState) ChangeState(InAirState);
+            }
+            else
+            {
+                ungroundedCounter = 0f;
+            }
         }
 
         private void CheckIfShouldJump()
@@ -374,6 +398,7 @@ namespace Axiom.Player.Movement.StateMachine
                 ChangeState(InAirState);
             }
             
+            InvokeOnJump();
             playerAnimation.SetLandParam(0f);
             playerAnimation.SetInAirParam(0f);
             playerAnimation.SetTrigger("Jump");
@@ -384,7 +409,8 @@ namespace Axiom.Player.Movement.StateMachine
         {
             Vector3 jumpVel = UpDirection.normalized * wallRunJumpUpForce + ForwardDirection * (Mathf.Clamp(Vector3.Dot(wallRunNormal, ForwardDirection), 0.75f, 1f) * wallRunJumpSideForce);
             WallRunningState.SetIsJumpingOnExit(true, jumpVel);
-            
+
+            InvokeOnJump();
             playerAnimation.SetInAirParam(isExitingRightWall ? 1 : -1);
         }
         
@@ -396,6 +422,7 @@ namespace Axiom.Player.Movement.StateMachine
             wallRunExitCounter = 0;
             IsExitingClimb = false;
             ChangeState(LandingState);
+            InvokeOnLand();
         }
 
         #endregion
@@ -577,6 +604,13 @@ namespace Axiom.Player.Movement.StateMachine
             PlayerMovementDetails.cameraLookEnabled = true;
             PlayerMovementDetails.movementInputEnabled = true;
         }
+        #endregion
+        
+        #region Event Functions
+
+        public void InvokeOnLand() => OnLand?.Invoke();
+        public void InvokeOnJump() => OnJump?.Invoke();
+        public void InvokeOnSprint() => OnSprint?.Invoke();
         #endregion
         
         #region Debug Functions

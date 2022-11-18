@@ -361,7 +361,7 @@ MonoBehaviour:
       Data2: 1305521431
       Data3: 1187022510
       Data4: 1631935499
-    Path: event:/Dreamscape Noise
+    Path: event:/TESTS/Dreamscape Noise
   Event: 
   PlayEvent: 1
   StopEvent: 0
@@ -560,6 +560,10 @@ MonoBehaviour:
   cameraLook: {fileID: 3007243298314657033}
   playerAnimation: {fileID: 3007243299075861852}
   orientation: {fileID: 3007243299096821986}
+  enableMovementOnAwake: 0
+  enableCameraOnAwake: 0
+  crouchOnAwake: 0
+  forceCrouch: 0
   movementVFX: {fileID: 9071493538288885805}
   standingCollider: {fileID: 3007243298314657031}
   crouchingCollider: {fileID: 3007243298314657029}
@@ -625,6 +629,7 @@ MonoBehaviour:
   decelerationSpeed: 40
   upJumpForce: 13
   inAirCoyoteTime: 0.15
+  maxJumpBufferTime: 0.2
   wallRunJumpUpForce: 13
   wallRunJumpSideForce: 15
   wallRunExitTime: 0.2
@@ -690,6 +695,8 @@ MonoBehaviour:
   camHolder: {fileID: 3007243297533105750}
   orientation: {fileID: 3007243299096821986}
   cam: {fileID: 3007243297196484646}
+  noPostCam: {fileID: 0}
+  playerAnimation: {fileID: 0}
   sensX: 200
   sensY: 200
   xRotLimits: {x: -90, y: 60}
@@ -710,6 +717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e3868da00979fa4894c5ba3eecfac1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotateSpeed: 0
 --- !u!114 &9071493538288885805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7364,7 +7372,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tmpText: {fileID: 8221596156175685059}
   backgroundImage: {fileID: 8221596155220496141}
-  alphaValue: 0.7
   dialogSize: 0
 --- !u!1 &8221596156175685062
 GameObject:
@@ -7668,6 +7675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a39ebb88849ca2b48bfebe8c0b744d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  volumeManager: {fileID: 0}
 --- !u!1 &8221596156261597442
 GameObject:
   m_ObjectHideFlags: 0
@@ -7735,7 +7743,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tmpText: {fileID: 8221596155259007542}
   backgroundImage: {fileID: 8221596156402340557}
-  alphaValue: 1
   dialogSize: 2
 --- !u!114 &8221596156575331971
 MonoBehaviour:
@@ -8890,6 +8897,23 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3007243299075861852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2700671077232309566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7415aa9fb018287439ef9f030796c8c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rbInfo: {fileID: 3007243298314657035}
+  orientation: {fileID: 3007243299096821986}
+  leftHandClimbPositionTarget: {fileID: 8221596155612869103}
+  rightHandClimbPositionTarget: {fileID: 8221596155794354913}
+  playerMesh: {fileID: 0}
 --- !u!114 &8221596156120763968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8908,22 +8932,6 @@ MonoBehaviour:
   - m_Rig: {fileID: 8221596155160408394}
     m_Active: 1
   m_Effectors: []
---- !u!114 &3007243299075861852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2700671077232309566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7415aa9fb018287439ef9f030796c8c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rbInfo: {fileID: 3007243298314657035}
-  orientation: {fileID: 3007243299096821986}
-  leftHandClimbPositionTarget: {fileID: 8221596155612869103}
-  rightHandClimbPositionTarget: {fileID: 8221596155794354913}
 --- !u!4 &3328554461397921668 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 53a9bb75b5abf2340ab92ec7121e5e00,

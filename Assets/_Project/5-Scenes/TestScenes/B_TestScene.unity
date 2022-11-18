@@ -160,10 +160,15 @@ MonoBehaviour:
       Data2: 1198996912
       Data3: 1868262585
       Data4: 1028609325
-    Path: event:/GlobalFootsteps
+    Path: event:/TESTS/GlobalFootsteps
   globalSurface: GlobalSurface
   Value: 0
   labelName: 
+  movementSystem: {fileID: 0}
+  footstepDataSO: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &47457616
 Transform:
   m_ObjectHideFlags: 0
@@ -198,7 +203,7 @@ MonoBehaviour:
       Data2: 1198996912
       Data3: 1868262585
       Data4: 1028609325
-    Path: event:/GlobalFootsteps
+    Path: event:/TESTS/GlobalFootsteps
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -370,13 +375,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b0302141a8eb64a8e9c00b39a14978, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fmodScript: {fileID: 605236826}
   dialogueVolume: 10
   DialogToStatic: Dialog to Static
   currentValuef: 0
-  wallMask:
+  DialogDip: 
+  currentValuedd: 0
+  PoiAndGroundMask:
     serializedVersion: 2
     m_Bits: 0
+  detectionRange: 0
   onPlayerTriggerEvent:
     m_PersistentCalls:
       m_Calls:
@@ -1642,7 +1649,7 @@ MonoBehaviour:
       Data2: 1173617094
       Data3: 146961585
       Data4: 2088245625
-    Path: event:/Audiotable Test
+    Path: event:/TESTS/Audiotable Test
   dialogueLength: 0
 --- !u!1 &669320766
 GameObject:
