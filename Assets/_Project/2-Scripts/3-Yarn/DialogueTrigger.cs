@@ -150,9 +150,20 @@ public class DialogueTrigger : MonoBehaviour
 
         foreach (Dialog dialog in dialogListData.dialogLists) // Loop over each dialog in dialog list
         {
+            Transform pos = null;
             // Play the audio file and set the appropriate volume
             //ProgrammerSounds.current.PlayDialog(dialog.audioFileName, dialog.playAudio ? dialogueVolume : 0);
-            ProgrammerSounds.current.PlayDialog(dialog.audioFileName, SettingsData.dialogVolume / 100f);
+           
+            try
+            {
+                pos = GameObject.Find(dialog.audioPosObjectName).transform;
+            }
+            catch
+            {
+                Debug.Log("cant find object");
+            }
+            ProgrammerSounds.current.PlayDialog(dialog.audioFileName, SettingsData.dialogVolume / 100f, pos);
+
             //dip volume
             RuntimeManager.StudioSystem.setParameterByID(DialogDipDesctription.id, 1);
             
