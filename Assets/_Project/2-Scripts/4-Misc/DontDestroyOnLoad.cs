@@ -6,6 +6,8 @@ public class DontDestroyOnLoad : MonoBehaviour
 {
     void Start()
     {
+        if (GameObject.Find("PersistentStuff")) Destroy(gameObject);
+
         DontDestroyOnLoad(gameObject);
     }
 }
