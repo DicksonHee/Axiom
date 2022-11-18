@@ -3686,8 +3686,8 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{66144e4c-2311-4d9c-aaf8-4a05ec73307e}">
 		<relationship name="effects">
-			<destination>{2031f0e8-d783-485e-9329-2cbe67bf5316}</destination>
 			<destination>{2aae6d20-d16b-4df9-86e3-138e8f99d486}</destination>
+			<destination>{2031f0e8-d783-485e-9329-2cbe67bf5316}</destination>
 			<destination>{2bb100f5-4f32-47a8-9e9d-0466c937be25}</destination>
 			<destination>{6690b8fd-083d-4da6-8926-2373a2c4532b}</destination>
 		</relationship>
@@ -5118,6 +5118,7 @@
 			<destination>{1ec87535-4637-4c83-8725-d6e7e3b7ee86}</destination>
 		</relationship>
 	</object>
+	<object class="MixerBusFader" id="{2aae6d20-d16b-4df9-86e3-138e8f99d486}" />
 	<object class="CompressorEffect" id="{2031f0e8-d783-485e-9329-2cbe67bf5316}">
 		<property name="threshold">
 			<value>-15.5</value>
@@ -5132,7 +5133,6 @@
 			<value>50</value>
 		</property>
 	</object>
-	<object class="MixerBusFader" id="{2aae6d20-d16b-4df9-86e3-138e8f99d486}" />
 	<object class="GainEffect" id="{2bb100f5-4f32-47a8-9e9d-0466c937be25}">
 		<relationship name="automators">
 			<destination>{d6fa50c9-c5dc-4c96-bba8-625e234b2bee}</destination>
