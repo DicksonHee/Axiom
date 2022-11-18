@@ -22,6 +22,8 @@ namespace Axiom.Player.Movement.StateMachine
         [Header("Awake Bools")]
         public bool enableMovementOnAwake;
         public bool enableCameraOnAwake;
+        public bool crouchOnAwake;
+        public bool forceCrouch;
 
         [Header("VFX")] 
         public MovementVFX movementVFX;
@@ -155,6 +157,7 @@ namespace Axiom.Player.Movement.StateMachine
             PlayerMovementDetails.cameraLookEnabled = enableCameraOnAwake;
             
             InitializeState(IdleState);
+            if(crouchOnAwake) ChangeState(CrouchingState);
         }
 
         public override void ChangeState(State state)
@@ -387,6 +390,8 @@ namespace Axiom.Player.Movement.StateMachine
         
         private void Landed()
         {
+            if(CurrentState == CrouchingState && forceCrouch) return;
+
             previousWall = null;
             wallRunExitCounter = 0;
             IsExitingClimb = false;
@@ -396,6 +401,20 @@ namespace Axiom.Player.Movement.StateMachine
         #endregion
         
         #region Crouch Functions
+        public void ForceStartCrouch()
+        {
+            if (CurrentState == CrouchingState) return;
+
+            forceCrouch = true;
+            ChangeState(CrouchingState);
+        }
+
+        public void EndForceCrouch()
+        {
+            ChangeState(IdleState);
+            forceCrouch = false;
+        }
+
         public void StartCrouch()
         {
             EnableCollider(crouchingCollider);

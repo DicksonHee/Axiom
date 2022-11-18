@@ -23,6 +23,8 @@ namespace Axiom.Player.Movement.StateMachine.States
         public override void LogicUpdate()
         {
             base.LogicUpdate();
+
+            if(MovementSystem.forceCrouch) return;
             CalculateInAirTime();
 
             if (!MovementSystem.inputDetection.crouchInput && MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem.IdleState);
@@ -37,7 +39,7 @@ namespace Axiom.Player.Movement.StateMachine.States
         public override void ExitState()
         {
             base.ExitState();
-
+            
             MovementSystem.EndCrouch();
             MovementSystem.SetAnimatorBool("Crouching", false);
         }
