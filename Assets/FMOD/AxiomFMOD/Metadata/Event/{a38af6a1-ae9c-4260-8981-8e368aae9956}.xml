@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{a38af6a1-ae9c-4260-8981-8e368aae9956}">
 		<property name="name">
-			<value>Pillars</value>
+			<value>Pillars Rising</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -62,7 +62,14 @@
 			<destination>{d4387882-759e-4cde-9866-2dcb078bb54e}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{d150aee7-64af-4936-8379-9d1cc6474c0a}" />
+	<object class="EventAutomatableProperties" id="{d150aee7-64af-4936-8379-9d1cc6474c0a}">
+		<property name="minimumDistance">
+			<value>6.25</value>
+		</property>
+		<property name="maximumDistance">
+			<value>40</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{7daed663-ced2-44c0-a716-c0f9d92b49b2}" />
 	<object class="GroupTrack" id="{ca0471d4-8243-4927-a704-870c1f56e666}">
 		<relationship name="modules">
@@ -147,6 +154,7 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{78c78768-b4dc-4a3a-944e-c0d77e4ee162}">
 		<relationship name="effects">
+			<destination>{dda80ee7-3897-450b-b17d-3363101cbe0e}</destination>
 			<destination>{a10b4ae1-e852-4f28-90f6-989e93ffd39a}</destination>
 			<destination>{ef6c8e64-08fe-48d4-aa58-5928ec006705}</destination>
 		</relationship>
@@ -199,8 +207,26 @@
 			<destination>{161e96e7-4c7a-415f-856c-70793e72cc77}</destination>
 		</relationship>
 	</object>
+	<object class="MixerSend" id="{dda80ee7-3897-450b-b17d-3363101cbe0e}">
+		<property name="level">
+			<value>0</value>
+		</property>
+		<property name="inputFormat">
+			<value>1</value>
+		</property>
+		<relationship name="mixerReturn">
+			<destination>{30ccfa54-c354-4be5-85a1-ad38eae8d44e}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusFader" id="{a10b4ae1-e852-4f28-90f6-989e93ffd39a}" />
-	<object class="SpatialiserEffect" id="{ef6c8e64-08fe-48d4-aa58-5928ec006705}" />
+	<object class="SpatialiserEffect" id="{ef6c8e64-08fe-48d4-aa58-5928ec006705}">
+		<property name="minimumDistance">
+			<value>6.25</value>
+		</property>
+		<property name="maximumDistance">
+			<value>40</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{024fb050-7817-4deb-9776-b6cda1b62d76}" />
 	<object class="AutomationPoint" id="{35b6943c-dbb1-41f2-b227-95de7247b5a1}">
 		<property name="position">
