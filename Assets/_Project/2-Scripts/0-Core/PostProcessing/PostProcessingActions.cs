@@ -1,3 +1,4 @@
+using SCPE;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,19 +34,15 @@ namespace Axiom.Core
 
         public void VolumeUpdated()
         {
-            ppVolume.profile.TryGet(out vignette);
+            if (!ppVolume.profile.TryGet(out vignette)) vignette = ppVolume.profile.Add<Vignette>();
             
-            if (ppVolume.profile.TryGet(out radialBlur))
-            {
-                radialBlur.amount.overrideState = true;
-                radialBlur.amount.value = 0f;
-            }
+            if (!ppVolume.profile.TryGet(out radialBlur)) radialBlur = ppVolume.profile.Add<RadialBlur>();
+            radialBlur.amount.overrideState = true;
+            radialBlur.amount.value = 0f;
 
-            if (ppVolume.profile.TryGet(out overlay))
-            {
-                overlay.intensity.overrideState = true;
-                overlay.intensity.value = 0f;
-            }
+            if (!ppVolume.profile.TryGet(out overlay)) overlay = ppVolume.profile.Add<Overlay>();
+            overlay.intensity.overrideState = true;
+            overlay.intensity.value = 0f;
         }
         #endregion
 
