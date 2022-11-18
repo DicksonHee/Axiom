@@ -122,6 +122,7 @@ namespace Axiom.NonEuclidean
                     player.TeleportPlayer(newPlayerPos);
 
                     Physics.gravity = activeTrigger.transform.up * -1;
+                    GravityRotator.SnapToGravity();
                 }
 
                 yield return null;
