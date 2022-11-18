@@ -18,9 +18,12 @@ public class Dialog
     public string audioFileName;//dont need this
     //public bool playAudio;
     [Header("Override Original Pos")] 
-    public Transform audioPos;
-    //public int currentDialogLine;
+    public string audioPosObjectName;
     public List<TimeStamp> timestamps;
+    void Awake()
+    {
+
+    }
     
 }
 

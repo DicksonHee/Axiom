@@ -88,7 +88,7 @@ namespace Axiom.Dialogue
         {
             dialogueInstance = RuntimeManager.CreateInstance(eventName);
             //possible fix to error
-            dialogueInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject.transform));
+            dialogueInstance.set3DAttributes(RuntimeUtils.To3DAttributes(mainCam.transform));
 
             if (audiopos == null)
             {

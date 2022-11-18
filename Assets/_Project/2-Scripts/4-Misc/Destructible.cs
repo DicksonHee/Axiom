@@ -21,15 +21,19 @@ public class Destructible : MonoBehaviour
     [SerializeField]
     private AudioClip DestructionClip;
     [SerializeField]
-    private float ExplosiveForce = 500;
+    private float ExplosiveForceMin = 50;
     [SerializeField]
-    private float ExplosiveRadius = 2;
+    private float ExplosiveForceMax = 100;
     [SerializeField]
-    private float PieceFadeSpeed = 0.25f;
+    private float ExplosiveRadius = 5;
+    //[SerializeField]
+    //private float PieceFadeSpeed = 0.25f;
+    //[SerializeField]
+    //private float PieceDestroyDelay = 5f;
+    //[SerializeField]
+    //private float PieceSleepCheckDelay = 0.1f;
     [SerializeField]
-    private float PieceDestroyDelay = 5f;
-    [SerializeField]
-    private float PieceSleepCheckDelay = 0.1f;
+    private float shardScaleFactor = 0.01f;
 
     private void Awake()
     {
@@ -39,16 +43,15 @@ public class Destructible : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
-		if(collision.gameObject.tag == "Destructible")
+		if(collision.collider.CompareTag("Destructible"))
 		{
             Explode();
 		}
 	}
-	public void Explode()
+
+    public void Explode()
     {
-        Destroy(Rigidbody);
-        GetComponent<Collider>().enabled = false;
-        GetComponent<Renderer>().enabled = false;
+        var instanceScale = gameObject.transform.localScale;
 
         if (DestructionClip != null)
         {
@@ -56,73 +59,7 @@ public class Destructible : MonoBehaviour
         }
 
         GameObject brokenInstance = Instantiate(BrokenPrefab, transform.position, transform.rotation);
-
-        Rigidbody[] rigidbodies = brokenInstance.GetComponentsInChildren<Rigidbody>();
-
-        foreach (Rigidbody body in rigidbodies)
-        {
-            if (Rigidbody != null)
-            {
-                // inherit velocities
-                body.velocity = Rigidbody.velocity;
-            }
-            body.AddExplosionForce(ExplosiveForce, transform.position, ExplosiveRadius);
-        }
-
-        StartCoroutine(FadeOutRigidBodies(rigidbodies));
-    }
-
-    private IEnumerator FadeOutRigidBodies(Rigidbody[] Rigidbodies)
-    {
-        WaitForSeconds Wait = new WaitForSeconds(PieceSleepCheckDelay);
-        float activeRigidbodies = Rigidbodies.Length;
-
-        while (activeRigidbodies > 0)
-        {
-            yield return Wait;
-
-            foreach (Rigidbody rigidbody in Rigidbodies)
-            {
-                if (rigidbody.IsSleeping())
-                {
-                    activeRigidbodies--;
-                }
-            }
-        }
-
-
-        yield return new WaitForSeconds(PieceDestroyDelay);
-
-        float time = 0;
-        Renderer[] renderers = Array.ConvertAll(Rigidbodies, GetRendererFromRigidbody);
-
-        foreach (Rigidbody body in Rigidbodies)
-        {
-            Destroy(body.GetComponent<Collider>());
-            Destroy(body);
-        }
-
-        while (time < 1)
-        {
-            float step = Time.deltaTime * PieceFadeSpeed;
-            foreach (Renderer renderer in renderers)
-            {
-                renderer.transform.Translate(Vector3.down * (step / renderer.bounds.size.y), Space.World);
-            }
-
-            time += step;
-            yield return null;
-        }
-
-        foreach (Renderer renderer in renderers)
-        {
-            Destroy(renderer.gameObject);
-        }
-        Destroy(gameObject);
-    }
-
-    private Renderer GetRendererFromRigidbody(Rigidbody Rigidbody)
-    {
-        return Rigidbody.GetComponent<Renderer>();
+        brokenInstance.GetComponent<DestructiblePieces>().SetDefaultValues(instanceScale, Rigidbody.velocity, ExplosiveForceMin, ExplosiveForceMax, ExplosiveRadius, shardScaleFactor);
+        gameObject.SetActive(false);
     }
 }

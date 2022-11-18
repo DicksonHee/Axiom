@@ -63,7 +63,11 @@
 			<destination>{d4387882-759e-4cde-9866-2dcb078bb54e}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{f07eb5c9-b416-48f4-b9da-122640c3393d}" />
+	<object class="EventAutomatableProperties" id="{f07eb5c9-b416-48f4-b9da-122640c3393d}">
+		<property name="maximumDistance">
+			<value>75</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{98373c78-69b3-4d1c-abd3-d45ca6403368}" />
 	<object class="GroupTrack" id="{346dfcd1-9686-46a9-9780-b01eb81f48e6}">
 		<relationship name="modules">
@@ -192,7 +196,17 @@
 	</object>
 	<object class="MixerBusPanner" id="{fd5b6774-5b0d-4cb9-a238-4d68d0905747}" />
 	<object class="MixerBusFader" id="{e11cbcac-e589-4ea5-8b52-b2ab6c4b85ee}" />
-	<object class="SpatialiserEffect" id="{16edd5c3-4c58-4bd9-a7ff-63900c74ee3d}" />
+	<object class="SpatialiserEffect" id="{16edd5c3-4c58-4bd9-a7ff-63900c74ee3d}">
+		<property name="minimumDistance">
+			<value>5.80000019</value>
+		</property>
+		<property name="overrideRange">
+			<value>true</value>
+		</property>
+		<property name="soundSize">
+			<value>10000</value>
+		</property>
+	</object>
 	<object class="AutomationPoint" id="{f7b2a7a2-69cf-49c2-9a5f-393612a5856c}">
 		<property name="position">
 			<value>0</value>
