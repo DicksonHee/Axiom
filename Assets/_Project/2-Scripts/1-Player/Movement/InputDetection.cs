@@ -1,3 +1,4 @@
+using Axiom.Core;
 using System;
 using UnityEngine;
 
@@ -24,6 +25,12 @@ namespace Axiom.Player.Movement
 
         private void Update()
         {
+            if (!PlayerMovementDetails.movementInputEnabled)
+            {
+                movementInput = Vector3.zero;
+                return;
+            }
+
             DetectMovementInput();
             DetectJumpInput();
             DetectCrouchInput();

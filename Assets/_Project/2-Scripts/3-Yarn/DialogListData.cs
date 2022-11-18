@@ -15,11 +15,11 @@ public class DialogListData : ScriptableObject
 [Serializable]
 public class Dialog
 {
-    public string audioFileName;
+    public string audioFileName;//dont need this
     //public bool playAudio;
     [Header("Override Original Pos")] 
     public Transform audioPos;
-    public int currentDialogLine;
+    //public int currentDialogLine;
     public List<TimeStamp> timestamps;
     
 }

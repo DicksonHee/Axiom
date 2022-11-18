@@ -39,8 +39,6 @@ public class PercentageAnimation : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerDetected = false;
-            playerTransform = null;
             animator.speed = 0f;
         }
     }

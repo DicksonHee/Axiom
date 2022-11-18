@@ -13,6 +13,8 @@ namespace Axiom.Player.Movement.StateMachine.States
         {
             base.EnterState();
 
+            Debug.Log("Enter");
+            
             MovementSystem.EnterClimbState();
             MovementSystem.DisableMovement();
             MovementSystem.SetGravity(0f);

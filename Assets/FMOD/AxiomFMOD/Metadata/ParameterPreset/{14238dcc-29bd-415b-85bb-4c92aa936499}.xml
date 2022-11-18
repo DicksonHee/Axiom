@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{14238dcc-29bd-415b-85bb-4c92aa936499}">
+		<property name="name">
+			<value>CoreRoom to BackRoom</value>
+		</property>
+		<relationship name="folder">
+			<destination>{a63d6c81-b12e-4f1a-bcfa-205c23f22036}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{dd2d0e94-0795-4562-bd85-3ac70e156184}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{dd2d0e94-0795-4562-bd85-3ac70e156184}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>2</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>Core Room</value>
+			<value>Backrooms</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

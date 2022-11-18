@@ -4,6 +4,7 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.Serialization;
+using Axiom.Core;
 using Axiom.Player.Movement.StateMachine;
 
 public class Footstep : MonoBehaviour
@@ -88,7 +89,7 @@ public class Footstep : MonoBehaviour
         Value = value;
         RuntimeManager.StudioSystem.setParameterByID(parameterDescription.id, Value);
         eventEmmitter.Play();
-        eventEmmitter.EventInstance.setVolume(currentFootstepData.footstepVolume);
+        eventEmmitter.EventInstance.setVolume(currentFootstepData.footstepVolume * (SettingsData.sfxVolume/100f) * VolumeManager.current.sfxVolumeMultiplier);
     }
 }
 

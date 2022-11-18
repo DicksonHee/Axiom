@@ -41,8 +41,7 @@ public class RespawnTrigger : MonoBehaviour
 		
 		if (other.CompareTag("Player"))
 		{
-            Debug.Log("Enter");
-            PostProcessingActions.current.RespawnAnimation(1f);
+			PostProcessingActions.current.RespawnAnimation(1f);
 			Invoke(nameof(RespawnPlayer), 0.5f);
 		}
 	}
@@ -53,7 +52,6 @@ public class RespawnTrigger : MonoBehaviour
 		
 		if (other.CompareTag("Player"))
 		{
-			Debug.Log("Exit");
 			PostProcessingActions.current.RespawnAnimation(1f);
 			Invoke(nameof(RespawnPlayer), 0.5f);
 		}
@@ -61,7 +59,12 @@ public class RespawnTrigger : MonoBehaviour
 
 	private void Update()
 	{
-		if(Input.GetKeyDown(KeyCode.R)) RespawnPlayer();
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			PostProcessingActions.current.RespawnAnimation(1f);
+			Invoke(nameof(RespawnPlayer), 0.5f);
+			//RespawnPlayer();
+		}
 	}
 
 	private void RespawnPlayer()

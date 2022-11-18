@@ -25,6 +25,13 @@ namespace Axiom.Core
         public static Vector2 ClampPoint(this Vector2 point, Rect bounds) => new Vector2(Mathf.Clamp(point.x, bounds.xMin, bounds.xMax), Mathf.Clamp(point.y, bounds.yMin, bounds.yMax));
         public static Vector3 Ground(this Vector3 vector) => new Vector3(vector.x, 0, vector.z);
 
+        public static float InverseLerpV3(Vector3 a, Vector3 b, Vector3 value)
+        {
+            Vector3 AB = b - a;
+            Vector3 AV = value - a;
+            return Mathf.Clamp01(Vector3.Dot(AV, AB) / Vector3.Dot(AB, AB));
+        }
+        
         public static Vector3 RoundToSpecificNumber(this Vector3 vector, int num)
         {
             return new Vector3(Mathf.Round(vector.x/num) * num, Mathf.Round(vector.y/num) * num, Mathf.Round(vector.z/num) * num);

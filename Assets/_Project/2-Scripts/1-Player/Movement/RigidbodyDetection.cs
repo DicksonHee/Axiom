@@ -218,7 +218,7 @@ namespace Axiom.Player.Movement
 
         private void CameraRaycastDetection()
         {
-            if (Physics.Raycast(cam.ScreenPointToRay(screenMiddle), out cameraHit, 10f, groundLayer))
+            if (Physics.SphereCast(cam.ScreenPointToRay(screenMiddle), 0.1f, out cameraHit, 10f, groundLayer))
             {
                 cameraHitObject = cameraHit.collider.gameObject;
             }
@@ -282,8 +282,8 @@ namespace Axiom.Player.Movement
         {
             var position = wallDetectorTransform.position;
 
-            bool rightDetected = Physics.Raycast(position, (Quaternion.AngleAxis(15f, upDirection) * forwardDirection).normalized, wallClimbDetectionDistance, wallLayer);
-            bool leftDetected = Physics.Raycast(position, (Quaternion.AngleAxis(-15f, upDirection) * forwardDirection).normalized, wallClimbDetectionDistance, wallLayer);   
+            bool rightDetected = Physics.Raycast(position, (Quaternion.AngleAxis(20f, upDirection) * forwardDirection).normalized, wallClimbDetectionDistance, wallLayer);
+            bool leftDetected = Physics.Raycast(position, (Quaternion.AngleAxis(-20f, upDirection) * forwardDirection).normalized, wallClimbDetectionDistance, wallLayer);   
 
             if (rightDetected && leftDetected) canWallClimb = true;
             else canWallClimb = false;
