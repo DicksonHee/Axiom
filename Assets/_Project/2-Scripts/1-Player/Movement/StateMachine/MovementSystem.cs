@@ -292,7 +292,7 @@ namespace Axiom.Player.Movement.StateMachine
         private void CheckIfShouldJump()
         {
             if (CurrentState != LandingState && CurrentState != InAirState && rbInfo.CanUncrouch() && 
-                jumpBufferCounter > 0f)
+                (rbInfo.IsGrounded() || coyoteTimeCounter > 0f) && jumpBufferCounter > 0f )
             {
                 coyoteTimeCounter = -1f;
                 jumpBufferCounter = -1f;

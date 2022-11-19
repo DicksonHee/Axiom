@@ -15,9 +15,16 @@ public static class SceneLoad_Manager
         List<string> scenesToUnload = new List<string>();
 
         scenesToLoad.Add(sceneName);
-        scenesToUnload.Add(SceneManager.GetActiveScene().name);
+        for (int ii = 0; ii < SceneManager.sceneCount; ii++)
+        {
+            if (SceneManager.GetSceneAt(ii).name != "Load_Scene")
+            {
+                scenesToUnload.Add(SceneManager.GetSceneAt(ii).name);
+            }
+        }
+        //scenesToUnload.Add(SceneManager.GetActiveScene().name);
 
-        StaticMBLoader._staticMb.StartCoroutine(ScenesLoading(scenesToLoad, scenesToUnload));
+        StaticMBLoader._staticMb.StartCoroutine(ScenesLoading(sceneName, scenesToLoad, scenesToUnload));
     }
 
     private static void LoadScene(string sceneName)
@@ -30,7 +37,7 @@ public static class SceneLoad_Manager
         scenesUnloading.Add(SceneManager.UnloadSceneAsync(sceneName));
     }
 
-    private static IEnumerator ScenesLoading(List<string> scenesToLoad, List<string> scenesToUnload)
+    private static IEnumerator ScenesLoading(string newActiveScene, List<string> scenesToLoad, List<string> scenesToUnload)
     {
         if (!SceneManager.GetSceneByName("Load_Scene").isLoaded) SceneManager.LoadSceneAsync("Load_Scene", LoadSceneMode.Additive);
         while(!SceneManager.GetSceneByName("Load_Scene").isLoaded)
@@ -39,8 +46,8 @@ public static class SceneLoad_Manager
         }
         if(scenesLoading.Count > 0) scenesLoading.Clear();
 
-        yield return new WaitForSeconds(1f);
         LoadScreen.current.SetWhite();
+        yield return new WaitForSeconds(1f);
 
         foreach (string sceneName in scenesToUnload) UnloadScene(sceneName);
         
@@ -68,6 +75,7 @@ public static class SceneLoad_Manager
             yield return null;
         }
         scenesLoading.Clear();
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(newActiveScene));
         
         LoadScreen.current.SetClear();
     }

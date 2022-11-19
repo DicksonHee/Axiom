@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 2107733213}
   - component: {fileID: 2107733216}
   - component: {fileID: 2107733215}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Global Volume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,6 +295,30 @@ MonoBehaviour:
         Data3: 377531780
         Data4: -88192287
       Path: event:/SOUNDTRACK/Maintenance (UPDATED)
+  - sceneName: Rhys_Mindscape
+    bgmEventReference:
+      Guid:
+        Data1: 1054037634
+        Data2: 1317952163
+        Data3: 1190996104
+        Data4: -1248407310
+      Path: event:/SOUNDTRACK/Mindscape
+  - sceneName: Rhys_EscapeSequence
+    bgmEventReference:
+      Guid:
+        Data1: -147227357
+        Data2: 1280102982
+        Data3: -1150404170
+        Data4: -684642145
+      Path: event:/SOUNDTRACK/NightmareRun
+  - sceneName: Tom_Mindscape_1
+    bgmEventReference:
+      Guid:
+        Data1: 1054037634
+        Data2: 1317952163
+        Data3: 1190996104
+        Data4: -1248407310
+      Path: event:/SOUNDTRACK/Mindscape
   - sceneName: Dreamscape_Whole
     bgmEventReference:
       Guid:
@@ -316,7 +340,7 @@ GameObject:
   - component: {fileID: 1913945506}
   m_Layer: 0
   m_Name: PersistentStuff
-  m_TagString: Untagged
+  m_TagString: PersistentObj
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -557,6 +581,46 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5956158230965864190, guid: 0325ab6bb56b59f4ea6fa8aa50f7a6f7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5956158230965864190, guid: 0325ab6bb56b59f4ea6fa8aa50f7a6f7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5956158230965864190, guid: 0325ab6bb56b59f4ea6fa8aa50f7a6f7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4308329985773032384}
+    - target: {fileID: 5956158230965864190, guid: 0325ab6bb56b59f4ea6fa8aa50f7a6f7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5956158230965864190, guid: 0325ab6bb56b59f4ea6fa8aa50f7a6f7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 5956158230965864190, guid: 0325ab6bb56b59f4ea6fa8aa50f7a6f7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsUI, UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 5956158230965864190, guid: 0325ab6bb56b59f4ea6fa8aa50f7a6f7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: MainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 5956158230965864190, guid: 0325ab6bb56b59f4ea6fa8aa50f7a6f7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0325ab6bb56b59f4ea6fa8aa50f7a6f7, type: 3}
 --- !u!224 &2098694498874081628 stripped
@@ -565,3 +629,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 2473867692433188727}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4308329985773032384 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1846109454532211895, guid: 0325ab6bb56b59f4ea6fa8aa50f7a6f7,
+    type: 3}
+  m_PrefabInstance: {fileID: 2473867692433188727}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27cfdc0c94cdf694a9955c8adb20a795, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

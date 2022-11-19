@@ -13,6 +13,7 @@ namespace Axiom.UI.MainMenu
         public List<MainMenuAnim> animObjects;
 
         public UnityEvent OnStartEvent;
+        public GameObject persistentObject;
         
         private PerspectiveSwitcher perspectiveSwitcher;
         private AxiomAnimator axiomAnimator;
@@ -22,6 +23,8 @@ namespace Axiom.UI.MainMenu
         {
             perspectiveSwitcher = GetComponent<PerspectiveSwitcher>();
             axiomAnimator = GetComponent<AxiomAnimator>();
+
+            if (!GameObject.FindWithTag("PersistentObj")) Instantiate(persistentObject);
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;

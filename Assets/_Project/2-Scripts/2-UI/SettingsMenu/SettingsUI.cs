@@ -77,6 +77,12 @@ public class SettingsUI : MonoBehaviour
         }
     }
 
+    public void LoadScene(string sceneToLoad)
+    {
+        SceneLoad_Manager.LoadSpecificScene(sceneToLoad);
+        SetCanvasInactive();
+    }
+    
     private void SetCanvasActive()
     {
         PlayerMovementDetails.DisableAllMovementInput();
@@ -94,16 +100,19 @@ public class SettingsUI : MonoBehaviour
     {
         PlayerMovementDetails.EnableAllMovementInput();
 
-        if (SceneManager.GetActiveScene().name != "MainMenu")
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         
         isMenuActive = false;
         canvasGroup.alpha = 0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
+
+        if (SceneManager.GetSceneByName("MainMenu").isLoaded)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 
     public void SetMouseSensitivity(float value)

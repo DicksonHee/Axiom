@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 namespace Axiom.Core
 {
@@ -29,6 +30,27 @@ namespace Axiom.Core
             VolumeUpdated();
         }
 
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+        
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            //Testing
+            if(scene.name == "Rhys_RealWorld") ChangeVolume(AreaName.RealWorld);
+            else if(scene.name == "Rhys_EscapeSequence" ||
+               scene.name == "Rhys_Mindscape" ||
+               scene.name == "Tom_Mindscape_1" ||
+               scene.name == "Dreamscape_Whole") ChangeVolume(AreaName.Dreamscape);
+            else if(scene.name == "MainMenu") ChangeVolume(AreaName.MainMenu);
+        }
+        
         #region ChangeVolume
         public void ChangeVolume(AreaName areaName) => volumeManager.ChangeVolume(areaName);
 
