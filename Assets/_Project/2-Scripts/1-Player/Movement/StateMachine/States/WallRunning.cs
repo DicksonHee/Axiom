@@ -8,10 +8,14 @@ namespace Axiom.Player.Movement.StateMachine.States
 		private Vector3 wallNormal;
 		private Vector3 wallForward;
 		private Vector3 exitVelocity;
+		private Vector3 moveVel;
+		private Vector3 stickToWallVel;
 		
 		private float initialVertVel;
 		private float initialHoriVel;
-
+		private float exitCounter;
+		private float stickToWallMultiplier;
+		
 		private bool isRightWallEnter;
 		private bool isJumpingOnExit;
 		
@@ -24,19 +28,26 @@ namespace Axiom.Player.Movement.StateMachine.States
 		{
 			base.EnterState();
 			
+			// Get initial movement values right before the player enters wall run
 			initialVertVel = Vector3.Dot(MovementSystem.UpDirection, MovementSystem.Rb.velocity);
 			initialHoriVel = MovementSystem.GetCurrentSpeed();
 			isRightWallEnter = MovementSystem.rbInfo.IsRightWallDetected();
 			isJumpingOnExit = false;
 			
+			// Set the wall values
 			wallTransform = isRightWallEnter ? MovementSystem.rbInfo.GetRightWall() : MovementSystem.rbInfo.GetLeftWall();
 			wallNormal = MovementSystem.rbInfo.IsRightWallDetected() ? MovementSystem.rbInfo.GetRightWallNormal() : MovementSystem.rbInfo.GetLeftWallNormal();
 			wallForward = Vector3.Cross(wallNormal, MovementSystem.UpDirection);
 			if ((MovementSystem.ForwardDirection - wallForward).magnitude > (MovementSystem.ForwardDirection - -wallForward).magnitude) wallForward = -wallForward;
 
-			if (isRightWallEnter) MovementSystem.cameraLook.StartRightWallRunCamera();
-			else MovementSystem.cameraLook.StartLeftWallRunCamera();
+			// Set movement direction
+			moveVel = Vector3.ProjectOnPlane(wallForward, MovementSystem.UpDirection);
+			stickToWallVel = Vector3.ProjectOnPlane(-wallNormal, MovementSystem.UpDirection) * 20f;
 			
+			// Set camera values to move camera to the left or right depending on wall
+			if (isRightWallEnter) MovementSystem.cameraLook.StartRightWallRunCamera(wallTransform.gameObject);
+			else MovementSystem.cameraLook.StartLeftWallRunCamera(wallTransform.gameObject);
+
 			MovementSystem.DisableMovement();
 			MovementSystem.rbInfo.SetIsOnWall(MovementSystem.RightDirection, MovementSystem.ForwardDirection);
 			MovementSystem.EnterWallRunState(wallTransform, wallNormal, isRightWallEnter);
@@ -49,20 +60,28 @@ namespace Axiom.Player.Movement.StateMachine.States
 		public override void LogicUpdate()
 		{
 			base.LogicUpdate();
-			
-			if((isRightWallEnter && !MovementSystem.rbInfo.WallRunningRightDetected()) ||
-			   (!isRightWallEnter && !MovementSystem.rbInfo.WallRunningLeftDetected()) ||
-			   Vector3.Dot(MovementSystem.ForwardDirection, wallNormal) >= 0.96f ||
-			   Vector3.Dot(wallForward, MovementSystem.ForwardDirection) <= -0.25f ||
-			   Time.time - stateStartTime > MovementSystem.wallRunMaxDuration)
+
+			if ((isRightWallEnter && !MovementSystem.rbInfo.WallRunningRightDetected()) ||
+			    (!isRightWallEnter && !MovementSystem.rbInfo.WallRunningLeftDetected()) ||
+			    Vector3.Dot(MovementSystem.ForwardDirection, wallNormal) >= 0.96f ||
+			    Vector3.Dot(wallForward, MovementSystem.ForwardDirection) <= -0.25f ||
+			    Time.time - stateStartTime > MovementSystem.wallRunMaxDuration)
 			{
-				MovementSystem.ChangeState(MovementSystem.InAirState);
+				stickToWallMultiplier = 0f;
+				exitCounter -= Time.deltaTime;
 			}
 			else if(Vector3.Dot(wallNormal, MovementSystem.ForwardDirection) < -0.9f)
 			{
-				MovementSystem.ChangeState((MovementSystem.ClimbingState));
+				MovementSystem.ChangeState(MovementSystem.ClimbingState);
 			}
-			else if(MovementSystem.rbInfo.IsGrounded()) MovementSystem.ChangeState(MovementSystem.IdleState);
+			else if (MovementSystem.rbInfo.IsGrounded()) MovementSystem.ChangeState(MovementSystem.IdleState);
+			else
+			{
+				exitCounter = MovementSystem.wallRunCoyoteTime;
+				stickToWallMultiplier = 1f;
+			}
+			
+			if (exitCounter <= 0f) MovementSystem.ChangeState(MovementSystem.InAirState);
 		}
 
 		public override void PhysicsUpdate()
@@ -96,14 +115,12 @@ namespace Axiom.Player.Movement.StateMachine.States
 		private void WallRunningMovement()
 		{
 			float lerpMultiplier = 1.5f;
-			if(initialVertVel < 0) lerpMultiplier = 2.5f;
+			if(initialVertVel < 0) lerpMultiplier = 2f;
 			
 			float verticalVel = Mathf.Lerp(initialVertVel, 0f, (Time.time - stateStartTime) * lerpMultiplier);
 			float horizontalVel = Mathf.Lerp(initialHoriVel, MovementSystem.wallRunSpeed, (Time.time - stateStartTime) * lerpMultiplier);
-			
-			Vector3 moveVel = Vector3.ProjectOnPlane(wallForward, MovementSystem.UpDirection) * horizontalVel;
-			Vector3 stickToWallVel = Vector3.ProjectOnPlane(-wallNormal, MovementSystem.UpDirection) * 20f;
-			MovementSystem.Rb.velocity = moveVel + stickToWallVel + MovementSystem.UpDirection * verticalVel;
+
+			MovementSystem.Rb.velocity = moveVel * horizontalVel + stickToWallVel * stickToWallMultiplier + MovementSystem.UpDirection * verticalVel;
 		}
 
 		public void SetIsJumpingOnExit(bool val, Vector3 exitVel)

@@ -17,6 +17,7 @@ namespace Axiom.Player.Movement
         [SerializeField] private Camera cam;
         [SerializeField] private Camera noPostCam;
         [SerializeField] private PlayerAnimation playerAnimation;
+        [SerializeField] private RigidbodyDetection rbInfo;
 
         [Header("Mouse Variables")] [SerializeField]
         private float sensX;
@@ -39,6 +40,9 @@ namespace Axiom.Player.Movement
         private float initialSensY;
         private Vector2 initialXRotLimits;
         private bool disableInput;
+        private bool addYRot;
+        private bool subYRot;
+        private GameObject currentWall;
 
         public float mouseX { get; private set; }
         public float mouseY { get; private set; }
@@ -74,6 +78,16 @@ namespace Axiom.Player.Movement
 
             //Find current look rotation
             Vector3 rot = camHolder.transform.localRotation.eulerAngles;
+            if (addYRot)
+            {
+                rot.y += 3f;
+                if (!rbInfo.IsLookingAtWall(currentWall)) addYRot = false;
+            }
+            if (subYRot)
+            {
+                rot.y -= 3f;
+                if (!rbInfo.IsLookingAtWall(currentWall)) subYRot = false;
+            }
             yRotation = rot.y + mouseX * sensX * Time.fixedDeltaTime * multiplier;
 
             //Rotate, and also make sure we dont over- or under-rotate.
@@ -115,16 +129,20 @@ namespace Axiom.Player.Movement
         public void UnlockCamera() => multiplier = initialMultiplier;
         public void ResetXRotLimits() => xRotLimits = initialXRotLimits;
 
-        public void StartLeftWallRunCamera()
+        public void StartLeftWallRunCamera(GameObject wall)
         {
             ChangeFov(wallRunFov);
             ChangeTilt(lTiltAmount);
+            addYRot = true;
+            currentWall = wall;
         }
         
-        public void StartRightWallRunCamera()
+        public void StartRightWallRunCamera(GameObject wall)
         {
             ChangeFov(wallRunFov);
             ChangeTilt(rTiltAmount);
+            subYRot = true;
+            currentWall = wall;
         }
 
         public void StartSlideCamera()
