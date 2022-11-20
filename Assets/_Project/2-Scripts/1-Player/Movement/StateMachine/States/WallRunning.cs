@@ -27,7 +27,7 @@ namespace Axiom.Player.Movement.StateMachine.States
 		public override void EnterState()
 		{
 			base.EnterState();
-			
+
 			// Get initial movement values right before the player enters wall run
 			initialVertVel = Vector3.Dot(MovementSystem.UpDirection, MovementSystem.Rb.velocity);
 			initialHoriVel = MovementSystem.GetCurrentSpeed();
@@ -67,6 +67,11 @@ namespace Axiom.Player.Movement.StateMachine.States
 			    Vector3.Dot(wallForward, MovementSystem.ForwardDirection) <= -0.25f ||
 			    Time.time - stateStartTime > MovementSystem.wallRunMaxDuration)
 			{
+				Debug.Log("EnterWall: " + isRightWallEnter + "\n" + 
+				          "Left: " + MovementSystem.rbInfo.WallRunningLeftDetected() + "\n" +
+				          "Right: " + MovementSystem.rbInfo.WallRunningRightDetected() + "\n" +
+				          "WallNormal: " + Vector3.Dot(MovementSystem.ForwardDirection, wallNormal) + "\n" +
+				          "ForwardDir: " + Vector3.Dot(wallForward, MovementSystem.ForwardDirection));
 				stickToWallMultiplier = 0f;
 				exitCounter -= Time.deltaTime;
 			}
