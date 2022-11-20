@@ -41,6 +41,7 @@ namespace Axiom.Player.Movement
         private Vector2 initialXRotLimits;
         private bool disableInput;
         private bool addYRot;
+        private bool addXRot;
         private bool subYRot;
         private GameObject currentWall;
 
@@ -78,20 +79,12 @@ namespace Axiom.Player.Movement
 
             //Find current look rotation
             Vector3 rot = camHolder.transform.localRotation.eulerAngles;
-            if (addYRot)
-            {
-                rot.y += 3f;
-                if (!rbInfo.IsLookingAtWall(currentWall)) addYRot = false;
-            }
-            if (subYRot)
-            {
-                rot.y -= 3f;
-                if (!rbInfo.IsLookingAtWall(currentWall)) subYRot = false;
-            }
+            rot = ApplyAdditionalYRot(rot);
             yRotation = rot.y + mouseX * sensX * Time.fixedDeltaTime * multiplier;
-
+            
             //Rotate, and also make sure we dont over- or under-rotate.
             xRotation -= mouseY * sensY * Time.fixedDeltaTime * multiplier;
+            ApplyAdditionalXRot();
             xRotation = Mathf.Clamp(xRotation, xRotLimits.x, xRotLimits.y);
 
             //Perform the rotations
@@ -99,6 +92,31 @@ namespace Axiom.Player.Movement
             orientation.transform.localRotation = Quaternion.Euler(0, yRotation, 0);
         }
 
+        private Vector3 ApplyAdditionalYRot(Vector3 initialRot)
+        {
+            if (addYRot)
+            {
+                initialRot.y += 3f;
+                if (!rbInfo.IsLookingAtWall(currentWall)) addYRot = false;
+            }
+            if (subYRot)
+            {
+                initialRot.y -= 3f;
+                if (!rbInfo.IsLookingAtWall(currentWall)) subYRot = false;
+            }
+
+            return initialRot;
+        }
+
+        private void ApplyAdditionalXRot()
+        {
+            if (addXRot)
+            {
+                xRotation -= 5f;
+                if (xRotation <= xRotLimits.x) addXRot = false;
+            }
+        }
+        
         public void ResetFov() => ChangeFov(initialFov);
 
         public void ResetTilt()
@@ -203,8 +221,9 @@ namespace Axiom.Player.Movement
         
         public void StartClimbCamera()
         {
-            cam.transform.DOLocalRotate(new Vector3(wallRunXRotLimits.y, 0, 0), 0.25f);
-            noPostCam.transform.DOLocalRotate(new Vector3(wallRunXRotLimits.y, 0, 0), 0.25f);
+            addXRot = true;
+            //cam.transform.DOLocalRotate(new Vector3(wallRunXRotLimits.y, 0, 0), 0.25f);
+            //noPostCam.transform.DOLocalRotate(new Vector3(wallRunXRotLimits.y, 0, 0), 0.25f);
             xRotLimits = wallRunXRotLimits;
         }
         
@@ -216,6 +235,10 @@ namespace Axiom.Player.Movement
             ResetCameraYSens();
             ResetXRotLimits();
             UnlockCamera();
+
+            addXRot = false;
+            addYRot = false;
+            subYRot = false;
         }
 
         public void TransformForwardRotateTo(Quaternion rot)
