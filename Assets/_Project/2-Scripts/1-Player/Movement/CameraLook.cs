@@ -79,9 +79,16 @@ namespace Axiom.Player.Movement
 
             //Find current look rotation
             Vector3 rot = camHolder.transform.localRotation.eulerAngles;
-            rot = ApplyAdditionalYRot(rot);
-            yRotation = rot.y + mouseX * sensX * Time.fixedDeltaTime * multiplier;
-            
+            if (addYRot || subYRot)
+            {
+                yRotation = ApplyAdditionalYRot(rot).y;
+            }
+            else
+            {
+                yRotation = rot.y + mouseX * sensX * Time.fixedDeltaTime * multiplier;
+            }
+
+
             //Rotate, and also make sure we dont over- or under-rotate.
             xRotation -= mouseY * sensY * Time.fixedDeltaTime * multiplier;
             ApplyAdditionalXRot();
