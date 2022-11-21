@@ -22,6 +22,8 @@ namespace Axiom.Player.Movement.StateMachine
         [Header("Awake Bools")]
         public bool enableMovementOnAwake;
         public bool enableCameraOnAwake;
+        public bool crouchOnAwake;
+        public bool forceCrouch;
 
         [Header("VFX")] 
         public MovementVFX movementVFX;
@@ -128,6 +130,9 @@ namespace Axiom.Player.Movement.StateMachine
 
         #region Events
         public event Action<string> OnStateChanged;
+        public static event Action OnJump;
+        public static event Action OnLand;
+        public static event Action OnSprint;
         #endregion
 
         private void Awake()
@@ -154,9 +159,21 @@ namespace Axiom.Player.Movement.StateMachine
             PlayerMovementDetails.movementInputEnabled = enableMovementOnAwake;
             PlayerMovementDetails.cameraLookEnabled = enableCameraOnAwake;
             
-            InitializeState(IdleState);
+            
+            if (crouchOnAwake)
+            {
+                forceCrouch = true;
+                InitializeState(CrouchingState);
+                Invoke(nameof(UnforceCrouch), 1f);
+            }
+            else
+            {
+                InitializeState(IdleState);
+            }
         }
 
+        public void UnforceCrouch() => forceCrouch = false;
+        
         public override void ChangeState(State state)
         {
             base.ChangeState(state);
@@ -178,8 +195,6 @@ namespace Axiom.Player.Movement.StateMachine
 
         private void Update()
         {
-
-
             UpDirection = orientation.up;
             ForwardDirection = orientation.forward;
             RightDirection = orientation.right;
@@ -250,24 +265,34 @@ namespace Axiom.Player.Movement.StateMachine
             IsExitingLedgeGrab = ledgeGrabExitCounter >= 0;
         }
 
+        private float ungroundedCounter;
         // Check if should change to in air state
         private void CheckChangeToAirState()
         {
-            if(!rbInfo.IsGrounded() && 
-               coyoteTimeCounter <= 0 &&
-               CurrentState != InAirState && 
-               CurrentState != WallRunningState &&
-               CurrentState != LedgeGrabbingState &&
-               CurrentState != LedgeClimbingState &&
-               CurrentState != ClimbingState &&
-               CurrentState != CrouchingState &&
-               CurrentState != SlidingState) ChangeState(InAirState);
+            if (!rbInfo.IsGrounded())
+            {
+                ungroundedCounter += Time.deltaTime;
+                
+                if(ungroundedCounter > 0.2f &&
+                   coyoteTimeCounter <= 0 &&
+                   CurrentState != InAirState && 
+                   CurrentState != WallRunningState &&
+                   CurrentState != LedgeGrabbingState &&
+                   CurrentState != LedgeClimbingState &&
+                   CurrentState != ClimbingState &&
+                   CurrentState != CrouchingState &&
+                   CurrentState != SlidingState) ChangeState(InAirState);
+            }
+            else
+            {
+                ungroundedCounter = 0f;
+            }
         }
 
         private void CheckIfShouldJump()
         {
             if (CurrentState != LandingState && CurrentState != InAirState && rbInfo.CanUncrouch() && 
-                jumpBufferCounter > 0f)
+                (rbInfo.IsGrounded() || coyoteTimeCounter > 0f) && jumpBufferCounter > 0f )
             {
                 coyoteTimeCounter = -1f;
                 jumpBufferCounter = -1f;
@@ -373,6 +398,7 @@ namespace Axiom.Player.Movement.StateMachine
                 ChangeState(InAirState);
             }
             
+            InvokeOnJump();
             playerAnimation.SetLandParam(0f);
             playerAnimation.SetInAirParam(0f);
             playerAnimation.SetTrigger("Jump");
@@ -383,21 +409,39 @@ namespace Axiom.Player.Movement.StateMachine
         {
             Vector3 jumpVel = UpDirection.normalized * wallRunJumpUpForce + ForwardDirection * (Mathf.Clamp(Vector3.Dot(wallRunNormal, ForwardDirection), 0.75f, 1f) * wallRunJumpSideForce);
             WallRunningState.SetIsJumpingOnExit(true, jumpVel);
-            
+
+            InvokeOnJump();
             playerAnimation.SetInAirParam(isExitingRightWall ? 1 : -1);
         }
         
         private void Landed()
         {
+            if(CurrentState == CrouchingState && forceCrouch) return;
+
             previousWall = null;
             wallRunExitCounter = 0;
             IsExitingClimb = false;
             ChangeState(LandingState);
+            InvokeOnLand();
         }
 
         #endregion
         
         #region Crouch Functions
+        public void ForceStartCrouch()
+        {
+            if (CurrentState == CrouchingState) return;
+
+            forceCrouch = true;
+            ChangeState(CrouchingState);
+        }
+
+        public void EndForceCrouch()
+        {
+            ChangeState(IdleState);
+            forceCrouch = false;
+        }
+
         public void StartCrouch()
         {
             EnableCollider(crouchingCollider);
@@ -545,6 +589,30 @@ namespace Axiom.Player.Movement.StateMachine
         private void SetVignetteIntensity(float intensity) => PostProcessingActions.current.SetVignetteIntensity(intensity);
         #endregion
 
+        #region Cutscene Functions
+
+        public void SetInCutsceneMode()
+        {
+            Rb.isKinematic = true;
+            PlayerMovementDetails.cameraLookEnabled = false;
+            PlayerMovementDetails.movementInputEnabled = false;
+        }
+        
+        public void SetNormalMode()
+        {
+            Rb.isKinematic = false;
+            PlayerMovementDetails.cameraLookEnabled = true;
+            PlayerMovementDetails.movementInputEnabled = true;
+        }
+        #endregion
+        
+        #region Event Functions
+
+        public void InvokeOnLand() => OnLand?.Invoke();
+        public void InvokeOnJump() => OnJump?.Invoke();
+        public void InvokeOnSprint() => OnSprint?.Invoke();
+        #endregion
+        
         #region Debug Functions
         private void DrawLine()
         {

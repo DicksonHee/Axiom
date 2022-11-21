@@ -11,10 +11,13 @@ public static class RespawnManager
 
 	public delegate void RespawnEvent();
 	public static event RespawnEvent OnRespawn;
+	public static event RespawnEvent OnPlayRespawnSound;
 
 	public static void SetCurrentRespawnArea(RespawnArea newArea) => currentRespawnArea = newArea;
 	public static RespawnArea GetCurrentRespawnArea() => currentRespawnArea;
 
+	public static void InvokeOnPlayRespawnSound() => OnPlayRespawnSound?.Invoke();
+	
 	public static void RequestRespawnPlayer()
 	{
 		if (playerGO == null) playerGO = GameObject.FindGameObjectWithTag("Player");

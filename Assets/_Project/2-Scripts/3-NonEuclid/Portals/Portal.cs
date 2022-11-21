@@ -13,7 +13,6 @@ namespace Axiom.NonEuclidean
     {
         public Portal otherPortal;
         public MeshRenderer screen;
-        public bool isTeleportToBlue;
         
         [Header("Gravity")]
         public bool changeGravity;
@@ -33,6 +32,7 @@ namespace Axiom.NonEuclidean
             portalCam = GetComponentInChildren<Camera>();
             portalCam.depthTextureMode = DepthTextureMode.Depth;
             portalCam.hideFlags = HideFlags.HideAndDontSave;
+            portalCam.fieldOfView = playerCam.fieldOfView;
             portalCam.enabled = false;
             screenStartLocalPosition = screen.transform.localPosition;
             ProtectScreenFromClipping();

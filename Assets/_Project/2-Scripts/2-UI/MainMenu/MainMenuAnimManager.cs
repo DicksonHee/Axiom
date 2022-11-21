@@ -13,6 +13,7 @@ namespace Axiom.UI.MainMenu
         public List<MainMenuAnim> animObjects;
 
         public UnityEvent OnStartEvent;
+        public GameObject persistentObject;
         
         private PerspectiveSwitcher perspectiveSwitcher;
         private AxiomAnimator axiomAnimator;
@@ -22,6 +23,8 @@ namespace Axiom.UI.MainMenu
         {
             perspectiveSwitcher = GetComponent<PerspectiveSwitcher>();
             axiomAnimator = GetComponent<AxiomAnimator>();
+
+            if (!GameObject.FindWithTag("PersistentObj")) Instantiate(persistentObject);
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -53,10 +56,17 @@ namespace Axiom.UI.MainMenu
             yield return new WaitForSeconds(1f);
             
             NextScene();
-
-            yield return new WaitForSeconds(1f);
-
-            SceneManager.LoadScene(sceneToLoad);
+            if (!SceneManager.GetSceneByName("Load_Scene").isLoaded) SceneManager.LoadSceneAsync("Load_Scene", LoadSceneMode.Additive);
+            while(!SceneManager.GetSceneByName("Load_Scene").isLoaded)
+            {
+                yield return null;
+            }
+            
+            LoadScreen.current.SetWhite();
+            yield return new WaitForSeconds(2f);
+            
+            SceneLoad_Manager.LoadSpecificScene(sceneToLoad);
+            //SceneManager.LoadScene(sceneToLoad);
         }
 
         private void NextScene()

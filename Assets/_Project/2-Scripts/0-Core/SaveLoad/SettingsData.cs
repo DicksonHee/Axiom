@@ -17,6 +17,16 @@ namespace Axiom.Core
         public static int textSize;
         public static int textBackgroundOpacity;
 
+        public static void InitialiseValues()
+        {
+            mouseSensitivity = 50;
+            bgmVolume = 75;
+            sfxVolume = 75;
+            dialogVolume = 50;
+            textSize = 1;
+            textBackgroundOpacity = 100;
+        }
+        
         public static void SettingsUpdated()
         {
             OnSettingUpdated?.Invoke();

@@ -23,7 +23,6 @@ namespace Axiom.Tutorial
 
         private void TriggerIndicator(CanvasGroup canvasGroup, float targetAlpha, float duration)
         {
-            StopAllCoroutines();
             StartCoroutine(Indicate(canvasGroup, targetAlpha, duration));
         }
 

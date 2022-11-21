@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="Bank" id="{3a03b01e-d971-4983-b0e3-653c12e9a761}">
+		<property name="name">
+			<value>DialogBank</value>
+		</property>
+		<relationship name="folder">
+			<destination>{c2e2054b-260a-48a6-af07-35f91f07dd1d}</destination>
+		</relationship>
+		<relationship name="audioTable">
+			<destination>{812c481f-bf1a-4edd-8878-b8f49e66d209}</destination>
+		</relationship>
+	</object>
+	<object class="AudioTable" id="{812c481f-bf1a-4edd-8878-b8f49e66d209}">
+		<property name="name">
+			<value>HallwayAudiotable</value>
+		</property>
+		<property name="sourceDirectory">
+			<value>../../StreamingAssets/HallwayAudiotable</value>
+		</property>
+	</object>
+</objects>

@@ -1,6 +1,7 @@
 using Axiom.Player.Movement.StateMachine;
 using System.Collections;
 using System.Collections.Generic;
+using Axiom.Player.Movement;
 using UnityEngine;
 using static UnityEngine.CullingGroup;
 
@@ -8,7 +9,8 @@ public class GroundTypeDetector : MonoBehaviour
 {
     public Footstep footsteps;
     public MovementSystem movementSystem;
-
+    public RigidbodyDetection rbDetection;
+    
     public LayerMask groundLayer;
     public GroundType_SO groundType_SO;
 
@@ -52,15 +54,9 @@ public class GroundTypeDetector : MonoBehaviour
 
     public void DetectGround()
     {
-        if (Physics.Raycast(transform.position, currentCheckDirection, out RaycastHit hitInfo, 2.5f, groundLayer))
+        if (groundTypeDict.TryGetValue(rbDetection.GetCurrentFloorMaterial(), out FootstepTypeValue value))
         {
-            if (hitInfo.collider.TryGetComponent<MeshRenderer>(out MeshRenderer meshRenderer))
-            {
-                if (groundTypeDict.TryGetValue(meshRenderer.material.name.ToString().Replace("(Instance)", "").Replace(" ", ""), out FootstepTypeValue value))
-                {
-                    footsteps.PlayFootstep((int)value);
-                }
-            }
+            footsteps.PlayFootstep((int)value);
         }
     }
     

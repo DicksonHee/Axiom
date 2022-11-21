@@ -20,7 +20,6 @@ public class RespawnArea : MonoBehaviour
 
 	public void RespawnPlayer(GameObject playerGO)
 	{
-		Debug.Log(gravityDirection);
 		playerGO.GetComponent<MovementSystem>().TeleportPlayerRotateTo(spawnPosition.position, forwardLookDirection, gravityDirection);
 	}
 	
@@ -34,12 +33,15 @@ public class RespawnArea : MonoBehaviour
 
 	private void OnDrawGizmos()
 	{
-		SphereCollider sphereCollider = GetComponent<SphereCollider>();
-		
+        DrawArrow.ForGizmo(spawnPosition.position, spawnPosition.forward, Color.red);
+        DrawArrow.ForGizmo(spawnPosition.position, -spawnPosition.up, Color.blue);
+
+        SphereCollider sphereCollider = GetComponent<SphereCollider>();
+		if (sphereCollider == null) return;
+
 		Gizmos.color = Color.green;
 		Gizmos.DrawWireSphere(transform.position, sphereCollider.radius);
 		
-		DrawArrow.ForGizmo(spawnPosition.position, spawnPosition.forward, Color.red);
-		DrawArrow.ForGizmo(spawnPosition.position, -spawnPosition.up, Color.blue);
+		
 	}
 }

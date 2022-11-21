@@ -41,8 +41,8 @@ namespace Axiom.Player.Movement.StateMachine.States
                     wallClimbTimer += Time.deltaTime;
                     if (ShouldWallClimb()) MovementSystem.ChangeState(MovementSystem.ClimbingState);
                 }
-                else if (((MovementSystem.rbInfo.IsLeftWallDetected() && (MovementSystem.GetPreviousWall() != MovementSystem.rbInfo.GetLeftWall() || MovementSystem.GetIsOnRightWall())) ||
-                          (MovementSystem.rbInfo.IsRightWallDetected() && (MovementSystem.GetPreviousWall() != MovementSystem.rbInfo.GetRightWall() || !MovementSystem.GetIsOnRightWall()))) && 
+                else if ((MovementSystem.rbInfo.IsLeftWallDetected() && MovementSystem.GetPreviousWall() != MovementSystem.rbInfo.GetLeftWall()) ||
+                          (MovementSystem.rbInfo.IsRightWallDetected() && MovementSystem.GetPreviousWall() != MovementSystem.rbInfo.GetRightWall()) && 
                            !MovementSystem.IsExitingLedgeGrab && 
                            !MovementSystem.IsExitingWallRun) // Check for wall run
                 {

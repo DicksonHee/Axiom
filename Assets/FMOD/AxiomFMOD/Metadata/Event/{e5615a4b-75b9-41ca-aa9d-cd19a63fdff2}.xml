@@ -247,7 +247,11 @@
 			<destination>{f85bb66e-9ce1-487b-8f43-3280effd5d36}</destination>
 		</relationship>
 	</object>
-	<object class="MixerBusPanner" id="{848e8633-3959-4ff4-a2b8-870a5284264c}" />
+	<object class="MixerBusPanner" id="{848e8633-3959-4ff4-a2b8-870a5284264c}">
+		<property name="surroundLFELevel">
+			<value>-1.5</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{4b6e8a40-3ca4-4de2-8631-d3103cedbfc0}" />
 	<object class="TransitionSourceFadeOutCurve" id="{de908e1f-7b15-4597-84c0-5ec3a5147097}">
 		<relationship name="startPoint">
@@ -302,7 +306,7 @@
 	</object>
 	<object class="MixerSend" id="{23f8c9f8-be71-48c1-95d4-48a560ffe1ce}">
 		<property name="level">
-			<value>-14</value>
+			<value>-13</value>
 		</property>
 		<property name="inputFormat">
 			<value>0</value>
