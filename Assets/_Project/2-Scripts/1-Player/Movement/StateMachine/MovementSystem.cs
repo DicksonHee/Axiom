@@ -369,10 +369,6 @@ namespace Axiom.Player.Movement.StateMachine
                 coyoteTimeCounter = -1f;
                 WallRunJump();
             }
-            else if (rbInfo.CanVaultOn() || rbInfo.CanVaultOver())
-            {
-                ChangeState(VaultingState);
-            }
         }
         
         // Applies upwards force to the character

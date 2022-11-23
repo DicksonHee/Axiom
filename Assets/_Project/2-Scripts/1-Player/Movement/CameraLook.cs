@@ -17,6 +17,7 @@ namespace Axiom.Player.Movement
         [SerializeField] private Camera cam;
         [SerializeField] private Camera noPostCam;
         [SerializeField] private PlayerAnimation playerAnimation;
+        [SerializeField] private RigidbodyDetection rbInfo;
 
         [Header("Mouse Variables")] [SerializeField]
         private float sensX;
@@ -39,6 +40,10 @@ namespace Axiom.Player.Movement
         private float initialSensY;
         private Vector2 initialXRotLimits;
         private bool disableInput;
+        private bool addYRot;
+        private bool addXRot;
+        private bool subYRot;
+        private GameObject currentWall;
 
         public float mouseX { get; private set; }
         public float mouseY { get; private set; }
@@ -74,10 +79,19 @@ namespace Axiom.Player.Movement
 
             //Find current look rotation
             Vector3 rot = camHolder.transform.localRotation.eulerAngles;
-            yRotation = rot.y + mouseX * sensX * Time.fixedDeltaTime * multiplier;
+            if (addYRot || subYRot)
+            {
+                yRotation = ApplyAdditionalYRot(rot).y;
+            }
+            else
+            {
+                yRotation = rot.y + mouseX * sensX * Time.fixedDeltaTime * multiplier;
+            }
+
 
             //Rotate, and also make sure we dont over- or under-rotate.
             xRotation -= mouseY * sensY * Time.fixedDeltaTime * multiplier;
+            ApplyAdditionalXRot();
             xRotation = Mathf.Clamp(xRotation, xRotLimits.x, xRotLimits.y);
 
             //Perform the rotations
@@ -85,6 +99,31 @@ namespace Axiom.Player.Movement
             orientation.transform.localRotation = Quaternion.Euler(0, yRotation, 0);
         }
 
+        private Vector3 ApplyAdditionalYRot(Vector3 initialRot)
+        {
+            if (addYRot)
+            {
+                initialRot.y += 3f;
+                if (!rbInfo.IsLookingAtWall(currentWall)) addYRot = false;
+            }
+            if (subYRot)
+            {
+                initialRot.y -= 3f;
+                if (!rbInfo.IsLookingAtWall(currentWall)) subYRot = false;
+            }
+
+            return initialRot;
+        }
+
+        private void ApplyAdditionalXRot()
+        {
+            if (addXRot)
+            {
+                xRotation -= 5f;
+                if (xRotation <= xRotLimits.x) addXRot = false;
+            }
+        }
+        
         public void ResetFov() => ChangeFov(initialFov);
 
         public void ResetTilt()
@@ -115,16 +154,20 @@ namespace Axiom.Player.Movement
         public void UnlockCamera() => multiplier = initialMultiplier;
         public void ResetXRotLimits() => xRotLimits = initialXRotLimits;
 
-        public void StartLeftWallRunCamera()
+        public void StartLeftWallRunCamera(GameObject wall)
         {
             ChangeFov(wallRunFov);
             ChangeTilt(lTiltAmount);
+            addYRot = true;
+            currentWall = wall;
         }
         
-        public void StartRightWallRunCamera()
+        public void StartRightWallRunCamera(GameObject wall)
         {
             ChangeFov(wallRunFov);
             ChangeTilt(rTiltAmount);
+            subYRot = true;
+            currentWall = wall;
         }
 
         public void StartSlideCamera()
@@ -185,8 +228,9 @@ namespace Axiom.Player.Movement
         
         public void StartClimbCamera()
         {
-            cam.transform.DOLocalRotate(new Vector3(wallRunXRotLimits.y, 0, 0), 0.25f);
-            noPostCam.transform.DOLocalRotate(new Vector3(wallRunXRotLimits.y, 0, 0), 0.25f);
+            addXRot = true;
+            //cam.transform.DOLocalRotate(new Vector3(wallRunXRotLimits.y, 0, 0), 0.25f);
+            //noPostCam.transform.DOLocalRotate(new Vector3(wallRunXRotLimits.y, 0, 0), 0.25f);
             xRotLimits = wallRunXRotLimits;
         }
         
@@ -198,6 +242,10 @@ namespace Axiom.Player.Movement
             ResetCameraYSens();
             ResetXRotLimits();
             UnlockCamera();
+
+            addXRot = false;
+            addYRot = false;
+            subYRot = false;
         }
 
         public void TransformForwardRotateTo(Quaternion rot)

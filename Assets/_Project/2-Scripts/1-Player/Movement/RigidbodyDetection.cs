@@ -47,6 +47,7 @@ namespace Axiom.Player.Movement
         private bool isOnSlope;
 
         private bool isOnWall;
+        private bool isLookingAtWall;
         private Vector3 enterWallRunRight;
         private Vector3 enterWallRunForward;
         
@@ -111,6 +112,7 @@ namespace Axiom.Player.Movement
         public bool CanWallClimb() => canWallClimb;
         public bool CanClimbLedge() => isDetectingLedge;
         public bool CanVaultOver() => canVaultOver;
+        public bool IsLookingAtWall(GameObject currentWall) => isLookingAtWall && cameraHitObject == currentWall;
         public bool CanVaultOn() => canVaultOn;
         public float GetVaultHeight() => vaultAnimHeight;
         public bool CanUncrouch() => canUncrouch;
@@ -235,7 +237,9 @@ namespace Axiom.Player.Movement
 
         private void CameraRaycastDetection()
         {
-            if (Physics.SphereCast(cam.ScreenPointToRay(screenMiddle), 0.1f, out cameraHit, 10f, groundLayer))
+            isLookingAtWall = Physics.SphereCast(cam.ScreenPointToRay(screenMiddle), 0.1f, out cameraHit, 10f, groundLayer);
+            
+            if (isLookingAtWall)
             {
                 cameraHitObject = cameraHit.collider.gameObject;
             }
