@@ -79,9 +79,15 @@ namespace Axiom.Player.Movement
 
             //Find current look rotation
             Vector3 rot = camHolder.transform.localRotation.eulerAngles;
-            if (addYRot || subYRot)
+            if (addYRot)
             {
-                yRotation = ApplyAdditionalYRot(rot).y;
+                yRotation = rot.y + (40f * Time.fixedDeltaTime);
+                if (!rbInfo.IsLookingAtWall(currentWall)) addYRot = false;
+            }
+            else if(subYRot)
+            {
+                yRotation = rot.y - (40f * Time.fixedDeltaTime);
+                if (!rbInfo.IsLookingAtWall(currentWall)) subYRot = false;
             }
             else
             {
@@ -97,22 +103,6 @@ namespace Axiom.Player.Movement
             //Perform the rotations
             camHolder.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
             orientation.transform.localRotation = Quaternion.Euler(0, yRotation, 0);
-        }
-
-        private Vector3 ApplyAdditionalYRot(Vector3 initialRot)
-        {
-            if (addYRot)
-            {
-                initialRot.y += 3f;
-                if (!rbInfo.IsLookingAtWall(currentWall)) addYRot = false;
-            }
-            if (subYRot)
-            {
-                initialRot.y -= 3f;
-                if (!rbInfo.IsLookingAtWall(currentWall)) subYRot = false;
-            }
-
-            return initialRot;
         }
 
         private void ApplyAdditionalXRot()
