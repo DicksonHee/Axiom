@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Realworld
-  m_Shader: {fileID: -6465566751694194690, guid: df86449e7881a8a408a9b458fe70a9fe,
+  m_Shader: {fileID: -6465566751694194690, guid: 0776cda6fdc124640a980907c832dd35,
     type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -34,8 +34,24 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissText:
+        m_Texture: {fileID: 2800000, guid: 628a5f6e9fc422c4383df08e76cf9065, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissiveTexture:
+        m_Texture: {fileID: 2800000, guid: 628a5f6e9fc422c4383df08e76cf9065, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTexture:
+        m_Texture: {fileID: 2800000, guid: 4d3121a475ada32479aec192bddeb299, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 9005f331c3d3f3448998a65aeb82c36c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 016ccc1c5c508e24e8ef34f0b275e58a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SideTexture:
@@ -62,12 +78,15 @@ Material:
     m_Floats:
     - _ColorIntensity: 1
     - _NormalStrength: 0.1
+    - _OffsetSpeed: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Scale: 0.02
+    - _Scale: 0.05
+    - _ScrollSpeed: 0.1
     - _Smoothness: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Color2: {r: 1, g: 1, b: 1, a: 1}
     - _Emission: {r: 0.8027793, g: 0.8027793, b: 0.8027793, a: 1}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
