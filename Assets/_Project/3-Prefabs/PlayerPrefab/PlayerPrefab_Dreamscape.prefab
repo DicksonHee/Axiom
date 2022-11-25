@@ -17999,7 +17999,7 @@ PrefabInstance:
     - target: {fileID: -5336898023048152367, guid: 53a9bb75b5abf2340ab92ec7121e5e00,
         type: 3}
       propertyPath: m_CastShadows
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -5336898023048152367, guid: 53a9bb75b5abf2340ab92ec7121e5e00,
         type: 3}
@@ -18133,6 +18133,46 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1605332257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8180789689736076796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8f60a6c61e203489b8cdc63ce64462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpEventReference:
+    Guid:
+      Data1: 600205879
+      Data2: 1312986382
+      Data3: 269729181
+      Data4: -2080744310
+    Path: event:/SFX/Movement/Jump
+  landEventReference:
+    Guid:
+      Data1: -1966738181
+      Data2: 1252431576
+      Data3: 312487849
+      Data4: 660142304
+    Path: event:/SFX/Movement/Fall
+  sprintEventReference:
+    Guid:
+      Data1: -1177654396
+      Data2: 1175115149
+      Data3: -189506678
+      Data4: 1862957154
+    Path: event:/SFX/Movement/Sprinting
+  respawnEventReference:
+    Guid:
+      Data1: 1930538980
+      Data2: 1100926863
+      Data3: -374552956
+      Data4: -667982828
+    Path: event:/SFX/Universal/Respawn
 --- !u!114 &1605332258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18247,46 +18287,6 @@ MonoBehaviour:
   leftHandClimbPositionTarget: {fileID: 2804138161301248301}
   rightHandClimbPositionTarget: {fileID: 2804138161002322467}
   playerMesh: {fileID: 5235134085660301948}
---- !u!114 &1605332257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8180789689736076796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e8f60a6c61e203489b8cdc63ce64462, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpEventReference:
-    Guid:
-      Data1: 600205879
-      Data2: 1312986382
-      Data3: 269729181
-      Data4: -2080744310
-    Path: event:/SFX/Movement/Jump
-  landEventReference:
-    Guid:
-      Data1: -1966738181
-      Data2: 1252431576
-      Data3: 312487849
-      Data4: 660142304
-    Path: event:/SFX/Movement/Fall
-  sprintEventReference:
-    Guid:
-      Data1: -1177654396
-      Data2: 1175115149
-      Data3: -189506678
-      Data4: 1862957154
-    Path: event:/SFX/Movement/Sprinting
-  respawnEventReference:
-    Guid:
-      Data1: 1930538980
-      Data2: 1100926863
-      Data3: -374552956
-      Data4: -667982828
-    Path: event:/SFX/Universal/Respawn
 --- !u!4 &8846143124705494854 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 53a9bb75b5abf2340ab92ec7121e5e00,

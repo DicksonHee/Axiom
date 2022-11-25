@@ -60,7 +60,7 @@ public class SimpleAnimations : MonoBehaviour
     {
         foreach(GameObject go in objectsToTransform)
         {
-            go.transform.DOLocalMove(new Vector3(Random.Range(0f, 0.01f), Random.Range(0f, 0.01f), Random.Range(0f, 0.01f)), Random.Range(1f, 5f)).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutElastic);
+            go.transform.DOLocalMove(new Vector3(Random.Range(0f, 0.1f), Random.Range(0f, 0.1f), Random.Range(0f, 0.1f)), Random.Range(1f, 5f)).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutElastic);
         }
     }
 
