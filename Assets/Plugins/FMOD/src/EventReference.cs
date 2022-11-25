@@ -7,10 +7,9 @@ namespace FMODUnity
     public struct EventReference
     {
         public FMOD.GUID Guid;
-
-#if UNITY_EDITOR
         public string Path;
 
+#if UNITY_EDITOR
         public static Func<string, FMOD.GUID> GuidLookupDelegate;
 
         public override string ToString()

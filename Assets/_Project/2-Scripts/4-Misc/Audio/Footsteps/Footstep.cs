@@ -80,16 +80,17 @@ public class Footstep : MonoBehaviour
         if(footstepData.TryGetValue(newState, out FootstepData data))
         {
             currentFootstepData = data;
-            eventEmmitter.EventInstance.setVolume(data.footstepVolume);
         }
     }
 
     public void PlayFootstep(int value)
     {
+        if (currentFootstepData == null) return;
+        
         Value = value;
         RuntimeManager.StudioSystem.setParameterByID(parameterDescription.id, Value);
         eventEmmitter.Play();
-        eventEmmitter.EventInstance.setVolume(currentFootstepData.footstepVolume * (SettingsData.sfxVolume/100f) * VolumeManager.current.sfxVolumeMultiplier);
+        eventEmmitter.EventInstance.setVolume(currentFootstepData.footstepVolume * (SettingsData.sfxVolume/100f));
     }
 }
 

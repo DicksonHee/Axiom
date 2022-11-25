@@ -37,7 +37,17 @@ public class DialogUI : MonoBehaviour
     {
         if(!isShowing) ShowText();
         CancelInvoke(nameof(HideText));
-        
+
+        int colonIndex = textToShow.IndexOf(':');
+        print(colonIndex);
+        if (colonIndex >= 0)
+        {
+            string speakerIdentifier = textToShow.Substring(0, colonIndex + 1);
+            string dialogue = textToShow.Substring(colonIndex + 1);
+            textToShow = "<style=\"SpeakerIndicator\">" + speakerIdentifier + "</style>" + dialogue;
+            print(textToShow);
+        }
+
         tmpText.text = textToShow;
         dialogResizer.Resize();
         Invoke(nameof(HideText), 10f);

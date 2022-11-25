@@ -78,14 +78,14 @@ namespace Axiom.Player.Movement.StateMachine.States
         private void CalculateSlideSpeed()
         {
             float targetSpeed = 0;
-            Debug.Log(MovementSystem.rbInfo.IsOnSlope());
+
             if (MovementSystem.rbInfo.IsOnSlope() && 
                 Vector3.Dot(MovementSystem.Rb.velocity, MovementSystem.orientation.up) < 0.1f)
             {
                 targetSpeed = MovementSystem.forwardSpeed * 2;
             }
             float currentSpeed = Mathf.Lerp(MovementSystem.forwardSpeed, targetSpeed, (Time.time - stateStartTime) * 0.5f);
-            MovementSystem.Rb.AddForce(initialDir.normalized * currentSpeed, ForceMode.Acceleration);
+            MovementSystem.Rb.AddForce(MovementSystem.MoveDirection * currentSpeed, ForceMode.Acceleration);
         }
 
         private void ResetStateTimer()

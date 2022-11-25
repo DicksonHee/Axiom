@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 536672592837187521}
   - component: {fileID: 2015315189771061044}
+  - component: {fileID: 2792574289706614480}
+  - component: {fileID: 2081182304987643290}
   m_Layer: 0
   m_Name: CubeBroken
   m_TagString: Untagged
@@ -53,6 +55,30 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2792574289706614480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880863078907891067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08763d612d4db91419185f3feb5c0b80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2081182304987643290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880863078907891067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8db792b8276bd34685e520bc674868c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4733671138903409991
 GameObject:
   m_ObjectHideFlags: 0
@@ -66,6 +92,7 @@ GameObject:
   - component: {fileID: 277336852961136919}
   - component: {fileID: 4237385554809940767}
   - component: {fileID: 8952258358478623245}
+  - component: {fileID: 3554617645438117083}
   m_Layer: 0
   m_Name: shard6
   m_TagString: Untagged
@@ -116,8 +143,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5254134822780703474, guid: e238155d2e5f1934bab94ffd4c32c6fd, type: 3}
-  - {fileID: 5561349426305759274, guid: e238155d2e5f1934bab94ffd4c32c6fd, type: 3}
+  - {fileID: 2100000, guid: ec65bc33a04332244864bb7d97963184, type: 2}
+  - {fileID: 2100000, guid: cdbbfea0795383140ab072c6c0ac3d39, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -146,7 +173,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4733671138903409991}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9b6f66e133fa5ef4b98ff649ff45e8ac, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
@@ -169,6 +196,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3554617645438117083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4733671138903409991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08763d612d4db91419185f3feb5c0b80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6120854788855819326
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,6 +221,7 @@ GameObject:
   - component: {fileID: 6696562790482757476}
   - component: {fileID: 7693971239498891963}
   - component: {fileID: 5603070531205697279}
+  - component: {fileID: 5369424478105829079}
   m_Layer: 0
   m_Name: shard9
   m_TagString: Untagged
@@ -232,8 +272,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5254134822780703474, guid: e238155d2e5f1934bab94ffd4c32c6fd, type: 3}
-  - {fileID: 5561349426305759274, guid: e238155d2e5f1934bab94ffd4c32c6fd, type: 3}
+  - {fileID: 2100000, guid: ec65bc33a04332244864bb7d97963184, type: 2}
+  - {fileID: 2100000, guid: cdbbfea0795383140ab072c6c0ac3d39, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -262,7 +302,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6120854788855819326}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9b6f66e133fa5ef4b98ff649ff45e8ac, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
@@ -285,6 +325,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5369424478105829079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120854788855819326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08763d612d4db91419185f3feb5c0b80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6388136083763146289
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,6 +350,7 @@ GameObject:
   - component: {fileID: 6411018430413228793}
   - component: {fileID: 692215584678163927}
   - component: {fileID: 4206897361228560423}
+  - component: {fileID: 2272297801594869541}
   m_Layer: 0
   m_Name: shard7
   m_TagString: Untagged
@@ -348,8 +401,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5254134822780703474, guid: e238155d2e5f1934bab94ffd4c32c6fd, type: 3}
-  - {fileID: 5561349426305759274, guid: e238155d2e5f1934bab94ffd4c32c6fd, type: 3}
+  - {fileID: 2100000, guid: ec65bc33a04332244864bb7d97963184, type: 2}
+  - {fileID: 2100000, guid: cdbbfea0795383140ab072c6c0ac3d39, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -378,7 +431,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6388136083763146289}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9b6f66e133fa5ef4b98ff649ff45e8ac, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
@@ -401,6 +454,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2272297801594869541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6388136083763146289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08763d612d4db91419185f3feb5c0b80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6970885833874491098
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,6 +479,7 @@ GameObject:
   - component: {fileID: 747927976157100770}
   - component: {fileID: 7941672368090155286}
   - component: {fileID: 8918308805560878442}
+  - component: {fileID: 2976618793721822237}
   m_Layer: 0
   m_Name: shard10
   m_TagString: Untagged
@@ -464,8 +530,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5254134822780703474, guid: e238155d2e5f1934bab94ffd4c32c6fd, type: 3}
-  - {fileID: 5561349426305759274, guid: e238155d2e5f1934bab94ffd4c32c6fd, type: 3}
+  - {fileID: 2100000, guid: ec65bc33a04332244864bb7d97963184, type: 2}
+  - {fileID: 2100000, guid: cdbbfea0795383140ab072c6c0ac3d39, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -494,7 +560,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6970885833874491098}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9b6f66e133fa5ef4b98ff649ff45e8ac, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
@@ -517,6 +583,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2976618793721822237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6970885833874491098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08763d612d4db91419185f3feb5c0b80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7597252342218952918
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,6 +608,7 @@ GameObject:
   - component: {fileID: 7986476108015194674}
   - component: {fileID: 3942447241500490860}
   - component: {fileID: 8843016181744055405}
+  - component: {fileID: 2519838657695949072}
   m_Layer: 0
   m_Name: shard8
   m_TagString: Untagged
@@ -580,8 +659,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5254134822780703474, guid: e238155d2e5f1934bab94ffd4c32c6fd, type: 3}
-  - {fileID: 5561349426305759274, guid: e238155d2e5f1934bab94ffd4c32c6fd, type: 3}
+  - {fileID: 2100000, guid: ec65bc33a04332244864bb7d97963184, type: 2}
+  - {fileID: 2100000, guid: cdbbfea0795383140ab072c6c0ac3d39, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -610,7 +689,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7597252342218952918}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9b6f66e133fa5ef4b98ff649ff45e8ac, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
@@ -633,3 +712,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2519838657695949072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7597252342218952918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08763d612d4db91419185f3feb5c0b80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

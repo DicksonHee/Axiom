@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Axiom.Core;
+using FMODUnity;
 using UnityEngine;
 
 public class PercentageAnimation : MonoBehaviour
@@ -10,12 +12,13 @@ public class PercentageAnimation : MonoBehaviour
 
     private bool isPlayerDetected;
     private Transform playerTransform;
-
+    
     private void Update()
     {
         if (!isPlayerDetected) return;
 
-        animator.Play("Rise", 0, InverseLerpV3(startPosition.position, endPosition.position, playerTransform.position));
+        float currentPercentage = InverseLerpV3(startPosition.position, endPosition.position, playerTransform.position);
+        animator.Play("Rise", 0, currentPercentage);
     }
 
     private float InverseLerpV3(Vector3 a, Vector3 b, Vector3 value)

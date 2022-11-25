@@ -4,6 +4,7 @@ using UnityEngine;
 using Axiom.Core;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class SettingsUI : MonoBehaviour
 {
@@ -44,25 +45,44 @@ public class SettingsUI : MonoBehaviour
         textSizeSlider.onValueChanged.AddListener(SetTextSize);
         textBackgroundOpacitySlider.onValueChanged.AddListener(SetTextBackgroundOpacity);
 
-        SetMouseSensitivity(mouseSensSlider.value);
-        SetBGMVol(bgmVolSlider.value);
-        SetSFXVol(sfxVolSlider.value);
-        SetDialogVol(dialogVolumeSlider.value);
-        SetTextSize(textSizeSlider.value);
-        SetTextBackgroundOpacity(textBackgroundOpacitySlider.value);
+        SettingsData.InitialiseValues();
+        
+        SetMouseSensitivity(SettingsData.mouseSensitivity);
+        mouseSensSlider.value = SettingsData.mouseSensitivity;
+        
+        SetBGMVol(SettingsData.bgmVolume);
+        bgmVolSlider.value = SettingsData.bgmVolume;
+        
+        SetSFXVol(SettingsData.sfxVolume);
+        sfxVolSlider.value = SettingsData.sfxVolume;
+        
+        SetDialogVol(SettingsData.dialogVolume);
+        dialogVolumeSlider.value = SettingsData.dialogVolume;
+        
+        SetTextSize(SettingsData.textSize);
+        textSizeSlider.value = SettingsData.textSize;
+        
+        SetTextBackgroundOpacity(SettingsData.textBackgroundOpacity);
+        textBackgroundOpacitySlider.value = SettingsData.textBackgroundOpacity;
         
         SetCanvasInactive();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && SceneManager.GetActiveScene().name != "MainMenu")
         {
             if (isMenuActive) SetCanvasInactive();
             else SetCanvasActive();
         }
     }
 
+    public void LoadScene(string sceneToLoad)
+    {
+        SceneLoad_Manager.LoadSpecificScene(sceneToLoad);
+        SetCanvasInactive();
+    }
+    
     private void SetCanvasActive()
     {
         PlayerMovementDetails.DisableAllMovementInput();
@@ -82,11 +102,17 @@ public class SettingsUI : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
+        
         isMenuActive = false;
         canvasGroup.alpha = 0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
+
+        if (SceneManager.GetSceneByName("MainMenu").isLoaded)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 
     public void SetMouseSensitivity(float value)
@@ -127,13 +153,13 @@ public class SettingsUI : MonoBehaviour
         switch (SettingsData.textSize)
         {
             case 0:
-                textSizeText.text = "Small";
+                textSizeText.text = "S";
                 break;
             case 1:
-                textSizeText.text = "Medium";
+                textSizeText.text = "M";
                 break;
             case 2:
-                textSizeText.text = "Large";
+                textSizeText.text = "L";
                 break;
         }
 

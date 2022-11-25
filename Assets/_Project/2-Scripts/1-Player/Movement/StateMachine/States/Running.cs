@@ -4,6 +4,8 @@ namespace Axiom.Player.Movement.StateMachine.States
 {
     public class Running : State
     {
+        private float sprintSoundCounter;
+        
         public Running(MovementSystem movementSystem) : base(movementSystem)
         {
             stateName = StateName.Running;
@@ -26,6 +28,13 @@ namespace Axiom.Player.Movement.StateMachine.States
             if(MovementSystem.inputDetection.movementInput.z < 0 || MovementSystem.inputDetection.movementInput.magnitude <= 0) MovementSystem.ChangeState(MovementSystem.IdleState);
             else if(Mathf.Abs(MovementSystem.inputDetection.movementInput.x) > 0f) MovementSystem.ChangeState(MovementSystem.StrafingState);
             else if (MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem.SlidingState);
+
+            sprintSoundCounter += Time.deltaTime;
+            if (sprintSoundCounter > 1f)
+            {
+                sprintSoundCounter = 0f;
+                MovementSystem.InvokeOnSprint();
+            }
         }
 
         public override void PhysicsUpdate()
