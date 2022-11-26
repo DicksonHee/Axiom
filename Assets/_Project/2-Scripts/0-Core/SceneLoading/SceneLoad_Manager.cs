@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public static class SceneLoad_Manager
 {
+    public static bool Busy => scenesLoading.Count > 0 || scenesUnloading.Count > 0;
+
     private static List<AsyncOperation> scenesLoading = new List<AsyncOperation>();
     private static List<AsyncOperation> scenesUnloading = new List<AsyncOperation>();
 
