@@ -15,13 +15,15 @@ namespace Bezier
         [Range(5, 50)] [SerializeField] private int viewportSubdivisions = 20;
         [SerializeField] private Color viewportColour = Color.white;
 
+        public Point[] Points => points;
+        public int SegmentCount => points.Length - 1;
+        public float ArcLength => distLUT[^1];
+
         private Point[] points;
-        private int segmentCount => points.Length - 1;
 
         private Vector3[] subdividedPoints;
         private Vector3[] viewportPoints;
         private float[] distLUT;
-        private float arcLength => distLUT[^1];
 
         private bool curveActive;
 
@@ -33,7 +35,7 @@ namespace Bezier
         private void Initialise()
         {
             InitialisePoints();
-            subdividedPoints = SubdivideCurve(normalisationAccuracy * segmentCount);
+            subdividedPoints = SubdivideCurve(normalisationAccuracy * SegmentCount);
             distLUT = GetDistanceLut(subdividedPoints);
         }
 
@@ -51,11 +53,11 @@ namespace Bezier
         public Vector3 GetCurvePointNormalised(float t) => GetCurvePoint(NormaliseT(t));
         public Vector3 GetCurvePoint(float t)
         {
-            float totalT = t * segmentCount;
+            float totalT = t * SegmentCount;
             t = totalT % 1;
 
             if (totalT <= 0) return points[0];
-            else if (totalT >= segmentCount) return points[^1];
+            else if (totalT >= SegmentCount) return points[^1];
             else if (t == 0) return points[Mathf.RoundToInt(totalT)];
 
             //print($"{totalT}: {Mathf.FloorToInt(totalT)} - {Mathf.CeilToInt(totalT)}");
@@ -77,7 +79,7 @@ namespace Bezier
         public Vector3 GetDerivativeNormalised(float t) => GetDerivative(NormaliseT(t));
         public Vector3 GetDerivative(float t)
         {
-            float totalT = t * segmentCount;
+            float totalT = t * SegmentCount;
             t = totalT % 1;
 
             Vector3 P0 = points[Mathf.FloorToInt(totalT)];
@@ -93,22 +95,31 @@ namespace Bezier
                 P3 * (3 * t2);
         }
 
-        private float NormaliseT(float t)
-        {
-            float dist = t * arcLength;
+        public float NormaliseT(float t) => Dist2T(t * ArcLength);
 
+        public float T2Dist(float t)
+        {
             if (t <= 0) return 0;
-            else if (t >= 1) return 1;
+            else if (t >= 1) return ArcLength;
+
+            int i = Mathf.FloorToInt(t * (distLUT.Length - 1));
+
+            return t.Remap(
+                (float)i / (distLUT.Length - 1),
+                (i + 1f) / (distLUT.Length - 1),
+                distLUT[i],
+                distLUT[i + 1]);
+        }
+
+        public float Dist2T(float dist)
+        {
+            if (dist <= 0) return 0;
+            else if (dist >= ArcLength) return 1;
 
             for (int i = 0; i < distLUT.Length - 1; i++)
             {
                 if (dist.Between(distLUT[i], distLUT[i + 1]))
                 {
-                    print(t + " | " + dist.Remap(
-                        distLUT[i],
-                        distLUT[i + 1],
-                        (float)i / (distLUT.Length - 1),
-                        (i + 1f) / (distLUT.Length - 1)));
                     return dist.Remap(
                         distLUT[i],
                         distLUT[i + 1],
@@ -117,7 +128,7 @@ namespace Bezier
                 }
             }
 
-            return t;
+            return dist / ArcLength;
         }
 
         private float[] GetDistanceLut(Vector3[] samples)
@@ -150,7 +161,7 @@ namespace Bezier
         private void GetViewportPoints()
         {
             InitialisePoints();
-            viewportPoints = SubdivideCurve(viewportSubdivisions * segmentCount);
+            viewportPoints = SubdivideCurve(viewportSubdivisions * SegmentCount);
         }
 
         private void OnDrawGizmos()
