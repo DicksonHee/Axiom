@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Axiom.Core;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class PPVolumeManager : MonoBehaviour
 {
@@ -11,12 +12,34 @@ public class PPVolumeManager : MonoBehaviour
     public List<PPProfile_SO> areaProfiles;
     public AreaName defaultArea;
     
-    private GameObject currentSparkles;
     private AreaName currentAreaName;
 
-    private void Awake()
+    private void OnEnable()
     {
-        ChangeVolume(defaultArea);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        ChangeVolume(scene.name);
+    }
+
+    public void ChangeVolume(string sceneName)
+    {
+        foreach (PPProfile_SO profile in areaProfiles)
+        {
+            if (profile.scene == sceneName)
+            {
+                currentVolume.profile = profile.volumeProfile;
+                currentAreaName = profile.areaName;
+                break;
+            }
+        }
     }
 
     public void ChangeVolume(AreaName areaName)
@@ -28,7 +51,7 @@ public class PPVolumeManager : MonoBehaviour
             if (profile.areaName == areaName)
             {
                 StartCoroutine(TransitionVolume(profile.volumeProfile));
-                currentAreaName = areaName;
+                currentAreaName = profile.areaName;
                 break;
             }
         }

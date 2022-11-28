@@ -6,7 +6,8 @@ namespace Axiom.Core
 {
     public interface IInteractable
     {
-        public void Interact();
+        public void StartInteraction();
+        public void StopInteraction();
         public void Hover();
     }
 }

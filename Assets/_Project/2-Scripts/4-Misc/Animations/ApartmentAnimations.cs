@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Axiom.Core;
 using SCPE;
 using UnityEngine;
 using UnityEngine.Events;
@@ -16,9 +17,9 @@ public class ApartmentAnimations : MonoBehaviour
     private BlackBars blackBars;
     private DoubleVision doubleVision;
 
-    private void Awake()
+    private void Start()
     {
-        apartmentVolume = GetComponent<Volume>();
+        apartmentVolume = PostProcessingActions.current.volumeManager.currentVolume;
 
         if (apartmentVolume.profile.TryGet(out blackBars))
         {
