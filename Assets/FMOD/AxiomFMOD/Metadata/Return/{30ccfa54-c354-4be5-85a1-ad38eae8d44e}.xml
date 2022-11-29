@@ -20,6 +20,8 @@
 	<object class="MixerBusEffectChain" id="{e6f5bfc5-af54-433f-8590-a6cb95f1ecac}">
 		<relationship name="effects">
 			<destination>{bfaa2904-7ab8-4e58-9c56-9f16c28c063d}</destination>
+			<destination>{d05791db-4e8d-44da-929d-e0ac70d7e1c1}</destination>
+			<destination>{7bb72bb9-7c26-404f-abbd-05aa9aeb2ec3}</destination>
 			<destination>{204a0b6b-1c3b-4c6f-ae94-452d57adb691}</destination>
 		</relationship>
 	</object>
@@ -47,10 +49,20 @@
 			<value>12500</value>
 		</property>
 		<property name="wetLevel">
-			<value>-8</value>
+			<value>-2.5</value>
 		</property>
 		<property name="dryLevel">
 			<value>-80</value>
+		</property>
+	</object>
+	<object class="GainEffect" id="{d05791db-4e8d-44da-929d-e0ac70d7e1c1}">
+		<property name="gain">
+			<value>10</value>
+		</property>
+	</object>
+	<object class="GainEffect" id="{7bb72bb9-7c26-404f-abbd-05aa9aeb2ec3}">
+		<property name="gain">
+			<value>10</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{204a0b6b-1c3b-4c6f-ae94-452d57adb691}" />
