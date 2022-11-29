@@ -48,12 +48,13 @@ public class InteractUI : MonoBehaviour
     {
         objectName.text = objectSO.objectName;
         objectDescription.text = objectSO.objectDescription;
+        interactionTextCanvasGroup.alpha = 0f;
         interactionDetailsCanvasGroup.alpha = 1f;
     }
 
     private void HideDetailsCanvas()
     {
-        Debug.Log("ASd");
+        interactionTextCanvasGroup.alpha = 1f;
         interactionDetailsCanvasGroup.alpha = 0f;
     }
 }
