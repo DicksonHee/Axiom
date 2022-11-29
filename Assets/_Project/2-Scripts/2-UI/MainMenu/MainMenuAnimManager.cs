@@ -12,7 +12,7 @@ namespace Axiom.UI.MainMenu
     {
         public List<MainMenuAnim> animObjects;
 
-        public UnityEvent OnStartEvent;
+        public UnityEvent OnStartEvent, OnFinishEvent;
         public GameObject persistentObject;
         
         private PerspectiveSwitcher perspectiveSwitcher;
@@ -55,7 +55,6 @@ namespace Axiom.UI.MainMenu
 
             yield return new WaitForSeconds(1f);
             
-            NextScene();
             if (!SceneManager.GetSceneByName("Load_Scene").isLoaded) SceneManager.LoadSceneAsync("Load_Scene", LoadSceneMode.Additive);
             while(!SceneManager.GetSceneByName("Load_Scene").isLoaded)
             {
@@ -66,6 +65,15 @@ namespace Axiom.UI.MainMenu
             yield return new WaitForSeconds(2f);
             
             SceneLoad_Manager.LoadSpecificScene(sceneToLoad);
+
+            print("StartingLoad");
+            yield return new WaitUntil(() => !SceneLoad_Manager.Busy);
+            print("FinishedLoad");
+
+            yield return new WaitForSeconds(1.5f);
+            NextScene();
+
+            OnFinishEvent?.Invoke();
             //SceneManager.LoadScene(sceneToLoad);
         }
 
@@ -74,6 +82,11 @@ namespace Axiom.UI.MainMenu
             transform.DOKill();
             transform.DORotate(new Vector3(0, 0, 90f), 2f, RotateMode.FastBeyond360).SetEase(Ease.InOutQuad);
             transform.DOMoveZ(10, 2f);
+        }
+
+        public void Destroy()
+        {
+            Destroy(transform.parent.gameObject);
         }
 
         public void QuitGame()

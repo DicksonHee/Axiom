@@ -1,0 +1,92 @@
+How to use (updated 29/11/2022)
+
+What's New?
+___________
+
+No need to repeat typing in scene name and audio file name, so leaving fields empty if it's the same as previous one
+
+
+Command list 
+________________________________
+
+Show = update dialog text on screen
+Mute = mute audio (it fades out, so start around 0.1s - 0.15s earlier) //may have to tweak a bit
+Unmute = unmutes audio (instantaneous, no fade)
+Stop = (probably don't ever need this)in case of there is still a dialog event still playing event if the volume is 0.
+
+Tips
+____
+
+!Scene Name = "!" means it is important, probably don't want to leave it empty.
+(Condition) = () means it is optional depending if the command entered or if it is "[]" it means has hidden sections in the dialog line.
+
+Creating TimeStamp and Scene
+____________________________
+
+To create a new TimeStamp in the same audiofile and scene, do it in the next line ****keep time in seconds, so convert minutes to seconds
+//________________________________________________
+//Scene Name| Dialog Audio File Name | Time Stamp |  output = Scene 1 
+//Scene 1   | audio 1			 	 |		0 	  |			  	> audio 1
+//			| 					 	 |	    0.6   |				  > 0
+//________________________________________________				  > 0.6	
+
+To create a new Scene give it a seperate name in the next line
+//________________________________________________
+//Scene Name| Dialog Audio File Name | Time Stamp |  output = Scene 1
+//Scene 1   | audio 1			 	 |		0 	  |				> audio 1
+//			| 						 |	    0.6   |					> 0
+//Scene	2	| audio 2 				 |		0     |					> 0.6
+//________________________________________________			  Scene 2
+																>audio 2
+																	> 0
+How to use Hidden Sections or Hidden Words
+_______________________________________________
+
+If the command is "Show"
+You can input what text to show
+
+Example: "Run Forrest Run" <= it will show this text on screen
+Example: "Run [Forrest] [Run]" <= We can assign condition/flag to each brackets, if the condition/flag is true, it will hide the text.
+
+We can add as many hidden sections as we want. A hidden section requires a "[]" in the dialog line, a "condition/flag", an "index".
+
+After "Mute Flag" You can first assign a flag to check for example "ForrestFlag"
+
+Then we can decide which bracket it was referring to, in this case "[Forrest]" is the first bracket in the dialog line.
+So the index will be "0".
+
+If "ForrestFlag" condition is true, the text output will be "Run ▇▇▇▇ Run"
+
+
+	The row should look like this
+//_______________________________________________________________________________________________________________________
+//Scene Name| Dialog Audio File Name | Time Stamp | Command | Text to Show        | Mute Flag | Text Flag   | Word Index |
+//Example   | ExampleAudioFile       |          0 | Show    | Run [Forrest] [Run] |  	      | ForrestFlag |	     0   |
+//_______________________________________________________________________________________________________________________
+
+	But if we want to hide the second "Run" seperately we need a new set of "flag" and "index"
+//_____________________________________________________________________________________________________________________________________
+//Scene Name| Dialog Audio File Name | Time Stamp | Command | Text to Show        | Mute Flag | Text Flag   | Word Index |
+//Example   | ExampleAudioFile       |          0 | Show    | Run [Forrest] [Run] |  	      | ForrestFlag |	     0   | RunFlag | 1 |
+//_____________________________________________________________________________________________________________________________________
+
+You don't need to create a seperate line for this, just put it next to the word index.
+if "ForrestFlag" = false, "RunFlag" = true, Output = "Run Forrest ▇▇▇▇"
+if both are true then output will be "Run ▇▇▇▇ ▇▇▇▇"
+
+	Again there is no limit to how many hidden sections you want. Just add more flag and indexes at the end in this order "Flag | Index", "Flag | Index"...
+//_______________________________________________________________________________________________________________________________________
+//Scene Name| Dialog Audio File Name | Time Stamp | Command | Text to Show | Mute Flag | Text Flag | Word Index |
+//Example   | ExampleAudioFile       |          0 | Show    | [0][1][2][3] | 		   | Flag0     |		  0 | Flag1 | 1 | Flag2 | 2 |......
+//_______________________________________________________________________________________________________________________________________
+
+
+Generate Scriptable Objects in Unity with the spread sheet
+__________________________________________________________
+
+In Unity Editor, at the top banner , in the menu items, find Utilities --> Generate Dialog Lists
+
+Other...
+________
+The default position where the dialog's audio will play in the 3D space for spatialization is the player's head. (miles talking / earpiece). 
+You can override this in Unity, under dialog list scriptable object, dialog, audiopos.

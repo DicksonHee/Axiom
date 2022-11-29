@@ -10,6 +10,7 @@ public class DialogListData : ScriptableObject
 {
     public string name;
     public List<Dialog> dialogLists;
+
 }
 
 [Serializable]
@@ -20,10 +21,11 @@ public class Dialog
     [Header("Override Original Pos")] 
     public string audioPosObjectName;
     public List<TimeStamp> timestamps;
-    void Awake()
-    {
-
-    }
+    // public Dialog(string _fileName)
+    // {
+    //     audioFileName = audioPosObjectName;
+    //     timestamps = new List<TimeStamp>();
+    // }
     
 }
 
@@ -119,7 +121,10 @@ public class DialogLine
             return ModdedText;
         }
     }
-    
+    // public DialogLine()
+    // {
+    //     hiddenWords = new List<HiddenWord>();
+    // }
 }
 [Serializable]
 public class HiddenWord

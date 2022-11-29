@@ -11,8 +11,8 @@ public class CSVtoSO
     [MenuItem("Utilities/Generate Dialog Lists")]
     public static void GenerateDialogList()
     {
-        string[] allLines = File.ReadAllLines(Application.dataPath + DialogListCSVPath);
-        string PreSceneName = null;
+        string[] allLines = File.ReadAllLines(Application.dataPath + DialogListCSVPath);//each row
+        string PrevSceneName = null;
         DialogListData dialogListInstance = null;
         string PrevFileName = null;
         Dialog dialog = null;
@@ -21,43 +21,61 @@ public class CSVtoSO
         for(int y = 1; y < allLines.Length; y++)//x = 1, ignore first row as it is names
         {                                       // for each row
             //split the string
-            string[] splitData = allLines[y].Split(',');
+            string[] splitData = allLines[y].Split(';');
 
             //Assign collum A as previous scene name
             if(y!=1)
             {
-                string[] PrevData = allLines[y-1].Split(',');
-                PreSceneName = PrevData[0]; //get previous scence name
+                string[] PrevData = allLines[y-1].Split(';');
+                PrevSceneName = PrevData[0]; //get previous scence name
                 PrevFileName = PrevData[1];
             }
             
-            if(PreSceneName != splitData[0])//Create New DialogListSO based of SceneName (each row)
-            {                               //Ignore if PreSceneName is equals to next in line
+            if(PrevSceneName != splitData[0] && splitData[0] != string.Empty)//Create New DialogListSO based of SceneName (each row)
+            {                                                               //Ignore if PrevSceneName is equals to next in line
                 dialogListInstance = ScriptableObject.CreateInstance<DialogListData>();
                 dialogListInstance.dialogLists = new List<Dialog>();
+                
 
                 //Assign collum A as dialoglist name
                 dialogListInstance.name = splitData[0];
+
+                Debug.Log("created new asset and list dialog ||"+ dialogListInstance.name);
             }
+
+            if(PrevFileName != splitData[1] && splitData[1] != string.Empty || y == 1  //create new dialog checks
+            ||PrevSceneName != splitData[0] && splitData[0] != string.Empty) //if different file name / in different scene create dialog
             
-            DialogLine dlInstance = new DialogLine(); //new dialog line in each row
-            dlInstance.hiddenWords = new List<HiddenWord>();
-                                 
+            {
+                dialog = new Dialog();
+                dialog.timestamps = new List<TimeStamp>();
 
-                if(PrevFileName != splitData[1])//&& x==1  )//start create dialog
-                {
-                    dialog = new Dialog();
-                    dialog.timestamps = new List<TimeStamp>();
+                dialog.audioFileName = splitData[1]; //file name
+                PrevFileName = splitData[1];
 
-                    dialog.audioFileName = splitData[1]; //file name
-                    PrevFileName = splitData[1];
+                dialogListInstance.dialogLists.Add(dialog);
+                Debug.Log("PrevFileName is different"+"|| prev: "+PrevFileName);
+            }
 
-                    dialogListInstance.dialogLists.Add(dialog);
-                    Debug.Log("PrevFileName is different");
-                }
+            
+            if(splitData[2] == string.Empty) continue; // no timestamp means skip to next row
+
+                TimeStamp ts = new TimeStamp(); //start create new timestamp
                 
-                    TimeStamp ts = new TimeStamp(); //start create new timestamp
-                    ts.timeStamp = float.Parse(splitData[2]); // decide timestamp time
+                if(splitData[2] != string.Empty)//if the row is not empty
+                {
+                    try
+                    {
+                        ts.timeStamp = float.Parse(splitData[2]); // decide timestamp time
+                    }
+                    catch(System.Exception e)
+                    {
+                        Debug.Log(e +"||"+splitData[2]);
+                    }
+                }
+                    
+                    DialogLine dlInstance = new DialogLine(); //new dialog line in each row
+                    dlInstance.hiddenWords = new List<HiddenWord>();
 
                     switch(splitData[3]) // decide timestamp command
                     {
@@ -71,7 +89,7 @@ public class CSVtoSO
                         {
                             //create new hiddenword once every second time
                             HiddenWord hw = new HiddenWord();
-                            Debug.Log("row"+ y +"//index "+ splitData[(i*2)+5] +"//"+ splitData[(i*2)+4]+"//"+splitData[3]);
+                            Debug.Log("row"+ y +"//index "+ splitData[(i*2)+5] +"//"+ splitData[(i*2)+4]+"//command: "+splitData[3]);
                             try
                             {
                                 hw.index = int.Parse(splitData[(i*2)+5]);//add hidden word indexes
@@ -85,10 +103,6 @@ public class CSVtoSO
                             dlInstance.hiddenWords.Add(hw);
                         }
                         break;
-
-                        // case "Next":
-                        // ts.command = TimeStamp.Commands.NextDialogLine;
-                        // break;
 
                         case "Mute":
                         ts.command = TimeStamp.Commands.Mute;
@@ -116,7 +130,7 @@ public class CSVtoSO
                     dialog.timestamps.Add(ts);//add ts to list
                 try
                 {
-                    if(PreSceneName!= splitData[0])
+                    if(PrevSceneName!= splitData[0])//if name is not equals to prevname, crate asset
                     AssetDatabase.CreateAsset(dialogListInstance, $"Assets/DialogListFolder/{dialogListInstance.name}.asset");
                 }
                 catch(UnityException e)

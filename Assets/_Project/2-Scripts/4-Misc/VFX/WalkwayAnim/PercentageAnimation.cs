@@ -9,10 +9,16 @@ public class PercentageAnimation : MonoBehaviour
     public Animator animator;
     public Transform startPosition;
     public Transform endPosition;
+    public EventReference eventRef;
 
     private bool isPlayerDetected;
     private Transform playerTransform;
     
+    public void PlayAudio()
+    {
+        RuntimeManager.PlayOneShot(eventRef);
+    }
+
     private void Update()
     {
         if (!isPlayerDetected) return;

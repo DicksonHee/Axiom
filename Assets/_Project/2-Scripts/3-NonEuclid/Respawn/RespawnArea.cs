@@ -21,8 +21,9 @@ public class RespawnArea : MonoBehaviour
 	public void RespawnPlayer(GameObject playerGO)
 	{
 		playerGO.GetComponent<MovementSystem>().TeleportPlayerRotateTo(spawnPosition.position, forwardLookDirection, gravityDirection);
+		Axiom.NonEuclidean.GravityRotator.SnapToGravity();
 	}
-	
+
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.CompareTag("Player"))
