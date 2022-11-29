@@ -1,4 +1,12 @@
-Command list (updated 6/11/2022)
+How to use (updated 29/11/2022)
+
+What's New?
+___________
+
+No need to repeat typing in scene name and audio file name, so leaving fields empty if it's the same as previous one
+
+
+Command list 
 ________________________________
 
 Show = update dialog text on screen
@@ -9,27 +17,28 @@ Stop = (probably don't ever need this)in case of there is still a dialog event s
 Tips
 ____
 
-!Scene Name = "!" means it is important, you dont want it to be empty.
+!Scene Name = "!" means it is important, probably don't want to leave it empty.
 (Condition) = () means it is optional depending if the command entered or if it is "[]" it means has hidden sections in the dialog line.
 
 Creating TimeStamp and Scene
 ____________________________
 
-To create a new TimeStamp in the same audiofile and scene, do it in the next line with the same Scene and file name
+To create a new TimeStamp in the same audiofile and scene, do it in the next line ****keep time in seconds, so convert minutes to seconds
 //________________________________________________
-//Scene Name| Dialog Audio File Name | Time Stamp |
-//Scene 1   | audio 1			 |		0 |
-//Scene 1	| audio 1			 |	    0.6 |
-//________________________________________________
+//Scene Name| Dialog Audio File Name | Time Stamp |  output = Scene 1 
+//Scene 1   | audio 1			 	 |		0 	  |			  	> audio 1
+//			| 					 	 |	    0.6   |				  > 0
+//________________________________________________				  > 0.6	
 
 To create a new Scene give it a seperate name in the next line
 //________________________________________________
-//Scene Name| Dialog Audio File Name | Time Stamp |
-//Scene 1   | audio 1			 |		0 |
-//Scene 1	| audio 1			 |	    0.6 |
-//Scene 2	| Mind Ass			 |		0 |
-//________________________________________________
-
+//Scene Name| Dialog Audio File Name | Time Stamp |  output = Scene 1
+//Scene 1   | audio 1			 	 |		0 	  |				> audio 1
+//			| 						 |	    0.6   |					> 0
+//Scene	2	| audio 2 				 |		0     |					> 0.6
+//________________________________________________			  Scene 2
+																>audio 2
+																	> 0
 How to use Hidden Sections or Hidden Words
 _______________________________________________
 
@@ -52,13 +61,13 @@ If "ForrestFlag" condition is true, the text output will be "Run ▇▇▇▇ Ru
 	The row should look like this
 //_______________________________________________________________________________________________________________________
 //Scene Name| Dialog Audio File Name | Time Stamp | Command | Text to Show        | Mute Flag | Text Flag   | Word Index |
-//Example   | ExampleAudioFile       |          0 | Show    | Run [Forrest] [Run] |  	    | ForrestFlag |	     0 |
+//Example   | ExampleAudioFile       |          0 | Show    | Run [Forrest] [Run] |  	      | ForrestFlag |	     0   |
 //_______________________________________________________________________________________________________________________
 
 	But if we want to hide the second "Run" seperately we need a new set of "flag" and "index"
 //_____________________________________________________________________________________________________________________________________
 //Scene Name| Dialog Audio File Name | Time Stamp | Command | Text to Show        | Mute Flag | Text Flag   | Word Index |
-//Example   | ExampleAudioFile       |          0 | Show    | Run [Forrest] [Run] |  	    | ForrestFlag |	     0 | RunFlag | 1 |
+//Example   | ExampleAudioFile       |          0 | Show    | Run [Forrest] [Run] |  	      | ForrestFlag |	     0   | RunFlag | 1 |
 //_____________________________________________________________________________________________________________________________________
 
 You don't need to create a seperate line for this, just put it next to the word index.
