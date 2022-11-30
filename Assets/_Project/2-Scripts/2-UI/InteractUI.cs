@@ -49,12 +49,16 @@ public class InteractUI : MonoBehaviour
         objectName.text = objectSO.objectName;
         objectDescription.text = objectSO.objectDescription;
         interactionTextCanvasGroup.alpha = 0f;
+        interactionDetailsCanvasGroup.blocksRaycasts = true;
+        interactionDetailsCanvasGroup.interactable = true;
         interactionDetailsCanvasGroup.alpha = 1f;
     }
 
     private void HideDetailsCanvas()
     {
         interactionTextCanvasGroup.alpha = 1f;
+        interactionDetailsCanvasGroup.blocksRaycasts = false;
+        interactionDetailsCanvasGroup.interactable = false;
         interactionDetailsCanvasGroup.alpha = 0f;
     }
 }
