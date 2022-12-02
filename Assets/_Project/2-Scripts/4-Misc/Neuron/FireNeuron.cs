@@ -6,13 +6,18 @@ using Bezier;
 public class FireNeuron : MonoBehaviour
 {
     public NeuronPathArea[] pathAreas;
+    public Transform neuron;
+
     public int nearestPointSubdivisions;
     public float speed;
-    public Transform neuron;
+    public float travelDistance;
+    public float shrinkDistance;
 
     private Vector3[][] subdivCurves;
     private Curve activeCurve;
     private float tSpeed;
+    private float tTarget;
+    private float tShrink;
     private Vector3 playerOffset;
     private float offsetMult;
     private float t = 1;
@@ -33,11 +38,15 @@ public class FireNeuron : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
             Fire();
 
-        if (offsetMult < 0.001f && t >= 1)
+        if (t >= tTarget)
             return;
 
         Vector3 pos = activeCurve.GetCurvePointNormalised(t) + playerOffset * offsetMult;
         neuron.transform.position = pos;
+
+        float distTarget = tTarget * activeCurve.ArcLength;
+        float sizeMult = t.Remap(distTarget - shrinkDistance, tTarget);
+        neuron.transform.localScale = Vector3.one * sizeMult;
 
         //offsetMult = Mathf.Max(offsetMult - 2f * Time.deltaTime, 0);
         offsetMult *= 0.9f;
@@ -51,10 +60,15 @@ public class FireNeuron : MonoBehaviour
 
         GetNearestPoint(activeCurves, out int curve, out int point);
         activeCurve = pathAreas[curve].Curve;
-
         tSpeed = speed / activeCurve.ArcLength;
+
         t = (float)point / (subdivCurves[curve].Length - 1);
         t = activeCurve.T2Dist(t) / activeCurve.ArcLength;
+
+
+        // THIS IS WHAT YOU'RE FIXINGGGGGGG
+        tTarget = Mathf.Min(t + travelDistance / activeCurve.ArcLength, 1);
+        tShrink = t + (travelDistance - shrinkDistance) / activeCurve.ArcLength;
 
         Debug.DrawRay(activeCurve.GetCurvePointNormalised(t), Vector3.up, Color.yellow, 10f);
         Debug.DrawRay(activeCurve.GetCurvePointNormalised(t), Vector3.right, Color.yellow, 10f);
@@ -82,7 +96,7 @@ public class FireNeuron : MonoBehaviour
         {
             for (int p = 0; p < subdivCurves[curves[c]].Length; p++)
             {
-                float dist = Axiom.Core.F.FastDistance(subdivCurves[curves[c]][p], transform.position);
+                float dist = F.FastDistance(subdivCurves[curves[c]][p], transform.position);
                 if (dist < nearestDist)
                 {
                     nearestDist = dist;
