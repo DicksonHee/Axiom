@@ -6,6 +6,6 @@ using UnityEngine;
 public class InteractableObject_SO : ScriptableObject
 {
     public GameObject objectPrefab;
-    public string objectName;
-    public string objectDescription;
+    [TextArea] public string objectName;
+    [TextArea] public string objectDescription;
 }

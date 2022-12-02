@@ -41,7 +41,7 @@ namespace Axiom.Player.Interaction
         {
             bool wasHovering = isHovering;
 
-            if (!Physics.Raycast(mainCamera.ScreenPointToRay(screenMiddle), out RaycastHit hitInfo, 10f, interactableLayer) ||
+            if (!Physics.Raycast(mainCamera.ScreenPointToRay(screenMiddle), out RaycastHit hitInfo, 2.5f, interactableLayer) ||
                 !hitInfo.collider.TryGetComponent(out interactable))
             {
                 isHovering = false;
@@ -60,14 +60,20 @@ namespace Axiom.Player.Interaction
         {
             interactable.StartInteraction();
             isInteracting = true;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             PlayerMovementDetails.cameraLookEnabled = false;
+            PlayerMovementDetails.movementInputEnabled = false;
         }
 
         private void StopInteraction()
         {
             interactable.StopInteraction();
             isInteracting = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             PlayerMovementDetails.cameraLookEnabled = true;
+            PlayerMovementDetails.movementInputEnabled = true;
         }
     }
 }
