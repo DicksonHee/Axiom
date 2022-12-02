@@ -26,17 +26,21 @@ namespace Bezier
         private float[] distLUT;
 
         private bool curveActive;
+        private bool initialised = false;
 
         private void Awake()
         {
-            Initialise();
+            if (!initialised)
+                Initialise();
         }
 
-        private void Initialise()
+        public void Initialise()
         {
             InitialisePoints();
-            subdividedPoints = SubdivideCurve(normalisationAccuracy * SegmentCount);
+            subdividedPoints = SubdivideCurve(normalisationAccuracy, true);
             distLUT = GetDistanceLut(subdividedPoints);
+
+            initialised = true;
         }
 
         private void InitialisePoints()
@@ -146,8 +150,11 @@ namespace Bezier
             return distancePerSample;
         }
 
-        private Vector3[] SubdivideCurve(int subdivisions)
+        public Vector3[] SubdivideCurve(int subdivisions, bool perSegment = false)
         {
+            if (perSegment)
+                subdivisions *= SegmentCount;
+
             Vector3[] samples = new Vector3[subdivisions];
             for (int i = 0; i < subdivisions; i++)
             {
@@ -161,7 +168,7 @@ namespace Bezier
         private void GetViewportPoints()
         {
             InitialisePoints();
-            viewportPoints = SubdivideCurve(viewportSubdivisions * SegmentCount);
+            viewportPoints = SubdivideCurve(viewportSubdivisions, true);
         }
 
         private void OnDrawGizmos()
