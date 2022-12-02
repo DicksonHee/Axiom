@@ -44,12 +44,12 @@ namespace Axiom.Player.Movement.StateMachine.States
             {
                 CheckShouldCrouchOnExit();
             }
-            else if (!MovementSystem.inputDetection.crouchInput)
+            else if (!MovementSystem.inputDetection.crouchInput) // If letting go of crouch key
             {
                 if (MovementSystem.rbInfo.CanUncrouch()) MovementSystem.ChangeState(MovementSystem.IdleState);
                 else MovementSystem.ChangeState(MovementSystem.CrouchingState);
             }
-            else if (MovementSystem.inputDetection.movementInput.z <= 0) CheckShouldCrouchOnExit();// If letting go of crouch key
+            else if (MovementSystem.inputDetection.movementInput.z <= 0) CheckShouldCrouchOnExit();
             else if (inAirCounter > 0.2f) MovementSystem.ChangeState(MovementSystem.InAirState); // If in air
         }
 
@@ -101,6 +101,12 @@ namespace Axiom.Player.Movement.StateMachine.States
         
         private void CheckShouldCrouchOnExit()
         {
+            if (!MovementSystem.rbInfo.IsGrounded())
+            {
+                MovementSystem.ChangeState(MovementSystem.InAirState);
+                return;
+            }
+
             if(MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem.CrouchingState);
             else
             {
