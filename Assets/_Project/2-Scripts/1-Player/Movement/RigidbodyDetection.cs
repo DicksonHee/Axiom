@@ -68,7 +68,10 @@ namespace Axiom.Player.Movement
         private RaycastHit leftWallHit;
         private RaycastHit leftFrontWallHit;
         private RaycastHit leftBackWallHit;
-        
+
+        private RaycastHit rightWallClimbHit;
+        private RaycastHit leftWallClimbHit;
+
         private RaycastHit vaultHit;
         #endregion
 
@@ -83,6 +86,8 @@ namespace Axiom.Player.Movement
 
         #region WallClimb Detection
         private bool canWallClimb;
+        private bool leftWallClimbDetected;
+        private bool rightWallClimbDetected;
         #endregion
 
 		#region Ledge Detection
@@ -133,7 +138,7 @@ namespace Axiom.Player.Movement
             }
             else if (canWallClimb)
             {
-                if (!wallClimbHit.collider.TryGetComponent(out MeshRenderer frontWallRenderer)) return "";
+                if (!rightWallClimbHit.collider.TryGetComponent(out MeshRenderer frontWallRenderer)) return "";
                 retString = frontWallRenderer.material.name.Replace("(Instance)", "").Replace(" ", "");
             }
 
@@ -249,14 +254,16 @@ namespace Axiom.Player.Movement
         {
             return !canWallClimb && ((leftWallDetected && leftWallHit.collider.gameObject == cameraHitObject) ||
                                      (leftFrontWallDetected && leftFrontWallHit.collider.gameObject == cameraHitObject) ||
-                                     (leftBackWallDetected && leftBackWallHit.collider.gameObject == cameraHitObject));
+                                     (leftBackWallDetected && leftBackWallHit.collider.gameObject == cameraHitObject) ||
+                                     (leftWallClimbDetected && leftWallClimbHit.collider.gameObject == cameraHitObject));
         }
         
         public bool IsRightWallDetected()
         {
             return !canWallClimb && ((rightWallDetected && rightWallHit.collider.gameObject == cameraHitObject) ||
                                      (rightFrontWallDetected && rightFrontWallHit.collider.gameObject == cameraHitObject) ||
-                                     (rightBackWallDetected && rightBackWallHit.collider.gameObject == cameraHitObject));
+                                     (rightBackWallDetected && rightBackWallHit.collider.gameObject == cameraHitObject) ||
+                                     (rightWallClimbDetected && rightWallClimbHit.collider.gameObject == cameraHitObject));
         }
         public bool WallRunningLeftDetected() => leftWallDetected || leftFrontWallDetected || leftBackWallDetected;
         public bool WallRunningRightDetected() => rightWallDetected || rightFrontWallDetected || rightBackWallDetected;
@@ -294,17 +301,15 @@ namespace Axiom.Player.Movement
         }
 		#endregion
 
-        private RaycastHit wallClimbHit;
-
         #region WallClimb Functions
 		private void WallClimbCheck()
         {
             var position = wallDetectorTransform.position;
 
-            bool rightDetected = Physics.Raycast(position, (Quaternion.AngleAxis(20f, upDirection) * forwardDirection).normalized, out wallClimbHit, wallClimbDetectionDistance, wallLayer);
-            bool leftDetected = Physics.Raycast(position, (Quaternion.AngleAxis(-20f, upDirection) * forwardDirection).normalized, wallClimbDetectionDistance, wallLayer);
+            rightWallClimbDetected = Physics.Raycast(position, (Quaternion.AngleAxis(20f, upDirection) * forwardDirection).normalized, out rightWallClimbHit, wallClimbDetectionDistance, wallLayer);
+            leftWallClimbDetected = Physics.Raycast(position, (Quaternion.AngleAxis(-20f, upDirection) * forwardDirection).normalized, out leftWallClimbHit, wallClimbDetectionDistance, wallLayer);
 
-            if (rightDetected && leftDetected) canWallClimb = true;
+            if (rightWallClimbDetected && leftWallClimbDetected) canWallClimb = true;
             else canWallClimb = false;
         }
         #endregion
