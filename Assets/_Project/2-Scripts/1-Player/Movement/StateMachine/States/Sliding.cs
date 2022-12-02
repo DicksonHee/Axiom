@@ -33,7 +33,7 @@ namespace Axiom.Player.Movement.StateMachine.States
         {
             base.LogicUpdate();
 
-             CalculateInAirTime();
+            CalculateInAirTime();
              
             if ((MovementSystem.GetCurrentSpeed() < 0.5f && Time.time - stateStartTime > 0.5f) ||
                 Vector3.Dot(MovementSystem.ForwardDirection, initialDir) < 0.8f) // If too slow or looking away from slide direction
