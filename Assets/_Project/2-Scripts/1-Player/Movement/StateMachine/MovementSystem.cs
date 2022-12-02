@@ -409,6 +409,24 @@ namespace Axiom.Player.Movement.StateMachine
             playerAnimation.SetTrigger("Jump");
         }
 
+        private void SlideJump()
+        {
+            float forwardForce = 0f;
+            if (GetCurrentSpeed() > 16f) forwardForce = (GetCurrentSpeed() - 16f);
+            Rb.AddForce(UpDirection * upJumpForce + MoveDirection * forwardForce, ForceMode.Impulse);
+
+            if (!rbInfo.IsGrounded() && CurrentState != InAirState)
+            {
+                playerAnimation.SetJumpParam(0);
+                ChangeState(InAirState);
+            }
+
+            InvokeOnJump();
+            playerAnimation.SetLandParam(0f);
+            playerAnimation.SetInAirParam(0f);
+            playerAnimation.SetTrigger("Jump");
+        }
+
         // Applies upwards and sideways force to the character
         private void WallRunJump()
         {
