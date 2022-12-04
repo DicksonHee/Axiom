@@ -14,10 +14,14 @@ namespace Bezier
         [Header("Viewport")]
         [Range(5, 50)] [SerializeField] private int viewportSubdivisions = 20;
         [SerializeField] private Color viewportColour = Color.white;
+        [SerializeField] private float gizmoScale = 1f;
 
         public Point[] Points => points;
         public int SegmentCount => points.Length - 1;
         public float ArcLength => distLUT[^1];
+
+        public static float GizmoScale;
+        private float lastGizmoScale;
 
         private Point[] points;
 
@@ -26,22 +30,26 @@ namespace Bezier
         private float[] distLUT;
 
         private bool curveActive;
+        private bool initialised = false;
 
         private void Awake()
         {
-            Initialise();
+            if (!initialised)
+                Initialise();
         }
 
-        private void Initialise()
+        public void Initialise()
         {
             InitialisePoints();
-            subdividedPoints = SubdivideCurve(normalisationAccuracy * SegmentCount);
+            subdividedPoints = SubdivideCurve(normalisationAccuracy, true);
             distLUT = GetDistanceLut(subdividedPoints);
+
+            initialised = true;
         }
 
         private void InitialisePoints()
         {
-            List<Point> pointList = new List<Point>(GetComponentsInChildren<Point>());
+            List<Point> pointList = new List<Point>(GetComponentsInChildren<Point>(true));
             if (closeCurve)
                 pointList.Add(pointList[0]);
             points = pointList.ToArray();
@@ -146,8 +154,11 @@ namespace Bezier
             return distancePerSample;
         }
 
-        private Vector3[] SubdivideCurve(int subdivisions)
+        public Vector3[] SubdivideCurve(int subdivisions, bool perSegment = false)
         {
+            if (perSegment)
+                subdivisions *= SegmentCount;
+
             Vector3[] samples = new Vector3[subdivisions];
             for (int i = 0; i < subdivisions; i++)
             {
@@ -161,7 +172,17 @@ namespace Bezier
         private void GetViewportPoints()
         {
             InitialisePoints();
-            viewportPoints = SubdivideCurve(viewportSubdivisions * SegmentCount);
+            viewportPoints = SubdivideCurve(viewportSubdivisions, true);
+        }
+
+        private void OnValidate()
+        {
+            if (lastGizmoScale != gizmoScale)
+                GizmoScale = gizmoScale;
+            else
+                gizmoScale = GizmoScale;
+
+            lastGizmoScale = gizmoScale;
         }
 
         private void OnDrawGizmos()
@@ -175,6 +196,12 @@ namespace Bezier
 
                 foreach (Point p in points)
                     p.curveActive = selected;
+
+                if (lastGizmoScale == gizmoScale && gizmoScale != GizmoScale)
+                {
+                    gizmoScale = GizmoScale;
+                    lastGizmoScale = gizmoScale;
+                }
 
                 curveActive = selected;
             }

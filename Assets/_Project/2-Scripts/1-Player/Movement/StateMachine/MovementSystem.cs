@@ -291,8 +291,12 @@ namespace Axiom.Player.Movement.StateMachine
 
         private void CheckIfShouldJump()
         {
-            if (CurrentState != LandingState && CurrentState != InAirState && rbInfo.CanUncrouch() && 
-                (rbInfo.IsGrounded() || coyoteTimeCounter > 0f) && jumpBufferCounter > 0f )
+            if (CurrentState != LandingState && 
+                CurrentState != InAirState &&
+                CurrentState != CrouchingState &&
+                rbInfo.CanUncrouch() && 
+                (rbInfo.IsGrounded() || coyoteTimeCounter > 0f) && 
+                jumpBufferCounter > 0f )
             {
                 coyoteTimeCounter = -1f;
                 jumpBufferCounter = -1f;
@@ -369,6 +373,11 @@ namespace Axiom.Player.Movement.StateMachine
                 coyoteTimeCounter = -1f;
                 WallRunJump();
             }
+            else if (CurrentState == SlidingState)
+            {
+                coyoteTimeCounter = -1f;
+                Jump();
+            }
         }
         
         // Applies upwards force to the character
@@ -394,6 +403,24 @@ namespace Axiom.Player.Movement.StateMachine
                 ChangeState(InAirState);
             }
             
+            InvokeOnJump();
+            playerAnimation.SetLandParam(0f);
+            playerAnimation.SetInAirParam(0f);
+            playerAnimation.SetTrigger("Jump");
+        }
+
+        private void SlideJump()
+        {
+            float forwardForce = 0f;
+            if (GetCurrentSpeed() > 16f) forwardForce = (GetCurrentSpeed() - 16f);
+            Rb.AddForce(UpDirection * upJumpForce + MoveDirection * forwardForce, ForceMode.Impulse);
+
+            if (!rbInfo.IsGrounded() && CurrentState != InAirState)
+            {
+                playerAnimation.SetJumpParam(0);
+                ChangeState(InAirState);
+            }
+
             InvokeOnJump();
             playerAnimation.SetLandParam(0f);
             playerAnimation.SetInAirParam(0f);

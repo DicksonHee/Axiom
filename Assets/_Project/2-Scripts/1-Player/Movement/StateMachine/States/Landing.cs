@@ -26,32 +26,32 @@ namespace Axiom.Player.Movement.StateMachine.States
 				delayTime = 0.1f;
 				MovementSystem.playerAnimation.SetFloatParam("LandIntensity", 0);
 			}
-			else if (MovementSystem.TotalAirTime < 1.5f)
+			else
 			{
 				delayTime = 0.1f;
 				MovementSystem.playerAnimation.SetFloatParam("LandIntensity", 1);
 			}
-			else if (MovementSystem.TotalAirTime >= 1.5f)
-			{ 
-				rollSuccess = Mathf.Abs(stateStartTime - MovementSystem.inputDetection.crouchPressedTime) < 1f;
-				delayTime = rollSuccess ? 0.3f : 1.5f;
+			//else if (MovementSystem.TotalAirTime >= 1.5f)
+			//{ 
+			//	rollSuccess = Mathf.Abs(stateStartTime - MovementSystem.inputDetection.crouchPressedTime) < 1f;
+			//	delayTime = rollSuccess ? 0.3f : 1.5f;
 
-				if (rollSuccess)
-				{
-					MovementSystem.playerAnimation.DisableRotation();
-					MovementSystem.playerAnimation.HideModel();
-					MovementSystem.cameraLook.StartRollCamera();
-				}
-				else
-				{
-					MovementSystem.playerAnimation.DisableRotation();
-					MovementSystem.DisableMovement();
-					MovementSystem.cameraLook.StartHardLandingCamera();
-					MovementSystem.Rb.velocity = Vector3.zero;
-				}
-				MovementSystem.playerAnimation.SetFloatParam("LandIntensity", 2);
-				MovementSystem.playerAnimation.SetFloatParam("LandSuccess", rollSuccess ? 1 : 0);
-			}
+			//	if (rollSuccess)
+			//	{
+			//		MovementSystem.playerAnimation.DisableRotation();
+			//		MovementSystem.playerAnimation.HideModel();
+			//		MovementSystem.cameraLook.StartRollCamera();
+			//	}
+			//	else
+			//	{
+			//		MovementSystem.playerAnimation.DisableRotation();
+			//		MovementSystem.DisableMovement();
+			//		MovementSystem.cameraLook.StartHardLandingCamera();
+			//		MovementSystem.Rb.velocity = Vector3.zero;
+			//	}
+			//	MovementSystem.playerAnimation.SetFloatParam("LandIntensity", 2);
+			//	MovementSystem.playerAnimation.SetFloatParam("LandSuccess", rollSuccess ? 1 : 0);
+			//}
 
 			MovementSystem.playerAnimation.ResetTrigger("WallJump");
 			MovementSystem.playerAnimation.ResetTrigger("Jump");
