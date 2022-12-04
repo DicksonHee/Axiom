@@ -36,15 +36,15 @@ namespace Bezier
                 Selection.activeTransform == tB;
 
             Gizmos.color = selected ? Color.blue : Color.grey;
-            Gizmos.DrawWireSphere(A, handleRadius);
+            Gizmos.DrawWireSphere(A, handleRadius * Curve.GizmoScale);
             Gizmos.DrawLine(transform.position, A);
 
             Gizmos.color = selected ? Color.red : Color.grey;
-            Gizmos.DrawWireSphere(B, handleRadius);
+            Gizmos.DrawWireSphere(B, handleRadius * Curve.GizmoScale);
             Gizmos.DrawLine(transform.position, B);
 
             Gizmos.color = selected ? Color.white : Color.gray;
-            Gizmos.DrawWireSphere(transform.position, pointRadius);
+            Gizmos.DrawWireSphere(transform.position, pointRadius * Curve.GizmoScale);
         }
 
         public static implicit operator Vector3(Point p) => p.transform.position;

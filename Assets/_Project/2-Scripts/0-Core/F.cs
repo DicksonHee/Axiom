@@ -5,7 +5,12 @@ using UnityEngine;
 public static class F
 {
 	public static float FastDistance (Vector3 start, Vector3 end) => (end - start).sqrMagnitude;
-    public static float Remap(this float value, float fromMin, float fromMax, float toMin = 0f, float toMax = 1f) => toMin + (value - fromMin) * (toMax - toMin) / (fromMax - fromMin);
+    public static float Remap(this float value, float fromMin, float fromMax, float toMin = 0f, float toMax = 1f, bool clamp = false)
+    {
+        float r = toMin + (value - fromMin) * (toMax - toMin) / (fromMax - fromMin);
+        if(clamp) r = Mathf.Clamp(r, Mathf.Min(toMin, toMax), Mathf.Max(toMin, toMax));
+        return r;
+    }
     public static bool Between (this float value, float min, float max, bool exclusive = false) => exclusive ? value > min && value < max : value >= min && value <= max;
     public static bool Between (this int value, int min, int max, bool exclusive = false) => exclusive ? value > min && value < max : value >= min && value <= max;
     public static bool Between (this Vector2 value, Vector2 min, Vector2 max) => value.x >= min.x && value.x <= max.x && value.y >= min.y && value.y <= max.y;

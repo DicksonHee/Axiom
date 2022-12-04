@@ -6,12 +6,17 @@ using Bezier;
 public class FireNeuron : MonoBehaviour
 {
     public NeuronPathArea[] pathAreas;
-    public Transform neuron;
+    public TrailRenderer neuron;
+    public Animator neuronCharge;
 
     public int nearestPointSubdivisions;
+    public float holdTimeToTrigger;
     public float speed;
     public float travelDistance;
     public float shrinkDistance;
+
+    private bool fireTriggered = false;
+    private float elapsedHoldTime = 0f;
 
     private Vector3[][] subdivCurves;
     private Curve activeCurve;
@@ -21,6 +26,7 @@ public class FireNeuron : MonoBehaviour
     private Vector3 playerOffset;
     private float offsetMult;
     private float t = 1;
+    private bool neuronPathPendingClear = false;
 
     public void Awake()
     {
@@ -35,25 +41,60 @@ public class FireNeuron : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (HoldTrigger())
             Fire();
 
-        if (t >= tTarget)
-            return;
+        AnimateBuildUp();
 
+        if (t < tTarget)
+            UpdateNeuron();
+    }
+
+    private bool HoldTrigger()
+    {
+        if (!Input.GetKey(KeyCode.E))
+        {
+            fireTriggered = false;
+            elapsedHoldTime = 0f;
+            return false;
+        }
+
+        elapsedHoldTime += Time.deltaTime;
+        if (!fireTriggered && elapsedHoldTime > holdTimeToTrigger)
+        {
+            fireTriggered = true;
+            return true;
+        }
+        return false;
+    }
+
+    private void AnimateBuildUp()
+    {
+        float animT = Mathf.Clamp01(elapsedHoldTime / holdTimeToTrigger);
+        if (fireTriggered) animT = 0;
+        neuronCharge.SetFloat("Charge", animT);
+    }
+
+    private void UpdateNeuron()
+    {
         Vector3 pos = activeCurve.GetCurvePointNormalised(t) + playerOffset * offsetMult;
         neuron.transform.position = pos;
 
-        float distTarget = tTarget * activeCurve.ArcLength;
-        float sizeMult = t.Remap(distTarget - shrinkDistance, tTarget);
-        neuron.transform.localScale = Vector3.one * sizeMult;
-
-        //offsetMult = Mathf.Max(offsetMult - 2f * Time.deltaTime, 0);
         offsetMult *= 0.9f;
         t += tSpeed * Time.deltaTime;
+
+        float sizeMult = t.Remap(tShrink, tTarget, 1f, 0f, true);
+        neuron.transform.localScale = Vector3.one * sizeMult;
+        neuron.widthMultiplier = sizeMult;
+
+        if (neuronPathPendingClear)
+        {
+            neuronPathPendingClear = false;
+            neuron.Clear();
+        }
     }
 
-    public void Fire()
+    private void Fire()
     {
         int[] activeCurves = GetActiveCurves();
         if(activeCurves.Length <= 0) return;
@@ -65,16 +106,18 @@ public class FireNeuron : MonoBehaviour
         t = (float)point / (subdivCurves[curve].Length - 1);
         t = activeCurve.T2Dist(t) / activeCurve.ArcLength;
 
-
-        // THIS IS WHAT YOU'RE FIXINGGGGGGG
-        tTarget = Mathf.Min(t + travelDistance / activeCurve.ArcLength, 1);
-        tShrink = t + (travelDistance - shrinkDistance) / activeCurve.ArcLength;
+        float distTarget = activeCurve.T2Dist(t) + travelDistance;
+        tTarget = distTarget / activeCurve.ArcLength;
+        tShrink = (distTarget - shrinkDistance) / activeCurve.ArcLength;
 
         Debug.DrawRay(activeCurve.GetCurvePointNormalised(t), Vector3.up, Color.yellow, 10f);
         Debug.DrawRay(activeCurve.GetCurvePointNormalised(t), Vector3.right, Color.yellow, 10f);
 
         playerOffset = transform.position - activeCurve.GetCurvePointNormalised(t);
         offsetMult = 1f;
+
+        neuronPathPendingClear = true;
+        neuronCharge.SetTrigger("Fire");
     }
 
     private int[] GetActiveCurves()

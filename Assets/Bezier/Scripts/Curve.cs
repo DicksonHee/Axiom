@@ -14,10 +14,14 @@ namespace Bezier
         [Header("Viewport")]
         [Range(5, 50)] [SerializeField] private int viewportSubdivisions = 20;
         [SerializeField] private Color viewportColour = Color.white;
+        [SerializeField] private float gizmoScale = 1f;
 
         public Point[] Points => points;
         public int SegmentCount => points.Length - 1;
         public float ArcLength => distLUT[^1];
+
+        public static float GizmoScale;
+        private float lastGizmoScale;
 
         private Point[] points;
 
@@ -45,7 +49,7 @@ namespace Bezier
 
         private void InitialisePoints()
         {
-            List<Point> pointList = new List<Point>(GetComponentsInChildren<Point>());
+            List<Point> pointList = new List<Point>(GetComponentsInChildren<Point>(true));
             if (closeCurve)
                 pointList.Add(pointList[0]);
             points = pointList.ToArray();
@@ -171,6 +175,16 @@ namespace Bezier
             viewportPoints = SubdivideCurve(viewportSubdivisions, true);
         }
 
+        private void OnValidate()
+        {
+            if (lastGizmoScale != gizmoScale)
+                GizmoScale = gizmoScale;
+            else
+                gizmoScale = GizmoScale;
+
+            lastGizmoScale = gizmoScale;
+        }
+
         private void OnDrawGizmos()
         {
             Transform active = Selection.activeTransform;
@@ -182,6 +196,12 @@ namespace Bezier
 
                 foreach (Point p in points)
                     p.curveActive = selected;
+
+                if (lastGizmoScale == gizmoScale && gizmoScale != GizmoScale)
+                {
+                    gizmoScale = GizmoScale;
+                    lastGizmoScale = gizmoScale;
+                }
 
                 curveActive = selected;
             }

@@ -13,7 +13,6 @@ namespace Axiom.Core
     public class AudioManager : MonoBehaviour
     {
         public static AudioManager current;
-
         public StudioEventEmitter bgmEmitter;
         public List<SceneBGM> sceneBgms;
         
