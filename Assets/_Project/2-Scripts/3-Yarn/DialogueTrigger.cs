@@ -16,6 +16,7 @@ public class DialogueTrigger : MonoBehaviour
     public float dialogueVolume = 0.8f;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    [Header("Static")]
     [ParamRef]
     [FormerlySerializedAs("parameter")]
     public string DialogToStatic;
@@ -27,6 +28,7 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField]//dialog to static
     float currentValuef;
 
+    [Header("Dip")]
     [ParamRef]
     [FormerlySerializedAs("parameter")]
     public string DialogDip;
@@ -39,10 +41,14 @@ public class DialogueTrigger : MonoBehaviour
     DialogLine dialogToShow;
     Coroutine dialogCoroutine;
     Camera playerSight;
+    [Header("Attenuation Range")]
+    public bool OverrideAttenuation = false;
+    public Vector2 minMaxAttenuationDistance;
 
     [Header("Used in view check")]
     public LayerMask PoiAndGroundMask;
     public float detectionRange;
+    public float LookAngleThreshold;
     ///////////////////////////////////////////////////////////////////////////////////////////
     [Header("Events")]
     public UnityEvent onPlayerTriggerEvent; // When player enter's the trigger
@@ -51,17 +57,18 @@ public class DialogueTrigger : MonoBehaviour
     private StudioEventEmitter bgm;
     private bool viewOnce = false;
     private bool enterOnce = false;
+
    
     void Awake()
     {
         //if parameter reference is null, look up, dialog to static
         if (string.IsNullOrEmpty(DialogToStaticDescription.name))
         {
-            LookupDialogToStatic();
+            Lookup(DialogToStatic, DialogToStaticDescription);
         }
         if(string.IsNullOrEmpty(DialogDipDesctription.name))
         {
-            LookupDialogDip();
+            Lookup(DialogDip, DialogDipDescription);
         }
 
         //get player's camera
@@ -119,7 +126,6 @@ public class DialogueTrigger : MonoBehaviour
     {
         //needed for calculating fov
         Vector3 displacement = transform.position - playerSight.transform.position;
-        float LookAngleThreshold = 50;
 
         //make sure has los
         RaycastHit hit;
@@ -149,8 +155,6 @@ public class DialogueTrigger : MonoBehaviour
         foreach (Dialog dialog in dialogListData.dialogLists) // Loop over each dialog in dialog list
         {
             Transform pos = null;
-            // Play the audio file and set the appropriate volume
-            //ProgrammerSounds.current.PlayDialog(dialog.audioFileName, dialog.playAudio ? dialogueVolume : 0);
            
             try
             {
@@ -160,7 +164,8 @@ public class DialogueTrigger : MonoBehaviour
             {
                 Debug.Log("cant find object");
             }
-            ProgrammerSounds.current.PlayDialog(dialog.audioFileName, SettingsData.dialogVolume / 100f, pos);
+            ProgrammerSounds.current.PlayDialog(dialog.audioFileName, OverrideAttenuation, 
+            SettingsData.dialogVolume / 100f, pos, minMaxAttenuationDistance.x, minMaxAttenuationDistance.y);
 
             //dip volume
             RuntimeManager.StudioSystem.setParameterByID(DialogDipDesctription.id, 1);
@@ -224,23 +229,34 @@ public class DialogueTrigger : MonoBehaviour
     #region  Commands
     private void ShowText(DialogLine _dialogToShow)
     {
-        //if (dialogToShow.showText)
-        //{
-            if (DialogUI.current != null) DialogUI.current.UpdateText(_dialogToShow.textToShow);
+        ProgrammerSounds.current.dialogueInstance.getProperty(EVENT_PROPERTY.MAXIMUM_DISTANCE, out float currentMax);
+        ProgrammerSounds.current.dialogueInstance.get3DAttributes(out FMOD.ATTRIBUTES_3D f3d);
+        Vector3 f3dUnity = new Vector3(f3d.position.x, f3d.position.y, f3d.position.z);
 
-            try
-            {
-                Debug.Log(_dialogToShow.RedactDialog());
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                Debug.Log(e);
-            }
+        if(!OverrideAttenuation)//if player outside of attenuation range, return
+        {
+            if (Vector3.Distance(f3dUnity, playerSight.transform.position) > currentMax)
+            return;
+        }
+        if(OverrideAttenuation)
+        {
+            if (Vector3.Distance(f3dUnity, playerSight.transform.position) > minMaxAttenuationDistance.y)
+            return;
+        }
+           
+            
+        if (DialogUI.current != null) DialogUI.current.UpdateText(_dialogToShow.textToShow);
+
+        try
+        {
+            Debug.Log(_dialogToShow.RedactDialog());
+        }
+        catch (ArgumentOutOfRangeException e)
+        {
+            Debug.Log(e);
+        }
     }
-    // private void NextDialogLine(DialogLine dialog)
-    // {
-    //     dialogToShow = dialog;
-    // }
+    
     private void Mute(string flagToCheck = null)
     {
         if(FlagSystem.GetBoolValue(flagToCheck))
@@ -262,15 +278,14 @@ public class DialogueTrigger : MonoBehaviour
         dialogCoroutine = null;
     }
     #endregion
-    private FMOD.RESULT LookupDialogToStatic()
+    private FMOD.RESULT Lookup(string _fmodEventName, PARAMETER_DESCRIPTION _out)
     {
-        FMOD.RESULT result = RuntimeManager.StudioSystem.getParameterDescriptionByName(DialogToStatic, out DialogToStaticDescription);
+        FMOD.RESULT result = RuntimeManager.StudioSystem.getParameterDescriptionByName(_fmodEventName, out _out);
         return result;
     }
-    private FMOD.RESULT LookupDialogDip()
-    {
-        FMOD.RESULT result = RuntimeManager.StudioSystem.getParameterDescriptionByName(DialogDip, out DialogDipDescription);
-        return result;
-    }
+    // private FMOD.RESULT LookupDialogDip()
+    // {
+    //     FMOD.RESULT result = RuntimeManager.StudioSystem.getParameterDescriptionByName(DialogDip, out DialogDipDescription);
+    //     return result;
+    // }
 }
-

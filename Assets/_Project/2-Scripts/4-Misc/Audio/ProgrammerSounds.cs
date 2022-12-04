@@ -84,7 +84,7 @@ namespace Axiom.Dialogue
         }
 
         [YarnCommand("play")]
-        public void PlayDialog(string key, float volume = 1f, Transform audiopos = null)
+        public void PlayDialog(string key, bool _overrideAttentuation, float volume = 1f, Transform audiopos = null, float _minDistance = 0, float _maxDistance = 0)
         {
             dialogueInstance = RuntimeManager.CreateInstance(eventName);
             //possible fix to error
@@ -100,6 +100,14 @@ namespace Axiom.Dialogue
             }
 
             dialogueInstance.setVolume(volume);
+
+            //Attenuation stuff
+            if(_overrideAttentuation)
+            {
+                dialogueInstance.setProperty(FMOD.Studio.EVENT_PROPERTY.MINIMUM_DISTANCE, _minDistance);
+                dialogueInstance.setProperty(FMOD.Studio.EVENT_PROPERTY.MAXIMUM_DISTANCE, _maxDistance);
+            }
+            
 
 
             // Pin the key string in memory and pass a pointer through the user data
