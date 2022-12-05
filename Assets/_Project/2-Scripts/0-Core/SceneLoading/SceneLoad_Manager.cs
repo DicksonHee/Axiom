@@ -48,7 +48,7 @@ public static class SceneLoad_Manager
         }
         if(scenesLoading.Count > 0) scenesLoading.Clear();
 
-        LoadScreen.current.SetWhite();
+        LoadScreen.current.SetOpaque();
         yield return new WaitForSeconds(1f);
 
         foreach (string sceneName in scenesToUnload) UnloadScene(sceneName);

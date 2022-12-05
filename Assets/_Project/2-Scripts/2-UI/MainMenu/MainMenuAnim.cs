@@ -14,6 +14,7 @@ namespace Axiom.UI.MainMenu
         public float radius = 5;
         public int spawnAmount = 100;
         public float rotationDuration = 5f;
+        [HideInInspector] public float rotSpeedMult = 1f;
 
         public ObjectAnimMode mode;
         public GameObject spawnObject;
@@ -39,18 +40,21 @@ namespace Axiom.UI.MainMenu
             }
         }
 
+        private float time;
         // Update is called once per frame
         void Update()
         {
             for (int ii = 0; ii < spawnedObjectsList.Count; ii++)
             {
-                float currentRad = (ii * (360f/spawnAmount) + Time.time * rotationDuration) * Mathf.Deg2Rad;
+                float currentRad = (ii * (360f/spawnAmount) + time * rotationDuration) * Mathf.Deg2Rad;
                 float xVal = Mathf.Sin(currentRad);
                 float yVal = Mathf.Cos(currentRad);
                 if (xVal == 0) xVal = 0.001f;
                 float zVal = Mathf.Tan(yVal/xVal);
                 spawnedObjectsList[ii].transform.position = currentCenterPoint + new Vector3(xVal, yVal, zVal) * radius;
             }
+
+            time += Time.deltaTime * rotSpeedMult;
         }
 
         public void ChangeColor()
