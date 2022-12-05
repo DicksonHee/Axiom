@@ -143,7 +143,7 @@ public class FireNeuron : MonoBehaviour
                 if (dist < nearestDist)
                 {
                     nearestDist = dist;
-                    nearestCurve = c;
+                    nearestCurve = curves[c];
                     nearestPoint = p;
                 }
             }
