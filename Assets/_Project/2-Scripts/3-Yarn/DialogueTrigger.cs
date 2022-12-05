@@ -24,6 +24,8 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] //dialog to static
     private PARAMETER_DESCRIPTION DialogToStaticDescription;
     public PARAMETER_DESCRIPTION DialogToStaticDesctription { get { return DialogToStaticDescription; } }
+    public static event Action<string> OnDialogInvokeEvent;
+    public static event Action<string> OnDialogListComplete;
 
     [SerializeField]//dialog to static
     float currentValuef;
@@ -46,6 +48,8 @@ public class DialogueTrigger : MonoBehaviour
     public Vector2 minMaxAttenuationDistance;
 
     [Header("Used in view check")]
+    public bool triggerInViewOnly;
+    public bool triggerOnAwake;
     public LayerMask PoiAndGroundMask;
     public float detectionRange;
     public float LookAngleThreshold;
@@ -72,18 +76,17 @@ public class DialogueTrigger : MonoBehaviour
         }
 
         //get player's camera
-        playerSight = Camera.main;
-        bgm = Camera.main.GetComponent<StudioEventEmitter>();
+        playerSight = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+
+        //bgm = Camera.main.GetComponent<StudioEventEmitter>();
     }
     void Start()
     {
-        // for (int x = 0; x < dialogListData.dialogLists.Count; x++)
-        // {
-        //     dialogListData.dialogLists[x].currentDialogLine = 0; //make sure the dialoglist starts at the beginning
-        // }
-
-        //for testing need to be removed
-        FlagSystem.SetBoolValue("Flag1", true);
+        if (triggerOnAwake && dialogCoroutine == null)
+        {
+            onPlayerTriggerEvent.Invoke();
+            enterOnce = true;
+        }        
     }
     void Update()
     {
@@ -112,7 +115,6 @@ public class DialogueTrigger : MonoBehaviour
     {
         if(other.CompareTag("Player") && dialogCoroutine == null)// && !enterOnce)
         {
-            Debug.Log("ASD");
             //trigger dialog event
             onPlayerTriggerEvent.Invoke();
             enterOnce = true;
@@ -124,6 +126,8 @@ public class DialogueTrigger : MonoBehaviour
     }
     private bool InView()
     {
+        if (!triggerInViewOnly) return true;
+
         //needed for calculating fov
         Vector3 displacement = transform.position - playerSight.transform.position;
 
@@ -165,7 +169,7 @@ public class DialogueTrigger : MonoBehaviour
                 Debug.Log("cant find object");
             }
             ProgrammerSounds.current.PlayDialog(dialog.audioFileName, OverrideAttenuation, 
-            SettingsData.dialogVolume / 100f, pos, minMaxAttenuationDistance.x, minMaxAttenuationDistance.y);
+            SettingsData.dialogVolume/100f, pos, minMaxAttenuationDistance.x, minMaxAttenuationDistance.y);
 
             //dip volume
             RuntimeManager.StudioSystem.setParameterByID(DialogDipDesctription.id, 1);
@@ -224,28 +228,33 @@ public class DialogueTrigger : MonoBehaviour
                 yield return null;
             }
         }
+
+        OnDialogListComplete?.Invoke(dialogListData.name);
     }
 
     #region  Commands
     private void ShowText(DialogLine _dialogToShow)
     {
-        ProgrammerSounds.current.dialogueInstance.getProperty(EVENT_PROPERTY.MAXIMUM_DISTANCE, out float currentMax);
-        ProgrammerSounds.current.dialogueInstance.get3DAttributes(out FMOD.ATTRIBUTES_3D f3d);
-        Vector3 f3dUnity = new Vector3(f3d.position.x, f3d.position.y, f3d.position.z);
+        //ProgrammerSounds.current.dialogueInstance.getProperty(EVENT_PROPERTY.MAXIMUM_DISTANCE, out float currentMax);
+        //ProgrammerSounds.current.dialogueInstance.get3DAttributes(out FMOD.ATTRIBUTES_3D f3d);
+        //Vector3 f3dUnity = new Vector3(f3d.position.x, f3d.position.y, f3d.position.z);
 
-        if(!OverrideAttenuation)//if player outside of attenuation range, return
-        {
-            if (Vector3.Distance(f3dUnity, playerSight.transform.position) > currentMax)
-            return;
-        }
-        if(OverrideAttenuation)
-        {
-            if (Vector3.Distance(f3dUnity, playerSight.transform.position) > minMaxAttenuationDistance.y)
-            return;
-        }
-           
-            
-        if (DialogUI.current != null) DialogUI.current.UpdateText(_dialogToShow.textToShow);
+        //Debug.Log(currentMax);
+        //Debug.Log(Vector3.Distance(f3dUnity, playerSight.transform.position));
+
+        //if (!OverrideAttenuation)//if player outside of attenuation range, return
+        //{
+        //    if (Vector3.Distance(f3dUnity, playerSight.transform.position) > currentMax)
+        //    {
+        //        return;
+        //    }
+        //}
+        //if (OverrideAttenuation)
+        //{
+        //    if (Vector3.Distance(f3dUnity, playerSight.transform.position) > minMaxAttenuationDistance.y) return;
+        //}
+
+        if (DialogUI.current) DialogUI.current.UpdateText(_dialogToShow.textToShow);
 
         try
         {

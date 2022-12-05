@@ -9,8 +9,10 @@ namespace Axiom.Player.Interaction
 {
     public class PlayerInteract : MonoBehaviour
     {
-        public static event Action OnInteractableHovered;
+        public static event Action<string> OnInteractableHovered;
         public static event Action OnInteractableExitHover;
+        public static event Action OnExitInteractableHovered;
+        public static event Action OnExitInteractableExitHover;
         public static event Action<InteractableObject_SO> OnStartInteract;
         public static event Action OnStopInteract;
 
@@ -23,6 +25,8 @@ namespace Axiom.Player.Interaction
 
         private readonly Vector3 screenMiddle = new(width / 2f, height / 2f, 0);
 
+        public static void InvokeStartHover(string displayText) => OnInteractableHovered?.Invoke(displayText);
+        public static void InvokeEndHover() => OnInteractableExitHover?.Invoke();
         public static void InvokeStartInteract(InteractableObject_SO objectSO) => OnStartInteract?.Invoke(objectSO);
         public static void InvokeStopInteract() => OnStopInteract?.Invoke();
 
@@ -52,8 +56,8 @@ namespace Axiom.Player.Interaction
                 if (Input.GetKeyDown(KeyCode.E) && !isInteracting) StartInteraction();
             }
 
-            if (!wasHovering && isHovering) OnInteractableHovered?.Invoke();
-            else if(wasHovering && !isHovering) OnInteractableExitHover?.Invoke();
+            if (!wasHovering && isHovering) interactable.Hover();
+            else if (wasHovering && !isHovering) interactable.EndHover();
         }
 
         private void StartInteraction()

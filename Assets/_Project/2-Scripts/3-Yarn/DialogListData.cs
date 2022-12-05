@@ -41,7 +41,7 @@ public class TimeStamp
         //NextDialogLine,
         Mute,
         Unmute,
-        Stop,
+        Stop
     }
     public string muteFlag;
 }

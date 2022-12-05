@@ -9,5 +9,6 @@ namespace Axiom.Core
         public void StartInteraction();
         public void StopInteraction();
         public void Hover();
+        public void EndHover();
     }
 }

@@ -6,6 +6,7 @@ using TMPro;
 
 public class InteractUI : MonoBehaviour
 {
+    public TMP_Text hoverText;
     public CanvasGroup interactionTextCanvasGroup;
     public CanvasGroup interactionDetailsCanvasGroup;
 
@@ -34,8 +35,9 @@ public class InteractUI : MonoBehaviour
         PlayerInteract.OnStopInteract -= HideDetailsCanvas;
     }
 
-    public void ShowInteractText()
+    public void ShowInteractText(string text)
     {
+        hoverText.text = text;
         interactionTextCanvasGroup.alpha = 1f;
     }
 

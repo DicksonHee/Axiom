@@ -80,12 +80,13 @@ namespace Axiom.Dialogue
         
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            mainCam = Camera.main;
+            mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         }
 
         [YarnCommand("play")]
         public void PlayDialog(string key, bool _overrideAttentuation, float volume = 1f, Transform audiopos = null, float _minDistance = 0, float _maxDistance = 0)
         {
+            UnityEngine.Debug.Log(key);
             dialogueInstance = RuntimeManager.CreateInstance(eventName);
             //possible fix to error
             dialogueInstance.set3DAttributes(RuntimeUtils.To3DAttributes(mainCam.transform));
@@ -107,8 +108,6 @@ namespace Axiom.Dialogue
                 dialogueInstance.setProperty(FMOD.Studio.EVENT_PROPERTY.MINIMUM_DISTANCE, _minDistance);
                 dialogueInstance.setProperty(FMOD.Studio.EVENT_PROPERTY.MAXIMUM_DISTANCE, _maxDistance);
             }
-            
-
 
             // Pin the key string in memory and pass a pointer through the user data
             GCHandle stringHandle = GCHandle.Alloc(key);
