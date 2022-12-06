@@ -81,12 +81,12 @@ namespace Axiom.Player.Movement
             Vector3 rot = camHolder.transform.localRotation.eulerAngles;
             if (addYRot)
             {
-                yRotation = rot.y + (sensX * Time.fixedDeltaTime);
+                yRotation = rot.y + (sensX * 0.5f * Time.fixedDeltaTime);
                 if (!rbInfo.IsLookingAtWall(currentWall)) addYRot = false;
             }
             else if(subYRot)
             {
-                yRotation = rot.y - (sensX * Time.fixedDeltaTime);
+                yRotation = rot.y - (sensX * 0.5f * Time.fixedDeltaTime);
                 if (!rbInfo.IsLookingAtWall(currentWall)) subYRot = false;
             }
             else

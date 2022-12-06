@@ -48,6 +48,8 @@ namespace Axiom.Player.Movement.StateMachine.States
 			if (isRightWallEnter) MovementSystem.cameraLook.StartRightWallRunCamera(wallTransform.gameObject);
 			else MovementSystem.cameraLook.StartLeftWallRunCamera(wallTransform.gameObject);
 
+			exitCounter = MovementSystem.wallRunCoyoteTime;
+
 			MovementSystem.DisableMovement();
 			MovementSystem.rbInfo.SetIsOnWall(MovementSystem.RightDirection, MovementSystem.ForwardDirection);
 			MovementSystem.EnterWallRunState(wallTransform, wallNormal, isRightWallEnter);
@@ -62,31 +64,37 @@ namespace Axiom.Player.Movement.StateMachine.States
 			base.LogicUpdate();
 
 			if ((isRightWallEnter && !MovementSystem.rbInfo.WallRunningRightDetected()) ||
-			    (!isRightWallEnter && !MovementSystem.rbInfo.WallRunningLeftDetected()) ||
-			    Vector3.Dot(MovementSystem.ForwardDirection, wallNormal) >= 0.96f ||
-			    Vector3.Dot(wallForward, MovementSystem.ForwardDirection) <= -0.25f ||
-			    Time.time - stateStartTime > MovementSystem.wallRunMaxDuration)
+				(!isRightWallEnter && !MovementSystem.rbInfo.WallRunningLeftDetected()) ||
+				Vector3.Dot(MovementSystem.ForwardDirection, wallNormal) >= 0.96f ||
+				Vector3.Dot(wallForward, MovementSystem.ForwardDirection) <= -0.25f ||
+				Time.time - stateStartTime > MovementSystem.wallRunMaxDuration)
 			{
-				Debug.Log("EnterWall: " + isRightWallEnter + "\n" + 
-				          "Left: " + MovementSystem.rbInfo.WallRunningLeftDetected() + "\n" +
-				          "Right: " + MovementSystem.rbInfo.WallRunningRightDetected() + "\n" +
-				          "WallNormal: " + Vector3.Dot(MovementSystem.ForwardDirection, wallNormal) + "\n" +
-				          "ForwardDir: " + Vector3.Dot(wallForward, MovementSystem.ForwardDirection));
+				//Debug.Log("EnterWall: " + isRightWallEnter + "\n" +
+				//		  "Left: " + MovementSystem.rbInfo.WallRunningLeftDetected() + "\n" +
+				//		  "Right: " + MovementSystem.rbInfo.WallRunningRightDetected() + "\n" +
+				//		  "WallNormal: " + Vector3.Dot(MovementSystem.ForwardDirection, wallNormal) + "\n" +
+				//		  "ForwardDir: " + Vector3.Dot(wallForward, MovementSystem.ForwardDirection));
 				stickToWallMultiplier = 0f;
 				exitCounter -= Time.deltaTime;
 			}
-			else if(Vector3.Dot(wallNormal, MovementSystem.ForwardDirection) < -0.9f)
+            else
+            {
+                exitCounter = MovementSystem.wallRunCoyoteTime;
+                stickToWallMultiplier = 1f;
+            }
+
+            if (Vector3.Dot(wallNormal, MovementSystem.ForwardDirection) < -0.9f)
 			{
 				MovementSystem.ChangeState(MovementSystem.ClimbingState);
 			}
-			else if (MovementSystem.rbInfo.IsGrounded()) MovementSystem.ChangeState(MovementSystem.IdleState);
-			else
+			else if (MovementSystem.rbInfo.IsGrounded())
 			{
-				exitCounter = MovementSystem.wallRunCoyoteTime;
-				stickToWallMultiplier = 1f;
+				MovementSystem.ChangeState(MovementSystem.IdleState);
+            }
+			else if (exitCounter <= 0f)
+			{
+                MovementSystem.ChangeState(MovementSystem.InAirState);
 			}
-			
-			if (exitCounter <= 0f) MovementSystem.ChangeState(MovementSystem.InAirState);
 		}
 
 		public override void PhysicsUpdate()
@@ -98,7 +106,9 @@ namespace Axiom.Player.Movement.StateMachine.States
 		
 		public override void ExitState()
 		{
-			if (!isJumpingOnExit)
+            base.ExitState();
+
+            if (!isJumpingOnExit)
 			{
 				Vector3 moveVel = MovementSystem.ForwardDirection.normalized * MovementSystem.wallRunSpeed;
 				MovementSystem.Rb.velocity = moveVel;
@@ -113,8 +123,6 @@ namespace Axiom.Player.Movement.StateMachine.States
 			MovementSystem.EnableMovement();
 			MovementSystem.ExitWallRunState();
 			MovementSystem.SetAnimatorBool("WallRunning", false);
-
-			base.ExitState();
 		}
 
 		private void WallRunningMovement()
@@ -130,7 +138,7 @@ namespace Axiom.Player.Movement.StateMachine.States
 
 		public void SetIsJumpingOnExit(bool val, Vector3 exitVel)
 		{
-			isJumpingOnExit = val;
+            isJumpingOnExit = val;
 			exitVelocity = exitVel;
 			MovementSystem.ChangeState(MovementSystem.InAirState);
 		}

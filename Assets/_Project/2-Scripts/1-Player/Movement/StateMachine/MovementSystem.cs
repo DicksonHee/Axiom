@@ -384,20 +384,10 @@ namespace Axiom.Player.Movement.StateMachine
         private void Jump()
         {
             float forwardForce = 0f;
-            if (GetCurrentSpeed() > 16f) forwardForce = (GetCurrentSpeed() - 16f);
-            Rb.AddForce(UpDirection * (upJumpForce + forwardForce) + MoveDirection * forwardForce, ForceMode.Impulse);
+            if (GetCurrentSpeed() > 16f) forwardForce = Mathf.Clamp((GetCurrentSpeed() - 16f), 0f, 20f);
+            Rb.AddForce(UpDirection * (upJumpForce + forwardForce * 0.5f) + MoveDirection * forwardForce, ForceMode.Impulse);
 
-            if (rbInfo.IsLeftWallDetected() && inputDetection.movementInput.x < 0)
-            {
-                playerAnimation.SetJumpParam(-1f);
-                ChangeState(WallRunningState);
-            }
-            else if (rbInfo.IsRightWallDetected() && inputDetection.movementInput.x > 0)
-            {
-                playerAnimation.SetJumpParam(1f);
-                ChangeState(WallRunningState);
-            }
-            else if (!rbInfo.IsGrounded() && CurrentState != InAirState)
+            if (!rbInfo.IsGrounded() && CurrentState != InAirState)
             {
                 playerAnimation.SetJumpParam(0);
                 ChangeState(InAirState);
