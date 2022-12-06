@@ -26,10 +26,10 @@ namespace Axiom.UI.MainMenu
             blender = (MatrixBlender)GetComponent(typeof(MatrixBlender));
         }
 
-        public Coroutine StartPerspectiveSwitch()
+        public Coroutine StartPerspectiveSwitch(float duration = 2f)
         {
             orthoOn = !orthoOn;
-            return orthoOn ? blender.BlendToMatrix(ortho, 2f, 8, true) : blender.BlendToMatrix(perspective, 2f, 8, false);
+            return orthoOn ? blender.BlendToMatrix(ortho, duration, 8, true) : blender.BlendToMatrix(perspective, 2f, 8, false);
         }
     }
 }

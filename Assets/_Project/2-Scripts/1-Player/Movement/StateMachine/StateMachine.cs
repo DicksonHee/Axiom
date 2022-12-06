@@ -16,12 +16,10 @@ namespace Axiom.Player.Movement.StateMachine
         
         public virtual void ChangeState(State state)
         {
-            Debug.Log(CurrentState.ToString());
             PreviousState = CurrentState;
             CurrentState.ExitState();
             CurrentState = state;
             CurrentState.EnterState();
-            Debug.Log(CurrentState.ToString());
         }
     }
 }

@@ -62,6 +62,7 @@ namespace Axiom.UI.MainMenu
             }
             
             LoadScreen.current.SetWhite();
+            LoadScreen.current.SetOpaque();
             yield return new WaitForSeconds(2f);
             
             SceneLoad_Manager.LoadSpecificScene(sceneToLoad);

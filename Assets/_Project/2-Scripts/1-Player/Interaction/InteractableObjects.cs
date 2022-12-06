@@ -8,6 +8,7 @@ using UnityEngine;
 public class InteractableObjects : MonoBehaviour, IInteractable
 {
     public InteractableObject_SO objectSO;
+    public string textToShow;
 
     public void StartInteraction()
     {
@@ -21,5 +22,11 @@ public class InteractableObjects : MonoBehaviour, IInteractable
 
     public void Hover()
     {
-    }    
+        PlayerInteract.InvokeStartHover(textToShow);
+    }
+    
+    public void EndHover()
+    {
+        PlayerInteract.InvokeEndHover();
+    }
 }

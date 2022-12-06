@@ -15,14 +15,8 @@ public class DialogUI : MonoBehaviour
     
     private void Awake()
     {
-        if (current == null && current != this)
-        {
-            current = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (current != null && current != this) Destroy(this);
+        else current = this;
         
         HideText();
     }
@@ -35,11 +29,14 @@ public class DialogUI : MonoBehaviour
 
     public void UpdateText(string textToShow)
     {
-        if(!isShowing) ShowText();
+        Debug.Log("ASD");
+        
+        if (!isShowing) ShowText();
         CancelInvoke(nameof(HideText));
 
+        Debug.Log("DAS");
         int colonIndex = textToShow.IndexOf(':');
-        print(colonIndex);
+        print(textToShow);
         if (colonIndex >= 0)
         {
             string speakerIdentifier = textToShow.Substring(0, colonIndex + 1);

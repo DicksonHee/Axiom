@@ -18,6 +18,7 @@ namespace Axiom.Player.Movement.StateMachine.States
             
             initialDir = MovementSystem.MoveDirection;
 
+            MovementSystem.OnJump += SlideJump;
             MovementSystem.rbInfo.OnSlopeEnded += ResetStateTimer;
 
             MovementSystem.DisableMovement();
@@ -36,7 +37,7 @@ namespace Axiom.Player.Movement.StateMachine.States
             CalculateInAirTime();
              
             if ((MovementSystem.GetCurrentSpeed() < 0.5f && Time.time - stateStartTime > 0.5f) ||
-                Vector3.Dot(MovementSystem.ForwardDirection, initialDir) < 0.8f) // If too slow or looking away from slide direction
+            Vector3.Dot(MovementSystem.ForwardDirection, initialDir) < 0.8f) // If too slow or looking away from slide direction
             {
                 CheckShouldCrouchOnExit();
             }
@@ -73,6 +74,11 @@ namespace Axiom.Player.Movement.StateMachine.States
             MovementSystem.cameraLook.ResetCamera();
             MovementSystem.playerAnimation.ResetRotation();
             MovementSystem.SetAnimatorBool("Sliding", false);
+        }
+
+        private void SlideJump()
+        {
+            MovementSystem.ChangeState(MovementSystem.InAirState);
         }
 
         private void CalculateSlideSpeed()

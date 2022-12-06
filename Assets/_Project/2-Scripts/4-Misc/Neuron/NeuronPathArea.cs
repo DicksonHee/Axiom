@@ -35,6 +35,10 @@ public class NeuronPathArea : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        Transform active = UnityEditor.Selection.activeTransform;
+        if (active != null && active != transform && !transform.IsChildOf(active))
+            return;
+
         Initialise();
 
         Gizmos.color = boxColour;
