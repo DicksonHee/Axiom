@@ -13,6 +13,7 @@ namespace Axiom.NonEuclidean
     {
         public Portal otherPortal;
         public MeshRenderer screen;
+        public FlippyTrigger trigger;
         
         [Header("Gravity")]
         public bool changeGravity;
@@ -177,6 +178,7 @@ namespace Axiom.NonEuclidean
             screen.transform.localPosition = screenStartLocalPosition + Vector3.forward * dstToNearClipPlaneCorner * (camFacingSameDirAsPortal ? 0.5f : -0.5f);
         }
 
+        private void OnFlippyTriggerEnter(Collider other, FlippyTrigger trigger) => OnTriggerEnter(other);
         private void OnTriggerEnter(Collider other)
         {
             Transform otherT = other.transform;
@@ -190,6 +192,7 @@ namespace Axiom.NonEuclidean
             }
         }
 
+        private void OnFlippyTriggerExit(Collider other, FlippyTrigger trigger) => OnTriggerExit(other);
         private void OnTriggerExit(Collider other)
         {
             Transform otherT = other.transform;
@@ -203,6 +206,20 @@ namespace Axiom.NonEuclidean
                 tracked.RemoveAt(index);
                 //print($"{transform.name} | Stopped Tracking");
             }
+        }
+
+        private void OnEnable()
+        {
+            if (trigger == null) return;
+            trigger.OnEnter += OnFlippyTriggerEnter;
+            trigger.OnExit += OnFlippyTriggerExit;
+        }
+
+        private void OnDisable()
+        {
+            if (trigger == null) return;
+            trigger.OnEnter -= OnFlippyTriggerEnter;
+            trigger.OnExit -= OnFlippyTriggerExit;
         }
 
         protected class TrackedTransform
