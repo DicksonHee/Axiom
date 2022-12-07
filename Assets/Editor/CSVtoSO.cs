@@ -116,6 +116,11 @@ public class CSVtoSO
                         case "Stop":
                         ts.command = TimeStamp.Commands.Stop;
                         break;
+
+                        case"Event":
+                        ts.command = TimeStamp.Commands.Event;
+                        ts.eventName = splitData[5];
+                        break;
                     }
                     if(dialog == null)
                     Debug.Log("dialog is null");
