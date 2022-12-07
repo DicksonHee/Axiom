@@ -95,7 +95,7 @@
 	</object>
 	<object class="MultiSound" id="{667acfbc-f9ac-41b5-8838-e568af7c62c8}">
 		<relationship name="sounds">
-			<destination>{7d0271ad-32c0-4f61-8e39-c113f363c0b3}</destination>
+			<destination>{fdff3ae5-03da-4d87-ae75-7441de9a36fa}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{e1a9cb43-54a3-482d-9b0c-f20e78db0257}">
@@ -120,13 +120,17 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{707b9644-c727-4dba-b88d-1fc49c62e6fd}">
 		<relationship name="effects">
+			<destination>{f54a5171-b524-458c-8db0-625437c971c5}</destination>
 			<destination>{f5618c4c-2a6c-4e7e-9a82-cf879c2c618d}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{ecce6e8b-ab58-407f-98d7-0c7969d897eb}" />
-	<object class="SingleSound" id="{7d0271ad-32c0-4f61-8e39-c113f363c0b3}">
+	<object class="SingleSound" id="{fdff3ae5-03da-4d87-ae75-7441de9a36fa}">
+		<property name="startOffset">
+			<value>5.5</value>
+		</property>
 		<relationship name="audioFile">
-			<destination>{e5af2983-b9a9-457f-a5bc-8da00fdc3798}</destination>
+			<destination>{9c3c10f8-d7e8-49df-b309-a69e3d169823}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{23e8d5fd-51b7-416c-928f-5844f04fd20d}" />
@@ -136,6 +140,23 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{021a73ac-85ce-4196-a581-ad537fa6c196}" />
+	<object class="PitchShifterEffect" id="{f54a5171-b524-458c-8db0-625437c971c5}">
+		<property name="bypass">
+			<value>true</value>
+		</property>
+		<property name="pitch">
+			<value>2</value>
+		</property>
+		<property name="fftSize">
+			<value>1720</value>
+		</property>
+		<property name="overlap">
+			<value>1.60000002</value>
+		</property>
+		<property name="maxChannels">
+			<value>8.30000019</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{f5618c4c-2a6c-4e7e-9a82-cf879c2c618d}" />
 	<object class="MixerBusFader" id="{372d8613-07b9-4d14-a548-36449e0a63bd}" />
 </objects>
