@@ -10,12 +10,12 @@ public class DialogTriggerEvent : MonoBehaviour
 
     private void OnEnable()
     {
-        DialogueTrigger.OnDialogListComplete += TriggerEvent;
+        DialogueTrigger.OnDialogInvokeEvent += TriggerEvent;
     }
 
     private void OnDisable()
     {
-        DialogueTrigger.OnDialogListComplete -= TriggerEvent;
+        DialogueTrigger.OnDialogInvokeEvent -= TriggerEvent;
     }
 
     public void TriggerEvent(string name)
