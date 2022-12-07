@@ -15,18 +15,17 @@ MonoBehaviour:
   name: 
   dialogLists:
   - audioFileName: why
-    currentDialogLine: 0
+    audioPosObjectName: 
     timestamps:
     - timeStamp: 0
-      command: 0
+      command: 4
       dialogLine:
         textToShow: Why [are] we [still] here?
         hiddenWords:
-        - flagToCheck: Flag1
+        - flagToCheck: 
           index: 0
-        - flagToCheck: Flag1
-          index: 1
       muteFlag: 
+      eventName: 
     - timeStamp: 1
       command: 1
       dialogLine:
@@ -35,6 +34,7 @@ MonoBehaviour:
         - flagToCheck: 
           index: 0
       muteFlag: 
+      eventName: 
     - timeStamp: 2.61
       command: 0
       dialogLine:
@@ -43,6 +43,7 @@ MonoBehaviour:
         - flagToCheck: Flag1
           index: 0
       muteFlag: 
+      eventName: 
     - timeStamp: 4.1
       command: 2
       dialogLine:
@@ -51,6 +52,7 @@ MonoBehaviour:
         - flagToCheck: Flag1
           index: 0
       muteFlag: Flag1
+      eventName: 
     - timeStamp: 4.5
       command: 3
       dialogLine:
@@ -59,8 +61,9 @@ MonoBehaviour:
         - flagToCheck: Flag1
           index: 0
       muteFlag: Flag1
+      eventName: 
   - audioFileName: one
-    currentDialogLine: 0
+    audioPosObjectName: 
     timestamps:
     - timeStamp: 0
       command: 0
@@ -68,9 +71,11 @@ MonoBehaviour:
         textToShow: One
         hiddenWords: []
       muteFlag: 
+      eventName: 
     - timeStamp: 0.25
       command: 4
       dialogLine:
         textToShow: One
         hiddenWords: []
       muteFlag: 
+      eventName: 

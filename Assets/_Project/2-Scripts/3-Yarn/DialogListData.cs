@@ -35,15 +35,17 @@ public class TimeStamp
     public float timeStamp;
     public Commands command;
     public DialogLine dialogLine;
-    public enum Commands
+    public enum Commands  //have to edit index on TimeStampEditors if changes are made
     {
         ShowText,
         //NextDialogLine,
         Mute,
         Unmute,
-        Stop
+        Stop,
+        Event
     }
     public string muteFlag;
+    public string eventName;
 }
 
 

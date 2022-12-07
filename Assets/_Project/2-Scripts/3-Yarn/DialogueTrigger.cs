@@ -199,7 +199,7 @@ public class DialogueTrigger : MonoBehaviour
                                 //Debug.Log("show");
                                 break;
                             // case TimeStamp.Commands.NextDialogLine:
-                            //     NextDialogLine(dialog.timestamps[timestampIndex].dialogLine);
+                            //     NextDialogLine(dialog.timestamps[timestampIndex].dialogLine);  //decaprecated
                             //     //Debug.Log("next");
                             //     break;
                             case TimeStamp.Commands.Mute:
@@ -213,6 +213,9 @@ public class DialogueTrigger : MonoBehaviour
                             case TimeStamp.Commands.Stop:
                                 Stop();
                                 //Debug.Log("stop");
+                                break;
+                            case TimeStamp.Commands.Event:
+                                OnDialogInvokeEvent?.Invoke(dialog.timestamps[timestampIndex].eventName);
                                 break;
                         }
 

@@ -1,9 +1,9 @@
-How to use (updated 29/11/2022)
+How to use (updated 7/12/2022)
 
 What's New?
 ___________
 
-No need to repeat typing in scene name and audio file name, so leaving fields empty if it's the same as previous one
+Event Command
 
 
 Command list 
@@ -13,6 +13,7 @@ Show = update dialog text on screen
 Mute = mute audio (it fades out, so start around 0.1s - 0.15s earlier) //may have to tweak a bit
 Unmute = unmutes audio (instantaneous, no fade)
 Stop = (probably don't ever need this)in case of there is still a dialog event still playing event if the volume is 0.
+Event = invoke static Unity Event, use the Mute flag field to determine Event name
 
 Tips
 ____
@@ -90,3 +91,5 @@ Other...
 ________
 The default position where the dialog's audio will play in the 3D space for spatialization is the player's head. (miles talking / earpiece). 
 You can override this in Unity, under dialog list scriptable object, dialog, audiopos.
+
+No need to repeat typing in scene name and audio file name, so leaving fields empty if it's the same as previous one
