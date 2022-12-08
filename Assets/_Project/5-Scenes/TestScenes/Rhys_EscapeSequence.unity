@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18625292, g: 0.0066775996, b: 0.04258223, a: 1}
+  m_IndirectSpecularColor: {r: 0.09203693, g: 0.0017963562, b: 0.004603144, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6609,6 +6609,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2107733213, guid: 68c66ea7375b15a45acc158dba1f0ceb, type: 3}
+      propertyPath: sharedProfile
+      value: 
+      objectReference: {fileID: 11400000, guid: 41235e749902a9f49b0f5aa6b92cf5ac,
+        type: 2}
     - target: {fileID: 1751331402392064661, guid: 68c66ea7375b15a45acc158dba1f0ceb,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -31970,6 +31975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20a7993a0c4c87c43a7fc24c9878b300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _alsoRotate: 0
   cameraPosition: {fileID: 675148833}
 --- !u!1 &1878531356
 GameObject:
