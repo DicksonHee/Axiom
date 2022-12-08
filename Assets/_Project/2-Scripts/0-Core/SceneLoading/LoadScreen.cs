@@ -9,7 +9,7 @@ public class LoadScreen : MonoBehaviour
 {
     public static LoadScreen current;
 
-    public GameObject loadScreenCamera;
+    public Camera loadScreenCamera;
     public Animator loadScreenAnimator;
     public Image loadScreen;
     private bool isWhite;
@@ -36,9 +36,17 @@ public class LoadScreen : MonoBehaviour
         loadScreenAnimator.SetTrigger("SetWhite");
     }
 
-    public void SetBlack() => loadScreen.color = new Color(0, 0, 0, loadScreen.color.a);
-    public void SetWhite() => loadScreen.color = new Color(1, 1, 1, loadScreen.color.a);
+    public void SetBlack()
+    {
+        loadScreen.color = new Color(0, 0, 0, loadScreen.color.a);
+        loadScreenCamera.backgroundColor = loadScreen.color;
+    }
+    public void SetWhite()
+    {
+        loadScreen.color = new Color(1, 1, 1, loadScreen.color.a);
+        loadScreenCamera.backgroundColor = loadScreen.color;
+    }
 
-    public void SetCameraActive() => loadScreenCamera.SetActive(true);
-    public void SetCameraInactive() => loadScreenCamera.SetActive(false);
+    public void SetCameraActive() => loadScreenCamera.gameObject.SetActive(true);
+    public void SetCameraInactive() => loadScreenCamera.gameObject.SetActive(false);
 }
