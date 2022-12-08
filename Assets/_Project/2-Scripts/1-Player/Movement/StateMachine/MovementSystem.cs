@@ -385,7 +385,7 @@ namespace Axiom.Player.Movement.StateMachine
         {
             float forwardForce = 0f;
             if (GetCurrentSpeed() > 16f) forwardForce = Mathf.Clamp((GetCurrentSpeed() - 16f), 0f, 20f);
-            Rb.AddForce(UpDirection * (upJumpForce + forwardForce * 0.5f) + MoveDirection * forwardForce, ForceMode.Impulse);
+            Rb.AddForce(UpDirection * (upJumpForce + forwardForce * 0.1f) + MoveDirection * forwardForce, ForceMode.Impulse);
 
             if (!rbInfo.IsGrounded() && CurrentState != InAirState)
             {
