@@ -12,11 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f80b65550e1c2349af5e5abbf32dc03, type: 3}
   m_Name: Scene 2 - Apartment
   m_EditorClassIdentifier: 
-  name: Scene_2_-_Apartment
+  name: Scene 2 - Apartment
   dialogLists:
-  - audioFileName: Scene_2_-_Apartment
+  - audioFileName: Scene 2 - Apartment (Miles and Saoirse) (1)
     audioPosObjectName: 
     timestamps:
+    - timeStamp: 0
+      command: 0
+      dialogLine:
+        textToShow: 
+        hiddenWords: []
+      muteFlag: 
+      eventName: 
     - timeStamp: 0
       command: 4
       dialogLine:
@@ -25,28 +32,14 @@ MonoBehaviour:
         hiddenWords: []
       muteFlag: 
       eventName: OpenEyes
-    - timeStamp: 0.05
+    - timeStamp: 4.4
       command: 0
       dialogLine:
-        textToShow: "Miles: \uFFFDYeah?"
+        textToShow: 'Miles: God dammit. Why does this nightmare keep coming back?'
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 1.3
-      command: 0
-      dialogLine:
-        textToShow: 'Saoirse: Christ, there you are, Miles. What took you so long?'
-        hiddenWords: []
-      muteFlag: 
-      eventName: 
-    - timeStamp: 4.3
-      command: 0
-      dialogLine:
-        textToShow: 'Miles: Sorry, I was...I was sleeping.'
-        hiddenWords: []
-      muteFlag: 
-      eventName: 
-    - timeStamp: 5
+    - timeStamp: 4.4
       command: 4
       dialogLine:
         textToShow: 'Saoirse: Get yourself ready. I''ll talk to you at the rendezvous
@@ -54,43 +47,50 @@ MonoBehaviour:
         hiddenWords: []
       muteFlag: 
       eventName: WakeUp
-    - timeStamp: 6.4
+    - timeStamp: 11.6
+      command: 0
+      dialogLine:
+        textToShow: "Miles: \uFFFDYeah?"
+        hiddenWords: []
+      muteFlag: 
+      eventName: 
+    - timeStamp: 12.8
+      command: 0
+      dialogLine:
+        textToShow: 'Saoirse: Christ, there you are, Miles. What took you so long?'
+        hiddenWords: []
+      muteFlag: 
+      eventName: 
+    - timeStamp: 15.9
+      command: 0
+      dialogLine:
+        textToShow: 'Miles: Sorry, I was...I was sleeping.'
+        hiddenWords: []
+      muteFlag: 
+      eventName: 
+    - timeStamp: 18
       command: 0
       dialogLine:
         textToShow: "Saoirse: \uFFFDAre you alright?"
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 7.7
+    - timeStamp: 19.3
       command: 0
       dialogLine:
         textToShow: 'Miles: Yes, yeah, I''m fine. I just had a weird dream, that''s
-          all. Don''t worry about it. '
+          all. Don''t worry about it.'
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 13.3
+    - timeStamp: 25
       command: 0
       dialogLine:
-        textToShow: 'Miles: What did you want, Saoirse?'
+        textToShow: What did you want, Saoirse?
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 15.2
-      command: 0
-      dialogLine:
-        textToShow: 'Saoirse: Please tell me you''re joking. The mission? It''s today.'
-        hiddenWords: []
-      muteFlag: 
-      eventName: 
-    - timeStamp: 19.1
-      command: 0
-      dialogLine:
-        textToShow: 'Miles: Oh, right. Yeah, yeah, of - of course.'
-        hiddenWords: []
-      muteFlag: 
-      eventName: 
-    - timeStamp: 19.1
+    - timeStamp: 25
       command: 4
       dialogLine:
         textToShow: 'Saoirse: Get yourself ready. I''ll talk to you at the rendezvous
@@ -98,7 +98,21 @@ MonoBehaviour:
         hiddenWords: []
       muteFlag: 
       eventName: StandUp
-    - timeStamp: 22.1
+    - timeStamp: 26.4
+      command: 0
+      dialogLine:
+        textToShow: 'Saoirse: Please tell me you''re joking. The mission? It''s today.'
+        hiddenWords: []
+      muteFlag: 
+      eventName: 
+    - timeStamp: 30.7
+      command: 0
+      dialogLine:
+        textToShow: 'Miles: Oh, right. Yeah, yeah, of - of course.'
+        hiddenWords: []
+      muteFlag: 
+      eventName: 
+    - timeStamp: 33.9
       command: 0
       dialogLine:
         textToShow: 'Saoirse: It was that damn nightmare, wasn''t it? You got kicked
@@ -106,21 +120,21 @@ MonoBehaviour:
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 25.7
+    - timeStamp: 37.6
       command: 0
       dialogLine:
         textToShow: 'Miles: *Sigh*'
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 26.5
+    - timeStamp: 38.3
       command: 0
       dialogLine:
         textToShow: 'Saoirse: Dammit! I thought we''d worked through this.'
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 28.9
+    - timeStamp: 40.5
       command: 0
       dialogLine:
         textToShow: 'Miles: We had - we have! It''s no big deal Saoirse, I''ve got
@@ -128,64 +142,83 @@ MonoBehaviour:
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 34.2
+    - timeStamp: 45.8
       command: 0
       dialogLine:
         textToShow: 'Saoirse: You better. Because I need you on task today. No emotions,
-          Miles, none. We can''t afford for you to be distracted, and if you''re
-          getting too emotional to stay in your own dreams -'
+          Miles, none. '
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 43.8
+    - timeStamp: 50.7
       command: 0
       dialogLine:
-        textToShow: 'Miles: I said I''ve got this.'
+        textToShow: We can't afford for you to be distracted, and if you're getting
+          too emotional to stay in your own dreams -
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 46.3
+    - timeStamp: 55.3
+      command: 0
+      dialogLine:
+        textToShow: 'Miles: - I said I''ve got this.'
+        hiddenWords: []
+      muteFlag: 
+      eventName: 
+    - timeStamp: 58
       command: 0
       dialogLine:
         textToShow: 'Saoirse: Fine.'
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 48.3
+    - timeStamp: 60.1
       command: 0
       dialogLine:
         textToShow: 'Miles: So what''ve you got for me?'
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 50
+    - timeStamp: 62
       command: 0
       dialogLine:
-        textToShow: 'Saoirse: I''ve sent you a profile of the target. Familiarize
-          yourself with it, because this is not your run of the mill goon. They''re
-          going to have one hell of a mind, probably the most complex you''ve been
-          in. '
+        textToShow: 'Saoirse: I''ve sent you a profile of the target. '
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 59.7
+    - timeStamp: 64.5
       command: 0
       dialogLine:
-        textToShow: It's likely they're trained in mind shielding, so your best bet
-          is to know everything you can about them before you mindjump. The more
-          you know about how this asshole ticks, the quicker you can get to the core
-          and -
+        textToShow: Familiarize yourself with it, because this is not your run of
+          the mill goon. They're going to have one hell of a mind, probably the most
+          complex you've been in.
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 69.4
+    - timeStamp: 71.3
+      command: 0
+      dialogLine:
+        textToShow: 'It''s likely they''re trained in mind shielding, so your best
+          bet is to know everything you can about them before you mindjump. '
+        hiddenWords: []
+      muteFlag: 
+      eventName: 
+    - timeStamp: 77.17
+      command: 0
+      dialogLine:
+        textToShow: The more you know about how this asshole ticks, the quicker you
+          can get to the core and -
+        hiddenWords: []
+      muteFlag: 
+      eventName: 
+    - timeStamp: 81.1
       command: 0
       dialogLine:
         textToShow: 'Miles: - End them. I know.'
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 71.2
+    - timeStamp: 83.6
       command: 0
       dialogLine:
         textToShow: 'Saoirse: - and get the code. Do what you want with them afterwards
@@ -193,7 +226,7 @@ MonoBehaviour:
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 78.5
+    - timeStamp: 90.1
       command: 0
       dialogLine:
         textToShow: You need to remember that no amount of death will stop them.
@@ -201,21 +234,21 @@ MonoBehaviour:
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 86
+    - timeStamp: 98.6
       command: 0
       dialogLine:
         textToShow: "And then\uFFFDdo what you have to."
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 88
+    - timeStamp: 100.6
       command: 0
       dialogLine:
         textToShow: 'Miles: I intend to.'
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 89.4
+    - timeStamp: 101.1
       command: 0
       dialogLine:
         textToShow: 'Saoirse: Get yourself ready. I''ll talk to you at the rendezvous
