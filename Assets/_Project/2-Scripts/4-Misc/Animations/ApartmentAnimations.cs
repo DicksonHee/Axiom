@@ -26,13 +26,16 @@ public class ApartmentAnimations : MonoBehaviour
             blackBars.size.overrideState = true;
             blackBars.size.value = 1f;
         }
-        
+
         if (apartmentVolume.profile.TryGet(out doubleVision))
         {
             doubleVision.intensity.overrideState = true;
             doubleVision.intensity.value = 0.2f;
         }
+    }
 
+    public void StartAnim()
+    {
         OpenEyes();
         StartCoroutine(DoubleVision_CO(Random.Range(0.1f, 0.2f), Random.Range(0.5f, 1f), true));
     }

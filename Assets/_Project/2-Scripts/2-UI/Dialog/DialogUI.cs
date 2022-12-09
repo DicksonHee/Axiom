@@ -29,14 +29,9 @@ public class DialogUI : MonoBehaviour
 
     public void UpdateText(string textToShow)
     {
-        Debug.Log("ASD");
-        
         if (!isShowing) ShowText();
         CancelInvoke(nameof(HideText));
-
-        Debug.Log("DAS");
         int colonIndex = textToShow.IndexOf(':');
-        print(textToShow);
         if (colonIndex >= 0)
         {
             string speakerIdentifier = textToShow.Substring(0, colonIndex + 1);

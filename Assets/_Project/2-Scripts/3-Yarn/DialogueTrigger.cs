@@ -25,7 +25,6 @@ public class DialogueTrigger : MonoBehaviour
     private PARAMETER_DESCRIPTION DialogToStaticDescription;
     public PARAMETER_DESCRIPTION DialogToStaticDesctription { get { return DialogToStaticDescription; } }
     public static event Action<string> OnDialogInvokeEvent;
-    public static event Action<string> OnDialogListComplete;
 
     [SerializeField]//dialog to static
     float currentValuef;
@@ -215,6 +214,7 @@ public class DialogueTrigger : MonoBehaviour
                                 //Debug.Log("stop");
                                 break;
                             case TimeStamp.Commands.Event:
+                                Debug.Log(dialog.timestamps[timestampIndex].eventName);
                                 OnDialogInvokeEvent?.Invoke(dialog.timestamps[timestampIndex].eventName);
                                 break;
                         }
@@ -232,7 +232,7 @@ public class DialogueTrigger : MonoBehaviour
             }
         }
 
-        OnDialogListComplete?.Invoke(dialogListData.name);
+        OnDialogInvokeEvent?.Invoke(dialogListData.name);
     }
 
     #region  Commands

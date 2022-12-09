@@ -6,6 +6,7 @@ namespace Axiom.Player.Movement.StateMachine.States
     {
         private Vector3 initialDir;
         private float inAirCounter;
+        private bool canCrouch;
 
         public Sliding(MovementSystem movementSystem) : base(movementSystem)
         {
@@ -17,6 +18,7 @@ namespace Axiom.Player.Movement.StateMachine.States
             base.EnterState();
             
             initialDir = MovementSystem.MoveDirection;
+            canCrouch = true;
 
             MovementSystem.OnJump += SlideJump;
             MovementSystem.rbInfo.OnSlopeEnded += ResetStateTimer;
@@ -78,7 +80,8 @@ namespace Axiom.Player.Movement.StateMachine.States
 
         private void SlideJump()
         {
-            MovementSystem.ChangeState(MovementSystem.InAirState);
+            canCrouch = false;
+            //MovementSystem.ChangeState(MovementSystem.InAirState);
         }
 
         private void CalculateSlideSpeed()
@@ -113,6 +116,7 @@ namespace Axiom.Player.Movement.StateMachine.States
                 return;
             }
 
+            if (!canCrouch) return;
             if(MovementSystem.inputDetection.crouchInput) MovementSystem.ChangeState(MovementSystem.CrouchingState);
             else
             {
