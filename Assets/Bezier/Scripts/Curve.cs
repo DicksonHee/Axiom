@@ -185,6 +185,7 @@ namespace Bezier
             lastGizmoScale = gizmoScale;
         }
 
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             Transform active = Selection.activeTransform;
@@ -213,5 +214,6 @@ namespace Bezier
             for (int i = 0; i < viewportPoints.Length - 1; i++)
                 Gizmos.DrawLine(viewportPoints[i], viewportPoints[i + 1]);
         }
+#endif
     }
 }

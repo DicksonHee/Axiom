@@ -23,6 +23,7 @@ namespace Bezier
             tB = transform.GetChild(1);
         }
 
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             if (!curveActive)
@@ -46,6 +47,8 @@ namespace Bezier
             Gizmos.color = selected ? Color.white : Color.gray;
             Gizmos.DrawWireSphere(transform.position, pointRadius * Curve.GizmoScale);
         }
+#endif
+
 
         public static implicit operator Vector3(Point p) => p.transform.position;
     }

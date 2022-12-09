@@ -16,7 +16,7 @@ public class PercentageAnimation : MonoBehaviour
     
     public void PlayAudio()
     {
-        RuntimeManager.PlayOneShot(eventRef);
+        //RuntimeManager.PlayOneShot(eventRef);
     }
 
     private void Update()

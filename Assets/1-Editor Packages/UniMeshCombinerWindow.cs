@@ -2,7 +2,7 @@
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-
+#if UNITY_EDITOR
 namespace UniMeshCombiner
 {
     public class UniMeshCombinerWindow : EditorWindow
@@ -105,3 +105,4 @@ namespace UniMeshCombiner
         }
     }
 }
+#endif

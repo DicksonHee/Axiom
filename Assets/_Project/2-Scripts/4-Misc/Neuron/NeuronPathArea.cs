@@ -33,6 +33,7 @@ public class NeuronPathArea : MonoBehaviour
         point.z <= maxPoint.z &&
         point.z <= maxPoint.z;
 
+    #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Transform active = UnityEditor.Selection.activeTransform;
@@ -44,4 +45,5 @@ public class NeuronPathArea : MonoBehaviour
         Gizmos.color = boxColour;
         Gizmos.DrawWireCube(origin, areaSize);
     }
+    #endif
 }
