@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ConcreteSeamlessReversed
+  m_Name: Rhys_Seamless
   m_Shader: {fileID: -6465566751694194690, guid: 2c661f5139806a644a3bc83b64cd10f0,
     type: 3}
   m_ValidKeywords: []
@@ -67,7 +67,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 9005f331c3d3f3448998a65aeb82c36c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 17f1b832f1f00cd4598b5edcb6b74b26, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -78,8 +78,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_a66151f9bb434258b07eedb149c95da1_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 628a5f6e9fc422c4383df08e76cf9065, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SideTexture:
-        m_Texture: {fileID: 2800000, guid: e19345199d4a0964bb66cec7a1ff0908, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0a216be9d1c1122408159e19e7e43949, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -87,7 +91,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TopTexture:
-        m_Texture: {fileID: 2800000, guid: 36f4647d8f064f74798e21bdd71f99d9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0a216be9d1c1122408159e19e7e43949, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -109,7 +113,7 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _ColorIntensity: 10
+    - _ColorIntensity: 5
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
@@ -120,7 +124,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
-    - _NormalStrength: 1
+    - _NormalStrength: 0.05
     - _OcclusionStrength: 1
     - _OffsetSpeed: 0
     - _Parallax: 0.005
@@ -128,7 +132,8 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Scale: 0.1
-    - _Smoothness: 0
+    - _ScrollSpeed: 0.1
+    - _Smoothness: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -137,8 +142,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 0}
-    - _Color2: {r: 1, g: 1, b: 1, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color2: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
