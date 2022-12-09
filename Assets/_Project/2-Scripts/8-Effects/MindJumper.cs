@@ -13,7 +13,7 @@ namespace Axiom
 
         [Header("Anim")]
         public Animator jumpAnim;
-        private bool jumping = false;
+        private bool jumping = false, activated = false;
 
         [Header("Zoom")]
         public Camera cam;
@@ -57,8 +57,12 @@ namespace Axiom
             if (!hit.transform.IsChildOf(target.transform))
                 return;
 
-            if (Input.GetKeyDown(KeyCode.E))
-                Jump();
+            if (!activated && Input.GetKeyDown(KeyCode.E))
+            {
+                activated = true;
+                Core.PostProcessingActions.current.RespawnAnimation(2f);
+                Invoke(nameof(Jump), 2f);
+            }
         }
 
         private Vector3 camForward1, camForward2;
@@ -108,6 +112,7 @@ namespace Axiom
 
             SetAnimationVariables();
             jumpAnim.SetTrigger("Jump");
+            
             jumping = true;
         }
 
