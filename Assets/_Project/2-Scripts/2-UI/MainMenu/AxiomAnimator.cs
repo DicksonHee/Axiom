@@ -15,11 +15,11 @@ namespace Axiom.UI.MainMenu
         private void Awake()
         {
             TweenParams tParms = new TweenParams().SetLoops(-1, LoopType.Incremental).SetEase(Ease.InFlash).SetEase(Ease.OutQuad);
-            aLetter.transform.DOLocalRotate(new Vector3(0f, -180f, 0f), 5f, RotateMode.FastBeyond360).SetAs(tParms);
-            xLetter.transform.DOLocalRotate(new Vector3(360f, 0f, 0f), 5f, RotateMode.LocalAxisAdd).SetAs(tParms);
-            iLetter.transform.DOLocalRotate(new Vector3(360f, 0f, 0f), 5f, RotateMode.LocalAxisAdd).SetAs(tParms);
-            oLetter.transform.DOLocalRotate(new Vector3(0f, 0f, 360f), 5f, RotateMode.LocalAxisAdd).SetAs(tParms);
-            mLetter.transform.DOLocalRotate(new Vector3(0f, 360f, 0f), 5f, RotateMode.LocalAxisAdd).SetAs(tParms);
+            aLetter.transform.DOLocalRotate(new Vector3(0f, -180f, 0f), 25f, RotateMode.FastBeyond360).SetAs(tParms);
+            xLetter.transform.DOLocalRotate(new Vector3(360f, 0f, 0f), 25f, RotateMode.LocalAxisAdd).SetAs(tParms);
+            iLetter.transform.DOLocalRotate(new Vector3(360f, 0f, 0f), 25f, RotateMode.LocalAxisAdd).SetAs(tParms);
+            oLetter.transform.DOLocalRotate(new Vector3(0f, 0f, 360f), 25f, RotateMode.LocalAxisAdd).SetAs(tParms);
+            mLetter.transform.DOLocalRotate(new Vector3(0f, 360f, 0f), 25f, RotateMode.LocalAxisAdd).SetAs(tParms);
         }
 
         public void StopAnim()

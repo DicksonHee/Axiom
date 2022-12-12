@@ -28,11 +28,23 @@ namespace Axiom.UI.MainMenu
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+
+            PerspectiveSwitcher.OnFinishLerpCam += Go;
+        }
+
+        private void Go()
+        {
+            StartCoroutine(GameStart_CO("Dreamscape_Whole"));
+        }
+
+        public void GOGO()
+        {
+            StartCoroutine(GameStart_CO("Dreamscape_Whole"));
         }
 
         public void StartGame(string sceneToLoad)
         {
-            StartCoroutine(GameStart_CO(sceneToLoad));
+            StartCoroutine(GameStart_CO(sceneToLoad)); 
         }
 
         private IEnumerator GameStart_CO(string sceneToLoad)
