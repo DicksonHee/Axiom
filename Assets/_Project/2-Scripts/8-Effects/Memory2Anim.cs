@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Memory2Anim : MonoBehaviour
 {
-    public float animTime;
+    public float animTime, delay;
     public FadeMaterial[] fadeMaterials;
     public GameObject[] inObjects, outObjects;
 
@@ -34,6 +34,8 @@ public class Memory2Anim : MonoBehaviour
 
     private IEnumerator Anim()
     {
+        yield return new WaitForSeconds(delay);
+
         foreach (var obj in inObjects)
             obj.SetActive(true);
 
@@ -44,7 +46,7 @@ public class Memory2Anim : MonoBehaviour
             yield return null;
         }
 
-        SetMaterialTransparency(1);
+        SetMaterialTransparency(1f);
 
         foreach (var obj in outObjects)
             obj.SetActive(false);
