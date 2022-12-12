@@ -35,6 +35,7 @@ public class PPVolumeManager : MonoBehaviour
         {
             if (profile.scene == sceneName)
             {
+                Debug.Log(profile.volumeProfile);
                 currentVolume.profile = profile.volumeProfile;
                 currentAreaName = profile.areaName;
                 break;

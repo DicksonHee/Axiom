@@ -43,12 +43,12 @@ namespace Axiom.Core
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             //Testing
-            if(scene.name == "Rhys_RealWorld") ChangeVolume(AreaName.RealWorld);
-            else if(scene.name == "Rhys_EscapeSequence" ||
-               scene.name == "Rhys_Mindscape" ||
-               scene.name == "Tom_Mindscape_1" ||
-               scene.name == "Dreamscape_Whole") ChangeVolume(AreaName.Dreamscape);
-            else if(scene.name == "MainMenu") ChangeVolume(AreaName.MainMenu);
+            //if(scene.name == "Rhys_RealWorld") ChangeVolume(AreaName.RealWorld);
+            //else if(scene.name == "Rhys_EscapeSequence" ||
+            //   scene.name == "Rhys_Mindscape" ||
+            //   scene.name == "Tom_Mindscape_1" ||
+            //   scene.name == "Dreamscape_Whole") ChangeVolume(AreaName.Dreamscape);
+            //else if(scene.name == "MainMenu") ChangeVolume(AreaName.MainMenu);
         }
         
         #region ChangeVolume

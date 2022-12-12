@@ -75,6 +75,12 @@ public class SettingsUI : MonoBehaviour
             if (isMenuActive) SetCanvasInactive();
             else SetCanvasActive();
         }
+
+        if (SceneManager.GetSceneByName("MainMenu").isLoaded)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 
     public void LoadScene(string sceneToLoad)
@@ -107,12 +113,6 @@ public class SettingsUI : MonoBehaviour
         canvasGroup.alpha = 0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
-
-        if (SceneManager.GetSceneByName("MainMenu").isLoaded)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
     }
 
     public void SetMouseSensitivity(float value)
