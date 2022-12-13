@@ -295,8 +295,10 @@
 		<relationship name="effects">
 			<destination>{3b20ec0d-6fcc-41fe-9ff6-213db1e5fa6b}</destination>
 			<destination>{5e16e5ea-52b6-4f7c-b4a5-cb7fef860fdc}</destination>
+			<destination>{ab6b8f19-9c8a-413d-9297-46fe79a9299c}</destination>
 			<destination>{de0430a8-3fb1-4021-ab32-636aed1531f6}</destination>
 			<destination>{f2ec7ef0-9429-461f-97bb-f9985263e26f}</destination>
+			<destination>{ad8efc06-d89d-4ec4-8125-d834d7c58acb}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{72120c4f-cc66-47e4-a5bf-af039d60a37e}" />
@@ -454,6 +456,11 @@
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{5e16e5ea-52b6-4f7c-b4a5-cb7fef860fdc}" />
+	<object class="CompressorEffect" id="{ab6b8f19-9c8a-413d-9297-46fe79a9299c}">
+		<property name="gain">
+			<value>6.5</value>
+		</property>
+	</object>
 	<object class="MixerSend" id="{de0430a8-3fb1-4021-ab32-636aed1531f6}">
 		<property name="inputFormat">
 			<value>0</value>
@@ -466,6 +473,7 @@
 		</relationship>
 	</object>
 	<object class="SpatialiserEffect" id="{f2ec7ef0-9429-461f-97bb-f9985263e26f}" />
+	<object class="LoudnessMeter" id="{ad8efc06-d89d-4ec4-8125-d834d7c58acb}" />
 	<object class="AutomationCurve" id="{50f00296-3a58-4021-a2c9-ca34162249e8}">
 		<relationship name="parameter">
 			<destination>{dbbfc2bd-5b18-4a7e-bd8e-456206d5a85a}</destination>
@@ -542,8 +550,11 @@
 		<property name="filterTypeC">
 			<value>9</value>
 		</property>
+		<property name="filterTypeD">
+			<value>2</value>
+		</property>
 		<property name="frequencyA">
-			<value>1260.87061</value>
+			<value>7970.95898</value>
 		</property>
 		<property name="frequencyB">
 			<value>38.0166931</value>
@@ -551,8 +562,14 @@
 		<property name="frequencyC">
 			<value>308.171722</value>
 		</property>
+		<property name="frequencyD">
+			<value>6894.82324</value>
+		</property>
 		<property name="qualityA">
-			<value>0.840758622</value>
+			<value>0.100000001</value>
+		</property>
+		<property name="qualityD">
+			<value>0.581413805</value>
 		</property>
 		<property name="gainB">
 			<value>-11.8965511</value>

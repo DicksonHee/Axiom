@@ -142,8 +142,10 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{c50d8f15-eb06-4ced-aeb7-519acb09afad}">
 		<relationship name="effects">
+			<destination>{152005de-16f3-4ac4-aa76-eb86f5da1dfe}</destination>
 			<destination>{f61dccee-b171-4614-9af6-8978d74333ca}</destination>
 			<destination>{1a5a4674-074f-45b3-aa93-6d138abc21a1}</destination>
+			<destination>{cb10a7e1-cec5-4f06-a00d-e50bf4eabf14}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{b796a49b-bcd6-41b5-8d25-33c261de2d44}" />
@@ -185,8 +187,17 @@
 			<destination>{53b533aa-7584-4f09-ac1c-7ef49618d86d}</destination>
 		</relationship>
 	</object>
+	<object class="CompressorEffect" id="{152005de-16f3-4ac4-aa76-eb86f5da1dfe}">
+		<property name="threshold">
+			<value>-37</value>
+		</property>
+		<property name="gain">
+			<value>10.5</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{f61dccee-b171-4614-9af6-8978d74333ca}" />
 	<object class="SpatialiserEffect" id="{1a5a4674-074f-45b3-aa93-6d138abc21a1}" />
+	<object class="LoudnessMeter" id="{cb10a7e1-cec5-4f06-a00d-e50bf4eabf14}" />
 	<object class="MixerBusFader" id="{1b997749-2d1f-4d8f-bf36-f9abfc2f31d1}" />
 	<object class="MultibandEqEffect" id="{9ac8386c-2640-4690-840b-ef6b4ce410f6}">
 		<property name="filterTypeA">
@@ -207,7 +218,7 @@
 			<value>0.75</value>
 		</property>
 		<property name="value">
-			<value>-8</value>
+			<value>-0.142356873</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{7f5f5ced-8a29-4e2d-9bc9-3527b9520f58}">
@@ -215,7 +226,7 @@
 			<value>0.99586092715231789</value>
 		</property>
 		<property name="value">
-			<value>-1</value>
+			<value>6.85764313</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{53b533aa-7584-4f09-ac1c-7ef49618d86d}">
@@ -223,7 +234,7 @@
 			<value>0.0024834437086092716</value>
 		</property>
 		<property name="value">
-			<value>-80</value>
+			<value>-45.3558922</value>
 		</property>
 	</object>
 </objects>

@@ -118,6 +118,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{6d9e188e-712b-417b-b047-bbaffdc753ad}">
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<property name="name">
 			<value>Paper Reading</value>
 		</property>
@@ -141,7 +144,10 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{4a838d16-db1e-4260-b00f-de8def263efb}">
 		<relationship name="effects">
+			<destination>{611b6d80-750a-4a80-8440-b72bdee05c35}</destination>
+			<destination>{4336b1fe-8072-47f8-b827-75c7f3da7e9a}</destination>
 			<destination>{733f5d38-aca0-4b7a-91c3-e8ce7433a79e}</destination>
+			<destination>{85e6d1f9-3269-4c66-b858-0cd24ab56a0f}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{2561a52a-7f89-49f5-a631-8ca738e356e4}" />
@@ -187,7 +193,36 @@
 			<destination>{6f2c0199-2eb9-4485-8991-645b46b1ec33}</destination>
 		</relationship>
 	</object>
+	<object class="CompressorEffect" id="{611b6d80-750a-4a80-8440-b72bdee05c35}">
+		<property name="threshold">
+			<value>-34.5</value>
+		</property>
+		<property name="gain">
+			<value>9.5</value>
+		</property>
+	</object>
+	<object class="MultibandEqEffect" id="{4336b1fe-8072-47f8-b827-75c7f3da7e9a}">
+		<property name="filterTypeA">
+			<value>9</value>
+		</property>
+		<property name="filterTypeB">
+			<value>9</value>
+		</property>
+		<property name="frequencyA">
+			<value>250.50174</value>
+		</property>
+		<property name="frequencyB">
+			<value>4555.7417</value>
+		</property>
+		<property name="gainA">
+			<value>-7.75862122</value>
+		</property>
+		<property name="gainB">
+			<value>-5.17241287</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{733f5d38-aca0-4b7a-91c3-e8ce7433a79e}" />
+	<object class="LoudnessMeter" id="{85e6d1f9-3269-4c66-b858-0cd24ab56a0f}" />
 	<object class="MultibandEqEffect" id="{259a33fa-ad0f-43b9-ab70-baf022742e81}">
 		<property name="filterTypeA">
 			<value>7</value>

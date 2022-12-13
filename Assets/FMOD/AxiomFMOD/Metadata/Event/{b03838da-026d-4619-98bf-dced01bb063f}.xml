@@ -145,8 +145,12 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{075e19c6-3d14-4cf2-859d-d628fa48f616}">
 		<relationship name="effects">
+			<destination>{e4e12edc-d4c2-49d9-b712-b20ab5ebdc1a}</destination>
+			<destination>{36bc520f-5e1c-4c9d-9a47-c475d24b5217}</destination>
+			<destination>{687614ef-90de-4b80-9b34-d7982da1a704}</destination>
 			<destination>{7f95fd76-6e9b-43f9-917c-66131ba4eaa5}</destination>
 			<destination>{fea33767-441e-4ac8-8c92-3e507986c65a}</destination>
+			<destination>{bbc8f4cb-16e3-4002-a4a3-b34160de29f5}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{2617b401-4caf-416d-a4e9-9f12671d9772}" />
@@ -187,8 +191,45 @@
 			<destination>{af0b34df-9568-40a6-9e4a-edb06d66c5ca}</destination>
 		</relationship>
 	</object>
+	<object class="GainEffect" id="{e4e12edc-d4c2-49d9-b712-b20ab5ebdc1a}">
+		<property name="gain">
+			<value>10</value>
+		</property>
+	</object>
+	<object class="CompressorEffect" id="{36bc520f-5e1c-4c9d-9a47-c475d24b5217}">
+		<property name="threshold">
+			<value>-33</value>
+		</property>
+		<property name="gain">
+			<value>5.5</value>
+		</property>
+	</object>
+	<object class="MultibandEqEffect" id="{687614ef-90de-4b80-9b34-d7982da1a704}">
+		<property name="filterTypeA">
+			<value>9</value>
+		</property>
+		<property name="filterTypeB">
+			<value>9</value>
+		</property>
+		<property name="frequencyA">
+			<value>8137.83301</value>
+		</property>
+		<property name="frequencyB">
+			<value>486.13089</value>
+		</property>
+		<property name="qualityA">
+			<value>0.351172417</value>
+		</property>
+		<property name="gainA">
+			<value>-8.27586365</value>
+		</property>
+		<property name="gainB">
+			<value>-3.62068939</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{7f95fd76-6e9b-43f9-917c-66131ba4eaa5}" />
 	<object class="SpatialiserEffect" id="{fea33767-441e-4ac8-8c92-3e507986c65a}" />
+	<object class="LoudnessMeter" id="{bbc8f4cb-16e3-4002-a4a3-b34160de29f5}" />
 	<object class="MixerBusFader" id="{d0a88bfc-77e5-4b1c-a7f6-31973972c6ed}" />
 	<object class="AutomationPoint" id="{5005cfc9-767b-4452-87ac-cc01c2a69538}">
 		<property name="position">

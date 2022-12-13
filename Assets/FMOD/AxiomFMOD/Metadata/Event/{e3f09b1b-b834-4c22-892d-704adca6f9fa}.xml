@@ -446,6 +446,7 @@
 			<destination>{90b5c906-86f1-4126-908a-27b9ce241d0a}</destination>
 			<destination>{6a5c97a5-7a19-4566-aa16-dc705bc5b818}</destination>
 			<destination>{9665c5d6-56ca-4f38-9ccc-b946a8a295af}</destination>
+			<destination>{02af029f-0aa3-4382-9ce7-8cde6c20404d}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{0064c201-c60e-44a5-831b-707a46cd8966}">
@@ -625,9 +626,6 @@
 		</relationship>
 	</object>
 	<object class="SFXReverbEffect" id="{e85bebde-6e9c-4a9d-8a25-64ebfb7bd584}">
-		<property name="bypass">
-			<value>true</value>
-		</property>
 		<property name="decayTime">
 			<value>3800</value>
 		</property>
@@ -640,22 +638,28 @@
 		<property name="earlyLateMix">
 			<value>100</value>
 		</property>
+		<property name="wetLevel">
+			<value>-12.5</value>
+		</property>
+		<property name="dryLevel">
+			<value>-1</value>
+		</property>
 	</object>
 	<object class="MultibandEqEffect" id="{7fe9a798-a92b-4b70-9d4c-179653d7bd67}">
 		<property name="filterTypeB">
 			<value>4</value>
 		</property>
 		<property name="frequencyA">
-			<value>187.428619</value>
+			<value>221.218552</value>
 		</property>
 		<property name="frequencyB">
-			<value>56.355999</value>
+			<value>72.2634354</value>
 		</property>
 		<property name="qualityA">
-			<value>0.623275876</value>
+			<value>0.929931104</value>
 		</property>
 		<property name="qualityB">
-			<value>1.15286207</value>
+			<value>1.77706897</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{cc76970e-4baf-4b66-b2a7-2470b0856956}" />
@@ -695,6 +699,7 @@
 			<value>0.964999974</value>
 		</property>
 	</object>
+	<object class="LoudnessMeter" id="{02af029f-0aa3-4382-9ce7-8cde6c20404d}" />
 	<object class="AutomationPoint" id="{5b3dc70a-a9e4-4c61-a0a9-337678263dfe}">
 		<property name="position">
 			<value>9.6500000000000004</value>
