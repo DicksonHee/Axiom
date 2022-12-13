@@ -81,7 +81,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{db848cb0-299d-4dcb-a3ad-8e792920c547}">
 		<property name="volume">
-			<value>-5</value>
+			<value>-4</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{707b9644-c727-4dba-b88d-1fc49c62e6fd}</destination>
@@ -121,6 +121,8 @@
 	<object class="MixerBusEffectChain" id="{707b9644-c727-4dba-b88d-1fc49c62e6fd}">
 		<relationship name="effects">
 			<destination>{f54a5171-b524-458c-8db0-625437c971c5}</destination>
+			<destination>{7e97002d-d1ab-4e7f-849c-d3e678004896}</destination>
+			<destination>{9e147589-033b-4549-8415-8652c791529e}</destination>
 			<destination>{f5618c4c-2a6c-4e7e-9a82-cf879c2c618d}</destination>
 		</relationship>
 	</object>
@@ -155,6 +157,25 @@
 		</property>
 		<property name="maxChannels">
 			<value>8.30000019</value>
+		</property>
+	</object>
+	<object class="FlangerEffect" id="{7e97002d-d1ab-4e7f-849c-d3e678004896}">
+		<property name="rate">
+			<value>3.20000005</value>
+		</property>
+		<property name="mix">
+			<value>100</value>
+		</property>
+	</object>
+	<object class="TransceiverEffect" id="{9e147589-033b-4549-8415-8652c791529e}">
+		<property name="bypass">
+			<value>true</value>
+		</property>
+		<property name="transmitMode">
+			<value>true</value>
+		</property>
+		<property name="channel">
+			<value>31</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{f5618c4c-2a6c-4e7e-9a82-cf879c2c618d}" />

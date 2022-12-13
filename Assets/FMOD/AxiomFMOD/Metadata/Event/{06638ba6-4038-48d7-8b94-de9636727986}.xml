@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{06638ba6-4038-48d7-8b94-de9636727986}">
 		<property name="name">
-			<value>PlaySound</value>
+			<value>PlayGameSound</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -81,6 +81,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{862ac60d-3789-4919-8512-3dde5e3bb010}">
+		<property name="volume">
+			<value>1.5</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{9e8e6b74-55a7-4810-80b4-4131db405da9}</destination>
 		</relationship>
@@ -119,8 +122,10 @@
 	<object class="MixerBusEffectChain" id="{9e8e6b74-55a7-4810-80b4-4131db405da9}">
 		<relationship name="effects">
 			<destination>{dd61ea82-9864-4b0b-b140-73e8d08e274a}</destination>
+			<destination>{b30f9884-d4bd-46d7-9ee1-b1a7b5254eaf}</destination>
 			<destination>{e22aee1a-5c2f-4adb-8773-5a666e61f1f0}</destination>
 			<destination>{83f488f3-f003-47a5-ae47-4b0c3c1678ac}</destination>
+			<destination>{26e459c7-538f-40c4-84f4-e3d8382712e7}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{ab9f0b66-332b-4168-b754-f0d98a02d04e}" />
@@ -138,19 +143,47 @@
 	<object class="MixerBusPanner" id="{360ecd25-e18c-41e9-aff0-8ef073a47b82}" />
 	<object class="CompressorEffect" id="{dd61ea82-9864-4b0b-b140-73e8d08e274a}">
 		<property name="threshold">
-			<value>-15</value>
+			<value>-44.5</value>
 		</property>
 		<property name="ratio">
-			<value>2.10000014</value>
+			<value>2.20000005</value>
 		</property>
 		<property name="attackTime">
-			<value>6.20000029</value>
+			<value>8.80000019</value>
+		</property>
+		<property name="releaseTime">
+			<value>36</value>
 		</property>
 		<property name="gain">
-			<value>-2.5</value>
+			<value>12</value>
+		</property>
+	</object>
+	<object class="MultibandEqEffect" id="{b30f9884-d4bd-46d7-9ee1-b1a7b5254eaf}">
+		<property name="filterTypeA">
+			<value>9</value>
+		</property>
+		<property name="filterTypeB">
+			<value>9</value>
+		</property>
+		<property name="frequencyA">
+			<value>5841.67676</value>
+		</property>
+		<property name="frequencyB">
+			<value>47.7479286</value>
+		</property>
+		<property name="gainA">
+			<value>4.13792992</value>
+		</property>
+		<property name="gainB">
+			<value>-2.068964</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{e22aee1a-5c2f-4adb-8773-5a666e61f1f0}" />
 	<object class="LoudnessMeter" id="{83f488f3-f003-47a5-ae47-4b0c3c1678ac}" />
+	<object class="GainEffect" id="{26e459c7-538f-40c4-84f4-e3d8382712e7}">
+		<property name="gain">
+			<value>1.5</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{450804a9-6ff9-4158-86d2-3b76c3d60fcb}" />
 </objects>
