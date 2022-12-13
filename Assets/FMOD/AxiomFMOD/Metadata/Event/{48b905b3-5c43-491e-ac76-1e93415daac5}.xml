@@ -714,8 +714,10 @@
 			<destination>{901a3482-2857-48fb-a16c-1b484d04575b}</destination>
 			<destination>{85b62ae4-b29e-4453-bad0-af36d864e444}</destination>
 			<destination>{ad2ad402-8783-412d-878b-53044876749f}</destination>
+			<destination>{b8207a37-0b3f-4adb-af98-3c874142bb68}</destination>
 			<destination>{e898437c-38ab-4dc9-8789-e2a5822d9e36}</destination>
 			<destination>{cec0d844-3a46-4fd5-bca8-8574f7fd513c}</destination>
+			<destination>{862a3518-ddf0-4a73-9087-7d4a4a33d67f}</destination>
 			<destination>{79883083-fec0-40c2-af57-c0747637848d}</destination>
 		</relationship>
 	</object>
@@ -1070,22 +1072,37 @@
 		<property name="qualityB">
 			<value>1.39999998</value>
 		</property>
-		<property name="gainA">
-			<value>-5.17241287</value>
-		</property>
 		<property name="gainB">
 			<value>-5.6896553</value>
 		</property>
 	</object>
+	<object class="CompressorEffect" id="{b8207a37-0b3f-4adb-af98-3c874142bb68}">
+		<property name="threshold">
+			<value>-39</value>
+		</property>
+		<property name="ratio">
+			<value>1.64999998</value>
+		</property>
+		<property name="attackTime">
+			<value>4.5999999</value>
+		</property>
+		<property name="releaseTime">
+			<value>62</value>
+		</property>
+		<property name="gain">
+			<value>8.5</value>
+		</property>
+	</object>
 	<object class="LimiterEffect" id="{e898437c-38ab-4dc9-8789-e2a5822d9e36}">
 		<property name="boost">
-			<value>1.80000007</value>
+			<value>5.5999999</value>
 		</property>
 		<property name="ceiling">
 			<value>-0.600000024</value>
 		</property>
 	</object>
 	<object class="LoudnessMeter" id="{cec0d844-3a46-4fd5-bca8-8574f7fd513c}" />
+	<object class="GainEffect" id="{862a3518-ddf0-4a73-9087-7d4a4a33d67f}" />
 	<object class="MixerSend" id="{79883083-fec0-40c2-af57-c0747637848d}">
 		<property name="level">
 			<value>0</value>
