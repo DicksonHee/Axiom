@@ -26,9 +26,9 @@ public class CoreSuck : MonoBehaviour
         player = other.transform;
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
-        if (player == null || !frozen)
+        if (player != null && !frozen)
             SuckIntoVoid();
         else if (frozen)
             ApproachCore();
@@ -48,6 +48,7 @@ public class CoreSuck : MonoBehaviour
         if (distance > 60f)
         {
             frozen = true;
+            SetApproachCoreVariables();
             player.GetComponent<Rigidbody>().isKinematic = true;
         }
     }
@@ -62,12 +63,12 @@ public class CoreSuck : MonoBehaviour
         playerPos2 = coreRenderer.transform.position;
     }
 
-    public float officeFade;
-    public float coreZoom;
+    [Range(0, 1)] public float officeFade;
+    [Range(0, 1)] public float coreZoom;
     private void ApproachCore()
     {
         coreLight.intensity = Mathf.Lerp(lightIntensity1, 0f, officeFade);
-        coreRenderer.material.SetColor("_MainColor", new Color(1, 1, 1, 1f - officeFade));
+        coreRenderer.material.SetColor("_BaseColor", new Color(1, 1, 1, 1f - officeFade));
 
         player.position = Vector3.Lerp(playerPos1, playerPos2, coreZoom);
     }
