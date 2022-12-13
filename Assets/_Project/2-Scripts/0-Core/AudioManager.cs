@@ -75,8 +75,31 @@ namespace Axiom.Core
             RuntimeManager.PlayOneShot(eventReference, targetTransform.position);
         }
         
+        public void LerpBGMParameter(string parameterName, float initialValue, float finalValue, float duration)
+        {
+            StartCoroutine(LerpBGMParameter_CO(parameterName, initialValue, finalValue, duration));
+        }
+
+        private IEnumerator LerpBGMParameter_CO(string parameterName, float initialValue, float finalValue, float duration)
+        {
+            float counter = 0f;
+
+            while(counter < duration)
+            {
+                counter += Time.deltaTime;
+                RuntimeManager.StudioSystem.setParameterByName(parameterName, Mathf.Lerp(initialValue, finalValue, counter / duration));
+                yield return null;
+            }
+        }
+
         private IEnumerator SetNewBGM_CO(EventReference newEventReference, float duration)
         {
+            if (newEventReference.IsNull)
+            {
+                RuntimeManager.StudioSystem.setParameterByName("MasterMusicFader", 0);
+                yield break;
+            }
+
             float counter = 0f;
             float startVal = SettingsData.bgmVolume / 100f;
             
