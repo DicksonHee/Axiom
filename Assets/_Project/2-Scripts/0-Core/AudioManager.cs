@@ -96,6 +96,7 @@ namespace Axiom.Core
         {
             if (newEventReference.IsNull)
             {
+                Debug.Log("ASD");
                 RuntimeManager.StudioSystem.setParameterByName("MasterMusicFader", 0);
                 yield break;
             }
