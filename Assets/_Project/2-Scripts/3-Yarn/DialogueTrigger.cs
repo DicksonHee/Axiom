@@ -1,13 +1,11 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Yarn.Unity;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.Serialization;
-using Axiom.Dialogue;
 using Axiom.Core;
+using Axiom.Dialogue;
 using UnityEngine.Events;
 
 public class DialogueTrigger : MonoBehaviour
@@ -167,6 +165,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 Debug.Log("cant find object");
             }
+
             ProgrammerSounds.current.PlayDialog(dialog.audioFileName, OverrideAttenuation, 
             SettingsData.dialogVolume/100f, pos, minMaxAttenuationDistance.x, minMaxAttenuationDistance.y);
 
@@ -182,51 +181,57 @@ public class DialogueTrigger : MonoBehaviour
             // While loop for the duration of the audio file length
             while (elapsedTime < audioFileLength / 1000)
             {
-                bool hasExecutedCommand = true;
-                elapsedTime += Time.deltaTime;
+                ProgrammerSounds.current.dialogueInstance.getPaused(out bool isPaused);
 
-                while(hasExecutedCommand == true)
+                if(!isPaused)
                 {
-                    hasExecutedCommand = false;
+                    bool hasExecutedCommand = true;
+                    elapsedTime += Time.deltaTime;
 
-                    if (timestampIndex < dialog.timestamps.Count && elapsedTime > dialog.timestamps[timestampIndex].timeStamp)
+                    while (hasExecutedCommand == true)
                     {
-                        switch (dialog.timestamps[timestampIndex].command)
-                        {
-                            case TimeStamp.Commands.ShowText:
-                                ShowText(dialog.timestamps[timestampIndex].dialogLine);
-                                //Debug.Log("show");
-                                break;
-                            // case TimeStamp.Commands.NextDialogLine:
-                            //     NextDialogLine(dialog.timestamps[timestampIndex].dialogLine);  //decaprecated
-                            //     //Debug.Log("next");
-                            //     break;
-                            case TimeStamp.Commands.Mute:
-                                Mute(dialog.timestamps[timestampIndex].muteFlag);
-                                //Debug.Log("mute");
-                                break;
-                            case TimeStamp.Commands.Unmute:
-                                Unmute();
-                                //Debug.Log("unmute");
-                                break;
-                            case TimeStamp.Commands.Stop:
-                                Stop();
-                                //Debug.Log("stop");
-                                break;
-                            case TimeStamp.Commands.Event:
-                                Debug.Log(dialog.timestamps[timestampIndex].eventName);
-                                OnDialogInvokeEvent?.Invoke(dialog.timestamps[timestampIndex].eventName);
-                                break;
-                        }
+                        hasExecutedCommand = false;
 
-                        timestampIndex++;
-                        hasExecutedCommand = true;
+                        if (timestampIndex < dialog.timestamps.Count && elapsedTime > dialog.timestamps[timestampIndex].timeStamp)
+                        {
+                            switch (dialog.timestamps[timestampIndex].command)
+                            {
+                                case TimeStamp.Commands.ShowText:
+                                    ShowText(dialog.timestamps[timestampIndex].dialogLine);
+                                    //Debug.Log("show");
+                                    break;
+                                // case TimeStamp.Commands.NextDialogLine:
+                                //     NextDialogLine(dialog.timestamps[timestampIndex].dialogLine);  //decaprecated
+                                //     //Debug.Log("next");
+                                //     break;
+                                case TimeStamp.Commands.Mute:
+                                    Mute(dialog.timestamps[timestampIndex].muteFlag);
+                                    //Debug.Log("mute");
+                                    break;
+                                case TimeStamp.Commands.Unmute:
+                                    Unmute();
+                                    //Debug.Log("unmute");
+                                    break;
+                                case TimeStamp.Commands.Stop:
+                                    Stop();
+                                    //Debug.Log("stop");
+                                    break;
+                                case TimeStamp.Commands.Event:
+                                    Debug.Log(dialog.timestamps[timestampIndex].eventName);
+                                    OnDialogInvokeEvent?.Invoke(dialog.timestamps[timestampIndex].eventName);
+                                    break;
+                            }
+
+                            timestampIndex++;
+                            hasExecutedCommand = true;
+                        }
+                    }
+                    if (elapsedTime >= audioFileLength / 1000 && dialog == last)
+                    {
+                        RuntimeManager.StudioSystem.setParameterByID(DialogDipDesctription.id, 0);
                     }
                 }
-                if(elapsedTime >= audioFileLength/1000 && dialog==last)
-                {
-                    RuntimeManager.StudioSystem.setParameterByID(DialogDipDesctription.id, 0);
-                }
+                
                 
                 yield return null;
             }

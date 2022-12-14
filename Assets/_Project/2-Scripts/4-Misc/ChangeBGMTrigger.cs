@@ -19,8 +19,9 @@ public class ChangeBGMTrigger : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            if(changeBGM) AudioManager.current.SetNewBGM(bgmReference, duration);
+            if (changeBGM) AudioManager.current.SetNewBGM(bgmReference, duration);
             if (lerpBGMParameter) AudioManager.current.LerpBGMParameter(parameterName, startVal, endVal, duration);
+            Destroy(this);
         }
     }
 }

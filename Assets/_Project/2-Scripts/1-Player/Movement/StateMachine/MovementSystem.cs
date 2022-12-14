@@ -133,6 +133,8 @@ namespace Axiom.Player.Movement.StateMachine
         public static event Action OnJump;
         public static event Action OnLand;
         public static event Action OnSprint;
+        public static event Action OnStartSlide;
+        public static event Action OnEndSlide;
         #endregion
 
         private void Awake()
@@ -624,6 +626,10 @@ namespace Axiom.Player.Movement.StateMachine
         public void InvokeOnLand() => OnLand?.Invoke();
         public void InvokeOnJump() => OnJump?.Invoke();
         public void InvokeOnSprint() => OnSprint?.Invoke();
+
+        public void InvokeOnStartSlide() => OnStartSlide?.Invoke();
+
+        public void InvokeOnEndSlide() => OnEndSlide?.Invoke();
         #endregion
         
         #region Debug Functions

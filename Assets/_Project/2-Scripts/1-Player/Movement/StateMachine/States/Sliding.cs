@@ -21,6 +21,7 @@ namespace Axiom.Player.Movement.StateMachine.States
             canCrouch = true;
 
             MovementSystem.OnJump += SlideJump;
+            MovementSystem.InvokeOnStartSlide();
             MovementSystem.rbInfo.OnSlopeEnded += ResetStateTimer;
 
             MovementSystem.DisableMovement();
@@ -67,6 +68,7 @@ namespace Axiom.Player.Movement.StateMachine.States
         {
             base.ExitState();
 
+            MovementSystem.InvokeOnEndSlide();
             MovementSystem.rbInfo.OnSlopeEnded -= ResetStateTimer;
 
             MovementSystem.EndCrouch();

@@ -30,7 +30,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
-using Yarn.Unity;
 using FMODUnity;
 using FMOD.Studio;
 using FMOD;
@@ -39,7 +38,7 @@ using UnityEngine.SceneManagement;
 
 namespace Axiom.Dialogue
 {
-    class ProgrammerSounds : MonoBehaviour
+    public class ProgrammerSounds : MonoBehaviour
     {
         public static ProgrammerSounds current;
 
@@ -84,7 +83,6 @@ namespace Axiom.Dialogue
             StopDialog(true);
         }
 
-        [YarnCommand("play")]
         public void PlayDialog(string key, bool _overrideAttentuation, float volume = 1f, Transform audiopos = null, float _minDistance = 0, float _maxDistance = 0)
         {
             UnityEngine.Debug.Log(key);

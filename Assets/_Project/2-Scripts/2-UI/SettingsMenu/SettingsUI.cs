@@ -65,7 +65,7 @@ public class SettingsUI : MonoBehaviour
         SetTextBackgroundOpacity(SettingsData.textBackgroundOpacity);
         textBackgroundOpacitySlider.value = SettingsData.textBackgroundOpacity;
         
-        SetCanvasInactive();
+        Invoke(nameof(SetCanvasInactive), 0.1f);
     }
 
     private void Update()
@@ -92,6 +92,7 @@ public class SettingsUI : MonoBehaviour
     private void SetCanvasActive()
     {
         PlayerMovementDetails.DisableAllMovementInput();
+        AudioManager.current.PauseDialogue();
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -105,6 +106,7 @@ public class SettingsUI : MonoBehaviour
     private void SetCanvasInactive()
     {
         PlayerMovementDetails.EnableAllMovementInput();
+        AudioManager.current.UnpauseDialogue();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

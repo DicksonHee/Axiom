@@ -18,7 +18,7 @@ public class ForceCroucher : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
-        Invoke(nameof(EndForceCrouch), 0.1f);
+        Invoke(nameof(EndForceCrouch), 0.2f);
     }
     void EndForceCrouch()
     {

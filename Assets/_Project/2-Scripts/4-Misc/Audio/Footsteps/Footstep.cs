@@ -14,10 +14,7 @@ public class Footstep : MonoBehaviour
     public EventReference footstepEvent;
 
     [ParamRef]
-    [FormerlySerializedAs("parameter")]
     public string globalSurface;
-
-    [FormerlySerializedAs("value")]
     public int Value; //currently 0-7 changes instrument
 
     [SerializeField]
@@ -88,6 +85,7 @@ public class Footstep : MonoBehaviour
         if (currentFootstepData == null) return;
         
         Value = value;
+        RuntimeManager.StudioSystem.setParameterByName("MasterReverb", 1);
         RuntimeManager.StudioSystem.setParameterByID(parameterDescription.id, Value);
         eventEmmitter.Play();
         eventEmmitter.EventInstance.setVolume(currentFootstepData.footstepVolume * (SettingsData.sfxVolume/100f));
@@ -96,12 +94,15 @@ public class Footstep : MonoBehaviour
 
 public enum FootstepTypeValue
 {
-    Default = 0,
-    Dirt = 1,
-    CarpetJ = 2,
-    CarpetH = 3,
-    Water = 4,
-    WoodJ = 5,
-    WoodH = 6,
+    Carpet = 0,
+    TilesWalking = 1,
+    TilesRunning = 2,
     Metal = 7
+}
+
+public enum ReverbValue
+{
+    RealWorld = 0,
+    Close = 1,
+    Far = 2
 }

@@ -21,16 +21,35 @@ public class FallingPillars : MonoBehaviour
     private BoxCollider boxCollider;
     private bool isPlayerDetected;
 
+    private List<GameObject> pillarList;
+
     private void Start()
     {
         boxCollider = GetComponent<BoxCollider>();
+        pillarList = new List<GameObject>();
     }
-    
+
+    private void OnEnable()
+    {
+        RespawnManager.OnRespawn += DestroyPillars;
+    }
+
+    private void OnDisable()
+    {
+        RespawnManager.OnRespawn -= DestroyPillars;
+    }
+
+    private void DestroyPillars()
+    {
+        foreach(GameObject obj in pillarList) Destroy(obj);
+    }
+
     private void SpawnPillar(Vector3 targetPosition)
     {
         Vector3 spawnPos = targetPosition + new Vector3(0f, 100f, 0f);
         GameObject pillar = Instantiate(prefab, spawnPos, Quaternion.identity);
         pillar.transform.DOMove(targetPosition, 0.5f).SetEase(Ease.Flash);
+        pillarList.Add(pillar);
     }
 
     private IEnumerator SpawnPillarDelay_CO(Vector3 targetPosition, float delay)

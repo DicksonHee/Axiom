@@ -7,6 +7,7 @@ using System.IO;
 using FMOD.Studio;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Axiom.Dialogue;
 
 namespace Axiom.Core
 {
@@ -61,6 +62,9 @@ namespace Axiom.Core
         {
             RuntimeManager.StudioSystem.setParameterByName("MasterSFXFader", SettingsData.sfxVolume / 100f);
         }
+
+        public void PauseDialogue() => ProgrammerSounds.current.SetPauseState(true);
+        public void UnpauseDialogue() => ProgrammerSounds.current.SetPauseState(false);
 
         public void SetNewBGM(EventReference newEventReference, float duration)
         {
