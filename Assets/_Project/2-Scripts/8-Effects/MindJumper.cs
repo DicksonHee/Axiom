@@ -11,13 +11,17 @@ namespace Axiom
     {
         public string sceneToLoad;
 
+        [Header("Trigger")]
+        public Vector3 triggerLookDirection;
+        public float triggerAngleThresh;
+        public GameObject jumpPrompt;
+
         [Header("Anim")]
         public Animator jumpAnim;
         private bool jumping = false, activated = false;
 
         [Header("Zoom")]
         public Camera cam;
-        public LayerMask interactMask;
         public Animator target;
         public Transform zoomTarget;
         public Vector3 teleport;
@@ -33,6 +37,8 @@ namespace Axiom
         public GameObject mindTransitionObject;
         private MindTransition mindTransition;
 
+        private bool inZone;
+
         private void Awake()
         {
             //ringRadii = new float[animObjects.Length];
@@ -43,6 +49,18 @@ namespace Axiom
             //}
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player"))
+                inZone = true;
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Player"))
+                inZone = false;
+        }
+
         private void Update()
         {
             if (jumping)
@@ -51,18 +69,29 @@ namespace Axiom
                 return;
             }
 
-            if (!Physics.Raycast(cam.ViewportPointToRay(Vector3.one / 2), out RaycastHit hit, 100f, interactMask, QueryTriggerInteraction.Collide))
+            if (!inZone || activated)
                 return;
 
-            if (!hit.transform.IsChildOf(target.transform))
+            bool looking = isLookingGood();
+            if (jumpPrompt.activeSelf != looking)
+                jumpPrompt.SetActive(looking);
+
+            if (!looking)
                 return;
 
-            if (!activated && Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 activated = true;
-                Core.PostProcessingActions.current.RespawnAnimation(2f);
-                Invoke(nameof(Jump), 2f);
+                jumpPrompt.SetActive(false);
+                Core.PostProcessingActions.current.RespawnAnimation(0.5f);
+                Invoke(nameof(Jump), 0.25f);
             }
+        }
+
+        private bool isLookingGood()
+        {
+            float angle = Vector3.Angle(cam.transform.forward, triggerLookDirection);
+            return angle < triggerAngleThresh;
         }
 
         private Vector3 camForward1, camForward2;
@@ -71,6 +100,7 @@ namespace Axiom
         {
             camForward1 = cam.transform.forward;
             camForward2 = (zoomTarget.transform.position - cam.transform.position).normalized;
+            Debug.DrawRay(cam.transform.position, camForward2, Color.red, 20f);
             camFOV1 = cam.fieldOfView;
             camRot1 = cam.transform.rotation.eulerAngles.z;
             camRot2 = camRot1 + 30f;
@@ -154,6 +184,11 @@ namespace Axiom
             mindTransition.overlayCam.transform.DORotate(new Vector3(0, 0, 90f), 2f, RotateMode.FastBeyond360).SetEase(Ease.InOutQuad);
             mindTransition.overlayCam.transform.DOMoveZ(10, 2f);
             mindTransition.overlayFadeAnim.SetTrigger("Fade");
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawRay(transform.position, triggerLookDirection.normalized);
         }
     }
 }
