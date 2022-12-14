@@ -30,6 +30,9 @@ public class FireNeuron : MonoBehaviour
 
     public void Awake()
     {
+        if (pathAreas.Length == 0) return;
+        foreach (NeuronPathArea pathArea in pathAreas) if (pathArea == null) return;
+
         subdivCurves = new Vector3[pathAreas.Length][];
         for (int c = 0; c < subdivCurves.Length; c++)
         {

@@ -43,6 +43,8 @@ namespace Axiom.Core
         {
             foreach (SceneBGM bgm in sceneBgms)
             {
+                if (bgm.bgmEventReference.ToString() == bgmEmitter.EventReference.ToString()) return;
+
                 if (scene.name == bgm.sceneName)
                 {
                     SetNewBGM(bgm.bgmEventReference, 1f);
@@ -96,7 +98,6 @@ namespace Axiom.Core
         {
             if (newEventReference.IsNull)
             {
-                Debug.Log("ASD");
                 RuntimeManager.StudioSystem.setParameterByName("MasterMusicFader", 0);
                 yield break;
             }

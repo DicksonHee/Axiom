@@ -81,6 +81,7 @@ namespace Axiom.Dialogue
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+            StopDialog(true);
         }
 
         [YarnCommand("play")]
