@@ -3,12 +3,108 @@ using UnityEditor;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 public class CSVtoSO
 {
     private static string DialogListCSVPath = "/Editor/CSVs/DialogListCSV.csv";
 
     [MenuItem("Utilities/Generate Dialog Lists")]
+    public static void GenerateDialogList2()
+    {
+        string[] allLines = File.ReadAllLines(Application.dataPath + DialogListCSVPath);
+
+        List<TimeStamp> currentTimeStamps = null;
+        string currentDialogListName = "";
+        string currentDialogAudioName = "";
+
+        for(int ii = 1; ii < allLines.Length; ii++)
+        {
+            string[] currentRowData = allLines[ii].Split(';');
+
+            if (!string.IsNullOrEmpty(currentRowData[0]) && currentRowData[0] != currentDialogListName)
+            {
+                currentDialogListName = currentRowData[0];
+                currentDialogAudioName = currentRowData[1];
+                currentTimeStamps = new List<TimeStamp>();
+            }
+
+            if (string.IsNullOrEmpty(currentRowData[2])) continue;
+
+            TimeStamp ts = new TimeStamp();
+            ts.dialogLine = new DialogLine();
+
+            ts.timeStamp = float.Parse(currentRowData[2]);
+
+            switch (currentRowData[3]) // decide timestamp command
+            {
+                case "Show":
+                    ts.command = TimeStamp.Commands.ShowText;
+                    ts.dialogLine.textToShow = currentRowData[4]; //only change this if show text
+
+                    int TotalCount = (currentRowData.Length - 6) / 2;
+                    for (int i = 1; i < TotalCount; i++) // for how many hiddenword needed to be added
+                    {
+                        //create new hiddenword once every second time
+                        HiddenWord hw = new HiddenWord();
+                        try
+                        {
+                            hw.index = int.Parse(currentRowData[(i * 2) + 5]);//add hidden word indexes
+                        }
+                        catch
+                        {
+                            Debug.Log("skip, no index found");
+                            continue;
+                        }
+                        hw.flagToCheck = currentRowData[(i * 2) + 4]; //set text flag to check 
+                        ts.dialogLine.hiddenWords.Add(hw);
+                    }
+                    break;
+
+                case "Mute":
+                    ts.command = TimeStamp.Commands.Mute;
+                    ts.muteFlag = currentRowData[5];
+                    break;
+
+                case "Unmute":
+                    ts.command = TimeStamp.Commands.Unmute;
+                    break;
+
+                case "Stop":
+                    ts.command = TimeStamp.Commands.Stop;
+                    break;
+
+                case "Event":
+                    ts.command = TimeStamp.Commands.Event;
+                    ts.eventName = currentRowData[5];
+                    break;
+            }
+
+            currentTimeStamps.Add(ts);
+
+            if(ii != 1 && ii + 1 < allLines.Length)
+            {
+                string[] nextRowData = allLines[ii + 1].Split(';');
+                if (!string.IsNullOrEmpty(nextRowData[0]) && nextRowData[0] != currentDialogListName)
+                {
+                    DialogListData dialogListInstance = ScriptableObject.CreateInstance<DialogListData>();
+                    dialogListInstance.dialogLists = new List<Dialog>();
+                    
+                    Dialog newDialog = new Dialog();
+                    newDialog.timestamps = currentTimeStamps;
+                    newDialog.audioFileName = currentDialogAudioName;
+
+                    dialogListInstance.name = currentDialogListName;
+                    dialogListInstance.dialogLists.Add(newDialog);
+
+                    AssetDatabase.CreateAsset(dialogListInstance, $"Assets/DialogListFolder/{dialogListInstance.name}.asset");
+                }
+            }
+        }
+        AssetDatabase.SaveAssets();
+    }
+
+    //[MenuItem("Utilities/Generate Dialog Lists")]
     public static void GenerateDialogList()
     {
         string[] allLines = File.ReadAllLines(Application.dataPath + DialogListCSVPath);//each row
@@ -135,7 +231,7 @@ public class CSVtoSO
                     dialog.timestamps.Add(ts);//add ts to list
                 try
                 {
-                    if(PrevSceneName!= splitData[0])//if name is not equals to prevname, crate asset
+                    if(PrevSceneName != splitData[0] && !string.IsNullOrEmpty(splitData[0]))//if name is not equals to prevname, crate asset
                     AssetDatabase.CreateAsset(dialogListInstance, $"Assets/DialogListFolder/{dialogListInstance.name}.asset");
                 }
                 catch(UnityException e)

@@ -14,21 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Scene 2 - Apartment
   dialogLists:
-  - audioFileName: Scene 2 - Apartment (Miles and Saoirse) (1)
+  - audioFileName: Apartment
     audioPosObjectName: 
     timestamps:
     - timeStamp: 0
       command: 0
       dialogLine:
-        textToShow: 
+        textToShow: 'Miles: *Heavy breathing*'
         hiddenWords: []
       muteFlag: 
       eventName: 
     - timeStamp: 0
       command: 4
       dialogLine:
-        textToShow: 'Saoirse: Get yourself ready. I''ll talk to you at the rendezvous
-          point.'
+        textToShow: 'Miles: *Gasp*'
         hiddenWords: []
       muteFlag: 
       eventName: OpenEyes
@@ -39,14 +38,6 @@ MonoBehaviour:
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 4.4
-      command: 4
-      dialogLine:
-        textToShow: 'Saoirse: Get yourself ready. I''ll talk to you at the rendezvous
-          point.'
-        hiddenWords: []
-      muteFlag: 
-      eventName: WakeUp
     - timeStamp: 11.6
       command: 0
       dialogLine:
@@ -61,6 +52,13 @@ MonoBehaviour:
         hiddenWords: []
       muteFlag: 
       eventName: 
+    - timeStamp: 12.8
+      command: 4
+      dialogLine:
+        textToShow: 'Saoirse: Christ, there you are, Miles. What took you so long?'
+        hiddenWords: []
+      muteFlag: 
+      eventName: WakeUp
     - timeStamp: 15.9
       command: 0
       dialogLine:
@@ -83,6 +81,14 @@ MonoBehaviour:
         hiddenWords: []
       muteFlag: 
       eventName: 
+    - timeStamp: 19.3
+      command: 4
+      dialogLine:
+        textToShow: 'Miles: Yes, yeah, I''m fine. I just had a weird dream, that''s
+          all. Don''t worry about it.'
+        hiddenWords: []
+      muteFlag: 
+      eventName: StandUp
     - timeStamp: 25
       command: 0
       dialogLine:
@@ -90,14 +96,6 @@ MonoBehaviour:
         hiddenWords: []
       muteFlag: 
       eventName: 
-    - timeStamp: 25
-      command: 4
-      dialogLine:
-        textToShow: 'Saoirse: Get yourself ready. I''ll talk to you at the rendezvous
-          point.'
-        hiddenWords: []
-      muteFlag: 
-      eventName: StandUp
     - timeStamp: 26.4
       command: 0
       dialogLine:
