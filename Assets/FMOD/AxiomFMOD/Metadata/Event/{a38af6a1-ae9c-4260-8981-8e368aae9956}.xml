@@ -171,9 +171,11 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{78c78768-b4dc-4a3a-944e-c0d77e4ee162}">
 		<relationship name="effects">
+			<destination>{cbbf2d42-fd68-4c40-9d01-237547c34b5c}</destination>
 			<destination>{dda80ee7-3897-450b-b17d-3363101cbe0e}</destination>
 			<destination>{a10b4ae1-e852-4f28-90f6-989e93ffd39a}</destination>
 			<destination>{ef6c8e64-08fe-48d4-aa58-5928ec006705}</destination>
+			<destination>{230c51c8-8922-4b7b-8e6e-440e9ad812df}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{6dd7b2b7-ca9a-424a-84da-3c8fce7917d2}" />
@@ -225,6 +227,17 @@
 			<destination>{161e96e7-4c7a-415f-856c-70793e72cc77}</destination>
 		</relationship>
 	</object>
+	<object class="CompressorEffect" id="{cbbf2d42-fd68-4c40-9d01-237547c34b5c}">
+		<property name="threshold">
+			<value>-48.5</value>
+		</property>
+		<property name="attackTime">
+			<value>34</value>
+		</property>
+		<property name="gain">
+			<value>9.5</value>
+		</property>
+	</object>
 	<object class="MixerSend" id="{dda80ee7-3897-450b-b17d-3363101cbe0e}">
 		<property name="level">
 			<value>0</value>
@@ -245,6 +258,7 @@
 			<value>40</value>
 		</property>
 	</object>
+	<object class="LoudnessMeter" id="{230c51c8-8922-4b7b-8e6e-440e9ad812df}" />
 	<object class="MultibandEqEffect" id="{304aad02-dfc3-4909-9d32-49ce8c48dabe}">
 		<property name="filterTypeA">
 			<value>4</value>

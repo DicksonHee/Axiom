@@ -563,7 +563,10 @@
 	<object class="MixerBusEffectChain" id="{7beb0be0-3768-428c-866a-3c83d592dc62}">
 		<relationship name="effects">
 			<destination>{0fbb12db-7b7b-4457-9436-52c198e9c94b}</destination>
+			<destination>{9e6bf4d0-a770-4338-af97-115ad611c2bd}</destination>
 			<destination>{88991064-9c12-46af-8e8f-aab595ed2864}</destination>
+			<destination>{ddfd6d45-1547-47b3-b4d6-5039853c648e}</destination>
+			<destination>{2bc578cb-8824-4922-9776-ed4abae028b0}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{d8127be6-0d00-45a8-ac2f-b735c9cf99d8}" />
@@ -750,7 +753,27 @@
 			<destination>{18ecdd96-d456-4fd2-8b5b-af625fd9e432}</destination>
 		</relationship>
 	</object>
+	<object class="CompressorEffect" id="{9e6bf4d0-a770-4338-af97-115ad611c2bd}">
+		<property name="threshold">
+			<value>-15.5</value>
+		</property>
+		<property name="ratio">
+			<value>1.70000005</value>
+		</property>
+		<property name="releaseTime">
+			<value>720</value>
+		</property>
+		<property name="gain">
+			<value>1.5</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{88991064-9c12-46af-8e8f-aab595ed2864}" />
+	<object class="LoudnessMeter" id="{ddfd6d45-1547-47b3-b4d6-5039853c648e}" />
+	<object class="GainEffect" id="{2bc578cb-8824-4922-9776-ed4abae028b0}">
+		<property name="gain">
+			<value>-4.5</value>
+		</property>
+	</object>
 	<object class="AutomationCurve" id="{9f6783b0-6fce-4aed-a5c1-1774c01a0df1}">
 		<relationship name="parameter">
 			<destination>{5e9cf36a-ad47-4542-9ac6-37fb135e0a21}</destination>
@@ -900,7 +923,7 @@
 			<value>0.7491721854304636</value>
 		</property>
 		<property name="value">
-			<value>-5.00000381</value>
+			<value>-5.32639313</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{72f10b5c-74c3-48a7-8203-e2fb2ff21118}">
@@ -908,7 +931,7 @@
 			<value>0.9983443708609272</value>
 		</property>
 		<property name="value">
-			<value>0</value>
+			<value>-0.326389313</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{31215a50-aa7d-47d0-8008-d36966a4bed3}">
@@ -916,7 +939,7 @@
 			<value>0</value>
 		</property>
 		<property name="value">
-			<value>-80</value>
+			<value>-51.6666679</value>
 		</property>
 	</object>
 	<object class="Automator" id="{18ecdd96-d456-4fd2-8b5b-af625fd9e432}">
