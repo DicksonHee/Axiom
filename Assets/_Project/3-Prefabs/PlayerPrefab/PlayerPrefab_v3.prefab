@@ -368,7 +368,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c68144fe6def2c4391e189556c5f0c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementSystem: {fileID: 6603163244758501551}
   _currentTimer: {fileID: 1902113049}
   _currentSpeed: {fileID: 582262620}
   _currentState: {fileID: 1025665756}
@@ -2003,6 +2002,7 @@ GameObject:
   - component: {fileID: 2024803681}
   - component: {fileID: 2024803680}
   - component: {fileID: 2024803679}
+  - component: {fileID: -7988611465636668479}
   m_Layer: 0
   m_Name: NoPostCamera
   m_TagString: Untagged
@@ -2109,6 +2109,19 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &-7988611465636668479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024803677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 0}
 --- !u!1 &2067025823
 GameObject:
   m_ObjectHideFlags: 0
@@ -2677,6 +2690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20a7993a0c4c87c43a7fc24c9878b300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _alsoRotate: 0
   cameraPosition: {fileID: 6603163244185050849}
 --- !u!1 &6603163244185050848
 GameObject:
@@ -3016,6 +3030,7 @@ MonoBehaviour:
   cam: {fileID: 6603163243623300483}
   noPostCam: {fileID: 0}
   playerAnimation: {fileID: 0}
+  rbInfo: {fileID: 0}
   sensX: 200
   sensY: 200
   xRotLimits: {x: -90, y: 60}
