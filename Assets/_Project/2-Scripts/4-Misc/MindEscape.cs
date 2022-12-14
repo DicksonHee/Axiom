@@ -8,6 +8,7 @@ public class MindEscape : MonoBehaviour
 {
     public Animator anim;
 
+    public RespawnTrigger areaRespawnTrigger;
     public string sceneToLoad;
 
     public Curve jumpCurve;
@@ -33,6 +34,8 @@ public class MindEscape : MonoBehaviour
         SetInputActive(false);
         SetAnimVariables();
         anim.SetTrigger("Jump");
+        areaRespawnTrigger.isEnabled = false;
+        areaRespawnTrigger.gameObject.SetActive(false);
         StartCoroutine(ILoadScene());
     }
 
