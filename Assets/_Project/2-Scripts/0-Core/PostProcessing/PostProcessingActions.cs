@@ -72,7 +72,7 @@ namespace Axiom.Core
         public void SetVignetteIntensity(float intensity)
         {
             if (respawnCoroutine != null) return;
-            if(vignetteCoroutine != null) StopCoroutine(vignetteCoroutine);
+            if (vignetteCoroutine != null) StopCoroutine(vignetteCoroutine);
             vignetteCoroutine = StartCoroutine(LerpVignetteIntensity_CO(intensity, 0.2f));
         }
         
