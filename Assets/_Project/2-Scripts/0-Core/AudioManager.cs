@@ -16,7 +16,7 @@ namespace Axiom.Core
         public static AudioManager current;
         public StudioEventEmitter bgmEmitter;
         public List<SceneBGM> sceneBgms;
-        
+
         private void Awake()
         {
             if (current != null && current != this) Destroy(current);

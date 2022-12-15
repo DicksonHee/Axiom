@@ -34,6 +34,11 @@ public class AreaLoading : MonoBehaviour
         ChangeScene(defaultScene);
     }
 
+    public void ChangePPVol(AreaName areaName)
+    {
+        PostProcessingActions.current.ChangeVolume(areaName);
+    }
+
     public void ChangeScene(string sceneToLoad)
     {
         foreach (SceneGroup group in sceneGroups)
