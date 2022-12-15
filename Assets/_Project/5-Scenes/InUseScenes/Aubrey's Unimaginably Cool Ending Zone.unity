@@ -9643,6 +9643,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1456035268}
   - component: {fileID: 1456035267}
+  - component: {fileID: 1456035269}
+  - component: {fileID: 1456035270}
   m_Layer: 0
   m_Name: Final Cutscene
   m_TagString: Untagged
@@ -9710,6 +9712,40 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1456035269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1456035266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5ace5fddc14b874dab21b25cc8233ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogName: Final Cutscene
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Arguments: []
+        m_CallState: 2
+        m_Target: {fileID: 1456035270}
+        m_MethodName: LoadScene
+        m_Modes: 01000000
+--- !u!114 &1456035270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1456035266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36e75e5be8b06da4e8ef744d2cf2d29e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneToLoad: Credits
 --- !u!114 &1462029833
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -47,7 +47,12 @@ namespace Axiom.Core
                 if (scene.name == bgm.sceneName)
                 {
                     if (bgm.bgmEventReference.ToString() == bgmEmitter.EventReference.ToString()) return;
-                    SetNewBGM(bgm.bgmEventReference, 1f);
+                    if(scene.name == "Credits")
+                    {
+                        bgmEmitter.ChangeEvent(bgm.bgmEventReference.Path);
+                        bgmEmitter.Play();
+                    }
+                    else SetNewBGM(bgm.bgmEventReference, 1f);
                 }
             }
         }

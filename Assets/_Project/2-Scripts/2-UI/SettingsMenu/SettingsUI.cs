@@ -91,6 +91,8 @@ public class SettingsUI : MonoBehaviour
     
     private void SetCanvasActive()
     {
+        if (SceneManager.GetActiveScene().name == "Credits") return;
+
         PlayerMovementDetails.DisableAllMovementInput();
         AudioManager.current.PauseDialogue();
 

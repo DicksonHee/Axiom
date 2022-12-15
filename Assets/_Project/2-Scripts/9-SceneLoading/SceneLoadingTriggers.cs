@@ -9,14 +9,19 @@ public class SceneLoadingTriggers : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha0)) SceneLoad_Manager.LoadSpecificScene(sceneToLoad);
+        if(Input.GetKeyDown(KeyCode.Alpha0)) LoadScene();
+    }
+
+    public void LoadScene()
+    {
+        SceneLoad_Manager.LoadSpecificScene(sceneToLoad);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            SceneLoad_Manager.LoadSpecificScene(sceneToLoad);
+            LoadScene();
         }
     }
 }

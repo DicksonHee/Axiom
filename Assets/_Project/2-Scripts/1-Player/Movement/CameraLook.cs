@@ -33,6 +33,7 @@ namespace Axiom.Player.Movement
 
         [Header("WallCLimb")] [SerializeField] private Vector2 wallRunXRotLimits;
 
+        private float settingsMultiplier;
         private bool isAffectedByAnimator;
         private float initialFov;
         private float initialMultiplier;
@@ -63,6 +64,21 @@ namespace Axiom.Player.Movement
             initialXRotLimits = xRotLimits;
         }
 
+        private void OnEnable()
+        {
+            SettingsData.OnSettingUpdated += UpdateMultipliers;
+        }
+
+        private void OnDisable()
+        {
+            SettingsData.OnSettingUpdated -= UpdateMultipliers;
+        }
+
+        private void UpdateMultipliers()
+        {
+            settingsMultiplier = SettingsData.mouseSensitivity / 50f;
+        }
+
         private void Update()
         {
             if (!PlayerMovementDetails.cameraLookEnabled) return;
@@ -91,12 +107,12 @@ namespace Axiom.Player.Movement
             }
             else
             {
-                yRotation = rot.y + mouseX * sensX * Time.fixedDeltaTime * multiplier;
+                yRotation = rot.y + mouseX * sensX * Time.fixedDeltaTime * multiplier * settingsMultiplier;
             }
 
 
             //Rotate, and also make sure we dont over- or under-rotate.
-            xRotation -= mouseY * sensY * Time.fixedDeltaTime * multiplier;
+            xRotation -= mouseY * sensY * Time.fixedDeltaTime * multiplier * settingsMultiplier;
             ApplyAdditionalXRot();
             xRotation = Mathf.Clamp(xRotation, xRotLimits.x, xRotLimits.y);
 
