@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.092128746, g: 0.0017968495, b: 0.0046046996, a: 1}
+  m_IndirectSpecularColor: {r: 0.09198258, g: 0.0017983938, b: 0.004602307, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -12545,6 +12545,7 @@ Transform:
   - {fileID: 508787891}
   - {fileID: 792790995}
   - {fileID: 1859511785}
+  - {fileID: 2037226366}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -40581,6 +40582,113 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1303961567775963381, guid: 1a311b878b43a474db63d9a8b71de003, type: 3}
+--- !u!1001 &2037226365
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 636228724}
+    m_Modifications:
+    - target: {fileID: 3452892348495149289, guid: f5769c4330149d544b6ad3250bdc6772,
+        type: 3}
+      propertyPath: m_Name
+      value: RespawnArea_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3452892348495149292, guid: f5769c4330149d544b6ad3250bdc6772,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3452892348495149292, guid: f5769c4330149d544b6ad3250bdc6772,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 3452892348495149292, guid: f5769c4330149d544b6ad3250bdc6772,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 3452892348495149292, guid: f5769c4330149d544b6ad3250bdc6772,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 11.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 3452892348495149292, guid: f5769c4330149d544b6ad3250bdc6772,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3452892348495149292, guid: f5769c4330149d544b6ad3250bdc6772,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3452892348495149292, guid: f5769c4330149d544b6ad3250bdc6772,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3452892348495149292, guid: f5769c4330149d544b6ad3250bdc6772,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3452892348495149292, guid: f5769c4330149d544b6ad3250bdc6772,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3452892348495149292, guid: f5769c4330149d544b6ad3250bdc6772,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3452892348495149292, guid: f5769c4330149d544b6ad3250bdc6772,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3452892348495149291, guid: f5769c4330149d544b6ad3250bdc6772, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: f5769c4330149d544b6ad3250bdc6772, type: 3}
+--- !u!4 &2037226366 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3452892348495149292, guid: f5769c4330149d544b6ad3250bdc6772,
+    type: 3}
+  m_PrefabInstance: {fileID: 2037226365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2037226367 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3452892348495149289, guid: f5769c4330149d544b6ad3250bdc6772,
+    type: 3}
+  m_PrefabInstance: {fileID: 2037226365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2037226368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2037226367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c3e4fb34b380b74f841434f0b27c934, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgmReference:
+    Guid:
+      Data1: -147227357
+      Data2: 1280102982
+      Data3: -1150404170
+      Data4: -684642145
+    Path: event:/SOUNDTRACK/NightmareRun
+  parameterName: Transition
+  startVal: 0
+  endVal: 1
+  duration: 1
+  changeBGM: 0
+  lerpBGMParameter: 1
 --- !u!4 &2038328964 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d35a082f109afa049b2ffc517b5a7e9b,

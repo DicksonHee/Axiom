@@ -91,6 +91,7 @@ namespace Axiom.Core
 
             while(counter < duration)
             {
+                Debug.Log(parameterName);
                 counter += Time.deltaTime;
                 RuntimeManager.StudioSystem.setParameterByName(parameterName, Mathf.Lerp(initialValue, finalValue, counter / duration));
                 yield return null;
