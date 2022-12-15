@@ -62,6 +62,8 @@ namespace Axiom.Player.Movement
             initialSensX = sensX;
             initialSensY = sensY;
             initialXRotLimits = xRotLimits;
+
+            UpdateMultipliers();
         }
 
         private void OnEnable()

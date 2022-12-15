@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DialogUI : MonoBehaviour
 {
@@ -18,6 +19,21 @@ public class DialogUI : MonoBehaviour
         if (current != null && current != this) Destroy(this);
         else current = this;
         
+        HideText();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
         HideText();
     }
 
