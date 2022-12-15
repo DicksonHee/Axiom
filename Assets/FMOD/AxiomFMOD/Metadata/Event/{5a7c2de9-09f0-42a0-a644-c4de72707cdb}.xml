@@ -662,6 +662,7 @@
 	<object class="MixerBusEffectChain" id="{c62c2fdc-fa3f-43a5-a1fc-581e2e940a88}">
 		<relationship name="effects">
 			<destination>{29c06ee5-4b6d-4629-a529-f9c4e163419c}</destination>
+			<destination>{a65adf3b-fe3f-41c9-83b8-e5d239898e69}</destination>
 			<destination>{01a60ff9-a1aa-4c87-8707-822f69c1833b}</destination>
 			<destination>{94649a1e-9266-4bc5-907d-b3c459c17811}</destination>
 			<destination>{ec80c908-2c49-4b0a-9af7-9723385476c5}</destination>
@@ -1072,6 +1073,17 @@
 		</property>
 		<property name="gain">
 			<value>3.5</value>
+		</property>
+	</object>
+	<object class="ThreeEQEffect" id="{a65adf3b-fe3f-41c9-83b8-e5d239898e69}">
+		<property name="lowGain">
+			<value>-11</value>
+		</property>
+		<property name="midGain">
+			<value>5.5</value>
+		</property>
+		<property name="highGain">
+			<value>4.5</value>
 		</property>
 	</object>
 	<object class="LimiterEffect" id="{01a60ff9-a1aa-4c87-8707-822f69c1833b}">

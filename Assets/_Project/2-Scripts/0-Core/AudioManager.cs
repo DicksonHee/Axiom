@@ -44,10 +44,9 @@ namespace Axiom.Core
         {
             foreach (SceneBGM bgm in sceneBgms)
             {
-                if (bgm.bgmEventReference.ToString() == bgmEmitter.EventReference.ToString()) return;
-
                 if (scene.name == bgm.sceneName)
                 {
+                    if (bgm.bgmEventReference.ToString() == bgmEmitter.EventReference.ToString()) return;
                     SetNewBGM(bgm.bgmEventReference, 1f);
                 }
             }

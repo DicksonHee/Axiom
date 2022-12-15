@@ -103,6 +103,7 @@ public enum FootstepTypeValue
 public enum ReverbValue
 {
     RealWorld = 0,
-    Close = 1,
-    Far = 2
+    Quiet = 1,
+    Close = 2,
+    Far = 3
 }

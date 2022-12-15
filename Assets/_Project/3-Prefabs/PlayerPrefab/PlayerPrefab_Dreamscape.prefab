@@ -10009,7 +10009,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 720795355}
-  - component: {fileID: 720795354}
   m_Layer: 0
   m_Name: PlayerFmodScript
   m_TagString: Untagged
@@ -10032,26 +10031,6 @@ Transform:
   m_Father: {fileID: 9027862586039582951}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &720795354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 720795353}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2e2bf6092db3734d95a20f85674c06c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventName:
-    Guid:
-      Data1: -1133487062
-      Data2: 1336814550
-      Data3: -470866025
-      Data4: 584457221
-    Path: event:/DialogueWithStatic
-  dialogueLength: 0
 --- !u!1 &776501842
 GameObject:
   m_ObjectHideFlags: 0
@@ -21630,7 +21609,6 @@ GameObject:
   - component: {fileID: 9027862586039582949}
   - component: {fileID: 9027862586039582950}
   - component: {fileID: 2607996086839208979}
-  - component: {fileID: 1853506030}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -21757,15 +21735,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a86e29b76a1ebf34b8d6feb5f48330ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!45 &1853506030
-Skybox:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9027862586039582952}
-  m_Enabled: 1
-  m_CustomSkybox: {fileID: 2100000, guid: 71f14a2d79f732f4d9893ef1b911f4ff, type: 2}
 --- !u!1 &9027862586286729249
 GameObject:
   m_ObjectHideFlags: 0
@@ -23220,12 +23189,12 @@ MonoBehaviour:
   eventEmmitter: {fileID: 1605332258}
   footstepEvent:
     Guid:
-      Data1: -1930976040
-      Data2: 1198996912
-      Data3: 1868262585
-      Data4: 1028609325
-    Path: event:/TESTS/GlobalFootsteps
-  globalSurface: GlobalSurface
+      Data1: 1518087657
+      Data2: 1117784560
+      Data3: -557562714
+      Data4: -612601742
+    Path: event:/SFX/Dreamscape/Foley/MasterFootsteps
+  globalSurface: Type
   Value: 0
   labelName: 
   movementSystem: {fileID: 9027862587186345416}
