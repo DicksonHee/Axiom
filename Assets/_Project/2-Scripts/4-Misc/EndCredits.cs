@@ -20,26 +20,6 @@ public class EndCredits : MonoBehaviour
 
     private void GoBackToTitle(VideoPlayer source)
     {
-        StartCoroutine(FadeScreen());
-        Invoke(nameof(ActuallyGoBackToTitle), 5f);
-    }
-
-    private void ActuallyGoBackToTitle()
-    {
         SceneLoad_Manager.LoadSpecificScene("MainMenu");
-    }
-
-    private IEnumerator FadeScreen()
-    {
-        float counter = 0f;
-
-        while(counter < 4f)
-        {
-            counter += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(1f, 0f, counter / 4f);
-            yield return null;
-        }
-
-        canvasGroup.alpha = 0f;
     }
 }
