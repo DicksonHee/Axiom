@@ -17,7 +17,7 @@ namespace Axiom.Core
         public static int textSize;
         public static int textBackgroundOpacity;
 
-        public static bool isSpeedrunMode = true;
+        public static bool isSpeedrunMode;
 
         public static void InitialiseValues()
         {

@@ -21,6 +21,8 @@ public class Leaderboard : MonoBehaviour
 
     public TMP_Text[] leaderboardDisplay;
 
+    private bool hasInitialised;
+
     private void Awake()
     {
         if (current != null && current != this) Destroy(this);
@@ -30,8 +32,9 @@ public class Leaderboard : MonoBehaviour
         HideCanvasGroup(leaderboardCanvasGroup);
     }
 
-    private void Start()
+    private void OnEnable()
     {
+        if (hasInitialised) return;
         StartCoroutine(LoginRoutine());
     }
 
@@ -43,6 +46,7 @@ public class Leaderboard : MonoBehaviour
         {
             if(response.success)
             {
+                hasInitialised = true;
                 Debug.Log("Player was logged in");
             }
             else
@@ -53,6 +57,7 @@ public class Leaderboard : MonoBehaviour
         });
 
         yield return new WaitWhile(() => done == false);
+        memberID.characterLimit = 12;
     }
 
     public void ShowEnterScoreCanvas()
