@@ -33,12 +33,6 @@ public class Leaderboard : MonoBehaviour
     private void Start()
     {
         StartCoroutine(LoginRoutine());
-
-        //LootLockerSDKManager.StartSession("Player", (response) =>
-        //{
-        //    if (response.success) Debug.Log("Successfully connected to leaderboard");
-        //    else Debug.Log("Failed to connect to leaderboard: " + response.Error);
-        //});
     }
 
     private IEnumerator LoginRoutine()
@@ -133,6 +127,7 @@ public class Leaderboard : MonoBehaviour
             else Debug.Log("Unable to submit score: " + response.Error);
         });
 
+        HideEnterScoreCanvas();
         HideLeaderboardCanvas();
         Invoke(nameof(LoadMainMenu), 1f);
     }

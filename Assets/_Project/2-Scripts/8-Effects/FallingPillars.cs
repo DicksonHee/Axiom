@@ -48,7 +48,7 @@ public class FallingPillars : MonoBehaviour
     {
         Vector3 spawnPos = targetPosition + new Vector3(0f, 100f, 0f);
         GameObject pillar = Instantiate(prefab, spawnPos, Quaternion.identity);
-        pillar.transform.DOMove(targetPosition, 0.5f).SetEase(Ease.Flash);
+        pillar.transform.DOMove(targetPosition, 0.3f).SetEase(Ease.Flash);
         pillarList.Add(pillar);
     }
 

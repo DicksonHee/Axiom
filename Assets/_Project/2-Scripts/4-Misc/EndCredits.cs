@@ -24,6 +24,11 @@ public class EndCredits : MonoBehaviour
         SpeedrunTimer.EndTimer();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) player.playbackSpeed = 10f;
+    }
+
     private void GoBackToTitle(VideoPlayer source)
     {
         if (SettingsData.isSpeedrunMode)
