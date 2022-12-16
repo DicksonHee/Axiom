@@ -4,16 +4,36 @@ using UnityEngine;
 
 public class RotateObject : MonoBehaviour
 {
-    private float yRot;
+    private float axisRot;
+
+    [SerializeField] private bool xAxis = false;
+    [SerializeField] private bool yAxis = false;
+    [SerializeField] private bool zAxis = false;
 
     private void Awake()
     {
-       yRot = Random.Range(0.01f, 0.05f);
+        axisRot = Random.Range(0.01f, 0.05f);
+
+        if (!xAxis && !yAxis && !zAxis)
+        {
+            yAxis = true;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        gameObject.transform.Rotate(0, yRot, 0 * Time.deltaTime, Space.World);
+        if (xAxis)
+        {
+            gameObject.transform.Rotate(axisRot, 0, 0 * Time.deltaTime, Space.World);
+        }
+        else if (yAxis)
+        {
+            gameObject.transform.Rotate(0, axisRot, 0 * Time.deltaTime, Space.World);
+        }
+        else if (zAxis)
+        {
+            gameObject.transform.Rotate(0, 0, axisRot * Time.deltaTime, Space.World);
+        }
     }
 }
