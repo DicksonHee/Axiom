@@ -1,25 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using FMODUnity;
 using UnityEngine;
 using System;
+using Axiom.Core;
 
 public class Destructible : MonoBehaviour
 {
-	//[SerializeField] private GameObject brokenAlt;
-	//[SerializeField] private Vector3 scaleSize;
-	//private void OnCollisionEnter(Collision collision)
-	//{
-	//	Instantiate(brokenAlt, transform.position, transform.rotation);
-	//	brokenAlt.transform.localScale = new Vector3(scaleSize.x, scaleSize.y, scaleSize.z);
-	//	Destroy(gameObject);
-	//}
+    //[SerializeField] private GameObject brokenAlt;
+    //[SerializeField] private Vector3 scaleSize;
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //	Instantiate(brokenAlt, transform.position, transform.rotation);
+    //	brokenAlt.transform.localScale = new Vector3(scaleSize.x, scaleSize.y, scaleSize.z);
+    //	Destroy(gameObject);
+    //}
+    public EventReference breakingPlatforms;
 
     private Rigidbody Rigidbody;
-    private AudioSource AudioSource;
     [SerializeField]
     private GameObject BrokenPrefab;
-    [SerializeField]
-    private AudioClip DestructionClip;
+    
     [SerializeField]
     private float ExplosiveForceMin = 50;
     [SerializeField]
@@ -38,7 +39,6 @@ public class Destructible : MonoBehaviour
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
-        AudioSource = GetComponent<AudioSource>();
     }
 
 	private void OnCollisionEnter(Collision collision)
@@ -53,10 +53,7 @@ public class Destructible : MonoBehaviour
     {
         var instanceScale = gameObject.transform.localScale;
 
-        if (DestructionClip != null)
-        {
-            AudioSource.PlayOneShot(DestructionClip);
-        }
+        AudioManager.current.PlaySFX2D(breakingPlatforms);
 
         GameObject brokenInstance = Instantiate(BrokenPrefab, transform.position, transform.rotation);
         brokenInstance.GetComponent<DestructiblePieces>().SetDefaultValues(instanceScale, Rigidbody.velocity, ExplosiveForceMin, ExplosiveForceMax, ExplosiveRadius, shardScaleFactor);

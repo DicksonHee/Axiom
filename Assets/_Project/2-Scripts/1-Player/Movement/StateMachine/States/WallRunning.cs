@@ -45,10 +45,13 @@ namespace Axiom.Player.Movement.StateMachine.States
 			stickToWallVel = Vector3.ProjectOnPlane(-wallNormal, MovementSystem.UpDirection) * 20f;
 			
 			// Set camera values to move camera to the left or right depending on wall
-			if (isRightWallEnter) MovementSystem.cameraLook.StartRightWallRunCamera(wallTransform.gameObject);
-			else MovementSystem.cameraLook.StartLeftWallRunCamera(wallTransform.gameObject);
+			if(wallTransform != null)
+			{
+                if (isRightWallEnter) MovementSystem.cameraLook.StartRightWallRunCamera(wallTransform.gameObject);
+                else MovementSystem.cameraLook.StartLeftWallRunCamera(wallTransform.gameObject);
+            }
 
-			exitCounter = MovementSystem.wallRunCoyoteTime;
+            exitCounter = MovementSystem.wallRunCoyoteTime;
 
 			MovementSystem.DisableMovement();
 			MovementSystem.rbInfo.SetIsOnWall(MovementSystem.RightDirection, MovementSystem.ForwardDirection);

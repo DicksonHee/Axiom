@@ -54,6 +54,7 @@ public class GroundTypeDetector : MonoBehaviour
 
     public void DetectGround()
     {
+        if(groundTypeDict == null) return; 
         if (groundTypeDict.TryGetValue(rbDetection.GetCurrentFloorMaterial(), out FootstepTypeValue value))
         {
             footsteps.PlayFootstep((int)value);
