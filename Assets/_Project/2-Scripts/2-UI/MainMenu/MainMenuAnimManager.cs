@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Axiom.Core;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 namespace Axiom.UI.MainMenu
 {
@@ -21,6 +23,7 @@ namespace Axiom.UI.MainMenu
 
         private void Awake()
         {
+            SettingsData.isSpeedrunMode = false;
             perspectiveSwitcher = GetComponent<PerspectiveSwitcher>();
             axiomAnimator = GetComponent<AxiomAnimator>();
 
@@ -33,6 +36,17 @@ namespace Axiom.UI.MainMenu
         public void StartGame(string sceneToLoad)
         {
             StartCoroutine(GameStart_CO(sceneToLoad));
+        }
+
+        public void StartSpeedrunGame(string sceneToLoad)
+        {
+            SettingsData.isSpeedrunMode = true;
+            StartCoroutine(GameStart_CO(sceneToLoad));
+        }
+
+        public void ShowLeaderboard()
+        {
+            
         }
 
         private IEnumerator GameStart_CO(string sceneToLoad)

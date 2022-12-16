@@ -4,8 +4,8 @@ using UnityEngine;
 
 public static class SpeedrunTimer
 {
-    private static Dictionary<string, float> _sectionTimes = new();
     private static float _startTime;
+    private static float _endTime;
     
     public static bool _isActive;
 
@@ -15,13 +15,22 @@ public static class SpeedrunTimer
         _isActive = true;
     }
 
-    public static void EndTimer(string sectionName)
+    public static void EndTimer()
     {
-        if (_sectionTimes.TryGetValue(sectionName, out _)) _sectionTimes[sectionName] = Time.time - _startTime;
-        else _sectionTimes.Add(sectionName, Time.time - _startTime);
+        if (!_isActive) return;
 
+        _endTime = Time.time - _startTime;
         _isActive = false;
     }
 
-    public static float GetElapsedTime() => Time.time - _startTime;
+    public static float GetEndTime()
+    {
+        if (_isActive) EndTimer();
+        return _endTime;
+    }
+
+    public static float GetElapsedTime()
+    {
+        return Time.time - _startTime;
+    }
 }

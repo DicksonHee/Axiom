@@ -17,6 +17,8 @@ namespace Axiom.Core
         public static int textSize;
         public static int textBackgroundOpacity;
 
+        public static bool isSpeedrunMode;
+
         public static void InitialiseValues()
         {
             mouseSensitivity = 50;

@@ -1,3 +1,4 @@
+using Axiom.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,8 +19,17 @@ public class EndCredits : MonoBehaviour
         player.loopPointReached -= GoBackToTitle;
     }
 
+    private void Awake()
+    {
+        SpeedrunTimer.EndTimer();
+    }
+
     private void GoBackToTitle(VideoPlayer source)
     {
-        SceneLoad_Manager.LoadSpecificScene("MainMenu");
+        if (SettingsData.isSpeedrunMode)
+        {
+            Leaderboard.current.ShowEnterScoreCanvas();
+        }
+        else SceneLoad_Manager.LoadSpecificScene("MainMenu");
     }
 }

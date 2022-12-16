@@ -46,25 +46,44 @@ public class SettingsUI : MonoBehaviour
         textBackgroundOpacitySlider.onValueChanged.AddListener(SetTextBackgroundOpacity);
 
         SettingsData.InitialiseValues();
-        
+        InitialiseUIValues();        
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        InitialiseUIValues();
+    }
+
+    private void InitialiseUIValues()
+    {
         SetMouseSensitivity(SettingsData.mouseSensitivity);
         mouseSensSlider.value = SettingsData.mouseSensitivity;
-        
+
         SetBGMVol(SettingsData.bgmVolume);
         bgmVolSlider.value = SettingsData.bgmVolume;
-        
+
         SetSFXVol(SettingsData.sfxVolume);
         sfxVolSlider.value = SettingsData.sfxVolume;
-        
+
         SetDialogVol(SettingsData.dialogVolume);
         dialogVolumeSlider.value = SettingsData.dialogVolume;
-        
+
         SetTextSize(SettingsData.textSize);
         textSizeSlider.value = SettingsData.textSize;
-        
+
         SetTextBackgroundOpacity(SettingsData.textBackgroundOpacity);
         textBackgroundOpacitySlider.value = SettingsData.textBackgroundOpacity;
-        
+
         Invoke(nameof(SetCanvasInactive), 0.1f);
     }
 

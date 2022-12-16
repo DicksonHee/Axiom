@@ -8,7 +8,7 @@ public class PersistentStuffInitialiser : MonoBehaviour
 
     private void Awake()
     {
-        if (!GameObject.Find("PersistentStuff")) return;
+        if (GameObject.FindGameObjectWithTag("PersistentObj") != null) return;
 
         Instantiate(persistentStuff);
     }

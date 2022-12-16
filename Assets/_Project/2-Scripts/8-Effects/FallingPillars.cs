@@ -81,6 +81,8 @@ public class FallingPillars : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (isPlayerDetected) return;
+
         if (other.CompareTag("Player"))
         {
             isPlayerDetected = true;
@@ -92,9 +94,14 @@ public class FallingPillars : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerDetected = false;
-            CancelInvoke(nameof(CheckFloor));
-            StopAllCoroutines();
+            Invoke(nameof(DelayExit), 0.5f);
         }
+    }
+
+    private void DelayExit()
+    {
+        isPlayerDetected = false;
+        CancelInvoke(nameof(CheckFloor));
+        StopAllCoroutines();
     }
 }
