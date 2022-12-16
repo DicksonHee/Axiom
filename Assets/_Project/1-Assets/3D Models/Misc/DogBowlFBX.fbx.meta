@@ -1,57 +1,16 @@
 fileFormatVersion: 2
-guid: 241687f1a2ac2ac4c8c35789ba1a8468
+guid: 507e548f78f1e1d4da6d6ff88a9fb2dc
 ModelImporter:
   serializedVersion: 21300
-  internalIDToNameTable:
-  - first:
-      1: 100000
-    second: //RootNode
-  - first:
-      1: 100002
-    second: SciFi_WallLight
-  - first:
-      1: 100004
-    second: SciFi_WallLightBulb
-  - first:
-      4: 400000
-    second: //RootNode
-  - first:
-      4: 400002
-    second: SciFi_WallLight
-  - first:
-      4: 400004
-    second: SciFi_WallLightBulb
-  - first:
-      23: 2300000
-    second: SciFi_WallLight
-  - first:
-      23: 2300002
-    second: SciFi_WallLightBulb
-  - first:
-      33: 3300000
-    second: SciFi_WallLight
-  - first:
-      33: 3300002
-    second: SciFi_WallLightBulb
-  - first:
-      43: 4300000
-    second: SciFi_WallLight
-  - first:
-      43: 4300002
-    second: SciFi_WallLightBulb
+  internalIDToNameTable: []
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: SciFi_lightFixture
-    second: {fileID: 2100000, guid: bb2d88d2112f74d4b8dfef23a4b5d31d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: SciFi_light_bulb
-    second: {fileID: 2100000, guid: bc9fc69a1c4243343bff25dd7532a1b0, type: 2}
+      name: DogBowl01
+    second: {fileID: 2100000, guid: d6cbbc96eaf0f1045a20bee754396b9a, type: 2}
   materials:
-    materialImportMode: 1
+    materialImportMode: 2
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -60,7 +19,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    removeConstantScaleCurves: 0
+    removeConstantScaleCurves: 1
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -76,8 +35,7 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    extraUserProperties:
-    - '#BAKERY{"meshName":["SciFi_WallLight","SciFi_WallLightBulb"],"padding":[256,256],"unwrapper":[0,0]}'
+    extraUserProperties: []
     clipAnimations: []
     isReadable: 0
   meshes:
@@ -91,10 +49,10 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
-    nodeNameCollisionStrategy: 0
-    fileIdsGeneration: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
@@ -109,7 +67,7 @@ ModelImporter:
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
-    secondaryUVMarginMethod: 0
+    secondaryUVMarginMethod: 1
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
@@ -142,11 +100,11 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   avatarSetup: 0
-  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
-  remapMaterialsIfMaterialImportModeIsNone: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
   assetBundleName: 
